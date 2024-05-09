@@ -148,17 +148,43 @@
 	    position: relative;
     }
     .input_btn{
-    	margin-top: 20px;	
+    	margin-top: 30px;
+    }
+    .input_btn2{
+    	margin-top: 100px;
     }
     #login-btn{
     	width: 100%;
 	    height: 40px;
 	    font-size: 14px;
-	    border-radius: 2px;
+	    border-radius: 10px;
 	    background-color: rgb(94, 87, 59);
 	    color:white;
 	    font-weight: bold;
     }
+    #join-area input{
+   	    border: none;
+	    box-shadow: none;
+	    padding: 12px 16px;
+	    width: 100%;
+	    line-height: 1.2;
+    }
+    
+    #join-area .input_form{
+    	border: 1px solid #e0e0e0;
+	    background: #fff;
+	    border-top: 1px solid #e0e0e0;
+	    box-sizing: border-box;
+	    position: relative;
+	    margin-bottom:15px;
+    }
+    .danger{
+    	display:block;
+    	position:absolute;
+    	bottom:-15px;
+    	font-size:10px;
+    }
+    
 </style>
 </head>
 <body>
@@ -178,7 +204,7 @@
             				<a class="nav-link" style="padding:.2rem .5rem;" href="#" data-toggle="modal" data-target="#myModal">로그인</a>
             			</li>
             			<li class="nav-item">
-            				<a class="nav-link" style="padding:.2rem .5rem;" href="#">회원가입</a>
+            				<a class="nav-link" style="padding:.2rem .5rem;" href="#"  data-toggle="modal" data-target="#myjoin">회원가입</a>
             			</li>
             		</ul>
             	</div>
@@ -212,7 +238,7 @@
 						
 					});   
             	});
-            	</script>
+       	</script>
         <div id="navigator">
             <ul id="navi">
                 <li><a href="#">커뮤니티</a></li>
@@ -249,12 +275,36 @@
           			
           		</form>
 			</div>
-          
-        </div>
-       
-        
-      </div>
-    </div>
-  </div>
+			<div class="input_form">
+				<input type="text" name="memberPwd" placeholder="비밀번호를 입력해주세요">
+			</div>
+			<div class="input_form">
+				<input type="text" placeholder="비밀번호를 한번 더 입력해주세요">
+				<span class="danger_pwd"></span>
+			</div>
+			<div class="input_form">
+				<input type="text" name="memberName" placeholder="성함을 입력해주세요">
+			</div>
+			<div class="input_form">
+				<input type="text" name="nickName" placeholder="닉네임을 입력해주세요">
+				<span class="danger_nick"></span>
+			</div>
+			<div class="input_form">
+				<input type="text" name="phone" placeholder="전화번호를 입력해주세요">
+				<span class="danger_phone"></span>
+			</div>
+			<div class="input_form">
+				<input type="text" name="email" placeholder="이메일을 입력해주세요">
+				<span class="danger_email"></span>
+			</div>
+			<div class="input_btn2"><button type="button" id="login-btn" class="btn">회원가입</button></div>
+		     			
+			</form>
+		</div>
+	       
+		</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>
