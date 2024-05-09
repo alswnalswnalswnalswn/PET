@@ -137,6 +137,9 @@
 	    width: 100%;
 	    line-height: 1.2;
     }
+    #login-area .brt{
+    	margin-top: -1px;
+    }
     #login-area .input_form{
     	border: 1px solid #e0e0e0;
 	    background: #fff;
@@ -144,8 +147,17 @@
 	    box-sizing: border-box;
 	    position: relative;
     }
-    .input_pwd{
-    	
+    .input_btn{
+    	margin-top: 20px;	
+    }
+    #login-btn{
+    	width: 100%;
+	    height: 40px;
+	    font-size: 14px;
+	    border-radius: 2px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
     }
 </style>
 </head>
@@ -225,23 +237,21 @@
         
         
 			<div id="login-area">
-				<form>
+				<form action="member" method="post">
 					<div class="input_form">
 						<input type="text" placeholder="아이디를 입력해주세요">
 					</div>
-          			<div class="input_form">
-          				<input type="text" placeholder="비밀번호를 입력해주세요">
+          			<div class="input_form brt">
+          				<input type="password" placeholder="비밀번호를 입력해주세요">
           			</div>
-          			<a>아이디찾기</a>/<a>비밀번호찾기</a>
+          			
+          			<div class="input_btn"><button type="submit" id="login-btn" class="btn">로그인</button></div>
+          			
           		</form>
 			</div>
           
         </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+       
         
       </div>
     </div>
