@@ -286,14 +286,14 @@
           		
           		
           		
-<div class="modal fade" id="myModal">
+<div class="modal fade" id="myjoin">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         
         <!-- Modal body -->
         <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h3 align="center">로그인</h3>
+        <h3 align="center">회원가입</h3>
         
         
 		<div id="join-area">
