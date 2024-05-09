@@ -14,7 +14,6 @@ local.properties
 .loadpath
 .recommenders
 .target/
-/Servers
 
 # ignore properties file
 config.properties
