@@ -27,7 +27,7 @@
 	</div>
 
 	<script>
-			var positions = [];
+			
 			
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			mapOption = {
@@ -77,7 +77,7 @@
 			    	},
 			    	success : result => {
 			    		//console.log(result);
-			    		
+			    		var positions = [];
 			    		// 마커를 표시할 위치와 title 객체 배열입니다 
 			    		for(let i in result){
 			    			positions[i] = {

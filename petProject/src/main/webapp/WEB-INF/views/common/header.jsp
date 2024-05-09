@@ -277,6 +277,29 @@
           			<div class="input_btn"><button type="submit" id="login-btn" class="btn">로그인</button></div>
           			
           		</form>
+		</div>
+	       
+		</div>
+		</div>
+	</div>
+</div>     		
+          		
+          		
+          		
+<div class="modal fade" id="myjoin">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 align="center">회원가입</h3>
+        
+        
+		<div id="join-area">
+			<form action="member" method="post">
+			<div class="input_form">
+				<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 			</div>
 			<div class="input_form">
 				<input type="text" name="memberPwd" placeholder="비밀번호를 입력해주세요">
@@ -301,8 +324,7 @@
 				<span class="danger_email"></span>
 			</div>
 			<div class="input_btn2"><button type="button" id="login-btn" class="btn">회원가입</button></div>
-		     			
-			</form>
+		    </from> 			
 		</div>
 	       
 		</div>
