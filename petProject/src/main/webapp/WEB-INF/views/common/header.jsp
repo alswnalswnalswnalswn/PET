@@ -351,12 +351,12 @@
 					<span class="danger_email"></span>
 				</div>
 				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
-					<span class="animal">강아지</span>
-					<span class="animal">고양이</span>
-					<span class="animal">토끼</span>
-					<span class="animal">물고기</span>
-					<span class="animal">새</span>
-					<span class="animal">햄스터</span>
+					<span class="animal" data-animal="강아지">강아지</span>
+					<span class="animal" data-animal="고양이">고양이</span>
+					<span class="animal" data-animal="토끼">토끼</span>
+					<span class="animal" data-animal="물고기">물고기</span>
+					<span class="animal" data-animal="새">새</span>
+					<span class="animal" data-animal="햄스터">햄스터</span>
 					<input type="hidden" name="animal">
 				</div>
 				<div class="input_btn2"><button type="submit" id="login-btn2" class="btn">회원가입</button></div>
@@ -370,24 +370,17 @@
 
 	<script>
 		$(document).ready(function(){
-			/*
-			$('.animal').click(function(){
-				$(this).toggleClass('clicked');
-			});
-			
-			*/
 			$('.animal').click(function(){	
-			$('.animal').removeClass('clicked');
-			$(this).addClass('clicked');
+			$(this).toggleClass('clicked');
 			
 			// 클릭된 동물의 이름을 hidden input에 설정
 			var animalName = $(this).data('animal');
 			$('#animalForm input[name="animal"]').val(animalName);
-			console.log(animalName);
+			// console.log(animalName);
 			});
 		});
 	</script>
-
+ 
 
 
 
