@@ -17,6 +17,6 @@ public class MemberCoupon {
 	private int memberNo;
 	private int couponNo;
 	private Date issueDate;
-	private String couponStatus;
+	private String memberCouponStatus;
 	private Coupon coupon;
 }

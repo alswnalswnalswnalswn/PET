@@ -17,15 +17,60 @@
 		
 	</resultMap>
 	<resultMap type="memberCoupon" id="memberCouponResultSet">
-	
+		<result column="ISSUE_DATE" property="issueDate"/>
+		<result column="MEMBER_COUPON_STATUS" property="memberCouponStatus"/>
+		<collection resultMap="couponResultSet" property="coupon"/>	
 	</resultMap>
 	
 	<resultMap type="member" id="memberResultSet">
-	
+		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="MEMBER_PWD" property="memberPwd"/>
+		<result column="MEMBER_NAME" property="memberName"/>
+		<result column="EMAIL" property="email"/>
+		<result column="NICKNAME" property="nickname"/>
+		<result column="PHONE" property="phone"/>
+		<result column="MEMBER_STATUS" property="memberStatus"/>
+		<collection resultMap="animalResultSet" property="animalList"/>
+		<collection resultMap="memberCouponResultSet" property="couponList"/>
 	</resultMap>
 	
 	<select id="login" parameterType="member" resultMap="memberResultSet">
-		
+		SELECT
+		       MEMBER_NO,
+		       MEMBER_ID,
+		       MEMBER_PWD,
+		       MEMBER_NAME,
+		       EMAIL,
+		       NICKNAME,
+		       PHONE,
+		       MEMBER_STATUS,
+		       ENROLL_DATE,
+		       MODIFY_DATE,
+		       COUPON_NO,
+		       COUPON_NAME,
+		       ISSUE_DATE,
+		       DISCOUNT_RATE,
+		       COUPON_STATUS,
+		       MEMBER_COUPON_STATUS,
+		       ANIMAL_NAME,
+		       ANIMAL_CODE
+		  FROM
+		       TB_MEMBER
+		  LEFT
+		  JOIN
+		       TB_MEMBER_COUPON USING(MEMBER_NO)
+		  LEFT
+		  JOIN
+		       TB_MEMBER_ANIMAL USING(MEMBER_NO)
+		  JOIN
+		       TB_COUPON USING(COUPON_NO)
+		  JOIN
+		       TB_ANIMAL USING(ANIMAL_CODE)
+		 WHERE
+		       MEMBER_NO = 1
+		   AND
+		       MEMBER_STATUS != 'D'
 	
 	</select>
 	
