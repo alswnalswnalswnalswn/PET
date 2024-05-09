@@ -146,13 +146,13 @@
     }
     .input_pwd{
     	
-    }]
+    }
 </style>
 </head>
 <body>
     <div id="header">
         <div id="header1">
-            <div id="logo"><img src="resources/img/logo.png" alt="로고" width="150px" height="100px"></div>
+            <div id="logo"><img src="resources/img/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${ pageContext.request.contextPath}'"></div>
             <div id="search_form">
                 <form action="#">
                     <input type="text" name="query" id="in_text" placeholder="  검색어를 입력하세요">
