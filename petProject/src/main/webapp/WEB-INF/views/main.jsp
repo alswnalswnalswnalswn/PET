@@ -5,10 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>테스트</title>
+<title>Insert title here</title>
 </head>
 <body>
-	<jsp:forward page="WEB-INF/views/main.jsp"/>
-
+	<jsp:include page="common/header.jsp" />
+	<div style="height:400px;">
+	</div>
+	<jsp:include page="common/footer.jsp" />
 </body>
 </html>
