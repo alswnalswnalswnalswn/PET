@@ -35,7 +35,31 @@
 				CATEGORY_CODE = 'P1'
 	</select>
 	
+	<select id="searchPlace" resultMap="placeResultSet" parameterType="hashmap">
+	SELECT 
+			PLACE_NO,
+			PLACE_NAME,
+			PLACE_LAT,
+			PLACE_LON,
+			NEW_ADDR,
+			OLD_ADDR,
+			PLACE_TEL,
+			PLACE_DAYOFF,
+			PLACE_DAYON,
+			CATEGORY_CODE
+	FROM
+			TB_PLACE
+	WHERE
+			CATEGORY_CODE = #{categoryCode}	
+	AND
+			TO_NUMBER(PLACE_LAT) BETWEEN #{swLat} AND #{neLat}
+	AND
+			TO_NUMBER(PLACE_LON) BETWEEN #{swLng} AND #{neLng}
 	
+			
+	
+		
+	</select>
 	
 	
 </mapper>

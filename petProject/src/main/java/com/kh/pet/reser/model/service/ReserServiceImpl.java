@@ -1,5 +1,6 @@
 package com.kh.pet.reser.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -17,14 +18,17 @@ public class ReserServiceImpl implements ReserService {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	
-	
-	
-	
+
 	@Override
 	public List<Place> selectHospital() {
 		return reserRepository.selectHospital(sqlSession);
 	}
+
+	@Override
+	public List<Place> searchPlace(HashMap<String, String> map) {
+		return reserRepository.searchPlace(sqlSession, map);
+	}
+
 	
 
 }
