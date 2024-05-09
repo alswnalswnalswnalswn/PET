@@ -10,12 +10,11 @@
 
 	<typeAliases>
 		<typeAlias type="com.kh.pet.place.model.vo.Place" alias="place" />
+		<typeAlias type="com.kh.pet.common.model.vo.Animal" alias="animal" />
+		<typeAlias type="com.kh.pet.common.model.vo.Coupon" alias="coupon" />
+		<typeAlias type="com.kh.pet.member.model.vo.Member" alias="member" />
+		<typeAlias type="com.kh.pet.member.model.vo.MemberCoupon" alias="memberCoupon" />
 	</typeAliases>
-	
-	
-	
-	
-	
 	
 	
 	
@@ -29,6 +28,7 @@
 	
 	<mappers>
 		<mapper resource="/mapper/hospital-mapper.xml" />
+		<mapper resource="/mapper/member-mapper.xml" />
 	</mappers>
 	
 </configuration>
