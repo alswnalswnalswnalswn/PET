@@ -69,113 +69,42 @@
 			    		//console.log(result);
 			    		
 			    		// 마커를 표시할 위치와 title 객체 배열입니다 
-			    		positions = [];
 			    		for(let i in result){
 			    			positions[i] = {
 			    							latlng: new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
-			    							title: result[i].placeName
+			    							content: '<div>'+ result[i].placeName +'</div>'
 			    			}
 			    		}
-			    		
+			    		console.log(positions);
 			    		for (var i = 0; i < positions.length; i ++) {
 			    		    // 마커를 생성합니다
-							addmarker(positions[i].latlng);			    		  
+			    		    var marker = new kakao.maps.Marker({
+						        map: map, // 마커를 표시할 지도
+						        position: positions[i].latlng // 마커의 위치
+						    });
+			    		    var infowindow = new kakao.maps.InfoWindow({
+			    		        content: positions[i].content // 인포윈도우에 표시할 내용
+			    			});
+			    		    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+				    		kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 			    		}
+			    		 
+			    		
 	    			}		
 				});
 			});
-			
-			kakao.maps.event.addListener(map, 'bounds_changed', function() {
-								
-				// 지도 영역정보를 얻어옵니다 
-			    var bounds = map.getBounds();
-			    
-			    var neLat = bounds.getNorthEast().getLat();
-			    var neLng = bounds.getNorthEast().getLng();
-			    var swLat = bounds.getSouthWest().getLat();
-			    var swLng = bounds.getSouthWest().getLng();
-			    
-			    //console.log(neLat);
-			    //console.log(neLng);
-			    //console.log(swLat);
-			    //console.log(swLng);
-			    
-			    $.ajax({
-			    	url : "searchPlace",
-			    	data : {
-			    		categoryCode : 'P1',
-			    		neLat : neLat,
-			    		neLng : neLng,
-			    		swLat : swLat,
-			    		swLng : swLng
-			    	},
-			    	success : result => {
-			    		//console.log(result);
-			    		
-			    		// 마커를 표시할 위치와 title 객체 배열입니다 
-			    		positions = [];
-			    		for(let i in result){
-			    			positions[i] = {
-			    							latlng: new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
-			    							title: result[i].placeName
-			    			}
-			    		}
-			    		
-			    		for (var i = 0; i < positions.length; i ++) {
-			    		    // 마커를 생성합니다
-							addmarker(positions[i].latlng);			    		  
-			    		}
-	    			}		
-				});
-			});
-			
-    		function addmarker(position){
-    			 var marker = new kakao.maps.Marker({
-	    		        map: map, // 마커를 표시할 지도
-	    		        position: position, // 마커를 표시할 위치
-    		     });
-    			 
-    			// 마커에 mouseover 이벤트를 등록합니다
-   			    kakao.maps.event.addListener(marker, 'mouseover', function() {
+			function makeOverListener(map, marker, infowindow) {
+			    return function() {
+			        infowindow.open(map, marker);
+			    };
+			}
 
-   			        // 클릭된 마커가 없고, mouseover된 마커가 클릭된 마커가 아니면
-   			        // 마커의 이미지를 오버 이미지로 변경합니다
-   			        if (!selectedMarker || selectedMarker !== marker) {
-   			            marker.setImage(overImage);
-   			        }
-   			    });
-
-    			    // 마커에 mouseout 이벤트를 등록합니다
-    			    kakao.maps.event.addListener(marker, 'mouseout', function() {
-
-    			        // 클릭된 마커가 없고, mouseout된 마커가 클릭된 마커가 아니면
-    			        // 마커의 이미지를 기본 이미지로 변경합니다
-    			        if (!selectedMarker || selectedMarker !== marker) {
-    			            marker.setImage(normalImage);
-    			        }
-    			    });
-
-    			    // 마커에 click 이벤트를 등록합니다
-    			    kakao.maps.event.addListener(marker, 'click', function() {
-
-    			        // 클릭된 마커가 없고, click 마커가 클릭된 마커가 아니면
-    			        // 마커의 이미지를 클릭 이미지로 변경합니다
-    			        if (!selectedMarker || selectedMarker !== marker) {
-
-    			            // 클릭된 마커 객체가 null이 아니면
-    			            // 클릭된 마커의 이미지를 기본 이미지로 변경하고
-    			            !!selectedMarker && selectedMarker.setImage(selectedMarker.normalImage);
-
-    			            // 현재 클릭된 마커의 이미지는 클릭 이미지로 변경합니다
-    			            marker.setImage(clickImage);
-    			        }
-
-    			        // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
-    			        selectedMarker = marker;
-    			    });
-    			
-    		}
-			
+			// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+			function makeOutListener(infowindow) {
+			    return function() {
+			        infowindow.close();
+			    };
+			}
 			// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 			if (navigator.geolocation) {
 	
