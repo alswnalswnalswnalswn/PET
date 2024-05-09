@@ -8,8 +8,9 @@
 		<result column="ANIMAL_CODE" property="animalCode"/>
 	</resultMap>
 	<resultMap type="coupon" id="couponResultSet">
-		<result column="COUPON_NO" property="couponNo"/>
+	<result column="COUPON_NO" property="couponNo"/>
 		<result column="COUPON_NAME" property="couponName"/>
+		
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="END_DATE" property="endDate"/>
 		<result column="DISCOUNT_RATE" property="discountRate"/>
@@ -18,6 +19,7 @@
 	</resultMap>
 	<resultMap type="memberCoupon" id="memberCouponResultSet">
 		<result column="ISSUE_DATE" property="issueDate"/>
+		<result column="COUPON_NO" property="couponNo"/>
 		<result column="MEMBER_COUPON_STATUS" property="memberCouponStatus"/>
 		<collection resultMap="couponResultSet" property="coupon"/>	
 	</resultMap>
@@ -68,7 +70,7 @@
 		  JOIN
 		       TB_ANIMAL USING(ANIMAL_CODE)
 		 WHERE
-		       MEMBER_NO = 1
+		       MEMBER_ID = #{memberId}
 		   AND
 		       MEMBER_STATUS != 'D'
 	

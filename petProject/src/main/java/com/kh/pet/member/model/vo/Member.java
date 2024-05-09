@@ -26,7 +26,7 @@ public class Member {
 	private Date enrollDate;
 	private Date ModifyDate;
 	
-	private List<Animal> animalList;
+	private List<Animal> AnimalList;
 	private List<MemberCoupon> couponList;
 	
 }

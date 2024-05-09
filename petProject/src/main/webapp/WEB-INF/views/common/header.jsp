@@ -239,10 +239,10 @@
 			<div id="login-area">
 				<form action="member" method="post">
 					<div class="input_form">
-						<input type="text" placeholder="아이디를 입력해주세요">
+						<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 					</div>
           			<div class="input_form brt">
-          				<input type="password" placeholder="비밀번호를 입력해주세요">
+          				<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
           			</div>
           			
           			<div class="input_btn"><button type="submit" id="login-btn" class="btn">로그인</button></div>
