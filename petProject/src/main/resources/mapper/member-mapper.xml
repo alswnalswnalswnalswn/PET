@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	<resultMap type="animal" id="animalResultSet">
+		<result column="ANIMAL_NAME" property="animalName"/>
+		<result column="ANIMAL_CODE" property="animalCode"/>
+	</resultMap>
+	<resultMap type="coupon" id="couponResultSet">
+		<result column="COUPON_NO" property="couponNo"/>
+		<result column="COUPON_NAME" property="couponName"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="DISCOUNT_RATE" property="discountRate"/>
+		<result column="COUPON_STATUS" property="couponStatus"/>
+		
+	</resultMap>
+	<resultMap type="memberCoupon" id="memberCouponResultSet">
+	
+	</resultMap>
+	
+	<resultMap type="member" id="memberResultSet">
+	
+	</resultMap>
+	
+	<select id="login" parameterType="member" resultMap="memberResultSet">
+		
+	
+	</select>
+	
+	
+	
+	
+</mapper>
