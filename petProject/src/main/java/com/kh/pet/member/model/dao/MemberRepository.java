@@ -12,4 +12,12 @@ public class MemberRepository {
 		return sqlSession.selectOne("memberMapper.login",member);
 	}
 
+	public int join(SqlSessionTemplate sqlSession, Member member) {
+		return sqlSession.insert("memberMapper.join", member);
+	}
+
+	public int insertAnimals(SqlSessionTemplate sqlSession, int animalCode) {
+		return sqlSession.insert("memberMapper", animalCode);
+	}
+
 }

@@ -17,13 +17,24 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@RequestMapping("login")
 	@PostMapping
 	public String login(Member member,HttpSession session) {
 		
-		
 		session.setAttribute("loginUser", memberService.login(member));
-		
 		System.out.println(memberService.login(member));
 		return "main";
+	}
+	
+	@RequestMapping("join")
+	@PostMapping
+	public String join(Member member, HttpSession session, int animalCode) {
+		if(member.getMemberId().equals("admin")) {
+			member.setMemberStatus("A");
+		} else {
+			member.setMemberStatus("C");
+		}
+		memberService.join(member, animalCode);
+		return "login";
 	}
 }

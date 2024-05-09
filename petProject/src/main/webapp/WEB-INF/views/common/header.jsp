@@ -154,7 +154,7 @@
     	margin-top: 30px;
     }
     .input_btn2{
-    	margin-top: 100px;
+    	margin-top: 70px;
     }
     #login-btn{
     	width: 100%;
@@ -187,7 +187,34 @@
     	bottom:-15px;
     	font-size:10px;
     }
-    
+    .animalList{
+    	width:450px;
+    	height:100px;
+    	border:1px solid black;
+    	margin:auto;
+    }
+    .animal{
+    	width:70px;
+    	height:25px;
+    	border-radius : 30px;
+	    display: inline-block;
+	    padding: 10px;
+	    cursor: pointer;
+	    font-size:13px;
+	    text-align:center;
+	    line-height:0;
+	    border:0;
+	    color:white;
+	    background-color: rgba(242, 189, 108, 0.82);
+	    font-weight:bold;
+    }
+	.clicked {
+	  	background-color: rgb(94, 87, 59);
+	    color:white;
+    	border:0;
+    	font-weight:bold;
+	}
+	
 </style>
 </head>
 <body>
@@ -204,7 +231,7 @@
             	<div id="loginMenu">
             		<ul class="nav flex-column"id="loginForm">
             			<li class="nav-item"  >
-            				<a class="nav-link" style="padding:.2rem .5rem;" href="#" data-toggle="modal" data-target="#myModal">로그인</a>
+            				<a class="nav-link" style="padding:.2rem .5rem;" href="#" data-toggle="modal" data-target="#mylogin">로그인</a>
             			</li>
             			<li class="nav-item">
             				<a class="nav-link" style="padding:.2rem .5rem;" href="#"  data-toggle="modal" data-target="#myjoin">회원가입</a>
@@ -255,7 +282,7 @@
     </div>
     
     
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" id="mylogin">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         
@@ -265,18 +292,16 @@
         <h3 align="center">로그인</h3>
         
         
-			<div id="login-area">
-				<form action="member" method="post">
-					<div class="input_form">
-						<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
-					</div>
-          			<div class="input_form brt">
-          				<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
-          			</div>
-          			
-          			<div class="input_btn"><button type="submit" id="login-btn" class="btn">로그인</button></div>
-          			
-          		</form>
+		<div id="login-area">
+			<form action="member" method="post">
+				<div class="input_form">
+					<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
+				</div>
+     			<div class="input_form brt">
+     				<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
+     			</div>
+     			<div class="input_btn"><button type="submit" id="login-btn" class="btn">로그인</button></div>
+     		</form>
 		</div>
 	       
 		</div>
@@ -295,41 +320,83 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h3 align="center">회원가입</h3>
         
-        
 		<div id="join-area">
-			<form action="member" method="post">
-			<div class="input_form">
-				<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
-			</div>
-			<div class="input_form">
-				<input type="text" name="memberPwd" placeholder="비밀번호를 입력해주세요">
-			</div>
-			<div class="input_form">
-				<input type="text" placeholder="비밀번호를 한번 더 입력해주세요">
-				<span class="danger_pwd"></span>
-			</div>
-			<div class="input_form">
-				<input type="text" name="memberName" placeholder="성함을 입력해주세요">
-			</div>
-			<div class="input_form">
-				<input type="text" name="nickName" placeholder="닉네임을 입력해주세요">
-				<span class="danger_nick"></span>
-			</div>
-			<div class="input_form">
-				<input type="text" name="phone" placeholder="전화번호를 입력해주세요">
-				<span class="danger_phone"></span>
-			</div>
-			<div class="input_form">
-				<input type="text" name="email" placeholder="이메일을 입력해주세요">
-				<span class="danger_email"></span>
-			</div>
-			<div class="input_btn2"><button type="button" id="login-btn" class="btn">회원가입</button></div>
-		    </from> 			
+			<form action="member.join" method="post">
+				<div class="input_form">
+					<input type="text" name="memberId" placeholder="아이디를 입력해주세요" required>
+				</div>
+				<script>
+					
+				</script>
+				<div class="input_form">
+					<input type="text" name="memberPwd" placeholder="비밀번호를 입력해주세요" required>
+				</div>
+				<div class="input_form">
+					<input type="text" placeholder="비밀번호를 한번 더 입력해주세요" required>
+					<span class="danger_pwd"></span>
+				</div>
+				<div class="input_form">
+					<input type="text" name="memberName" placeholder="성함을 입력해주세요">
+				</div>
+				<div class="input_form">
+					<input type="text" name="nickName" placeholder="닉네임을 입력해주세요" required>
+					<span class="danger_nick"></span>
+				</div>
+				<div class="input_form">
+					<input type="text" name="phone" placeholder="전화번호를 입력해주세요" required>
+					<span class="danger_phone"></span>
+				</div>
+				<div class="input_form">
+					<input type="text" name="email" placeholder="이메일을 입력해주세요" required>
+					<span class="danger_email"></span>
+				</div>
+				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
+					<span class="animal">강아지</span>
+					<span class="animal">고양이</span>
+					<span class="animal">토끼</span>
+					<span class="animal">물고기</span>
+					<span class="animal">새</span>
+					<span class="animal">햄스터</span>
+					<input type="hidden" name="animal">
+				</div>
+				<div class="input_btn2"><button type="submit" id="login-btn2" class="btn">회원가입</button></div>
+		    </form>	
 		</div>
-	       
+	        
 		</div>
 		</div>
 	</div>
 </div>
+
+	<script>
+		$(document).ready(function(){
+			/*
+			$('.animal').click(function(){
+				$(this).toggleClass('clicked');
+			});
+			
+			*/
+			$('.animal').click(function(){	
+			$('.animal').removeClass('clicked');
+			$(this).addClass('clicked');
+			
+			// 클릭된 동물의 이름을 hidden input에 설정
+			var animalName = $(this).data('animal');
+			$('#animalForm input[name="animal"]').val(animalName);
+			console.log(animalName);
+			});
+		});
+	</script>
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
