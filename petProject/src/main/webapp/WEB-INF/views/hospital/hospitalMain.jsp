@@ -8,11 +8,9 @@
 <title>동물병원</title>
 	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=265dcb92e33a3dc46e2d0249640f425e"></script>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script>
-	<!-- jQuery 라이브러리 -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+	<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script> -->
+	<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script>  -->
+	
 <style>
 #wrap {
 	width: 1200px;
@@ -29,15 +27,19 @@
 	</div>
 
 	<script>
-		
+			
+			
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			mapOption = {
 				center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
 				level : 3 // 지도의 확대 레벨 
 			};
-	
 			var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 	
+			
+			
+			
+			
 			// 지도가 이동, 확대, 축소로 인해 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
 			kakao.maps.event.addListener(map, 'bounds_changed', function() {            
 			    
@@ -49,30 +51,62 @@
 			    var swLat = bounds.getSouthWest().getLat();
 			    var swLng = bounds.getSouthWest().getLng();
 			    
-			    console.log(neLat);
-			    console.log(neLng);
-			    console.log(swLat);
-			    console.log(swLng);
+			    //console.log(neLat);
+			    //console.log(neLng);
+			    //console.log(swLat);
+			    //console.log(swLng);
 			    
 			    $.ajax({
 			    	url : "searchPlace",
 			    	data : {
-			    		categoryCode : 'P2',
+			    		categoryCode : 'P1',
 			    		neLat : neLat,
 			    		neLng : neLng,
 			    		swLat : swLat,
 			    		swLng : swLng
 			    	},
 			    	success : result => {
-			    		console.log(result);
-			    	}
-			    });
+			    		//console.log(result);
+			    		var positions = [];
+			    		// 마커를 표시할 위치와 title 객체 배열입니다 
+			    		for(let i in result){
+			    			positions[i] = {
+			    							latlng: new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
+			    							content: '<div>'+ result[i].placeName +'</div>'
+			    			}
+			    		}
+			    		console.log(positions);
+			    		for (var i = 0; i < positions.length; i ++) {
+			    		    // 마커를 생성합니다
+			    		    var marker = new kakao.maps.Marker({
+						        map: map, // 마커를 표시할 지도
+						        position: positions[i].latlng // 마커의 위치
+						    });
+			    		    var infowindow = new kakao.maps.InfoWindow({
+			    		        content: positions[i].content // 인포윈도우에 표시할 내용
+			    			});
+			    		    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+				    		kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+			    			
+			    		
+			    		}
+			    		 
+			    		
+	    			}		
+				});
 			});
-			
-			
-			
-			
-			
+			function makeOverListener(map, marker, infowindow) {
+			    return function() {
+			        infowindow.open(map, marker);
+			    };
+			}
+
+			// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+			function makeOutListener(infowindow) {
+			    return function() {
+			        infowindow.close();
+			    };
+			}
 			
 			
 			
