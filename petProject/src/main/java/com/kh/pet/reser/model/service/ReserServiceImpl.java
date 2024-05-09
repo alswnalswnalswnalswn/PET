@@ -1,4 +1,4 @@
-package com.kh.pet.place.hospital.model.service;
+package com.kh.pet.reser.model.service;
 
 import java.util.List;
 
@@ -6,14 +6,14 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.pet.place.hospital.model.dao.HospitalRepository;
 import com.kh.pet.place.model.vo.Place;
+import com.kh.pet.reser.model.dao.ReserRepository;
 
 @Service
-public class HospitalServiceImpl implements HospitalService {
+public class ReserServiceImpl implements ReserService {
 	
 	@Autowired
-	private HospitalRepository hospitalRepository;
+	private ReserRepository reserRepository;
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
@@ -23,7 +23,7 @@ public class HospitalServiceImpl implements HospitalService {
 	
 	@Override
 	public List<Place> selectHospital() {
-		return hospitalRepository.selectHospital(sqlSession);
+		return reserRepository.selectHospital(sqlSession);
 	}
 	
 

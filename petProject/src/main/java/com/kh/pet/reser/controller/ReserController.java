@@ -1,17 +1,17 @@
-package com.kh.pet.place.hospital.controller;
+package com.kh.pet.reser.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.pet.place.hospital.model.service.HospitalService;
+import com.kh.pet.reser.model.service.ReserService;
 
 @Controller
-public class HospitalController {
+public class ReserController {
 	
 	@Autowired
-	private HospitalService hospitalService;
+	private ReserService reserService;
 	
 	@RequestMapping("hospital")
 	public String hospitalForwarding(ModelAndView mv) {

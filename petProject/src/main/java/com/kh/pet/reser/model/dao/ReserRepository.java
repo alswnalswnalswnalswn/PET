@@ -1,4 +1,4 @@
-package com.kh.pet.place.hospital.model.dao;
+package com.kh.pet.reser.model.dao;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.kh.pet.place.model.vo.Place;
 
 @Repository
-public class HospitalRepository{
+public class ReserRepository{
 
 	public List<Place> selectHospital(SqlSessionTemplate sqlSession){
-		return sqlSession.selectList("hospitalMapper.selectHospital");
+		return sqlSession.selectList("placeMapper.selectHospital");
 	}
 	
 }

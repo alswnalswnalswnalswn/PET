@@ -27,7 +27,7 @@
 	
 	
 	<mappers>
-		<mapper resource="/mapper/hospital-mapper.xml" />
+		<mapper resource="/mapper/place-mapper.xml" />
 		<mapper resource="/mapper/member-mapper.xml" />
 	</mappers>
 	
