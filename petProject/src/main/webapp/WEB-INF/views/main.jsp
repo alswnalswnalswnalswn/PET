@@ -9,5 +9,8 @@
 </head>
 <body>
 	<jsp:include page="common/header.jsp" />
+	<div style="height:400px;">
+	</div>
+	<jsp:include page="common/footer.jsp" />
 </body>
 </html>
