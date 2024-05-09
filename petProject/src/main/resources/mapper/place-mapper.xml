@@ -55,6 +55,7 @@
 			TO_NUMBER(PLACE_LAT) BETWEEN #{swLat} AND #{neLat}
 	AND
 			TO_NUMBER(PLACE_LON) BETWEEN #{swLng} AND #{neLng}
+			
 	
 			
 	
