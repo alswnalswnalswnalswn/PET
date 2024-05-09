@@ -8,6 +8,10 @@ public class HospitalController {
 	
 	@RequestMapping("hospital")
 	public String hospitalForwarding() {
+		
+		
+		
+		
 		return "hospital/hospitalMain";
 	}
 	
