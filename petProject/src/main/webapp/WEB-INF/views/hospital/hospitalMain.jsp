@@ -8,7 +8,9 @@
 <title>동물병원</title>
 </head>
 <body>
-	<jsp:forward page="../WEB-INF/views/main.jsp"/>
+	<jsp:include page="../main.jsp" />
+	
+	
 	
 	
 	
