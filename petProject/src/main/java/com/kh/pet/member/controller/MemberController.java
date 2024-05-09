@@ -23,7 +23,7 @@ public class MemberController {
 		
 		session.setAttribute("loginUser", memberService.login(member));
 		
-		
+		System.out.println(memberService.login(member));
 		return "main";
 	}
 }
