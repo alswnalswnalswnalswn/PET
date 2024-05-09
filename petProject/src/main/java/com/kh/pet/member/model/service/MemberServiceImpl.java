@@ -22,11 +22,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int join(Member member, int animalCode) {
+	public int join(Member member, String animalCode) {
+		int result = 0;
 		if(memberRepository.join(sqlSession, member) > 0) {
-			int result = memberRepository.insertAnimals(sqlSession, animalCode);
+			result = memberRepository.insertAnimals(sqlSession, animalCode);
 		}
-		return ;
+		return result;
 	}
 
 }

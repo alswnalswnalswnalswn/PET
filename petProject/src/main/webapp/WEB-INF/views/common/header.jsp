@@ -190,7 +190,6 @@
     .animalList{
     	width:450px;
     	height:100px;
-    	border:1px solid black;
     	margin:auto;
     }
     .animal{
@@ -203,13 +202,11 @@
 	    font-size:13px;
 	    text-align:center;
 	    line-height:0;
-	    border:0;
-	    color:white;
-	    background-color: rgba(242, 189, 108, 0.82);
+	    border:1px solid black;
 	    font-weight:bold;
     }
 	.clicked {
-	  	background-color: rgb(94, 87, 59);
+	  	background-color: rgba(242, 189, 108, 0.82);
 	    color:white;
     	border:0;
     	font-weight:bold;
@@ -351,13 +348,13 @@
 					<span class="danger_email"></span>
 				</div>
 				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
-					<span class="animal" data-animal="강아지">강아지</span>
-					<span class="animal" data-animal="고양이">고양이</span>
-					<span class="animal" data-animal="토끼">토끼</span>
-					<span class="animal" data-animal="물고기">물고기</span>
-					<span class="animal" data-animal="새">새</span>
-					<span class="animal" data-animal="햄스터">햄스터</span>
-					<input type="hidden" name="animal">
+					<span class="animal" data-animal="A1">강아지</span>
+					<span class="animal" data-animal="A2">고양이</span>
+					<span class="animal" data-animal="A3">토끼</span>
+					<span class="animal" data-animal="A4">물고기</span>
+					<span class="animal" data-animal="A5">새</span>
+					<span class="animal" data-animal="A6">햄스터</span>
+					<input type="hidden" name="animalCode">
 				</div>
 				<div class="input_btn2"><button type="submit" id="login-btn2" class="btn">회원가입</button></div>
 		    </form>	
@@ -369,14 +366,19 @@
 </div>
 
 	<script>
+	var animalCode = "";
 		$(document).ready(function(){
 			$('.animal').click(function(){	
 			$(this).toggleClass('clicked');
 			
-			// 클릭된 동물의 이름을 hidden input에 설정
-			var animalName = $(this).data('animal');
-			$('#animalForm input[name="animal"]').val(animalName);
-			// console.log(animalName);
+			  var animalCodes = [];
+		      
+		      // 선택된 동물들의 코드를 배열에 추가
+		      $('.animal.clicked').each(function() {
+		        var animalCode = $(this).data('animal');
+		        animalCodes.push(animalCode);
+		      });
+		      $('#animalForm input[name="animalCodes"]').val(animalCodes.join(','));
 			});
 		});
 	</script>

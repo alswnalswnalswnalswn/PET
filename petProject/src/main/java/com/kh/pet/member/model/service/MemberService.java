@@ -6,5 +6,5 @@ public interface MemberService {
 	
 	Member login(Member member);
 
-	int join(Member member, int animalCode);
+	int join(Member member, String animalCode);
 }

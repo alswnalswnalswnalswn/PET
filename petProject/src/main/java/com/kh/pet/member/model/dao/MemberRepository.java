@@ -16,7 +16,7 @@ public class MemberRepository {
 		return sqlSession.insert("memberMapper.join", member);
 	}
 
-	public int insertAnimals(SqlSessionTemplate sqlSession, int animalCode) {
+	public int insertAnimals(SqlSessionTemplate sqlSession, String animalCode) {
 		return sqlSession.insert("memberMapper", animalCode);
 	}
 

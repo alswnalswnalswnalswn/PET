@@ -28,7 +28,10 @@ public class MemberController {
 	
 	@RequestMapping("join")
 	@PostMapping
-	public String join(Member member, HttpSession session, int animalCode) {
+	public String join(Member member, HttpSession session, String animalCode) {
+		
+		System.out.println(animalCode);
+		
 		if(member.getMemberId().equals("admin")) {
 			member.setMemberStatus("A");
 		} else {
