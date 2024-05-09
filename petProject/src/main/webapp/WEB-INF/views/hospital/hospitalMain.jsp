@@ -27,7 +27,7 @@
 	</div>
 
 	<script>
-			var positions = [];
+			
 			
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			mapOption = {
@@ -67,7 +67,7 @@
 			    	},
 			    	success : result => {
 			    		//console.log(result);
-			    		
+			    		var positions = [];
 			    		// 마커를 표시할 위치와 title 객체 배열입니다 
 			    		for(let i in result){
 			    			positions[i] = {
@@ -87,6 +87,8 @@
 			    			});
 			    		    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 				    		kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+			    			
+			    		
 			    		}
 			    		 
 			    		
@@ -105,6 +107,9 @@
 			        infowindow.close();
 			    };
 			}
+			
+			
+			
 			// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 			if (navigator.geolocation) {
 	
