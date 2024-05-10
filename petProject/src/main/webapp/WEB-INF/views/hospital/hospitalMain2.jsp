@@ -6,14 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>동물병원</title>
+
 	<link rel="stylesheet" href="resources/css/hospital/hospitalMain.css"/>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=265dcb92e33a3dc46e2d0249640f425e"></script>
-	<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script> -->
-	<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script>  -->
-	
-<style>
-	
-</style>
+
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />

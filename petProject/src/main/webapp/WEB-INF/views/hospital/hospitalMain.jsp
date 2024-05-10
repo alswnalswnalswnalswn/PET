@@ -32,18 +32,46 @@
 	</div>
 
 	<script>
+	
+		/*********************** 지도 생성 **************************************/
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
 			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
 			level : 3 // 지도의 확대 레벨 
 		};
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-		
+
 		// 지도에 확대 축소 컨트롤을 생성한다
 		var zoomControl = new kakao.maps.ZoomControl();
 		// 지도의 우측에 확대 축소 컨트롤을 추가한다
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-		/*********************** 지도 생성 **************************************/
+		
+		
+		/*********************** 활용 함수 **************************************/
+		// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+		function displayMarker(locPosition, message) {
+	
+		    // 마커를 생성합니다
+		    var marker = new kakao.maps.Marker({  
+		        map: map, 
+		        position: locPosition
+		    }); 
+		    
+		    var iwContent = message, // 인포윈도우에 표시할 내용
+		        iwRemoveable = true;
+	
+		    // 인포윈도우를 생성합니다
+		    var infowindow = new kakao.maps.InfoWindow({
+		        content : iwContent,
+		        removable : iwRemoveable
+		    });
+		    
+		    // 인포윈도우를 마커위에 표시합니다 
+		    infowindow.open(map, marker);
+		    
+		    // 지도 중심좌표를 접속위치로 변경합니다
+		    map.setCenter(locPosition);      
+		}
 		
 		// 지도 확대,축소,이동 시 마커 삭제 함수
 		function deleteMarkers(){
@@ -57,23 +85,33 @@
 			});
 		}
 		
-		// 마커를 담을 배열입니다
-		var markers = [];
-		
-		// 장소 담는 배열
-		var positions = [];
-		
-		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-		var infowindow = new kakao.maps.InfoWindow({zIndex:1});
-		
-		
-		function addMarkers(positions){
+		function showMI(marker, infowindow) {
+            kakao.maps.event.addListener(marker, 'mouseover', function() {
+                displayInfowindow(marker, infowindow);
+            });
 
-			for (let i in positions) {
+            kakao.maps.event.addListener(marker, 'mouseout', function() {
+                infowindow.close();
+            });
+
+            itemEl.onmouseover =  function () {
+                displayInfowindow(marker, infowindow);
+            };
+
+            itemEl.onmouseout =  function () {
+                infowindow.close();
+            };
+        }
+		
+		
+		function addMarkersAndInfowindow(item, map){
+			var position = new kakao.maps.LatLng(item.placeLat, item.placeLon);
+			
+			for (let i in item) {
     			// 마커를 생성합니다
     		    var marker = new kakao.maps.Marker({
 			        map: map, // 마커를 표시할 지도
-			        position: positions[i].latlng // 마커의 위치
+			        position: item[i].latlng // 마커의 위치
 			    });
     		    
     			// infowindow 배열 선언
@@ -81,44 +119,20 @@
     		    	content: positions[i].placeName // 인포윈도우에 표시할 내용
     			});
     		}
-		}
-				
-		// 지도가 이동, 확대, 축소로 인해 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
-		kakao.maps.event.addListener(map, 'bounds_changed', function() {            
-			// 기존 추가된 마커 삭제
-			deleteMarkers();
+			showMI(marker, infowindow);
 			
-		    // 지도 영역정보를 얻어옵니다 
-		    function moveMarkers(){
-			    var bounds = map.getBounds();
-			    var neLat = bounds.getNorthEast().getLat();
-			    var neLng = bounds.getNorthEast().getLng();
-			    var swLat = bounds.getSouthWest().getLat();
-			    var swLng = bounds.getSouthWest().getLng();
-			    
-			    $.ajax({
-			    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
-			    	success : result => {
-			    		// 마커를 표시할 위치와 title 객체 배열입니다
-			    		for(let i in result){
-			    			positions[i] = {
-			    							latlng: new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
-			    							placeName: '<div>'+ result[i].placeName +'</div>',
-			    							newAddr : result[i].newAddr,
-			    							oldAddr : result[i].oldAddr,
-			    							placeDayOff : result[i].placeDayOff,
-			    							placeDayOn : result[i].placeDayOn,
-			    							placeNo : result[i].placeNo,
-			    							placeTel : result[i].placeTel
-			    			}
-			    		}
-			    		addMarkers(positions);
-			    		displayPlaces(positions);
-					}
-				});
-		    }
-		    // console.log(bounds);
-		});
+		}
+		
+		// 마커를 담을 배열입니다
+		var markers = [];
+		// 장소 담는 배열
+		var positions = [];
+		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+		var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+		var lastInfowindow = null;
+		
+				
+		
 	  
 	  /*
 		// 마우스 호버 시 인포윈도우를 여는 클로저를 만드는 함수입니다 
@@ -135,6 +149,8 @@
 		    };
 		}
 	*/
+	
+	
 	
 		// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
 		// 인포윈도우에 장소명을 표시합니다
@@ -218,27 +234,82 @@
 		    	infowindow.open(map, marker);
 			}
 		}
-
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 		if (navigator.geolocation) {
-
 			// GeoLocation을 이용해서 접속 위치를 얻어옵니다
-			navigator.geolocation.getCurrentPosition(function(position) {
+			navigator.geolocation.getCurrentPosition(position => {
 				var lat = position.coords.latitude, // 위도
-				lon = position.coords.longitude; // 경도
-				var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-				message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+				lon = position.coords.longitude, // 경도
+				locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+				
 				map.setCenter(locPosition);
 			});
-
-		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-			var locPosition = new kakao.maps.LatLng(33.450701, 126.570667), message = 'geolocation을 사용할수 없어요..'
+		} 
+		else { 
+			// HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+			var locPosition = new kakao.maps.LatLng(33.450701, 126.570667), message = 'geolocation을 사용할수 없어요..';
 			displayMarker(locPosition, message);
 		}
-
 		
+		
+		// 지도가 이동, 확대, 축소로 인해 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+		kakao.maps.event.addListener(map, 'bounds_changed', function() {        
+			
+			// 기존 추가된 마커 삭제
+			deleteMarkers();
+			
+		    // 지도 영역정보를 얻어옵니다 
+		    function moveMarkers(){
+			    var bounds = map.getBounds();
+			    var neLat = bounds.getNorthEast().getLat();
+			    var neLng = bounds.getNorthEast().getLng();
+			    var swLat = bounds.getSouthWest().getLat();
+			    var swLng = bounds.getSouthWest().getLng();
+			    
+			    $.ajax({
+			    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
+			    	success : result => {
+			    		// 마커를 표시할 위치와 title 객체 배열입니다
+			    		
+			    		for(let i in result){
+			    			positions[i] = {
+			    							latlng : new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
+			    							placeLat : result[i].placeLat,
+			    							placeLon : result[i].placeLon,
+			    							placeName : result[i].placeName,
+			    							newAddr : result[i].newAddr,
+			    							oldAddr : result[i].oldAddr,
+			    							placeDayOff : result[i].placeDayOff,
+			    							placeDayOn : result[i].placeDayOn,
+			    							placeNo : result[i].placeNo,
+			    							placeTel : result[i].placeTel
+			    			}
+			    		}
+			    		
+			    		console.log(positions);
+			    		
+			    		addMarkersAndInfowindow(positions, map);
+			    		displayPlaces(positions);
+					}
+				});
+		    }
+		});
 	</script>
 
 
