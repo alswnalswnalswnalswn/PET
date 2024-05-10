@@ -21,12 +21,11 @@
 
 	<div id="wrap">
 		<div id="map" style="width: 1200px; height: 800px;">
-			<div id="menu_wrap" class="bg_white" style="border:1px solid red;">
+			<div id="menu_wrap" class="bg_white">
 				<ul id="placesList"></ul>
 				<div id="pagination"></div>
 			</div>
 		</div>
-		
 	</div>
 
 	<script>
@@ -36,6 +35,12 @@
 			level : 3 // 지도의 확대 레벨 
 		};
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+		
+		// 지도에 확대 축소 컨트롤을 생성한다
+		var zoomControl = new kakao.maps.ZoomControl();
+
+		// 지도의 우측에 확대 축소 컨트롤을 추가한다
+		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
 		// 마커를 담을 배열입니다
 		var markers = [];
