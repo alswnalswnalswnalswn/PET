@@ -45,15 +45,6 @@
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 		/*********************** 지도 생성 **************************************/
 		
-		// 마커를 담을 배열입니다
-		var markers = [];
-		
-		// 장소 담는 배열
-		var positions = [];
-		
-		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-		var infowindow = new kakao.maps.InfoWindow({zIndex:1});
-		
 		// 지도 확대,축소,이동 시 마커 삭제 함수
 		function deleteMarkers(){
 			// 지도 드래깅 이벤트를 등록한다 (드래그 시작 : dragstart, 드래그 종료 : dragend)
@@ -65,6 +56,16 @@
 				positions = [];
 			});
 		}
+		
+		// 마커를 담을 배열입니다
+		var markers = [];
+		
+		// 장소 담는 배열
+		var positions = [];
+		
+		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+		var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+		
 		
 		function addMarkers(positions){
 
@@ -88,33 +89,35 @@
 			deleteMarkers();
 			
 		    // 지도 영역정보를 얻어옵니다 
-		    var bounds = map.getBounds();
-		    
-		    var neLat = bounds.getNorthEast().getLat();
-		    var neLng = bounds.getNorthEast().getLng();
-		    var swLat = bounds.getSouthWest().getLat();
-		    var swLng = bounds.getSouthWest().getLng();
+		    function moveMarkers(){
+			    var bounds = map.getBounds();
+			    var neLat = bounds.getNorthEast().getLat();
+			    var neLng = bounds.getNorthEast().getLng();
+			    var swLat = bounds.getSouthWest().getLat();
+			    var swLng = bounds.getSouthWest().getLng();
+			    
+			    $.ajax({
+			    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
+			    	success : result => {
+			    		// 마커를 표시할 위치와 title 객체 배열입니다
+			    		for(let i in result){
+			    			positions[i] = {
+			    							latlng: new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
+			    							placeName: '<div>'+ result[i].placeName +'</div>',
+			    							newAddr : result[i].newAddr,
+			    							oldAddr : result[i].oldAddr,
+			    							placeDayOff : result[i].placeDayOff,
+			    							placeDayOn : result[i].placeDayOn,
+			    							placeNo : result[i].placeNo,
+			    							placeTel : result[i].placeTel
+			    			}
+			    		}
+			    		addMarkers(positions);
+			    		displayPlaces(positions);
+					}
+				});
+		    }
 		    // console.log(bounds);
-		    $.ajax({
-		    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
-		    	success : result => {
-		    		// 마커를 표시할 위치와 title 객체 배열입니다 
-		    		for(let i in result){
-		    			positions[i] = {
-		    							latlng: new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
-		    							placeName: '<div>'+ result[i].placeName +'</div>',
-		    							newAddr : result[i].newAddr,
-		    							oldAddr : result[i].oldAddr,
-		    							placeDayOff : result[i].placeDayOff,
-		    							placeDayOn : result[i].placeDayOn,
-		    							placeNo : result[i].placeNo,
-		    							placeTel : result[i].placeTel
-		    			}
-		    		}
-		    		addMarkers(positions);
-		    		displayPlaces(positions);
-			}
-		})
 		});
 	  
 	  /*
