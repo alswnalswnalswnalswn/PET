@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>동물병원</title>
+
 	<link rel="stylesheet" href="resources/css/hospital/hospitalMain.css"/>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=265dcb92e33a3dc46e2d0249640f425e"></script>
 	<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script> -->
@@ -27,19 +28,18 @@
 	</div>
 
 	<script>
-	
-		// 마커를 담을 배열입니다
-		var markers = [];
-		
-		// 장소 담는 배열
-		var positions = [];
-		
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
 			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
 			level : 3 // 지도의 확대 레벨 
 		};
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+		// 마커를 담을 배열입니다
+		var markers = [];
+		
+		// 장소 담는 배열
+		var positions = [];
 		
 		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 		var infowindow = new kakao.maps.InfoWindow({zIndex:1});
@@ -70,7 +70,7 @@
 		    var swLng = bounds.getSouthWest().getLng();
 		    
 		    $.ajax({
-		    	url : "searchPlace",
+		    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 		    	data : {
 		    		categoryCode : 'P1',
 		    		neLat : neLat,

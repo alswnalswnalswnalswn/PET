@@ -58,20 +58,13 @@
 			    var swLng = bounds.getSouthWest().getLng();
 			    
 			    $.ajax({
-			    	url : "searchPlace",
-			    	data : {
-			    		categoryCode : 'P1',
-			    		neLat : neLat,
-			    		neLng : neLng,
-			    		swLat : swLat,
-			    		swLng : swLng
-			    	},
+			    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 			    	success : result => {
-			    		//console.log(result);
+			    		console.log(result);
 			    		var positions = [];
 			    		var divList = document.getElementById('placesList');
 			    		
-			    		console.log(divList.value)
+			    		//console.log(divList.value)
 			    		
 			    		
 			    		// 마커를 표시할 위치와 title 객체 배열입니다 
