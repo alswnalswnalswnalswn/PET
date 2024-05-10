@@ -247,7 +247,7 @@
                 <li><a href="#">커뮤니티</a></li>
                 <li><a href="#">지식</a></li>
                 <li><a href="#">쇼핑</a></li>
-                <li><a href="#">데이트</a></li>
+                <li><a href="info">데이트</a></li>
                 <li><a href="hospital">동물병원</a></li>
                 <li><a href="#">공지사항</a></li>
             </ul>
