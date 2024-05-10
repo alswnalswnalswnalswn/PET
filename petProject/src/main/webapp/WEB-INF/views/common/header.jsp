@@ -154,9 +154,18 @@
     	margin-top: 30px;
     }
     .input_btn2{
-    	margin-top: 100px;
+    	margin-top: 70px;
     }
     #login-btn{
+    	width: 100%;
+	    height: 40px;
+	    font-size: 14px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+    }
+    #join-btn{
     	width: 100%;
 	    height: 40px;
 	    font-size: 14px;
@@ -187,7 +196,31 @@
     	bottom:-15px;
     	font-size:10px;
     }
-    
+    .animalList{
+    	width:450px;
+    	height:100px;
+    	margin:auto;
+    }
+    .animal{
+    	width:70px;
+    	height:25px;
+    	border-radius : 30px;
+	    display: inline-block;
+	    padding: 10px;
+	    cursor: pointer;
+	    font-size:13px;
+	    text-align:center;
+	    line-height:0;
+	    border:1px solid black;
+	    font-weight:bold;
+    }
+	.clicked {
+	  	background-color: rgba(242, 189, 108, 0.82);
+	    color:white;
+    	border:0;
+    	font-weight:bold;
+	}
+	
 </style>
 </head>
 <body>
@@ -204,7 +237,7 @@
             	<div id="loginMenu">
             		<ul class="nav flex-column"id="loginForm">
             			<li class="nav-item"  >
-            				<a class="nav-link" style="padding:.2rem .5rem;" href="#" data-toggle="modal" data-target="#myModal">로그인</a>
+            				<a class="nav-link" style="padding:.2rem .5rem;" href="#" data-toggle="modal" data-target="#mylogin">로그인</a>
             			</li>
             			<li class="nav-item">
             				<a class="nav-link" style="padding:.2rem .5rem;" href="#"  data-toggle="modal" data-target="#myjoin">회원가입</a>
@@ -255,7 +288,7 @@
     </div>
     
     
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" id="mylogin">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         
@@ -265,49 +298,144 @@
         <h3 align="center">로그인</h3>
         
         
-			<div id="login-area">
-				<form action="member" method="post">
-					<div class="input_form">
-						<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
-					</div>
-          			<div class="input_form brt">
-          				<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
-          			</div>
-          			
-          			<div class="input_btn"><button type="submit" id="login-btn" class="btn">로그인</button></div>
-          			
-          		</form>
-			</div>
-			<div class="input_form">
-				<input type="text" name="memberPwd" placeholder="비밀번호를 입력해주세요">
-			</div>
-			<div class="input_form">
-				<input type="text" placeholder="비밀번호를 한번 더 입력해주세요">
-				<span class="danger_pwd"></span>
-			</div>
-			<div class="input_form">
-				<input type="text" name="memberName" placeholder="성함을 입력해주세요">
-			</div>
-			<div class="input_form">
-				<input type="text" name="nickName" placeholder="닉네임을 입력해주세요">
-				<span class="danger_nick"></span>
-			</div>
-			<div class="input_form">
-				<input type="text" name="phone" placeholder="전화번호를 입력해주세요">
-				<span class="danger_phone"></span>
-			</div>
-			<div class="input_form">
-				<input type="text" name="email" placeholder="이메일을 입력해주세요">
-				<span class="danger_email"></span>
-			</div>
-			<div class="input_btn2"><button type="button" id="login-btn" class="btn">회원가입</button></div>
-		     			
-			</form>
+		<div id="login-area">
+			<form action="member" method="post">
+				<div class="input_form">
+					<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
+				</div>
+     			<div class="input_form brt">
+     				<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
+     			</div>
+     			<div class="input_btn"><button type="submit" id="login-btn" class="btn">로그인</button></div>
+     		</form>
 		</div>
 	       
 		</div>
 		</div>
 	</div>
+</div>     		
+          		
+          		
+          		
+<div class="modal fade" id="myjoin">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 align="center">회원가입</h3>
+        
+		<div id="join-area">
+			<form action="member/join" method="post">
+				<div class="input_form">
+					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요" required>
+					<div id="checkId" style="font-size:0.7em; display:none;"></div>
+				</div>
+				<script>
+					
+				</script>
+				<div class="input_form">
+					<input type="text" name="memberPwd" maxlength="16" placeholder="비밀번호를 입력해주세요" required >
+				</div>
+				<div class="input_form">
+					<input type="text" maxlength="16" placeholder="비밀번호를 한번 더 입력해주세요" required>
+					<span class="danger_pwd"></span>
+				</div>
+				<div class="input_form">
+					<input type="text" name="memberName" maxlength="10" placeholder="성함을 입력해주세요">
+				</div>
+				<div class="input_form">
+					<input type="text" name="nickname" maxlength="30" placeholder="닉네임을 입력해주세요" required>
+					<span class="danger_nick"></span>
+				</div>
+				<div class="input_form">
+					<input type="text" name="phone" maxlength="13" placeholder="'-'를 포함한 전화번호를 입력해주세요" required>
+					<span class="danger_phone"></span>
+				</div>
+				<div class="input_form">
+					<input type="text" name="email" maxlength="30" placeholder="이메일을 입력해주세요" required>
+					<span class="danger_email"></span>
+				</div>
+				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
+					<span class="animal" data-animal="A1">강아지</span>
+					<span class="animal" data-animal="A2">고양이</span>
+					<span class="animal" data-animal="A3">토끼</span>
+					<span class="animal" data-animal="A4">물고기</span>
+					<span class="animal" data-animal="A5">새</span>
+					<span class="animal" data-animal="A6">햄스터</span>
+					<input type="hidden" name="animalCode">
+				</div>
+				<div class="input_btn2"><button type="submit" id="join-btn" class="btn">회원가입</button></div>
+		    </form>	
+		</div>
+	        
+		</div>
+		</div>
+	</div>
 </div>
+
+	<script>
+	var animalCode = "";
+		$(document).ready(function(){
+			$('.animal').click(function(){	
+			$(this).toggleClass('clicked');
+			
+			  var animalCodes = [];
+		      
+		      // 선택된 동물들의 코드를 배열에 추가
+		      $('.animal.clicked').each(function() {
+		        var animalCode = $(this).data('animal');
+		        animalCodes.push(animalCode);
+		      console.log(animalCode);
+		      });
+		      $('#animalForm input[name="animalCodes"]').val(animalCodes.join(','));
+			});
+		});
+		
+		const $userId = $('.input_form #memberId');
+		const $checkId = $('#checkId');
+		const $joinBtn = $('#join-btn');
+		
+		$userId.keyup(function(){
+			
+			if($userId.val().length > 4){
+				$.ajax({
+					url : 'member/idCheck',
+					data : {checkId : $userId.val()},
+					success : function(result){
+						console.log(result);
+    					// NNNNN / NNNNY
+    					if(result.substr(4) == "N"){
+    						$checkId.show().css('color', 'crimson').text('아이디가 중복되었습니다.');
+    						$joinBtn.attr('disabled', true);
+    					} else{
+    						$checkId.show().css('color', 'lightgreen').text('사용가능한 아이디입니다!');
+    						$joinBtn.removeAttr('disabled');
+    					}
+    				},
+    				error : function(){
+    					console.log('아이디 중복체크용 AJAX 통신 실패~');
+    				}
+    			});
+			} else {
+				$checkId.hide();
+				$joinBtn.attr('disabled', true);
+			}
+		});
+		
+		
+	</script>
+ 
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

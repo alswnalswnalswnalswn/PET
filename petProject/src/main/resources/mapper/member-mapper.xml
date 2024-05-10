@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberMapper">
+
 	<resultMap type="animal" id="animalResultSet">
 		<result column="ANIMAL_NAME" property="animalName"/>
 		<result column="ANIMAL_CODE" property="animalCode"/>
@@ -10,7 +11,6 @@
 	<resultMap type="coupon" id="couponResultSet">
 	<result column="COUPON_NO" property="couponNo"/>
 		<result column="COUPON_NAME" property="couponName"/>
-		
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="END_DATE" property="endDate"/>
 		<result column="DISCOUNT_RATE" property="discountRate"/>
@@ -36,6 +36,22 @@
 		<collection resultMap="animalResultSet" property="animalList"/>
 		<collection resultMap="memberCouponResultSet" property="couponList"/>
 	</resultMap>
+	
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_MEMBER
+		 WHERE
+		 		MEMBER_ID = #{checkId} 						
+	</select>
+	
+	
+	
+	
+	
+	
+	
 	
 	<select id="login" parameterType="member" resultMap="memberResultSet">
 		SELECT
@@ -73,8 +89,56 @@
 		       MEMBER_ID = #{memberId}
 		   AND
 		       MEMBER_STATUS != 'D'
-	
 	</select>
+	
+	<insert id="join" parameterType="member">
+		INSERT
+		  INTO
+		  		TB_MEMBER
+		VALUES
+				(
+				SEQ_MEMNO.NEXTVAL,
+				#{memberId},
+				#{memberPwd},
+				#{memberName},
+				#{email},
+				#{nickname},
+				#{phone},
+				#{memberStatus},
+				SYSDATE,
+				SYSDATE
+				)
+	</insert>
+	
+	<insert id="insertAnimals" parameterType="java.util.List">
+		INSERT
+		  INTO
+				TB_MEMBER_ANIMAL
+			<foreach collection="animalList" item="animal" separator=",">
+				(
+				#{animal.animalCode},
+				#{memberNo}
+				)
+			</foreach>
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

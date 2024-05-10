@@ -21,4 +21,18 @@ public class MemberServiceImpl implements MemberService {
 		return memberRepository.login(sqlSession,member);
 	}
 
+	@Override
+	public int join(Member member, String animalCode) {
+		int result = 0;
+		if(memberRepository.join(sqlSession, member) > 0) {
+			result = memberRepository.insertAnimals(sqlSession, animalCode);
+		}
+		return result;
+	}
+
+	@Override
+	public int idCheck(String checkId) {
+		return memberRepository.idCheck(sqlSession, checkId);
+	}
+
 }
