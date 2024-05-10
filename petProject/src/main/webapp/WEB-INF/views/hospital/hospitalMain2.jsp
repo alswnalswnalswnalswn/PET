@@ -58,9 +58,9 @@
 			    var swLng = bounds.getSouthWest().getLng();
 			    
 			    $.ajax({
-			    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
+			    	url : "place/P5/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 			    	success : result => {
-			    		console.log(result);
+			    		//console.log(result);
 			    		var positions = [];
 			    		var divList = document.getElementById('placesList');
 			    		
