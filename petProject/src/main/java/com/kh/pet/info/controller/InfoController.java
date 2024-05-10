@@ -11,7 +11,7 @@ public class InfoController {
 
 	@GetMapping
 	public ModelAndView selectAll(ModelAndView mv) {
-		mv.setViewName("info/infoList");
+		mv.setViewName("info/dateList");
 		return mv;
 	}
 }
