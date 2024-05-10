@@ -20,4 +20,8 @@ public class MemberRepository {
 		return sqlSession.insert("memberMapper", animalCode);
 	}
 
+	public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
+		return sqlSession.selectOne("memberMapper", checkId);
+	}
+
 }

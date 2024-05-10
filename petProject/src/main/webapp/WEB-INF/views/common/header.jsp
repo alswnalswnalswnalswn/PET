@@ -165,6 +165,15 @@
 	    color:white;
 	    font-weight: bold;
     }
+    #join-btn{
+    	width: 100%;
+	    height: 40px;
+	    font-size: 14px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+    }
     #join-area input{
    	    border: none;
 	    box-shadow: none;
@@ -318,33 +327,34 @@
         <h3 align="center">회원가입</h3>
         
 		<div id="join-area">
-			<form action="member.join" method="post">
+			<form action="member/join" method="post">
 				<div class="input_form">
-					<input type="text" name="memberId" placeholder="아이디를 입력해주세요" required>
+					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요" required>
+					<div id="checkId" style="font-size:0.7em; display:none;"></div>
 				</div>
 				<script>
 					
 				</script>
 				<div class="input_form">
-					<input type="text" name="memberPwd" placeholder="비밀번호를 입력해주세요" required>
+					<input type="text" name="memberPwd" maxlength="16" placeholder="비밀번호를 입력해주세요" required >
 				</div>
 				<div class="input_form">
-					<input type="text" placeholder="비밀번호를 한번 더 입력해주세요" required>
+					<input type="text" maxlength="16" placeholder="비밀번호를 한번 더 입력해주세요" required>
 					<span class="danger_pwd"></span>
 				</div>
 				<div class="input_form">
-					<input type="text" name="memberName" placeholder="성함을 입력해주세요">
+					<input type="text" name="memberName" maxlength="10" placeholder="성함을 입력해주세요">
 				</div>
 				<div class="input_form">
-					<input type="text" name="nickName" placeholder="닉네임을 입력해주세요" required>
+					<input type="text" name="nickname" maxlength="30" placeholder="닉네임을 입력해주세요" required>
 					<span class="danger_nick"></span>
 				</div>
 				<div class="input_form">
-					<input type="text" name="phone" placeholder="전화번호를 입력해주세요" required>
+					<input type="text" name="phone" maxlength="13" placeholder="'-'를 포함한 전화번호를 입력해주세요" required>
 					<span class="danger_phone"></span>
 				</div>
 				<div class="input_form">
-					<input type="text" name="email" placeholder="이메일을 입력해주세요" required>
+					<input type="text" name="email" maxlength="30" placeholder="이메일을 입력해주세요" required>
 					<span class="danger_email"></span>
 				</div>
 				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
@@ -356,7 +366,7 @@
 					<span class="animal" data-animal="A6">햄스터</span>
 					<input type="hidden" name="animalCode">
 				</div>
-				<div class="input_btn2"><button type="submit" id="login-btn2" class="btn">회원가입</button></div>
+				<div class="input_btn2"><button type="submit" id="join-btn" class="btn">회원가입</button></div>
 		    </form>	
 		</div>
 	        
@@ -377,10 +387,44 @@
 		      $('.animal.clicked').each(function() {
 		        var animalCode = $(this).data('animal');
 		        animalCodes.push(animalCode);
+		      console.log(animalCode);
 		      });
 		      $('#animalForm input[name="animalCodes"]').val(animalCodes.join(','));
 			});
 		});
+		
+		const $userId = $('.input_form #memberId');
+		const $checkId = $('#checkId');
+		const $joinBtn = $('#join-btn');
+		
+		$userId.keyup(function(){
+			
+			if($userId.val().length > 4){
+				$.ajax({
+					url : 'member/idCheck',
+					data : {checkId : $userId.val()},
+					success : function(result){
+						console.log(result);
+    					// NNNNN / NNNNY
+    					if(result.substr(4) == "N"){
+    						$checkId.show().css('color', 'crimson').text('아이디가 중복되었습니다.');
+    						$joinBtn.attr('disabled', true);
+    					} else{
+    						$checkId.show().css('color', 'lightgreen').text('사용가능한 아이디입니다!');
+    						$joinBtn.removeAttr('disabled');
+    					}
+    				},
+    				error : function(){
+    					console.log('아이디 중복체크용 AJAX 통신 실패~');
+    				}
+    			});
+			} else {
+				$checkId.hide();
+				$joinBtn.attr('disabled', true);
+			}
+		});
+		
+		
 	</script>
  
 
