@@ -46,12 +46,32 @@
 		 		MEMBER_ID = #{checkId} 						
 	</select>
 	
+	<select id="checkNick" parameterType="string" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_MEMBER
+		 WHERE
+		 		NICKNAME = #{nickname} 						
+	</select>
 	
+	<select id="checkPhone" parameterType="string" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_MEMBER
+		 WHERE
+		 		PHONE = #{phone} 						
+	</select>
 	
-	
-	
-	
-	
+	<select id="checkEmail" parameterType="string" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_MEMBER
+		 WHERE
+		 		EMAIL = #{email} 						
+	</select>
 	
 	<select id="login" parameterType="member" resultMap="memberResultSet">
 		SELECT

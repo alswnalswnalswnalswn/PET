@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -193,13 +193,15 @@
     .danger{
     	display:block;
     	position:absolute;
-    	bottom:-15px;
+    	bottom:-17px;
     	font-size:10px;
+    	left:10px;
     }
     .animalList{
     	width:450px;
     	height:100px;
     	margin:auto;
+    	margin-top : 10px;
     }
     .animal{
     	width:70px;
@@ -229,14 +231,49 @@
 		border-radius : 15px;
 		position : relative;
 	}
-	#check{
+	.check{
 		position : absolute;
 		right : 0;
 		width: 30px;
 		height : 30px;
 		margin : 7px 10px;
 	}
-	
+	.checkPwd{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 7px 10px;
+	}
+	.checkNick{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 7px 10px;
+	}
+	.checkPhone{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 7px 10px;
+	}
+	.checkEmail{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 7px 10px;
+	}
+	#checkMyEmail{
+		position : absolute;
+		width:100px;
+		height:30px;
+		font-size:15px;
+		display:block;
+		right : 0;
+	}
 </style>
 </head>
 <body>
@@ -346,33 +383,41 @@
 			<form action="member/join" method="post">
 				<div class="input_form">
 					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요 (3~10 영/숫자)" required>
-					<div id="checkId" style="font-size:0.7em; display:none;"></div>
-					<img src="resources/img/check.png" id="check" style="display:none;">
+					<div id="checkId" class="danger" style="font-size:0.7em; display:none;"></div>
+					<img src="resources/img/check.png" class="check" style="display:none;">
 				</div>
+					
+					
 				<div class="input_form">
 					<input type="text" id="memberPwd1" name="memberPwd" maxlength="16" placeholder="비밀번호를 입력해주세요 (4~15 영/숫자)" required>
 				</div>
 				<div class="input_form">
 					<input type="text" id="memberPwd2" maxlength="16" placeholder="비밀번호를 한번 더 입력해주세요" required>
-					<div id="checkPwd" style="font-size:0.7em; display:none;"></div>
-					<img src="resources/img/check.png" id="checkP" style="display:none;">
+					<div id="checkPwd" class="danger" style="font-size:0.7em; display:none;"></div>
+					<img src="resources/img/check.png" class="checkPwd" style="display:none;">
 				</div>
 					<span class="danger_pwd"></span>
 				<div class="input_form">
 					<input type="text" name="memberName" maxlength="10" placeholder="성함을 입력해주세요">
 				</div>
 				<div class="input_form">
-					<input type="text" name="nickname" maxlength="30" placeholder="닉네임을 입력해주세요" required>
-					<span class="danger_nick"></span>
+					<input type="text" id="nickname" name="nickname" maxlength="30" placeholder="닉네임을 입력해주세요" required>
+					<div id="checkNick" class="danger" style="font-size:0.7em; display:none;"></div>
+					<img src="resources/img/check.png" class="checkNick" style="display:none;">
 				</div>
 				<div class="input_form">
-					<input type="text" name="phone" maxlength="13" placeholder="'-' 를 포함한 전화번호를 입력해주세요" required>
-					<span class="danger_phone"></span>
+					<input type="text" id="phone" name="phone" maxlength="13" placeholder="'-' 를 포함한 전화번호를 입력해주세요" required>
+					<div id="checkPhone" class="danger" style="font-size:0.7em; display:none;"></div>
+					<img src="resources/img/check.png" class="checkPhone" style="display:none;">
 				</div>
 				<div class="input_form">
-					<input type="text" name="email" maxlength="30" placeholder="이메일을 입력해주세요" required>
-					<span class="danger_email"></span>
+					<input type="text" id="email" name="email" maxlength="30" placeholder="이메일을 입력해주세요" required>
+					<div id="checkEmail" class="danger" style="font-size:0.7em; display:none;"></div>
+					<img src="resources/img/check.png" class="checkEmail" style="display:none;">
+					<button type="button" id="checkMyEmail" onclick="emailCheck();">이메일 인증</button>
 				</div>
+					
+					
 				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
 					<span class="animal" data-animal="A1">강아지</span>
 					<span class="animal" data-animal="A2">고양이</span>
@@ -380,7 +425,7 @@
 					<span class="animal" data-animal="A4">물고기</span>
 					<span class="animal" data-animal="A5">새</span>
 					<span class="animal" data-animal="A6">햄스터</span>
-					<input type="hidden" name="animalCode">
+					<input type="hidden" name="animal">
 				</div>
 				<div class="input_btn2"><button type="submit" id="join-btn" class="btn">회원가입</button></div>
 		    </form>	
@@ -392,7 +437,9 @@
 </div>
 
 	<script>
+	
 	var animalCode = "";
+	 $(() => {
 		$(document).ready(function(){
 			$('.animal').click(function(){	
 			$(this).toggleClass('clicked');
@@ -403,16 +450,17 @@
 		      $('.animal.clicked').each(function() {
 		        var animalCode = $(this).data('animal');
 		        animalCodes.push(animalCode);
-		      // console.log(animalCode);
 		      });
-		      $('#animalForm input[name="animalCodes"]').val(animalCodes.join(','));
+		      $('#animalForm input[name="animal"]').val(animalCodes.join(','));
 			});
 		});
+		
+		<!------------ 아이디 ------------>
 		
 		const $userId = $('.input_form #memberId');
 		const $checkId = $('#checkId');
 		const $joinBtn = $('#join-btn');
-		const $check = $('#check');
+		const $check = $('.check');
 		
 		$userId.keyup(function(){
 			
@@ -421,10 +469,8 @@
 					url : 'member/idCheck',
 					data : {checkId : $userId.val()},
 					success : function(result){
-						// console.log(result);
-    					// NNNNN / NNNNY
     					if(result.substr(4) == "N"){
-    						$checkId.show().css('color', 'crimson').text('아이디가 중복되었습니다.');
+    						$checkId.show().css('color', 'crimson').text('중복된 아이디입니다.');
     						$userId.css('border', '1px solid crimson');
     						$joinBtn.attr('disabled', true);
     					} else{
@@ -443,24 +489,169 @@
 			}
 		});
 		
+		<!------------ 비밀번호 ------------>
 		
-		const $userPwd1 = $('.input_form #memberPwd1');
-		const $userPwd2 = $('.input_form #memberPwd2');
-		const $checkPwd = $('#checkPwd');
-		const $checkP = $('#checkP');
-	
-		if($userPwd1 == $userPwd2){
-			$userPwd1.show().css('border', '1px solid lightgreen');
-			$userPwd2.show().css('border', '1px solid lightgreen')
-			$checkP.show().css();
-			$joinBtn.removeAttr('disabled');
-		} else {
-			$checkPwd.show().css('color', 'crimson').text('비밀번호가 일치하지 않습니다.');
-			$userPwd1.css('border', '1px solid crimson');
-			$userPwd2.css('border', '1px solid crimson');
-			$joinBtn.removeAttr('disabled');
-		}		
+		$(document).ready(function() {
+		    // 비밀번호 입력란의 입력을 감지하는 이벤트 핸들러
+		    $('.input_form #memberPwd1, .input_form #memberPwd2').on('input', function() {
+		        const $userPwd1 = $('.input_form #memberPwd1');
+		        const $userPwd2 = $('.input_form #memberPwd2');
+		        const $checkPwd = $('#checkPwd');
+		        const $checkP = $('.checkPwd');
+		        const $joinBtn = $('#joinBtn');
+		        
+		        // 비밀번호 길이가 4자 이상인지 확인
+		        if ($userPwd1.val().length >= 4 && $userPwd2.val().length >= 4) {
+		        	
+		            if ($userPwd1.val() === $userPwd2.val()) { // 비밀번호가 일치하는지 확인
+		                $userPwd1.css('border', '1px solid lightgreen');
+		                $userPwd2.css('border', '1px solid lightgreen');
+		                $checkP.show().css();
+		                $joinBtn.removeAttr('disabled');
+		                $check.show().css();
+		            } else {
+		                $checkPwd.show().css('color', 'crimson').text('비밀번호가 일치하지 않습니다.');
+		                $userPwd1.css('border', '1px solid crimson');
+		                $userPwd2.css('border', '1px solid crimson');
+		                $joinBtn.attr('disabled', true);
+		            }
+		        } else {
+	                $userPwd1.removeAttr.css();
+	                $userPwd2.removeAttr.css();
+		            $checkPwd.hide();
+		            $checkP.hide();
+		            $joinBtn.attr('disabled', true);
+		        }
+		    });
+		});
 		
+		<!------------ 닉네임 ------------>
+		
+		const $nickname = $('.input_form #nickname');
+		const $checkNick = $('#checkNick');
+		const $checkn = $('.checkNick');
+		
+		$nickname.keyup(function(){
+			
+			if($nickname.val().length >= 2){
+				$.ajax({
+					url : 'member/checkNick',
+					data : {nickname : $nickname.val()},
+					success : function(result){
+						
+    					if(result.substr(4) == "N"){
+    						$checkNick.show().css('color', 'crimson').text('중복된 닉네임입니다.');
+    						$nickname.css('border', '1px solid crimson');
+    						$joinBtn.attr('disabled', true);
+    					} else{
+    						$nickname.css('border', '1px solid lightgreen');
+    						$checkn.show().css();
+    						$joinBtn.removeAttr('disabled');
+    					}
+    				},
+    				error : function(){
+    					console.log('닉네임 중복체크용 AJAX 통신 실패~');
+    				}
+    			});
+			} else {
+				$checkNick.hide();
+				$joinBtn.attr('disabled', true);
+			}
+		});
+		
+		<!------------ 전화번호 ------------>
+		
+		const $phone = $('.input_form #phone');
+		const $checkPhone = $('#checkPhone');
+		const $checkPh = $('.checkPhone');
+		
+		$phone.keyup(function(){
+			
+			if($phone.val().length == 13){
+				$.ajax({
+					url : 'member/checkPhone',
+					data : {phone : $phone.val()},
+					success : function(result){
+    					// NNNNN / NNNNY
+    					if(result.substr(4) == "N"){
+    						$checkPhone.show().css('color', 'crimson').text('가입된 전화번호입니다.');
+    						$phone.css('border', '1px solid crimson');
+    						$joinBtn.attr('disabled', true);
+    					} else{
+    						$phone.css('border', '1px solid lightgreen');
+    						$checkPh.show().css();
+    						$joinBtn.removeAttr('disabled');
+    					}
+    				},
+    				error : function(){
+    					console.log('전화번호 중복체크용 AJAX 통신 실패~');
+    				}
+    			});
+			} else {
+				$checkPhone.hide();
+				$joinBtn.attr('disabled', true);
+			}
+		});
+		
+		const $email = $('.input_form #email');
+		const $checkEmail = $('#checkEmail');
+		const $checkE = $('.checkEmail');
+		const $checkMyEmail = $('#checkMyEmail');
+		
+		console.log($('#checkMyEmail').html());
+		
+		$email.keyup(function(){
+			
+			if($email.val().length > 10){
+				$.ajax({
+					url : 'member/checkEmail',
+					data : {email : $email.val()},
+					success : function(result){
+						// console.log(result);
+    					if(result.substr(4) == "N"){
+    						$checkEmail.show().css('color', 'crimson').text('가입된 이메일입니다.');
+    						$email.css('border', '1px solid crimson');
+    						$joinBtn.attr('disabled', true);
+    					} else{
+    						$email.css('border', '1px solid lightgreen');
+    						$checkE.show().css();
+    						$joinBtn.removeAttr('disabled');
+    					}
+    				},
+    				error : function(){
+    					console.log('이메일 중복체크용 AJAX 통신 실패~');
+    				}
+    			});
+			} else {
+				$checkEmail.hide();
+				$joinBtn.attr('disabled', true);
+			}
+		});
+		
+		$(document).ready(function() {
+		const $email = $('.input_form #email');
+			$('#checkMyEmail').click(function(){
+				var email = $('#email').val();
+				 if (email.trim() !== '') {
+					 $.ajax({
+							url : 'member/emailCheck.do',
+							data : {email : $email.val()},
+							success : function(result){
+								console.log(result);
+							},
+							error : function(){
+								console.log('이메일 인증 AJAX 통신 실패~');
+							}
+						});
+			        } else {
+			            alert('이메일을 입력해주세요.');
+		        }
+			});
+		
+		});
+		
+	 
+	 });
 	</script>
  
 
