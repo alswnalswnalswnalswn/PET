@@ -20,11 +20,13 @@
 	<jsp:include page="../common/header.jsp" />
 
 	<div id="wrap">
-		<div id="map" style="width: 1200px; height: 800px;"></div>
-		<div id="menu_wrap" class="bg_white">
-			<ul id="placesList"></ul>
-			<div id="pagination"></div>
+		<div id="map" style="width: 1200px; height: 800px;">
+			<div id="menu_wrap" class="bg_white" style="border:1px solid red;">
+				<ul id="placesList"></ul>
+				<div id="pagination"></div>
+			</div>
 		</div>
+		
 	</div>
 
 	<script>
@@ -120,11 +122,6 @@
 			    	    var divList = document.getElementById('placesList');
 			    		
 			    		console.log(divList.value)
-			    		
-			    		
-		    		
-		    		
-		    		
 		    		}
 			}
 		    });
