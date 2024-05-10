@@ -21,7 +21,7 @@ public class MemberRepository {
 	}
 
 	public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
-		return sqlSession.selectOne("memberMapper", checkId);
+		return sqlSession.selectOne("memberMapper.idCheck", checkId);
 	}
 
 }

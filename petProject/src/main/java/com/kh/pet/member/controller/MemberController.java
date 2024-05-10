@@ -42,7 +42,7 @@ public class MemberController {
 	}
 	
 	@ResponseBody
-	@GetMapping("member.idCheck")
+	@GetMapping("idCheck")
 	public String idCheck(String checkId) {
 		return memberService.idCheck(checkId) > 0 ? "NNNNN" : "NNNNY";
 	}

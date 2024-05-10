@@ -220,6 +220,22 @@
     	border:0;
     	font-weight:bold;
 	}
+	#join-area input{
+		border : none;
+		outline:none;
+		border-radius : 15px;
+	}
+	#join-area .input_form{
+		border-radius : 15px;
+		position : relative;
+	}
+	#check{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 7px 10px;
+	}
 	
 </style>
 </head>
@@ -329,19 +345,19 @@
 		<div id="join-area">
 			<form action="member/join" method="post">
 				<div class="input_form">
-					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요" required>
+					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요 (3~10 영/숫자)" required>
 					<div id="checkId" style="font-size:0.7em; display:none;"></div>
-				</div>
-				<script>
-					
-				</script>
-				<div class="input_form">
-					<input type="text" name="memberPwd" maxlength="16" placeholder="비밀번호를 입력해주세요" required >
+					<img src="resources/img/check.png" id="check" style="display:none;">
 				</div>
 				<div class="input_form">
-					<input type="text" maxlength="16" placeholder="비밀번호를 한번 더 입력해주세요" required>
+					<input type="text" id="memberPwd1" name="memberPwd" maxlength="16" placeholder="비밀번호를 입력해주세요 (4~15 영/숫자)" required>
+				</div>
+				<div class="input_form">
+					<input type="text" id="memberPwd2" maxlength="16" placeholder="비밀번호를 한번 더 입력해주세요" required>
+					<div id="checkPwd" style="font-size:0.7em; display:none;"></div>
+					<img src="resources/img/check.png" id="checkP" style="display:none;">
+				</div>
 					<span class="danger_pwd"></span>
-				</div>
 				<div class="input_form">
 					<input type="text" name="memberName" maxlength="10" placeholder="성함을 입력해주세요">
 				</div>
@@ -350,7 +366,7 @@
 					<span class="danger_nick"></span>
 				</div>
 				<div class="input_form">
-					<input type="text" name="phone" maxlength="13" placeholder="'-'를 포함한 전화번호를 입력해주세요" required>
+					<input type="text" name="phone" maxlength="13" placeholder="'-' 를 포함한 전화번호를 입력해주세요" required>
 					<span class="danger_phone"></span>
 				</div>
 				<div class="input_form">
@@ -387,7 +403,7 @@
 		      $('.animal.clicked').each(function() {
 		        var animalCode = $(this).data('animal');
 		        animalCodes.push(animalCode);
-		      console.log(animalCode);
+		      // console.log(animalCode);
 		      });
 		      $('#animalForm input[name="animalCodes"]').val(animalCodes.join(','));
 			});
@@ -396,6 +412,7 @@
 		const $userId = $('.input_form #memberId');
 		const $checkId = $('#checkId');
 		const $joinBtn = $('#join-btn');
+		const $check = $('#check');
 		
 		$userId.keyup(function(){
 			
@@ -404,13 +421,15 @@
 					url : 'member/idCheck',
 					data : {checkId : $userId.val()},
 					success : function(result){
-						console.log(result);
+						// console.log(result);
     					// NNNNN / NNNNY
     					if(result.substr(4) == "N"){
     						$checkId.show().css('color', 'crimson').text('아이디가 중복되었습니다.');
+    						$userId.css('border', '1px solid crimson');
     						$joinBtn.attr('disabled', true);
     					} else{
-    						$checkId.show().css('color', 'lightgreen').text('사용가능한 아이디입니다!');
+    						$userId.css('border', '1px solid lightgreen');
+    						$check.show().css();
     						$joinBtn.removeAttr('disabled');
     					}
     				},
@@ -424,6 +443,21 @@
 			}
 		});
 		
+		
+		const $userPwd1 = $('.input_form #memberPwd1');
+		const $userPwd2 = $('.input_form #memberPwd2');
+		const $checkPwd = $('#checkPwd');
+		const $checkP = $('#checkP');
+	
+		if($userPwd1 == $userPwd2){
+			$checkPwd.show().css('border', '1px solid lightgreen');
+			$checkP.show().css();
+			$joinBtn.removeAttr('disabled');
+		} else {
+			$checkPwd.show().css('color', 'crimson').text('비밀번호가 일치하지 않습니다.');
+			$userPwd2.css('border', '1px solid crimson');
+			$joinBtn.removeAttr('disabled');
+		}		
 		
 	</script>
  
