@@ -31,6 +31,7 @@
 		<mapper resource="/mapper/place-mapper.xml" />
 		<mapper resource="/mapper/member-mapper.xml" />
 		<mapper resource="/mapper/community-mapper.xml" />
+		<mapper resource="/mapper/info-mapper.xml" />
 	</mappers>
 	
 </configuration>

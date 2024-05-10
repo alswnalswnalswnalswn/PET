@@ -14,14 +14,13 @@ import com.kh.pet.place.model.service.PlaceService;
 import com.kh.pet.place.model.vo.Place;
 
 @RestController
-@RequestMapping(value="places")
 public class PlaceController {
 	
 	@Autowired
-	private PlaceService reserService;
+	private PlaceService placeService;
 	
-	@ResponseBody
-	@GetMapping("/{categoryCode}/{neLat}/{neLng}/{swLat}/{swLng}")
+
+	@GetMapping("places/{categoryCode}/{neLat}/{neLng}/{swLat}/{swLng}")
 	public List<Place> searchPlace(@PathVariable("categoryCode")String categoryCode, 
 			@PathVariable("neLat") String neLat, 
 			@PathVariable("neLng") String neLng, 
@@ -36,10 +35,12 @@ public class PlaceController {
 		map.put("swLat", swLat);
 		map.put("swLng", swLng);
 		
-		List<Place> list = reserService.searchPlace(map);
+		List<Place> list = placeService.searchPlace(map);
 		
 		return list;
 	}
+	
+	
 	
 	
 	

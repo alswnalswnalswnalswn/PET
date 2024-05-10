@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="infoMapper">
+	
+	
+	
+	
+	<select id="selectDate" >
+		SELECT
+		       BOARD_NO,
+		       BOARD_TITLE,
+		       BOARD_CONTENT,
+		       BOARD_COUNT,
+		       CREATE_DATE,
+		       MEMBER_NO,
+		       BO_CATEGORY_NAME,
+		       UPDATE_DATE,
+		       BOARD_STATUS,
+		       BOARD_LIKE,
+		       ATT_NO,
+		       ATT_PATH,
+		       CHANGE_NAME,
+		       ATT_STATUS,
+		       ATT_LELVEL
+		  FROM
+		       TB_INFO
+		  JOIN
+		       TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+		  LEFT
+		  JOIN
+		       (SELECT
+				       BOARD_NO,
+				       COUNT(*) BOARD_LIKE
+				  FROM
+				       TB_LIKE
+				 GROUP
+				    BY
+				       BOARD_NO) USING(BOARD_NO)
+		  LEFT
+		  JOIN
+		       TB_ATTACHMENT USING(BOARD_NO)
+		  JOIN
+		       TB_BOARD_BRIDGE USING(BOARD_NO)
+		 WHERE
+		       BOARD_STATUS = 'Y'
+		   AND
+		       PLACE_NO = 412
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

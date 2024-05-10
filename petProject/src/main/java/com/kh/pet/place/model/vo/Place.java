@@ -16,5 +16,4 @@ public class Place {
 	private String placeDayOff;
 	private String placeDayOn;
 	private String categoryCode;
-
 }

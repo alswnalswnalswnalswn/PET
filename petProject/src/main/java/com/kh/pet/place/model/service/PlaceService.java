@@ -10,6 +10,8 @@ public interface PlaceService {
 	List<Place> selectHospital();
 	
 	List<Place> searchPlace(HashMap<String, String> map);
+
+	Place selectPlace(int placeNo);
 	
 	
 	
