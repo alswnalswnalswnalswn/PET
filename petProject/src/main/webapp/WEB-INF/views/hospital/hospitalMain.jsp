@@ -25,6 +25,9 @@
 				<ul id="placesList"></ul>
 				<div id="pagination"></div>
 			</div>
+			<div id="menu_detail">
+				
+			</div>
 		</div>
 	</div>
 
@@ -62,7 +65,7 @@
 				positions = [];
 			});
 		}
-		
+				
 		// 지도가 이동, 확대, 축소로 인해 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
 		kakao.maps.event.addListener(map, 'bounds_changed', function() {            
 			
@@ -86,18 +89,21 @@
 		    		swLng : swLng
 		    	},
 		    	success : result => {
-		    		// console.log(result);
-		    		
 		    		// 마커를 표시할 위치와 title 객체 배열입니다 
 		    		for(let i in result){
 		    			positions[i] = {
 		    							latlng: new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
 		    							placeName: '<div>'+ result[i].placeName +'</div>',
-		    							newAddr : '<div>'+ result[i].newAddr +'</div>',
-		    							reser : '<button>예약하기</button>'
+		    							newAddr : result[i].newAddr,
+		    							oldAddr : result[i].oldAddr,
+		    							placeDayOff : result[i].placeDayOff,
+		    							placeDayOn : result[i].placeDayOn,
+		    							placeNo : result[i].placeNo,
+		    							placeTel : result[i].placeTel
 		    			}
 		    		}
 		    		// console.log(positions);
+		    		
 		    		for (var i = 0; i < positions.length; i ++) {
 		    		    
 		    			// 마커를 생성합니다
@@ -107,31 +113,25 @@
 					    });
 		    		    
 		    			// infowindow 배열 선언
-		    			var infowindow = null;
-		    			
 		    		    var infowindow = new kakao.maps.InfoWindow({
 		    		    	content: positions[i].placeName // 인포윈도우에 표시할 내용
 		    			});
 		    		    
-		    		    var iwContent = positions[i].placeName + positions[i].newAddr + positions[i].reser;
-		    		    
-		    		    var infowindow1 = new kakao.maps.InfoWindow({
-		    		        content: iwContent, // 인포윈도우에 표시할 내용
-		    			});
-		    		    
 		    		    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 			    		kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-			    		
-			    	    kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow1));
-			    		
-			    	    var divList = document.getElementById('placesList');
-			    		
-			    		console.log(divList.value)
+			    	    kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow));
+			    	   
+			    	    displayPlaces(positions);
 		    		}
+		    		
+		    		
+		    		
+		    		
 			}
 		    });
 		});
-		
+	  });
+	  
 		// 마우스 호버 시 인포윈도우를 여는 클로저를 만드는 함수입니다 
 		function makeOverListener(map, marker, infowindow) {
 		    return function() {
@@ -145,6 +145,71 @@
 		        infowindow.close();
 		    };
 		}
+		/*
+		// 검색 결과 목록과 마커를 표출하는 함수입니다
+		function displayPlaces(places) {
+
+		    var listEl = document.getElementById('placesList'), 
+		    menuEl = document.getElementById('menu_wrap'),
+		    fragment = document.createDocumentFragment(), 
+		    bounds = new kakao.maps.LatLngBounds(), 
+		    listStr = '';
+		    
+		    // 검색 결과 목록에 추가된 항목들을 제거합니다
+		    removeAllChildNods(listEl);
+
+		    // 지도에 표시되고 있는 마커를 제거합니다
+		    removeMarker();
+		    
+		    for ( var i=0; i<places.length; i++ ) {
+
+		        // 마커를 생성하고 지도에 표시합니다
+		        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+		            marker = addMarker(placePosition, i), 
+		            itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+		        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+		        // LatLngBounds 객체에 좌표를 추가합니다
+		        bounds.extend(placePosition);
+
+		        // 마커와 검색결과 항목에 mouseover 했을때
+		        // 해당 장소에 인포윈도우에 장소명을 표시합니다
+		        // mouseout 했을 때는 인포윈도우를 닫습니다
+		        	(function(marker, title) {
+		            kakao.maps.event.addListener(marker, 'mouseover', function() {
+		                displayInfowindow(marker, title);
+		            });
+
+		            kakao.maps.event.addListener(marker, 'mouseout', function() {
+		                infowindow.close();
+		            });
+		            
+		            kakao.maps.event.addListener(marker, 'click', function() {
+		                alert('오케이');
+		            });
+
+		            itemEl.onmouseover =  function () {
+		                displayInfowindow(marker, title);
+		            };
+
+		            itemEl.onmouseout =  function () {
+		                infowindow.close();
+		            };
+		        })(marker, places[i].place_name);
+
+		        fragment.appendChild(itemEl);
+		    }
+
+		    // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+		    listEl.appendChild(fragment);
+		    menuEl.scrollTop = 0;
+
+		    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+		    map.setBounds(bounds);
+		}
+		*/
+		
+		
 		
 		// 마커에 click 이벤트를 등록합니다
 		function clickListener(map, marker, infowindow) {
