@@ -29,6 +29,11 @@ public class PlaceServiceImpl implements PlaceService {
 		return placeRepository.searchPlace(sqlSession, map);
 	}
 
+	@Override
+	public Place selectPlace(int placeNo) {
+		return placeRepository.selectPlace(sqlSession,placeNo);
+	}
+
 	
 
 }

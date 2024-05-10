@@ -4,6 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=265dcb92e33a3dc46e2d0249640f425e"></script>
 <meta charset="UTF-8">
 <title>데이트 게시판</title>
@@ -21,7 +25,7 @@
 	top:0;
 	height:500px;
 	width:300px;
-	background: rgb(255,255,255,0.7);
+	background: rgb(255,255,255);
 	overflow: auto;
 }
 .items{
@@ -70,7 +74,7 @@
 		
 		    $.ajax({
 		        url: "places/P2/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
-		        success: function(result) {
+		        success: result => {
 		            var divList = document.getElementById('placesList');
 		            var positions = [];
 		            var list = ''; 
@@ -78,7 +82,11 @@
 		            	console.log(item);
 		                createMarkerAndInfoWindow(item, map);
 		                
-		                list +='<div class="items">' + item.placeName + '</div>';
+		                list +='<div class="items card">' +
+		                			'<div class="card-header">' + item.placeName + '</div>' +
+		                			'<div class="card-body">' + item.placeDayOff + '<br>' + item.placeDayOn + '</div>' +
+		                			'<div class="card-footer">' + item.placeTel +'</div>' +
+								'</div>';
 		                
 		            });
 		            $('#menu_wrap').html(list);
@@ -159,7 +167,15 @@
 		
 		$(() => {
 			$('#map').on('click','.detail-btn', e => {
-				console.log($(e.target).attr('id'));
+				const $placeNo = $(e.target).attr('id');
+				
+				$.ajax({
+					url : 'date/'+ $placeNo,
+					success: result => {
+						
+					}
+				});
+				
 			});
 			
 			

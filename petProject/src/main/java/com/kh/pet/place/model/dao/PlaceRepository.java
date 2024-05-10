@@ -18,6 +18,10 @@ public class PlaceRepository{
 	public List<Place> searchPlace(SqlSessionTemplate sqlSession, HashMap<String, String> map){
 		return sqlSession.selectList("placeMapper.searchPlace", map);
 	}
+
+	public Place selectPlace(SqlSessionTemplate sqlSession, int placeNo) {
+		return sqlSession.selectPlace("placeMapper.selectPlace");
+	}
 	
 	
 	
