@@ -20,7 +20,7 @@
 	<jsp:include page="../common/header.jsp" />
 
 	<div id="wrap">
-		<div id="map" style="width: 1200px; height: 800px; position:relative; overflow:hidden;"></div>
+		<div id="map" style="width: 1200px; height: 800px;"></div>
 		<div id="menu_wrap" class="bg_white">
 			<ul id="placesList"></ul>
 			<div id="pagination"></div>
@@ -34,7 +34,7 @@
 			level : 3 // 지도의 확대 레벨 
 		};
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-	
+
 		// 마커를 담을 배열입니다
 		var markers = [];
 		
@@ -108,15 +108,14 @@
 		    		    
 		    		    var iwContent = positions[i].placeName + positions[i].newAddr + positions[i].reser;
 		    		    
-		    		    var infowindow = new kakao.maps.InfoWindow({
+		    		    var infowindow1 = new kakao.maps.InfoWindow({
 		    		        content: iwContent, // 인포윈도우에 표시할 내용
-		    		        removeable : true
 		    			});
 		    		    
 		    		    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 			    		kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 			    		
-			    	    // kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow));
+			    	    kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow1));
 			    		
 			    	    var divList = document.getElementById('placesList');
 			    		
@@ -147,8 +146,6 @@
 		
 		// 마커에 click 이벤트를 등록합니다
 		function clickListener(map, marker, infowindow) {
-			
-			
 			
 		    return function() {
 		    	infowindow.open(map, marker);
