@@ -13,22 +13,6 @@ import com.kh.pet.reser.model.dao.ReserRepository;
 @Service
 public class ReserServiceImpl implements ReserService {
 	
-	@Autowired
-	private ReserRepository reserRepository;
-	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
 
-	@Override
-	public List<Place> selectHospital() {
-		return reserRepository.selectHospital(sqlSession);
-	}
-
-	@Override
-	public List<Place> searchPlace(HashMap<String, String> map) {
-		return reserRepository.searchPlace(sqlSession, map);
-	}
-
-	
 
 }

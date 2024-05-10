@@ -11,15 +11,6 @@ import com.kh.pet.place.model.vo.Place;
 @Repository
 public class ReserRepository{
 
-	public List<Place> selectHospital(SqlSessionTemplate sqlSession){
-		return sqlSession.selectList("placeMapper.selectHospital");
-	}
-	
-	public List<Place> searchPlace(SqlSessionTemplate sqlSession, HashMap<String, String> map){
-		return sqlSession.selectList("placeMapper.searchPlace", map);
-	}
-	
-	
 	
 	
 }

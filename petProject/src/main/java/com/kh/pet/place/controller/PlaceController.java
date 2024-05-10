@@ -1,4 +1,4 @@
-package com.kh.pet.reser.controller;
+package com.kh.pet.place.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pet.place.model.service.PlaceService;
 import com.kh.pet.place.model.vo.Place;
-import com.kh.pet.reser.model.service.ReserService;
 
 @Controller
-public class ReserController {
+public class PlaceController {
 	
 	@Autowired
-	private ReserService reserService;
+	private PlaceService reserService;
 	
 	@RequestMapping("hospital")
 	public String hospitalForwarding(ModelAndView mv) {

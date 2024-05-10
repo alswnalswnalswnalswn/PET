@@ -79,11 +79,7 @@
 		    		swLng : swLng
 		    	},
 		    	success : result => {
-		    		console.log(result);
-		    		var divList = document.getElementById('placesList');
-		    		
-		    		console.log(divList.value)
-		    		
+		    		// console.log(result);
 		    		
 		    		// 마커를 표시할 위치와 title 객체 배열입니다 
 		    		for(let i in result){
@@ -111,7 +107,7 @@
 		    			});
 		    		    
 		    		    var iwContent = positions[i].placeName + positions[i].newAddr + positions[i].reser;
-		    		    	
+		    		    
 		    		    var infowindow = new kakao.maps.InfoWindow({
 		    		        content: iwContent, // 인포윈도우에 표시할 내용
 		    		        removeable : true
@@ -121,7 +117,16 @@
 			    		kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 			    		
 			    	    // kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow));
-    			}
+			    		
+			    	    var divList = document.getElementById('placesList');
+			    		
+			    		console.log(divList.value)
+			    		
+			    		
+		    		
+		    		
+		    		
+		    		}
 			}
 		    });
 		});
