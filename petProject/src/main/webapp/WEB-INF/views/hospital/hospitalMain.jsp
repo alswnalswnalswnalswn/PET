@@ -6,24 +6,24 @@
 <head>
 <meta charset="UTF-8">
 <title>동물병원</title>
-	
+	<link rel="stylesheet" href="resources/css/hospital/hospitalMain.css"/>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=265dcb92e33a3dc46e2d0249640f425e"></script>
 	<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script> -->
 	<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script>  -->
 	
 <style>
-#wrap {
-	width: 1200px;
-	height: 1000px;
-	margin: auto;
-}
+	
 </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
 
 	<div id="wrap">
-		<div id="map" style="width: 1200px; height: 800px;"></div>
+		<div id="map" style="width: 1200px; height: 800px; position:relative; overflow:hidden;"></div>
+		<div id="menu_wrap" class="bg_white">
+			<ul id="placesList"></ul>
+			<div id="pagination"></div>
+		</div>
 	</div>
 
 	<script>
@@ -35,10 +35,6 @@
 				level : 3 // 지도의 확대 레벨 
 			};
 			var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-	
-			
-			
-			
 			
 			// 지도가 이동, 확대, 축소로 인해 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
 			kakao.maps.event.addListener(map, 'bounds_changed', function() {            
@@ -84,10 +80,10 @@
 			    							latlng: new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
 			    							placeName: '<div>'+ result[i].placeName +'</div>',
 			    							newAddr : '<div>'+ result[i].newAddr +'</div>',
-			    							
+			    							reser : '<button>예약하기</button>'
 			    			}
 			    		}
-			    		console.log(positions);
+			    		// console.log(positions);
 			    		for (var i = 0; i < positions.length; i ++) {
 			    		    
 			    			// 마커를 생성합니다
