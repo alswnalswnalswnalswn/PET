@@ -12,14 +12,29 @@
 	width: 1200px;
 	height: 1000px;
 	margin: auto;
+	position: relative;
 }
+
+#menu_wrap{
+	position: absolute;
+	left:0;
+	top:0;
+	height:500px;
+	width:300px;
+	background: rgb(255,255,255,0.7);
+}
+
 </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
 	
 	<div id="wrap">
-		<div id="map" style="width: 1200px; height: 500px;"></div>
+		<div id="menu_wrap" style="z-index: 2">
+		</div>
+		<div id="map" style="width: 1200px; height: 500px;z-index: 1">
+			
+		</div>
 	</div>
 	<script>
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -66,7 +81,7 @@
 		
 		function createMarkerAndInfoWindow(item, map) {
 		    var position = new kakao.maps.LatLng(item.placeLat, item.placeLon);
-		    var content = '<div>' + item.placeName + '</div><div>' + item.newAddr + '</div>';
+		    var content = '<div>' + item.placeName + '</div><div><button id="' + item.placeNo + '">자세히보기</button></div>';
 		
 		    var marker = new kakao.maps.Marker({
 		        map: map,
@@ -132,6 +147,10 @@
 			displayMarker(locPosition, message);
 		}
 		
+		$(() => {
+
+
+		});
 		
 	</script>
 	<jsp:include page="../common/footer.jsp" />
