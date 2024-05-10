@@ -22,8 +22,12 @@
 	height:500px;
 	width:300px;
 	background: rgb(255,255,255,0.7);
+	overflow: auto;
 }
-
+.items{
+	margin: 20px 20px;
+	border:1px solid black;
+}
 </style>
 </head>
 <body>
@@ -69,11 +73,15 @@
 		        success: function(result) {
 		            var divList = document.getElementById('placesList');
 		            var positions = [];
-					
+		            var list = ''; 
 		            result.forEach( item => {
 		            	console.log(item);
 		                createMarkerAndInfoWindow(item, map);
+		                
+		                list +='<div class="items">' + item.placeName + '</div>';
+		                
 		            });
+		            $('#menu_wrap').html(list);
 		        }
 		    });
 		}
@@ -81,8 +89,10 @@
 		
 		function createMarkerAndInfoWindow(item, map) {
 		    var position = new kakao.maps.LatLng(item.placeLat, item.placeLon);
-		    var content = '<div>' + item.placeName + '</div><div><button id="' + item.placeNo + '">자세히보기</button></div>';
-		
+		    var content = '<div>' + item.placeName + '</div><div><button class="detail-btn" id="' + item.placeNo + '">자세히보기</button></div>';
+			
+				
+			
 		    var marker = new kakao.maps.Marker({
 		        map: map,
 		        position: position
@@ -148,8 +158,11 @@
 		}
 		
 		$(() => {
-
-
+			$('#map').on('click','.detail-btn', e => {
+				console.log($(e.target).attr('id'));
+			});
+			
+			
 		});
 		
 	</script>
