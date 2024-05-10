@@ -37,6 +37,22 @@
 		<collection resultMap="memberCouponResultSet" property="couponList"/>
 	</resultMap>
 	
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_MEMBER
+		 WHERE
+		 		MEMBER_ID = #{checkId} 						
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
 	<select id="login" parameterType="member" resultMap="memberResultSet">
 		SELECT
 		       MEMBER_NO,
@@ -105,5 +121,26 @@
 				)
 			</foreach>
 	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </mapper>
