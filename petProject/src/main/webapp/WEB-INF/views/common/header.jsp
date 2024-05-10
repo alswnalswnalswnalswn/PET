@@ -450,11 +450,13 @@
 		const $checkP = $('#checkP');
 	
 		if($userPwd1 == $userPwd2){
-			$checkPwd.show().css('border', '1px solid lightgreen');
+			$userPwd1.show().css('border', '1px solid lightgreen');
+			$userPwd2.show().css('border', '1px solid lightgreen')
 			$checkP.show().css();
 			$joinBtn.removeAttr('disabled');
 		} else {
 			$checkPwd.show().css('color', 'crimson').text('비밀번호가 일치하지 않습니다.');
+			$userPwd1.css('border', '1px solid crimson');
 			$userPwd2.css('border', '1px solid crimson');
 			$joinBtn.removeAttr('disabled');
 		}		
