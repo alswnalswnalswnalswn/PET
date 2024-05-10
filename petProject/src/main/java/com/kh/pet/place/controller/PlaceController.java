@@ -20,8 +20,6 @@ public class PlaceController {
 	@Autowired
 	private PlaceService reserService;
 	
-	
-	
 	@ResponseBody
 	@GetMapping("/{categoryCode}/{neLat}/{neLng}/{swLat}/{swLng}")
 	public List<Place> searchPlace(@PathVariable("categoryCode")String categoryCode, 
