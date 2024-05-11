@@ -100,16 +100,23 @@
     			    removeMarker();
     		    	
 		            result.forEach((result, index) => {
-		            	markersAndInfowindow(result, map, index);
-		            	 // 페이지 번호를 표출합니다
-		            	 /*
+		            	markersAndInfowindow(result, map);
+		            	// 페이지 번호를 표출합니다
+		            	/*
 		                displayPagination(pagination);
-		            	
-		            	
-		            	itemEl = getListItem(index, result);
-		                
-		                fragment.appendChild(itemEl);
 		                */
+		            	list += '<li>'
+           					  + '<span>' + (index+1) + '</span>'
+		                      + '<div class="info">'
+		             	      + '<h5>' + places.placeName + '</h5>'
+							  + '<span>' + places.newAddr + '</span>' 
+							  + '<span class="jibun gray">' +  places.oldAddr  + '</span>'
+		            		  + '<span class="tel">' + places.placeTel  + '</span>' 
+		            		  + '</div></li>';    
+		            	
+		            	// itemEl = getListItem(index, result);
+		                
+		                // fragment.appendChild(itemEl);
 		                
 		            });
 		            
@@ -137,19 +144,15 @@
 	    
 		
 		/* 마커랑 인포윈도우 추가 */
-	    function markersAndInfowindow(result, map, idx){
+	    function markersAndInfowindow(result, map){
 			
 			// 마커 이미지의 이미지 주소입니다
-			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png'; 
+			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'; 
 			
 			// 마커 이미지의 이미지 크기 입니다
-		    imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-        	imgOptions =  {
-	            spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-	            spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-	            offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-       		},
-        	markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions)
+		    imageSize = new kakao.maps.Size(24, 35),  // 마커 이미지의 크기
+        	
+        	markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
 			
 			// 마커 좌표를 생성합니다    
 		    var position = new kakao.maps.LatLng(result.placeLat, result.placeLon);

@@ -21,7 +21,7 @@ public class ReserController {
 	
 	@GetMapping("hospital")
 	public String hospitalForwarding() {
-		return "hospital/hospitalMain4";
+		return "hospital/hospitalMain5";
 	}
 	
 	
