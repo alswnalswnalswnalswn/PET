@@ -35,7 +35,7 @@
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 		var zoomControl = new kakao.maps.ZoomControl(); // 지도에 확대 축소 컨트롤을 생성한다
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT); // 지도의 우측에 확대 축소 컨트롤을 추가한다
-	
+		var lastInfowindow = null; // 인포 윈도우 상태확인용
 		
 		/* HTML5의 geolocation으로 사용할 수 있는지 확인합니다 */
 		if (navigator.geolocation) { // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -82,26 +82,64 @@
 		    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 		    	success : result => {
 		    		console.log(result);
-		    		// console.log(result.length);
+		    		console.log(result.length);
 		    		
-		    		for(let i in result){
+		    			// 마커 이미지의 이미지 주소입니다
+		    			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 		    			
-		    			// 검색 목록과 마커를 표출합니다
-		    			displayPlaces(result);
+		    			// 마커 이미지의 이미지 크기 입니다
+		    		    var imageSize = new kakao.maps.Size(24, 35); 
+		    		    
+		    		    // 마커 이미지를 생성합니다    
+		    		    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+		    			
+		    		    if(result.length < 1000){
+		    				
+				    		for(let i in result){
+				    		    
+				    			// 마커 좌표를 생성합니다    
+				    		    var position = new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon);
+				    			   
+				    		    // 마커를 생성합니다
+				    		    var marker = new kakao.maps.Marker({
+				    		        map: map, // 마커를 표시할 지도
+				    		        position: position, // 마커를 표시할 위치
+				    		        image : markerImage // 마커 이미지 
+				    		    });
+				    		    
+					    		// 인포윈도우를 생성합니다
+					    		var infowindow = new kakao.maps.InfoWindow({
+					    		    position : position, 
+					    		    content : result.placeNo 
+					    		});
+					    		  
+					    		// 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
+					    		kakao.maps.event.addListener(marker, 'click', function() {
+					    			if (lastInfowindow) {
+							            lastInfowindow.close();
+							        }
+							        infowindow.open(map, marker);
+							        lastInfowindow = infowindow;
+					    		});
+				    		
+				    		
+				    		}
+				    		
 
-		    			// 페이지 번호를 표출합니다
-		    			// displayPagination(pagination);
-		    			// createMarkerAndInfowindow(result[i], map);
-		    		}
+				    		
+		    			
+		    		    
+		    		    
+		    		    
+		    		    
+		    		    
+		    		    
+		    		    }
+		    			
 		    		
 				}
 			});
 	    }
-
-	
-		
-
-
 		// 검색 결과 목록과 마커를 표출하는 함수입니다
 		function displayPlaces(places) {
 
