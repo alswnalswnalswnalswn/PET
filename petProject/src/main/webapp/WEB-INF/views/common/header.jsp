@@ -389,7 +389,7 @@
         
 		<div id="join-area">
 			<form action="member/join" method="post">
-			<input type="hidden" name="code" id="myCode" value="">
+			<input type="hidden" name="code" id="myCode">
 				<div class="input_form">
 					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요 (3~10 영/숫자)" required>
 					<div id="checkId" class="danger" style="font-size:0.7em; display:none;"></div>
@@ -652,10 +652,30 @@
 		                type: 'get',
 		                data: { email: email },
 		                success: function(result) {
-		                	const code = result;
-							console.log(code);
 		                    $inputCode.show().css();
-		                    $('#myCode').val(code);
+		                    const code = result;
+		                    
+		                    $('#checkEmailCode').click(function() {
+		                    	
+		                        const $emailCode = $('.input_code #emailCode');
+		        				if ($emailCode.val() !== '') {
+		        					$.ajax({
+		        						url: 'member/checkCode',
+		        						type: 'get',
+		        						data: { email: $emailCode.val(),
+		        								code : code
+		        							  },
+		        						success: function(result) {
+		        						   console.log(result);
+		        						},
+		        						error: function() {
+		        						    console.log('이메일 인증 AJAX 통신 실패~');
+		        						}
+		        					});
+		        				} else {
+		        				    alert('이메일을 입력해주세요.');
+		        				}
+		        			});
 		                },
 		                error: function() {
 		                    console.log('이메일 인증 AJAX 통신 실패~');
@@ -666,18 +686,6 @@
 		        }
 		    });
 		    
-            $('#checkEmailCode').click(function() {
-                const $emailCode = $('.input_code #emailCode');
-                const $myCode = $('#join-area input[name="code"]');
-               	console.log($myCode.val());	
-               	console.log($emailCode.val());	
-                    if ($emailCode.val().trim() === $myCode.val()) {
-                        console.log('성공');
-                        $joinBtn.removeAttr('disabled');
-                    } else {
-                        console.log('실패');
-                    }
-             });
 
 		});
 		

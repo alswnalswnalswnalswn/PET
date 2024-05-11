@@ -114,7 +114,11 @@ public class MemberController {
 	}
 	
 	
-	
+	@ResponseBody
+	@GetMapping("checkCode")
+	public String checkCode(String code, String email) {
+		return code == email ? "NNNNN" : "NNNNY";
+	}
 	
 	
 	
