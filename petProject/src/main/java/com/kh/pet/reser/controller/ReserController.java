@@ -1,4 +1,4 @@
-/*package com.kh.pet.reser.controller;
+package com.kh.pet.reser.controller;
 
 import java.util.HashMap;
 
@@ -21,7 +21,7 @@ public class ReserController {
 	
 	@GetMapping("hospital")
 	public String hospitalForwarding() {
-		return "hospital/hospitalMain";
+		return "hospital/hospitalMain2";
 	}
 	
 	
@@ -35,5 +35,3 @@ public class ReserController {
 	
 	
 }
-
- */	
