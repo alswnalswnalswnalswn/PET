@@ -154,7 +154,7 @@
     	margin-top: 30px;
     }
     .input_btn2{
-    	margin-top: 70px;
+    	margin-top: 50px;
     }
     #login-btn{
     	width: 100%;
@@ -201,7 +201,6 @@
     	width:450px;
     	height:100px;
     	margin:auto;
-    	margin-top : 10px;
     }
     .animal{
     	width:70px;
@@ -273,6 +272,15 @@
 		font-size:15px;
 		display:block;
 		right : 0;
+	}
+	#input_code{
+		width: 300px;
+		height:100px;
+		border-radius:10px;
+	}
+	#input_code > #emailCode{
+		border:1px solid rgb(230, 230, 230);
+		float:left;
 	}
 </style>
 </head>
@@ -414,9 +422,12 @@
 					<input type="text" id="email" name="email" maxlength="30" placeholder="이메일을 입력해주세요" required>
 					<div id="checkEmail" class="danger" style="font-size:0.7em; display:none;"></div>
 					<img src="resources/img/check.png" class="checkEmail" style="display:none;">
-					<button type="button" id="checkMyEmail" onclick="emailCheck();">이메일 인증</button>
+					<button type="button" id="checkMyEmail">이메일 인증</button>
 				</div>
-					
+				<div id="input_code" style="font-size:15px; display:none;">
+					&nbsp;&nbsp;인증번호를 입력하세요 <input type="text" name="emailCode" id="emailCode">
+					&nbsp;&nbsp;<button type="button" id="checkEmailCode">인증하기</button>
+				</div>
 					
 				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
 					<span class="animal" data-animal="A1">강아지</span>
@@ -598,7 +609,6 @@
 		const $checkE = $('.checkEmail');
 		const $checkMyEmail = $('#checkMyEmail');
 		
-		console.log($('#checkMyEmail').html());
 		
 		$email.keyup(function(){
 			
@@ -627,17 +637,24 @@
 				$joinBtn.attr('disabled', true);
 			}
 		});
-		
+	 
 		$(document).ready(function() {
-		const $email = $('.input_form #email');
 			$('#checkMyEmail').click(function(){
-				var email = $('#email').val();
-				 if (email.trim() !== '') {
+				const $checkMyEmail = $('#checkMyEmail');
+				const $inputCode = $('#input_code');
+				const $checkEmailCode = $('#checkEmailCode');
+				const $emailCode = $('#emailCode');
+				var email = $('#email').val().trim();
+				
+				 if (email !== '') {
+				$checkMyEmail.css('width', '150px').html('인증번호 전송완료');
 					 $.ajax({
 							url : 'member/emailCheck.do',
-							data : {email : $email.val()},
+							type : 'get',
+							data : {email : email},
 							success : function(result){
-								console.log(result);
+								$inputCode.show().css();
+								
 							},
 							error : function(){
 								console.log('이메일 인증 AJAX 통신 실패~');
@@ -648,6 +665,15 @@
 		        }
 			});
 		
+		});
+		
+		$('#checkEmailCode').click(function(){
+		console.log($('#checkEmailCode').val());
+			if($emailCode.val().trim() === result){
+				console.log('성공');
+			} else {
+				console.log('실패');
+			}
 		});
 		
 	 
