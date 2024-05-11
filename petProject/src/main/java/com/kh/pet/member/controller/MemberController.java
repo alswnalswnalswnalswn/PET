@@ -104,7 +104,7 @@ public class MemberController {
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 		
 		helper.setTo(email);
-		helper.setSubject("인증번호입니다");
+		helper.setSubject("냥이랑 멍이랑에서 보낸 인증번호입니다.");
 		helper.setText("인증번호 : " + code);
 		
 		sender.send(message);

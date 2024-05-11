@@ -273,12 +273,12 @@
 		display:block;
 		right : 0;
 	}
-	#input_code{
+	.input_code{
 		width: 300px;
 		height:100px;
 		border-radius:10px;
 	}
-	#input_code > #emailCode{
+	.input_code > #emailCode{
 		border:1px solid rgb(230, 230, 230);
 		float:left;
 	}
@@ -424,9 +424,10 @@
 					<img src="resources/img/check.png" class="checkEmail" style="display:none;">
 					<button type="button" id="checkMyEmail">이메일 인증</button>
 				</div>
-				<div id="input_code" style="font-size:15px; display:none;">
+				<div class="input_code" style="font-size:15px; display:none;">
 					&nbsp;&nbsp;인증번호를 입력하세요 <input type="text" name="emailCode" id="emailCode">
 					&nbsp;&nbsp;<button type="button" id="checkEmailCode">인증하기</button>
+					<div class="myCode"></div>	
 				</div>
 					
 				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
@@ -625,7 +626,6 @@
     					} else{
     						$email.css('border', '1px solid lightgreen');
     						$checkE.show().css();
-    						$joinBtn.removeAttr('disabled');
     					}
     				},
     				error : function(){
@@ -637,44 +637,52 @@
 				$joinBtn.attr('disabled', true);
 			}
 		});
-	 
+		
 		$(document).ready(function() {
-			$('#checkMyEmail').click(function(){
-				const $checkMyEmail = $('#checkMyEmail');
-				const $inputCode = $('#input_code');
-				const $checkEmailCode = $('#checkEmailCode');
-				const $emailCode = $('#emailCode');
-				var email = $('#email').val().trim();
-				
-				 if (email !== '') {
-				$checkMyEmail.css('width', '150px').html('인증번호 전송완료');
-					 $.ajax({
-							url : 'member/emailCheck.do',
-							type : 'get',
-							data : {email : email},
-							success : function(result){
-								$inputCode.show().css();
-								
-							},
-							error : function(){
-								console.log('이메일 인증 AJAX 통신 실패~');
-							}
-						});
-			        } else {
-			            alert('이메일을 입력해주세요.');
+			
+		    $('#checkMyEmail').click(function() {
+		        const $checkMyEmail = $('#checkMyEmail');
+		        const $inputCode = $('.input_code');
+		        var email = $('#email').val().trim();
+
+		        if (email !== '') {
+		            $checkMyEmail.css('width', '150px').html('인증번호 전송완료');
+		            $.ajax({
+		                url: 'member/emailCheck.do',
+		                type: 'get',
+		                data: { email: email },
+		                success: function(result) {
+		                	const code = result;
+							console.log(code);
+		                    $inputCode.show().css();
+		                    $('.myCode').val(code);
+		              		$('.myCode').append('<input type="hidden" id="codeCheck" value="' + code + '">');
+		                    
+		                },
+		                error: function() {
+		                    console.log('이메일 인증 AJAX 통신 실패~');
+		                }
+		            });
+		        } else {
+		            alert('이메일을 입력해주세요.');
 		        }
-			});
-		
+		    });
+		    
+            $('#checkEmailCode').click(function() {
+                const $emailCode = $('.input_code #emailCode');
+                const $codeCheck = $('#codeCheck');
+                	
+                    	console.log($codeCheck.val());
+                    if ($emailCode.val().trim() === $codeCheck.val()) {
+                        console.log('성공');
+                        $joinBtn.removeAttr('disabled');
+                    } else {
+                        console.log('실패');
+                    }
+             });
+
 		});
 		
-		$('#checkEmailCode').click(function(){
-		console.log($('#checkEmailCode').val());
-			if($emailCode.val().trim() === result){
-				console.log('성공');
-			} else {
-				console.log('실패');
-			}
-		});
 		
 	 
 	 });
