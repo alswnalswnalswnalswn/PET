@@ -80,7 +80,7 @@
 }
 
 #placesList .item h5, #placesList .item .info {
-	text-overflow: ellipsis;
+	text-overflow: auto;
 	overflow: hidden;
 	white-space: nowrap;
 }
@@ -95,9 +95,38 @@
 
 #placesList .info .jibun {
 	padding-left: 26px;
+	background:
+		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
+		no-repeat;
 }
 
 #placesList .info .tel {
 	color: #009900;
 }
 
+#placesList .item .markerbg {
+	float: left;
+	position: absolute;
+	width: 24px;
+	height: 35px;
+	margin: 10px 0 0 10px;
+	background:
+		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png)
+		no-repeat;
+}
+
+#pagination {
+	margin: 10px auto;
+	text-align: center;
+}
+
+#pagination a {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+#pagination .on {
+	font-weight: bold;
+	cursor: default;
+	color: #777;
+}

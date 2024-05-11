@@ -14,15 +14,14 @@
 <body>
 	<jsp:include page="../common/header.jsp" />
 	
-	<div class="map_wrap">
-		<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
-
-		<div id="menu_wrap" class="bg_white">
-			<ul id="placesList"></ul>
-			<div id="pagination"></div>
-		</div>
-	</div>
+		<div class="map_wrap">
+			<div id="map" style="width: 100%; height: 100%; position: relative; overflow: auto;"></div>
 	
+			<div id="menu_wrap" class="bg_white">
+				<ul id="placesList"></ul>
+				<div id="pagination"></div>
+			</div>
+		</div>
 	
 	<script>
 	
@@ -84,18 +83,26 @@
 		    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 		    	success : result => {
 		    		
-    		    	var listEl = document.getElementById('placesList'),
-		            itemEl = '',
-		            list = '',
-		            fragment = document.createDocumentFragment(),
+    		    	var listEl = document.getElementById('placesList');
+		            listEl.innerHTML = '';
+    		    	var itemStr = '',
+
 		            menuEl = document.getElementById('menu_wrap');
-    		    	
     		    	
 		            result.forEach((result, index) => {
 		            	markersAndInfowindow(result, map);
-		            	
+		            	itemStr += '<li class="item">'
+		            			 + '<span class="markerbg"></span>'
+			            		 + '<div class="info">'
+			            		 + '<h5>' + result.placeName + '</h5>'
+								 + '<span>' + result.newAddr + '</span>'
+								 + '<span class="jibun gray">' + result.oldAddr + '</span>'
+								 + '<span class="tel">' + result.placeTel  + '</span>'
+								 + '</div>'
+								 + '</li>';
 		            });
 		            
+		            listEl.innerHTML += itemStr;
 		    
 				}
 			});

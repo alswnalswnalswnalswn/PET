@@ -16,12 +16,13 @@ import com.kh.pet.place.model.vo.Place;
 @Controller
 public class ReserController {
 	
+	
 	//@Autowired
 	//private PlaceService reserService;
 	
 	@GetMapping("hospital")
 	public String hospitalForwarding() {
-		return "hospital/hospitalMain5";
+		return "hospital/hospitalMain";
 	}
 	
 	
