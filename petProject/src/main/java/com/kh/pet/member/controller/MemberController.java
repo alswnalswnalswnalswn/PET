@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.service.MemberService;
-import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 
 @Controller

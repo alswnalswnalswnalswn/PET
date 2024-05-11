@@ -1,6 +1,7 @@
-package com.kh.pet.reser.controller;
+/*package com.kh.pet.reser.controller;
 
 import java.util.HashMap;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ import com.kh.pet.place.model.vo.Place;
 @Controller
 public class ReserController {
 	
-	@Autowired
-	private PlaceService reserService;
+	//@Autowired
+	//private PlaceService reserService;
 	
 	@GetMapping("hospital")
 	public String hospitalForwarding() {
@@ -33,5 +34,6 @@ public class ReserController {
 	
 	
 	
-	
 }
+
+ */	

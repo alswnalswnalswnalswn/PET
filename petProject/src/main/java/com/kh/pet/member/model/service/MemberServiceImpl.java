@@ -2,13 +2,13 @@ package com.kh.pet.member.model.service;
 
 import java.util.List;
 
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.dao.MemberRepository;
-import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 
 @Service
@@ -55,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void sendMail(CertVO certVo) {
+	public void sendMail() {
 		
 	}
 
