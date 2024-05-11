@@ -20,6 +20,11 @@ public class ReserController {
 	//@Autowired
 	//private PlaceService reserService;
 	
+	@GetMapping("deleteLater")
+	public String aasdasd() {
+		return "hospital/deleteLaterFolder/deleteLater";
+	}
+	
 	@GetMapping("hospital")
 	public String hospitalForwarding() {
 		return "hospital/hospitalMain";
