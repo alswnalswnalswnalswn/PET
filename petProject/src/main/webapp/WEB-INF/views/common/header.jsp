@@ -389,6 +389,7 @@
         
 		<div id="join-area">
 			<form action="member/join" method="post">
+			<input type="hidden" name="code" id="myCode" value="">
 				<div class="input_form">
 					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요 (3~10 영/숫자)" required>
 					<div id="checkId" class="danger" style="font-size:0.7em; display:none;"></div>
@@ -427,7 +428,6 @@
 				<div class="input_code" style="font-size:15px; display:none;">
 					&nbsp;&nbsp;인증번호를 입력하세요 <input type="text" name="emailCode" id="emailCode">
 					&nbsp;&nbsp;<button type="button" id="checkEmailCode">인증하기</button>
-					<div class="myCode"></div>	
 				</div>
 					
 				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
@@ -655,9 +655,7 @@
 		                	const code = result;
 							console.log(code);
 		                    $inputCode.show().css();
-		                    $('.myCode').val(code);
-		              		$('.myCode').append('<input type="hidden" id="codeCheck" value="' + code + '">');
-		                    
+		                    $('#myCode').val(code);
 		                },
 		                error: function() {
 		                    console.log('이메일 인증 AJAX 통신 실패~');
@@ -670,10 +668,10 @@
 		    
             $('#checkEmailCode').click(function() {
                 const $emailCode = $('.input_code #emailCode');
-                const $codeCheck = $('#codeCheck');
-                	
-                    	console.log($codeCheck.val());
-                    if ($emailCode.val().trim() === $codeCheck.val()) {
+                const $myCode = $('#join-area input[name="code"]');
+               	console.log($myCode.val());	
+               	console.log($emailCode.val());	
+                    if ($emailCode.val().trim() === $myCode.val()) {
                         console.log('성공');
                         $joinBtn.removeAttr('disabled');
                     } else {
