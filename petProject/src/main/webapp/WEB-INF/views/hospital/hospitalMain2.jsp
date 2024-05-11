@@ -24,7 +24,7 @@
 	
 	<script>
 		
-		/**** 지도 생성 ****/
+		/* 지도 생성 */
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
 			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -33,9 +33,9 @@
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 		var zoomControl = new kakao.maps.ZoomControl(); // 지도에 확대 축소 컨트롤을 생성한다
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT); // 지도의 우측에 확대 축소 컨트롤을 추가한다
-	
+
 		
-		/**** HTML5의 geolocation으로 사용할 수 있는지 확인합니다 ****/
+		/* HTML5의 geolocation으로 사용할 수 있는지 확인합니다 */
 		if (navigator.geolocation) { // GeoLocation을 이용해서 접속 위치를 얻어옵니다
 			navigator.geolocation.getCurrentPosition(position => {
 				var lat = position.coords.latitude, // 위도
@@ -50,68 +50,14 @@
 			displayMarker(locPosition, message);
 		}
 		
-		/**** 지도 영역 바뀌는 동작이 끝날때마다 실행되게끔 ****/
-		kakao.maps.event.addListener(map, 'dragend', function () {
-			positions = [];
-			moveMarkers();
-		});
-		
-		mapContainer.addEventListener ('wheel', event => {
-			positions = [];
-			moveMarkers();
-		});
-		
-		
-		// 지도 영역정보를 얻어옵니다 
-	    function moveMarkers(){
-		    var bounds = map.getBounds();
-		    var neLat = bounds.getNorthEast().getLat();
-		    var neLng = bounds.getNorthEast().getLng();
-		    var swLat = bounds.getSouthWest().getLat();
-		    var swLng = bounds.getSouthWest().getLng();
+		// 마커를 담을 배열입니다
+		var markers = [];
 
-		    $.ajax({
-		    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
-		    	success : result => {
-		    		
-		    		for(let i in result){
-		    			positions[i] = {
-		    							latlng : new kakao.maps.LatLng(result[i].placeLat, result[i].placeLon),
-		    							placeLat : result[i].placeLat,
-		    							placeLon : result[i].placeLon,
-		    							placeName : result[i].placeName,
-		    							newAddr : result[i].newAddr,
-		    							oldAddr : result[i].oldAddr,
-		    							placeDayOff : result[i].placeDayOff,
-		    							placeDayOn : result[i].placeDayOn,
-		    							placeNo : result[i].placeNo,
-		    							placeTel : result[i].placeTel
-		    			}
-		    		}
-		    		//console.log(result);
-		    		console.log(positions);
-		    		/*
-		    		addMarkersAndInfowindow(positions, map);
-		    		displayPlaces(positions);
-		    		*/
-				}
-			});
-	    }
-		
-		
-		
-		/**** 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다 ****/
-		/*
-		kakao.maps.event.addListener(map, 'bounds_changed', () => {        
-			
-			// 기존 추가된 마커 삭제
-			deleteMarkers();
-			
-		   
-		});
-		
-		
-		*/
+		// 장소 검색 객체를 생성합니다
+		var ps = new kakao.maps.services.Places();  
+
+		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+		var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 		
 		
 		
@@ -127,17 +73,34 @@
 		
 		
 		
-	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	</script>
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	<jsp:include page="../common/footer.jsp" />
 </body>

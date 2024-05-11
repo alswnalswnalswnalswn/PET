@@ -104,22 +104,28 @@
         }
 		
 		
-		function addMarkersAndInfowindow(item, map){
+		function createMarkerAndInfowindow(item, map){
 			var position = new kakao.maps.LatLng(item.placeLat, item.placeLon);
 			
-			for (let i in item) {
     			// 마커를 생성합니다
     		    var marker = new kakao.maps.Marker({
 			        map: map, // 마커를 표시할 지도
 			        position: item[i].latlng // 마커의 위치
 			    });
     		    
-    			// infowindow 배열 선언
+    			// infowindow 생성
     		    var infowindow = new kakao.maps.InfoWindow({
     		    	content: positions[i].placeName // 인포윈도우에 표시할 내용
     			});
-    		}
-			showMI(marker, infowindow);
+    			
+    		    kakao.maps.event.addListener(marker, 'click', function() {
+    		        if (lastInfowindow) {
+    		            lastInfowindow.close();
+    		        }
+    		        
+    		        infowindow.open(map, marker);
+    		        lastInfowindow = infowindow;
+    		    });
 			
 		}
 		
