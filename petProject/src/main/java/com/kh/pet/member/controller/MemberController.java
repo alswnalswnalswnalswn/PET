@@ -79,7 +79,8 @@ public class MemberController {
 		return memberService.checkEmail(email) > 0 ? "NNNNN" : "NNNNY";
 	}
 	
-	@RequestMapping("emailCheck.do")
+	@ResponseBody
+	@GetMapping("emailCheck.do")
 	public String emailCheck(String email, HttpServletRequest request) throws MessagingException {
 		/*
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -108,7 +109,7 @@ public class MemberController {
 		
 		sender.send(message);
 		
-		return "member/check";
+		return code;
 		
 	}
 	
