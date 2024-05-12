@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>냥이랑 멍이랑</title>
 </head>
 <body>
 	<jsp:include page="common/header.jsp" />
