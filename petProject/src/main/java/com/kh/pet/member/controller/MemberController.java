@@ -2,6 +2,7 @@ package com.kh.pet.member.controller;
 
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -30,7 +31,7 @@ import com.kh.pet.member.model.vo.Member;
 public class MemberController {
 	
 	@Autowired
-	private JavaMailSenderImpl sender;
+	private JavaMailSenderImpl sender; 
 	
 	@Autowired
 	private MemberService memberService;
@@ -45,7 +46,7 @@ public class MemberController {
 		if(memberService.login(member) != null && 
 			bcryptPasswordEncoder.matches(member.getMemberId(), memberService.login(member).getMemberPwd())) {
 			session.setAttribute("loginUser", memberService.login(member));
-			System.out.println(memberService.login(member));
+			// System.out.println(memberService.login(member));
 			mv.setViewName("redirect:/");
 		} else {
 			mv.addObject("alert", "일치하지 안흔 정보입니다. 다시 로그인 해주세요");
@@ -137,9 +138,15 @@ public class MemberController {
 		return code == email ? "NNNNN" : "NNNNY";
 	}
 	
+	@GetMapping("kakao")
+	public String kakaologin() {
+		return "kakao-login";
+	}
 	
-	
-	
+	@GetMapping("code")
+	public String code() {
+		return "redirect:kakao";
+	}
 	
 	
 	

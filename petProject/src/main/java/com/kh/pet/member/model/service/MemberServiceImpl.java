@@ -27,11 +27,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int join(Member member, List<Animal> animal) {
-		int result = 0;
-		if(memberRepository.join(sqlSession, member) > 0) {
-			result = memberRepository.insertAnimals(sqlSession, animal);
-		}
-		return result;
+		return memberRepository.join(sqlSession, member);
 	}
 
 	@Override

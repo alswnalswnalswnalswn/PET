@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -151,7 +151,7 @@
 	    position: relative;
     }
     .input_btn{
-    	margin-top: 30px;
+    	margin-top: 20px;
     }
     .input_btn2{
     	margin-top: 50px;
@@ -282,6 +282,10 @@
 		border:1px solid rgb(230, 230, 230);
 		float:left;
 	}
+	#kakaologin{
+		width:265px;
+		border-radius:10px;
+	}
 </style>
 </head>
 <body>
@@ -367,7 +371,10 @@
      			<div class="input_form brt">
      				<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
      			</div>
-     			<div class="input_btn"><button type="submit" id="login-btn" class="btn">로그인</button></div>
+     			<div class="input_btn">
+     			<a id="kakao-login-btn"><img src="resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
+     			<button type="submit" id="login-btn" class="btn">로그인</button>
+     			</div>
      		</form>
 		</div>
 	       
@@ -436,7 +443,7 @@
 					<span class="animal" data-animal="A4">물고기</span>
 					<span class="animal" data-animal="A5">새</span>
 					<span class="animal" data-animal="A6">햄스터</span>
-					<input type="hidden" name="animal">
+					<input type="hidden" name="animal" value="A1" >
 				</div>
 				<div class="input_btn2"><button type="submit" id="join-btn" class="btn">회원가입</button></div>
 		    </form>	
@@ -447,24 +454,26 @@
 	</div>
 </div>
 
+
 	<script>
-	
 	var animalCode = "";
 	 $(() => {
 		$(document).ready(function(){
 			$('.animal').click(function(){	
 			$(this).toggleClass('clicked');
 			
-			  var animalCodes = [];
-		      
+			var selectedCodes = [];
+			
 		      // 선택된 동물들의 코드를 배열에 추가
 		      $('.animal.clicked').each(function() {
 		        var animalCode = $(this).data('animal');
-		        animalCodes.push(animalCode);
+		        selectedCodes.push(animalCode);
 		      });
-		      $('#animalForm input[name="animal"]').val(animalCodes.join(','));
+		      $('#animalForm input[name="animal"]').val(selectedCodes.join(','));
+		      console.log($('input[name="animal"]'));
 			});
 		});
+		
 		
 		<!------------ 아이디 ------------>
 		
@@ -609,7 +618,6 @@
 		const $checkE = $('.checkEmail');
 		const $checkMyEmail = $('#checkMyEmail');
 		
-		
 		$email.keyup(function(){
 			
 			if($email.val().length > 10){
@@ -654,6 +662,7 @@
 		                    $inputCode.show().css();
 		                    const code = result;
 		                    const $emailCode = $('.input_code #emailCode');
+		                    $joinBtn.removeAttr('disabled');
 		                    /*
 		                    $emailCode.keyup(function(){
 		                    	
@@ -707,6 +716,11 @@
 		*/
 	 
 	 });
+	 
+	 
+	 
+	 
+	 
 	</script>
  
 

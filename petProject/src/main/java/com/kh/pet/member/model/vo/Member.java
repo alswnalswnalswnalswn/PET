@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.kh.pet.common.model.vo.Animal;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 	private int memberNo;
 	private String memberId;
@@ -25,8 +27,10 @@ public class Member {
 	private String memberStatus;
 	private Date enrollDate;
 	private Date ModifyDate;
+	private String animalName;
+	private String animalCode;
 	
-	private List<Animal> AnimalList;
+	private List<Animal> animalList;
 	private List<MemberCoupon> couponList;
 	
 }
