@@ -360,7 +360,7 @@
         
         
 		<div id="login-area">
-			<form action="member" method="post">
+			<form action="member/login" method="post">
 				<div class="input_form">
 					<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 				</div>
@@ -375,7 +375,6 @@
 		</div>
 	</div>
 </div>     		
-          		
           		
           		
 <div class="modal fade" id="myjoin">
@@ -654,28 +653,24 @@
 		                success: function(result) {
 		                    $inputCode.show().css();
 		                    const code = result;
-		                    
-		                    $('#checkEmailCode').click(function() {
+		                    const $emailCode = $('.input_code #emailCode');
+		                    /*
+		                    $emailCode.keyup(function(){
 		                    	
-		                        const $emailCode = $('.input_code #emailCode');
-		        				if ($emailCode.val() !== '') {
-		        					$.ajax({
-		        						url: 'member/checkCode',
-		        						type: 'get',
-		        						data: { email: $emailCode.val(),
-		        								code : code
-		        							  },
-		        						success: function(result) {
-		        						   console.log(result);
-		        						},
-		        						error: function() {
-		        						    console.log('이메일 인증 AJAX 통신 실패~');
-		        						}
-		        					});
-		        				} else {
-		        				    alert('이메일을 입력해주세요.');
-		        				}
-		        			});
+		                    	if($emailCode.val().length == 6){
+		                    	
+			                    	if($emailCode.val() === code){
+			                    		console.log('성공');
+			                    	} else {
+			                    		console.log('실패');
+			                    	}
+		                    	} else{
+		                    		console.log('실패임');
+		                    	}
+		                    });
+		                    
+		                    */
+		                    
 		                },
 		                error: function() {
 		                    console.log('이메일 인증 AJAX 통신 실패~');
@@ -687,9 +682,29 @@
 		    });
 		    
 
-		});
-		
-		
+		});/*
+		 $('.input_code #checkEmailCode').click(function() {
+         	
+             const $emailCode = $('.input_code #emailCode');
+				if ($emailCode.val() !== '') {
+					$.ajax({
+						url: 'member/checkCode',
+						type: 'get',
+						data: { email: $emailCode.val(),
+								code : code
+							  },
+						success: function(result) {
+						   console.log(result);
+						},
+						error: function() {
+						    console.log('이메일 인증 AJAX 통신 실패~');
+						}
+					});
+				} else {
+				    alert('이메일을 입력해주세요.');
+				}
+			});
+		*/
 	 
 	 });
 	</script>

@@ -13,11 +13,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.service.MemberService;
@@ -33,12 +35,24 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
 	@PostMapping("login")
-	public String login(Member member,HttpSession session) {
+	public ModelAndView login(Member member,HttpSession session, ModelAndView mv) {
 		
-		session.setAttribute("loginUser", memberService.login(member));
-		System.out.println(memberService.login(member));
-		return "main";
+		
+		if(memberService.login(member) != null && 
+			bcryptPasswordEncoder.matches(member.getMemberId(), memberService.login(member).getMemberPwd())) {
+			session.setAttribute("loginUser", memberService.login(member));
+			System.out.println(memberService.login(member));
+			mv.setViewName("redirect:/");
+		} else {
+			mv.addObject("alert", "일치하지 안흔 정보입니다. 다시 로그인 해주세요");
+			mv.setViewName("redirect:/");
+		}
+		
+		return mv;
 	}
 	
 	@PostMapping("join")
@@ -51,6 +65,9 @@ public class MemberController {
 		} else {
 			member.setMemberStatus("C");
 		}
+		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
+		System.out.println("암호문 : " + encPwd);
+		member.setMemberPwd(encPwd);
 		memberService.join(member, animal);
 		return "login";
 	}
@@ -119,7 +136,6 @@ public class MemberController {
 	public String checkCode(String code, String email) {
 		return code == email ? "NNNNN" : "NNNNY";
 	}
-	
 	
 	
 	
