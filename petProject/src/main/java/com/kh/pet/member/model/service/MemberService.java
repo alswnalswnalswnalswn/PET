@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.vo.Member;
+import com.kh.pet.member.model.vo.SocialMember;
 
 public interface MemberService {
 	
@@ -20,5 +21,7 @@ public interface MemberService {
 	int checkEmail(String email);
 
 	void sendMail();
+
+	SocialMember selectMember(SocialMember sm);
 
 }

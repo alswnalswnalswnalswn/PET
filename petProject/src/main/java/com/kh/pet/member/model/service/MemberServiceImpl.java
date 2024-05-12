@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.dao.MemberRepository;
 import com.kh.pet.member.model.vo.Member;
+import com.kh.pet.member.model.vo.SocialMember;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -58,6 +59,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void sendMail() {
 		
+	}
+
+	@Override
+	public SocialMember selectMember(SocialMember sm) {
+		return null;
 	}
 
 

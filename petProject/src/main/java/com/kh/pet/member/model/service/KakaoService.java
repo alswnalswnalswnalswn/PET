@@ -14,6 +14,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
+import com.kh.pet.member.model.vo.SocialMember;
+
 @Service
 public class KakaoService {
 
@@ -48,12 +50,12 @@ public class KakaoService {
 		
 		String accessToken = element.get("access_token").toString();
 		
-		System.out.println(accessToken);
+		// System.out.println(accessToken);
 		
 		return accessToken;
 	}
 
-	public void getUserInfo(String accessToken) throws IOException {
+	public SocialMember getUserInfo(String accessToken) throws IOException, ParseException {
 		
 		String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
 		
@@ -61,9 +63,27 @@ public class KakaoService {
 		
 		HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
 		urlConnection.setRequestMethod("GET");
-		urlConnection.setRequestProperty("Authorization", "Bearer" + accessToken);
+		urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
 		
-		System.out.println(urlConnection.getResponseCode());
+		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+		
+		String responseData = br.readLine();
+		
+		JSONObject responseObj = (JSONObject)new JSONParser().parse(responseData);
+		
+		SocialMember sm = new SocialMember();
+		
+		sm.setId(responseObj.get("id").toString());
+		
+		JSONObject propObj = (JSONObject)responseObj.get("properties");
+		
+		System.out.println(propObj);
+		
+		sm.setId(responseObj.get("id").toString());
+		sm.setNickname(propObj.get("nickname").toString());
+		sm.setThumbnailImage(propObj.get("thumbnail_image").toString());
+		
+		return sm;
 	}
 
 

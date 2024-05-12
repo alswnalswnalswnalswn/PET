@@ -27,6 +27,7 @@ import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.service.KakaoService;
 import com.kh.pet.member.model.service.MemberService;
 import com.kh.pet.member.model.vo.Member;
+import com.kh.pet.member.model.vo.SocialMember;
 
 @Controller
 @RequestMapping("member")
@@ -148,10 +149,14 @@ public class MemberController {
 	}
 	
 	@GetMapping("code")
-	public String code(String code) throws IOException, ParseException {
+	public String code(String code, HttpSession session) throws IOException, ParseException {
 		String accessToken = kakaoService.getToken(code);
 		
-		kakaoService.getUserInfo(accessToken);
+		SocialMember sm = kakaoService.getUserInfo(accessToken);
+		
+		memberService.selectMember(sm);
+		
+		session.setAttribute("loginUser", sm);
 		
 		return "redirect:kakao";
 	}
