@@ -15,7 +15,6 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class Member {
 	private int memberNo;
 	private String memberId;

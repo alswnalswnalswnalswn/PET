@@ -1,8 +1,8 @@
 package com.kh.pet.member.controller;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -11,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -23,12 +24,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.member.model.service.KakaoService;
 import com.kh.pet.member.model.service.MemberService;
 import com.kh.pet.member.model.vo.Member;
 
 @Controller
 @RequestMapping("member")
 public class MemberController {
+	@Autowired
+	KakaoService kakaoService;
 	
 	@Autowired
 	private JavaMailSenderImpl sender; 
@@ -140,11 +144,15 @@ public class MemberController {
 	
 	@GetMapping("kakao")
 	public String kakaologin() {
-		return "kakao-login";
+		return "redirect:/";
 	}
 	
 	@GetMapping("code")
-	public String code() {
+	public String code(String code) throws IOException, ParseException {
+		String accessToken = kakaoService.getToken(code);
+		
+		kakaoService.getUserInfo(accessToken);
+		
 		return "redirect:kakao";
 	}
 	

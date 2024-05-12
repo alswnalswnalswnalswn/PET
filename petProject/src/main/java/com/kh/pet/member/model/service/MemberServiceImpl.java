@@ -1,12 +1,17 @@
 package com.kh.pet.member.model.service;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
-
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.dao.MemberRepository;
 import com.kh.pet.member.model.vo.Member;
@@ -54,5 +59,6 @@ public class MemberServiceImpl implements MemberService {
 	public void sendMail() {
 		
 	}
+
 
 }

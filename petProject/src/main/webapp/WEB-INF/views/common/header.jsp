@@ -285,6 +285,7 @@
 	#kakaologin{
 		width:265px;
 		border-radius:10px;
+		cursor: pointer;	
 	}
 </style>
 </head>
@@ -382,7 +383,14 @@
 		</div>
 	</div>
 </div>     		
-          		
+	<script>
+		$(() => {
+			
+			$('#kakao-login-btn').click(() => {
+				location.href='https://kauth.kakao.com/oauth/authorize?client_id=bf4263613861b95f8402b64976c94858&redirect_uri=http://localhost:7777/pet/member/code&response_type=code&scope=profile_image,profile_nickname';
+			});
+		});
+	</script>		
           		
 <div class="modal fade" id="myjoin">
     <div class="modal-dialog modal-dialog-centered">

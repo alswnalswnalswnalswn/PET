@@ -20,4 +20,5 @@ public interface MemberService {
 	int checkEmail(String email);
 
 	void sendMail();
+
 }
