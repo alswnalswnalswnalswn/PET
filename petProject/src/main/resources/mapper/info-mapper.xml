@@ -4,10 +4,33 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="infoMapper">
 	
+	<resultMap type="attachment" id="attachmentResultSet">
+		<result column="ATT_NO" property="attNo"/>
+		<result column="ATT_PATH" property="attPath"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="ATT_STATUS" property="attStaus"/>
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="ATT_LELVEL" property="attLevel"/>
+	</resultMap>
 	
+	<resultMap type="info" id="infoResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="BO_CATEGORY_NAME" property="categoryCode"/>
+		<result column="UPDATE_DATE" property="updateDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		
+		<result column="BOARD_LIKE" property="boardLike"/>
+		
+		<collection resultMap="attachmentResultSet" property="attachment"/>
+	</resultMap>
 	
-	
-	<select id="selectDate" >
+	<select id="selectDate" parameterType="_int" resultMap="infoResultSet">
 		SELECT
 		       BOARD_NO,
 		       BOARD_TITLE,
@@ -21,6 +44,7 @@
 		       BOARD_LIKE,
 		       ATT_NO,
 		       ATT_PATH,
+		       ORIGIN_NAME,
 		       CHANGE_NAME,
 		       ATT_STATUS,
 		       ATT_LELVEL
@@ -46,7 +70,7 @@
 		 WHERE
 		       BOARD_STATUS = 'Y'
 		   AND
-		       PLACE_NO = 412
+		       PLACE_NO = ${placeNo}
 	</select>
 	
 	

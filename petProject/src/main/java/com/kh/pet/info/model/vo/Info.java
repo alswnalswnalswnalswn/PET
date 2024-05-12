@@ -2,6 +2,8 @@ package com.kh.pet.info.model.vo;
 
 import java.util.Date;
 
+import com.kh.pet.common.model.vo.Attachment;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,5 +23,8 @@ public class Info {
 	private String categoryCode;
 	private Date updateDate;
 	private String boardStatus;
-
+	
+	private int boardLike;
+	
+	private Attachment attachment;
 }

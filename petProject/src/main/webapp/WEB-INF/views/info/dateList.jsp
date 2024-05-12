@@ -27,11 +27,102 @@
 	width:300px;
 	background: rgb(255,255,255);
 	overflow: auto;
+	
+}
+#menu_detail{
+	position: absolute;
+	left:300px;
+	top:0;
+	height:500px;
+	width:500px;
+	background: rgb(255,255,255);
+	overflow-y: auto;
+	padding: 15px;
+    border: 1px solid gray;
+    display:none;
 }
 .items{
 	margin: 20px 20px;
 	border:1px solid black;
 }
+#btn-area{
+	position: relative;
+}
+
+.date-btn{
+   position: absolute;
+   border: 1px solid black;
+   right: 15px;
+}
+.menu_head{
+            width: 100%;
+            height: 20%;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 45px;
+            border-bottom: 1px solid gray;
+        }
+        .menu_title{
+            float: left;
+            width: 95%;
+        }
+        .menu_heads{
+            height: 50%;
+        }
+        .heads_content{
+            float: left;
+            height: 100%;
+            width: 50%;
+            
+        }
+        .heads_content > div{
+            height: 50%;
+            font-size: 15px;
+            line-height: 20px;
+        }
+        .heads_content > div > div{
+            font-size: 13px;
+            font-weight: 100;
+            color: gray;
+        }    
+
+        .menu_create_date{
+            float: left;
+            height: 100%;
+            width: 100%;
+        }
+
+        .menu_content{
+            margin-bottom: 20px;
+            height: 300px;
+            width: 100%;
+            position: relative;
+        }
+
+        .menu_like{
+            position: absolute;
+            bottom: 0px;
+            font-size: 15px;
+        }
+        .footer_title{
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .reply{
+            border-bottom: 1px solid gray;
+            margin-bottom: 10px;
+        }
+        .reply_writer{
+            font-weight: 700;
+            margin-bottom: 5px;
+            
+        }
+        .reply_content{
+            font-size: 13px;
+            word-break:break-all;
+            padding-bottom: 5px;
+        }
 </style>
 </head>
 <body>
@@ -40,6 +131,7 @@
 	<div id="wrap">
 		<div id="menu_wrap" style="z-index: 2">
 		</div>
+		<div id="menu_detail" style="z-index: 3"></div>
 		<div id="map" style="width: 1200px; height: 500px;z-index: 1">
 			
 		</div>
@@ -83,7 +175,7 @@
 		                createMarkerAndInfoWindow(item, map);
 		                
 		                list +='<div class="items card">' +
-		                			'<div class="card-header">' + item.placeName + '</div>' +
+		                			'<div class="card-header" id="btn-area">' + item.placeName + '<button class="detail-btn date-btn" id="' + item.placeNo + '">자세히보기</button></div>' +
 		                			'<div class="card-body">' + item.placeDayOff + '<br>' + item.placeDayOn + '</div>' +
 		                			'<div class="card-footer">' + item.placeTel +'</div>' +
 								'</div>';
@@ -166,22 +258,69 @@
 		}
 		
 		$(() => {
-			$('#map').on('click','.detail-btn', e => {
+			
+			
+			
+			$('#wrap').on('click','.detail-btn', e => {
 				const $placeNo = $(e.target).attr('id');
 				
 				$.ajax({
 					url : 'date/'+ $placeNo,
 					success: result => {
 						
+						const text = '<div class="menu_head">' +
+							            '<div class="menu_heads">' +
+						                '<div class="menu_title">' + result.boardTitle  +'</div>' +
+						                '<div class="menu_close">X</div>' +
+						            '</div>' + 
+						            '<div class="menu_heads">' +
+						                '<div class="heads_content">' +
+						                    '<div>관리자</div>' +
+						                    '<div>' +
+						                        '<div class="menu_create_date">' + result.createDate + ' 조회  ' + result.boardCount + '</div>' +
+						                    '</div>' +
+						                '</div>' +
+									'</div>' +
+						            
+						        '</div>' +
+								        '<div class="menu_body">' +
+								            '<div class="menu_content">' +
+								             	result.boardContent +
+								                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 8</div>' +
+								            '</div>' +
+								        '</div>' +
+				
+								        '<div class="menu_footer">' +
+								            '<div class="footer_title">댓글</div>' +
+								            '<div class="footer_content">' +
+								               ' <div class="reply">' +
+								                    '<div class="reply_writer">관리자</div>' +
+								                    '<div class="reply_content">댓글내용</div>' +
+								                '</div>' +
+								                '<div class="reply">' +
+								                    '<div class="reply_writer">관리자</div>' +
+								                    '<div class="reply_content">댓글내용</div>' + 
+								                '</div>' +
+								            '</div>' +
+								        '</div>';
+						 
+						$('#menu_detail').css('display','block').html(text);
 					}
+					
+					
 				});
 				
 			});
 			
+			$('#wrap').on('click','.menu_close', e => {
+				$(e.target).parents('#menu_detail').css('display','none');
+			});
 			
 		});
 		
 	</script>
+	
+	
 	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>

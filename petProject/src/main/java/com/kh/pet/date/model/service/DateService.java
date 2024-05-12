@@ -1,10 +1,10 @@
 package com.kh.pet.date.model.service;
 
-import com.kh.pet.place.model.vo.Place;
+import com.kh.pet.info.model.vo.Info;
 
 public interface DateService {
 
 
-	Place selectDate(int placeNo);
+	Info selectDate(int placeNo);
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.pet.date.model.service.DateService;
-import com.kh.pet.place.model.vo.Place;
+import com.kh.pet.info.model.vo.Info;
 
 @RestController
 @RequestMapping("date")
@@ -17,10 +17,10 @@ public class DateController {
 	DateService dateService;
 	
 	@GetMapping("/{placeNo}")
-	public Place selectDate(@PathVariable("placeNo")int placeNo) {
+	public Info selectDate(@PathVariable("placeNo")int placeNo) {
 		
-		Place place = dateService.selectDate(placeNo);
+		Info dateInfo = dateService.selectDate(placeNo);
 		
-		return place;
+		return dateInfo;
 	}
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.pet.date.model.dao.DateRepository;
+import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.place.model.vo.Place;
 
 @Service
@@ -17,7 +18,7 @@ public class DateServiceImpl implements DateService {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public Place selectDate(int placeNo) {
+	public Info selectDate(int placeNo) {
 		return dateRepository.selectDate(sqlSession,placeNo);
 	}
 	

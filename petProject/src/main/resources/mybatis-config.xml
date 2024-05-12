@@ -15,7 +15,8 @@
 		<typeAlias type="com.kh.pet.member.model.vo.Member" alias="member" />
 		<typeAlias type="com.kh.pet.member.model.vo.MemberCoupon" alias="memberCoupon" />
 		<typeAlias type="java.util.List" alias="list" />
-		<!-- <typeAlias type="com.kh.pet.info.model.vo.Info" alias="info" /> -->
+		<typeAlias type="com.kh.pet.info.model.vo.Info" alias="info" />
+		<typeAlias type="com.kh.pet.common.model.vo.Attachment" alias="attachment"/>
 	</typeAliases>
 	
 	
