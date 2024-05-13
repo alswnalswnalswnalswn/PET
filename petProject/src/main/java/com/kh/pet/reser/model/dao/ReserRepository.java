@@ -11,6 +11,4 @@ import com.kh.pet.place.model.vo.Place;
 @Repository
 public class ReserRepository{
 
-	
-	
 }

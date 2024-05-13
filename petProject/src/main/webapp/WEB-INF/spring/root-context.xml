@@ -9,7 +9,7 @@
 	
 	<context:property-placeholder location="/config/*.properties" /> 
     
-	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">
+	<bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource" destroy-method="close">
 		<property name="driverClassName" value="${spring.datasource.driverClassName}" />
 		<property name="url" value="${spring.datasource.url}" />
 		<property name="username" value="${spring.datasource.username}" />

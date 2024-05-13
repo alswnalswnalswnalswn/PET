@@ -1,6 +1,8 @@
 package com.kh.pet.info.model.vo;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import com.kh.pet.common.model.vo.Attachment;
 
@@ -18,13 +20,16 @@ public class Info {
 	private String boardTitle;
 	private String boardContent;
 	private int boardCount;
-	private Date createDate;
-	private int memberNo;
+	private LocalDateTime  createDate;
+	private String memberNo;
 	private String categoryCode;
-	private Date updateDate;
+	private LocalDateTime  updateDate;
 	private String boardStatus;
 	
 	private int boardLike;
 	
-	private Attachment attachment;
+	private List<Attachment> attachmentList;
+	
+	private List<Reply> replyList;
+
 }

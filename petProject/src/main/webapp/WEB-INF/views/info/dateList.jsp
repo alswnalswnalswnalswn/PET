@@ -163,7 +163,8 @@
 		    var neLng = bounds.getNorthEast().getLng();
 		    var swLat = bounds.getSouthWest().getLat();
 		    var swLng = bounds.getSouthWest().getLng();
-		
+			
+		    console.log(bounds);
 		    $.ajax({
 		        url: "places/P2/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 		        success: result => {
@@ -171,7 +172,6 @@
 		            var positions = [];
 		            var list = ''; 
 		            result.forEach( item => {
-		            	console.log(item);
 		                createMarkerAndInfoWindow(item, map);
 		                
 		                list +='<div class="items card">' +
@@ -263,21 +263,25 @@
 			
 			$('#wrap').on('click','.detail-btn', e => {
 				const $placeNo = $(e.target).attr('id');
-				
 				$.ajax({
 					url : 'date/'+ $placeNo,
 					success: result => {
-						
-						const text = '<div class="menu_head">' +
+						let createDate = result.createDate.date;
+						let createTime = result.createDate.time;
+						let replyList = result.replyList;
+						console.log(replyList);
+						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day, createTime.hour, createTime.minute ,createTime.second);
+
+						let text = '<div class="menu_head">' +
 							            '<div class="menu_heads">' +
 						                '<div class="menu_title">' + result.boardTitle  +'</div>' +
 						                '<div class="menu_close">X</div>' +
 						            '</div>' + 
 						            '<div class="menu_heads">' +
 						                '<div class="heads_content">' +
-						                    '<div>관리자</div>' +
+						                    '<div>' + result.memberNo + '</div>' +
 						                    '<div>' +
-						                        '<div class="menu_create_date">' + result.createDate + ' 조회  ' + result.boardCount + '</div>' +
+						                        '<div class="menu_create_date">' + dateFormat(fullDate) + ' 조회  ' + result.boardCount + '</div>' +
 						                    '</div>' +
 						                '</div>' +
 									'</div>' +
@@ -292,19 +296,19 @@
 				
 								        '<div class="menu_footer">' +
 								            '<div class="footer_title">댓글</div>' +
-								            '<div class="footer_content">' +
-								               ' <div class="reply">' +
-								                    '<div class="reply_writer">관리자</div>' +
-								                    '<div class="reply_content">댓글내용</div>' +
-								                '</div>' +
-								                '<div class="reply">' +
-								                    '<div class="reply_writer">관리자</div>' +
-								                    '<div class="reply_content">댓글내용</div>' + 
-								                '</div>' +
-								            '</div>' +
-								        '</div>';
-						 
+								            '<div class="footer_content">';
+								               
+								               for(let i in replyList){
+								            	   text += '<div class="reply">' +
+								            		   			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
+								                    			'<div class="reply_content">' + replyList[i].replyContent + '</div>' +
+								                    		'</div>';
+								               }
+
+								                text += '</div></div>';
+								                
 						$('#menu_detail').css('display','block').html(text);
+
 					}
 					
 					
@@ -318,6 +322,21 @@
 			
 		});
 		
+		function dateFormat(date) {
+	        let month = date.getMonth() + 1;
+	        let day = date.getDate();
+	        let hour = date.getHours();
+	        let minute = date.getMinutes();
+	        let second = date.getSeconds();
+
+	        month = month >= 10 ? month : '0' + month;
+	        day = day >= 10 ? day : '0' + day;
+	        hour = hour >= 10 ? hour : '0' + hour;
+	        minute = minute >= 10 ? minute : '0' + minute;
+	        second = second >= 10 ? second : '0' + second;
+
+	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+	}
 	</script>
 	
 	

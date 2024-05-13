@@ -2,11 +2,28 @@
 	width: 1200px;
 	height: 1000px;
 	margin: auto;
-	position: relative;
 }
 
 .admin_navi {
-	width : 20%;
-	height : 100%;
+	width: 20%;
+	height: 100%;
+	float: left;
 }
 
+.admin_navibar, .admin_navibar>li>ul {
+	list-style: none;
+	padding: 0px;
+}
+
+.nav-item>ul {
+	background-color: transparent;
+	/* 평소에는 안보이다가 마우스가 올라가는 순간 펼쳐지게 1 */
+	display: none;
+}
+
+.admin_page {
+	width: 80%;
+	height: 100%;
+	background-color: red;
+	float: left;
+}

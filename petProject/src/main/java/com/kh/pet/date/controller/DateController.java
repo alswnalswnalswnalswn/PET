@@ -1,5 +1,9 @@
 package com.kh.pet.date.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +21,7 @@ public class DateController {
 	DateService dateService;
 	
 	@GetMapping("/{placeNo}")
-	public Info selectDate(@PathVariable("placeNo")int placeNo) {
+	public Info selectDate(@PathVariable("placeNo")int placeNo) throws ParseException {
 		
 		Info dateInfo = dateService.selectDate(placeNo);
 		

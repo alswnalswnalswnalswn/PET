@@ -16,10 +16,14 @@
 		<typeAlias type="com.kh.pet.member.model.vo.MemberCoupon" alias="memberCoupon" />
 		<typeAlias type="com.kh.pet.info.model.vo.Info" alias="info" />
 		<typeAlias type="com.kh.pet.common.model.vo.Attachment" alias="attachment"/>
-    	<typeAlias alias="array" type="java.util.List"/>
+		<typeAlias type="com.kh.pet.info.model.vo.Reply" alias="reply"/>
+		<typeAlias type="com.kh.pet.info.model.vo.Comment" alias="comment"/>
+
 	</typeAliases>
 	
-	
+	<typeHandlers>
+	    <typeHandler handler="org.apache.ibatis.type.LocalDateTimeTypeHandler" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+	</typeHandlers>
 	
 	
 	
@@ -34,6 +38,7 @@
 		<mapper resource="/mapper/member-mapper.xml" />
 		<mapper resource="/mapper/community-mapper.xml" />
 		<mapper resource="/mapper/info-mapper.xml" />
+		<mapper resource="/mapper/reser-mapper.xml" />
 	</mappers>
 	
 </configuration>
