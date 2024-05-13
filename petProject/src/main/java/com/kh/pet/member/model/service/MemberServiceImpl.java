@@ -1,19 +1,11 @@
 package com.kh.pet.member.model.service;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.dao.MemberRepository;
+import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 import com.kh.pet.member.model.vo.SocialMember;
 
@@ -28,12 +20,16 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public Member login(Member member) {
-		return memberRepository.login(sqlSession,member);
+		return memberRepository.login(sqlSession, member);
 	}
 
 	@Override
-	public int join(Member member, List<Animal> animal) {
+	public int join(Member member) {
 		return memberRepository.join(sqlSession, member);
+	}
+	@Override
+	public int insertAnimals(Animal animal) {
+		return memberRepository.insertAnimals(sqlSession, animal);
 	}
 
 	@Override
@@ -57,8 +53,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void sendMail() {
-		
+	public void sendMail(CertVO certVo) {
+		memberRepository.insertCode(sqlSession, certVo);
 	}
 
 	@Override
@@ -66,5 +62,14 @@ public class MemberServiceImpl implements MemberService {
 		return null;
 	}
 
+	@Override
+	public boolean validate(CertVO certVo) {
+		boolean result =  memberRepository.validate(sqlSession, certVo);
+		
+		if(result != false) {
+			memberRepository.deleteCert(sqlSession, certVo);
+		}
+		return result;
+	}
 
 }

@@ -24,7 +24,6 @@ public class DateController {
 	public Info selectDate(@PathVariable("placeNo")int placeNo) throws ParseException {
 		
 		Info dateInfo = dateService.selectDate(placeNo);
-		
 		return dateInfo;
 	}
 }
