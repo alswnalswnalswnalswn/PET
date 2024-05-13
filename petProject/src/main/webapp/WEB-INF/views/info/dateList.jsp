@@ -270,6 +270,7 @@
 						let createTime = result.createDate.time;
 						let replyList = result.replyList;
 						console.log(replyList);
+						console.log(result);
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day, createTime.hour, createTime.minute ,createTime.second);
 
 						let text = '<div class="menu_head">' +

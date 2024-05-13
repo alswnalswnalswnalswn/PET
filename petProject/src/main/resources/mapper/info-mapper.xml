@@ -25,7 +25,6 @@
 	<resultMap type="reply" id="replyResultSet">
 		<result column="REPLY_NO" property="replyNo"/>
 		<result column="REPLY_WRITER" property="replyWriter"/>
-		<result column="BOARD_NO" property="boardNo"/>
 		<result column="REPLY.REPLY_CONTENT" property="replyContent"/>
 		<result column="REPLY.CREATE_DATE" property="createDate"/>
 		<result column="REPLY.UPDATE_DATE" property="updateDate"/>
@@ -48,7 +47,7 @@
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
 		
-		<collection resultMap="replyResultSet" property="replyList"></collection>
+		<collection resultMap="replyResultSet" property="replyList"/>
 	</resultMap>
 	
 	<select id="selectDate" parameterType="_int" resultMap="infoResultSet">
