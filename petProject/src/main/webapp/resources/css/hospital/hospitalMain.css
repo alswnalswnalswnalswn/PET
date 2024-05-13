@@ -1,4 +1,4 @@
-#wrap {
+#hospital_wrap {
 	width: 1200px;
 	height: 1000px;
 	margin: auto;
@@ -18,7 +18,7 @@
 }
 
 .map_wrap {
-	position: relative;
+	position: absolute;
 	width: 100%;
 	height: 500px;
 }
