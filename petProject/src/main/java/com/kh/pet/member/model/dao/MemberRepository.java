@@ -1,26 +1,27 @@
 package com.kh.pet.member.model.dao;
 
-import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 
 @Repository
 public class MemberRepository {
 
 	public Member login(SqlSessionTemplate sqlSession, Member member) {
-		return sqlSession.selectOne("memberMapper.login",member);
+		return sqlSession.selectOne("memberMapper.login", member); 
 	}
 
 	public int join(SqlSessionTemplate sqlSession, Member member) {
-		return sqlSession.insert("memberMapper.join", member);
+		sqlSession.insert("memberMapper.join", member);
+		return sqlSession.selectOne("memberMapper.selectMember", member.getMemberId());
 	}
 
-	public int insertAnimals(SqlSessionTemplate sqlSession, List<Animal> animal) {
-		return sqlSession.insert("memberMapper", animal);
+	public int insertAnimals(SqlSessionTemplate sqlSession, Animal animal) {
+		return sqlSession.insert("memberMapper.insertAnimals", animal);
 	}
 
 	public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
@@ -37,6 +38,19 @@ public class MemberRepository {
 
 	public int checkEmail(SqlSessionTemplate sqlSession, String email) {
 		return sqlSession.selectOne("memberMapper.checkEmail", email);
+	}
+	
+	public void insertCode(SqlSessionTemplate sqlSession, CertVO certVo) {
+		sqlSession.insert("memberMapper.insertCode", certVo);
+	}
+
+	public boolean validate(SqlSessionTemplate sqlSession, CertVO certVo) {
+		CertVO cert = sqlSession.selectOne("memberMapper.validate", certVo);
+		return cert != null;
+	}
+
+	public void deleteCert(SqlSessionTemplate sqlSession, CertVO certVo) {
+		sqlSession.delete("memberMapper.deleteCert", certVo);
 	}
 
 }

@@ -7,16 +7,18 @@
 	<resultMap type="animal" id="animalResultSet">
 		<result column="ANIMAL_NAME" property="animalName"/>
 		<result column="ANIMAL_CODE" property="animalCode"/>
+	    <result column="MEMBER_NO" property="memberNo"/>
 	</resultMap>
+
 	<resultMap type="coupon" id="couponResultSet">
-	<result column="COUPON_NO" property="couponNo"/>
+		<result column="COUPON_NO" property="couponNo"/>
 		<result column="COUPON_NAME" property="couponName"/>
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="END_DATE" property="endDate"/>
 		<result column="DISCOUNT_RATE" property="discountRate"/>
 		<result column="COUPON_STATUS" property="couponStatus"/>
-		
 	</resultMap>
+	
 	<resultMap type="memberCoupon" id="memberCouponResultSet">
 		<result column="ISSUE_DATE" property="issueDate"/>
 		<result column="COUPON_NO" property="couponNo"/>
@@ -33,7 +35,8 @@
 		<result column="NICKNAME" property="nickname"/>
 		<result column="PHONE" property="phone"/>
 		<result column="MEMBER_STATUS" property="memberStatus"/>
-		<collection resultMap="animalResultSet" property="animalList"/>
+		<result column="ANIMAL_NAME" property="animalName"/>
+		<result column="ANIMAL_CODE" property="animalCode"/>
 		<collection resultMap="memberCouponResultSet" property="couponList"/>
 	</resultMap>
 	
@@ -83,23 +86,16 @@
 		       NICKNAME,
 		       PHONE,
 		       MEMBER_STATUS,
-		       ENROLL_DATE,
-		       MODIFY_DATE,
-		       ANIMAL_NAME,
-		       ANIMAL_CODE
+		       TO_CHAR(ENROLL_DATE , 'YYYY/MM/DD') AS ENROLL_DATE, 
+    		   TO_CHAR(MODIFY_DATE , 'YYYY/MM/DD') AS MODIFY_DATE
 		  FROM
 		       TB_MEMBER
-		  LEFT
-		  JOIN
-		       TB_MEMBER_ANIMAL USING(MEMBER_NO)
-		  JOIN
-		       TB_ANIMAL USING(ANIMAL_CODE)
 		 WHERE
-		       MEMBER_ID = 'user01'
+		       MEMBER_ID = #{memberId}
 		   AND
 		       MEMBER_STATUS != 'D'
 	</select>
-	
+
 	<insert id="join" parameterType="member">
 		INSERT
 		  INTO
@@ -119,19 +115,47 @@
 				)
 	</insert>
 	
-	<insert id="insertAnimals" parameterType="list">
-		INSERT
-		  INTO
-				TB_MEMBER_ANIMAL
-			<foreach collection="animalList" item="animal" separator=",">
-				(
-				#{animal.animalCode},
-				#{memberNo}
-				)
-			</foreach>
+	<select id="selectMember" resultType="_int" parameterType="string">
+		SELECT
+		       MEMBER_NO
+		  FROM
+		       TB_MEMBER
+		 WHERE 
+		 	   MEMBER_ID = #{memberId}
+	</select>
+	
+	<insert id="insertAnimals" parameterType="animal">
+	    INSERT INTO TB_MEMBER_ANIMAL
+	    VALUES
+	        (
+	        #{memberNo},
+	        #{animalCode}
+	        )
+	</insert>	
+	
+	
+	<insert id="insertCode" parameterType="com.kh.pet.member.model.vo.CertVO">
+		INSERT INTO TB_CERT VALUES (#{who}, #{secret}, SYSDATE)
 	</insert>
 	
+	<select id="validate" parameterType="com.kh.pet.member.model.vo.CertVO" resultType="com.kh.pet.member.model.vo.CertVO">
+		SELECT
+				WHO,
+				CODE,
+				WHEN
+	      FROM
+	      		TB_CERT
+	     WHERE
+	     		WHO = #{who}
+	       AND
+	       		CODE = #{secret}
+	       AND
+	       		WHEN BETWEEN SYSDATE - 3/24/60 AND SYSDATE									
+	</select>
 	
+	<delete id="deleteCert" parameterType="com.kh.pet.member.model.vo.CertVO">
+		delete TB_CERT where who = #{who} and code = #{secret}
+	</delete>
 	
 	
 	

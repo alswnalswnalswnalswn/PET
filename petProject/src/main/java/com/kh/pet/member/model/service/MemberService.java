@@ -1,8 +1,8 @@
 package com.kh.pet.member.model.service;
 
-import java.util.List;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 import com.kh.pet.member.model.vo.SocialMember;
 
@@ -10,7 +10,7 @@ public interface MemberService {
 	
 	Member login(Member member);
 
-	int join(Member member, List<Animal> animal);
+	int join(Member member);
 
 	int idCheck(String checkId);
 
@@ -20,8 +20,12 @@ public interface MemberService {
 
 	int checkEmail(String email);
 
-	void sendMail();
+	void sendMail(CertVO certVo);
 
 	SocialMember selectMember(SocialMember sm);
+
+	int insertAnimals(Animal animal);
+
+	boolean validate(CertVO certVo);
 
 }
