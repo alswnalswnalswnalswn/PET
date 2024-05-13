@@ -204,6 +204,7 @@
 	    	// console.log(result);
 	    	$('#reserInfo').css('display', 'block');
 	    	
+	    	
 	    	$.ajax({
 	    		url : "reservation",
 	    		data : {}
