@@ -29,7 +29,7 @@ public class Member {
 	private String animalName;
 	private String animalCode;
 	
-	private List<Animal> animalList;
+	private String[] animalList;
 	private List<MemberCoupon> couponList;
 	
 }

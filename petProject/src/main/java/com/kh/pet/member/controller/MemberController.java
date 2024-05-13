@@ -3,7 +3,6 @@ package com.kh.pet.member.controller;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
-import java.util.List;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -26,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.member.model.service.KakaoService;
 import com.kh.pet.member.model.service.MemberService;
+import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 import com.kh.pet.member.model.vo.SocialMember;
 
@@ -45,16 +45,17 @@ public class MemberController {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@PostMapping("login")
-	public ModelAndView login(Member member,HttpSession session, ModelAndView mv) {
+	public ModelAndView login(Member member, HttpSession session, ModelAndView mv) {
 		
+		Member loginUser = memberService.login(member);
 		
-		if(memberService.login(member) != null && 
-			bcryptPasswordEncoder.matches(member.getMemberId(), memberService.login(member).getMemberPwd())) {
-			session.setAttribute("loginUser", memberService.login(member));
-			// System.out.println(memberService.login(member));
+		if(loginUser != null && bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
+			System.out.println(memberService.login(member));
+			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("redirect:/");
+			
 		} else {
-			mv.addObject("alert", "일치하지 안흔 정보입니다. 다시 로그인 해주세요");
+			session.setAttribute("alertMsg", "일치하지 않는 정보입니다. 다시 로그인 해주세요");
 			mv.setViewName("redirect:/");
 		}
 		
@@ -68,8 +69,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("join")
-	public String join(Member member, HttpSession session, List<Animal> animalList) {
-		
+	public String join(Member member, HttpSession session, String[] animalList) {
 		System.out.println(animalList);
 		
 		if(member.getMemberId().equals("admin")) {
@@ -80,8 +80,18 @@ public class MemberController {
 		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
 		// System.out.println("암호문 : " + encPwd);
 		member.setMemberPwd(encPwd);
-		memberService.join(member, animalList);
-		return "login";
+		int memberNo = memberService.join(member);
+		if(memberNo > 0) {
+			System.out.println(memberNo);
+			for(int i = 0; i < animalList.length; i++) {
+				String animalCode = animalList[i];
+				Animal animal = new Animal();
+				animal.setMemberNo(memberNo);
+				animal.setAnimalCode(animalCode);
+				memberService.insertAnimals(animal);
+			}
+		}
+		return "redirect:/";
 	}
 	
 	@ResponseBody
@@ -121,13 +131,17 @@ public class MemberController {
 		sender.send(message);
 		return "common/header";
 		 */
-		
+		String remoteAddr = request.getRemoteAddr();
 		// System.out.println(remoteAddr);
 		
 		Random r = new Random();
 		int i = r.nextInt(10000);
 		Format f = new DecimalFormat("000000");
 		String code = f.format(i);
+		
+		CertVO certVo = CertVO.builder().who(remoteAddr).secret(code).build();
+		
+		memberService.sendMail(certVo);
 		
 		MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -137,16 +151,21 @@ public class MemberController {
 		helper.setText("인증번호 : " + code);
 		
 		sender.send(message);
-		
+		System.out.println(code);
 		return code;
 		
 	}
 	
 	
 	@ResponseBody
-	@GetMapping("checkCode")
-	public String checkCode(String code, String email) {
-		return code == email ? "NNNNN" : "NNNNY";
+	@RequestMapping("checkCode")
+	public String checkCode(String code, HttpServletRequest request) {
+		
+		CertVO certVo = CertVO.builder().who(request.getRemoteAddr()).secret(code).build();
+		
+		boolean result = memberService.validate(certVo);
+		
+		return "result : " + result;
 	}
 	
 	@GetMapping("kakao")

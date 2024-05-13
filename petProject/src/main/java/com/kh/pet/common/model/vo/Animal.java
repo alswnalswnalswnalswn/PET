@@ -12,4 +12,5 @@ import lombok.ToString;
 public class Animal {
 	private String animalCode;
 	private String animalName;
+	private int memberNo;
 }

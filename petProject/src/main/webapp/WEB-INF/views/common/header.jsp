@@ -215,7 +215,7 @@
 	    border:1px solid black;
 	    font-weight:bold;
     }
-	.checked {
+	.clicked {
 	  	background-color: rgba(242, 189, 108, 0.82);
 	    color:white;
     	border:0;
@@ -314,6 +314,13 @@
 </style>
 </head>
 <body>
+	<c:if test="${ not empty alertMsg }">
+		<script>
+			alert('${alertMsg}');
+		</script>	
+		<c:remove var="alertMsg" scope="session" />
+	</c:if>
+	<c:set var="loginUser" value="${ sessionScope.loginUser }" scope="session" />
     <div id="header">
         <div id="header1">
             <div id="logo"><img src="resources/img/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${ pageContext.request.contextPath}'"></div>
@@ -338,14 +345,14 @@
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
             		<c:choose>
-            		<c:when test="${loginUser eq null }">
+            		<c:when test='${ loginUser ne null and loginUser.getMemberStatus().equals("C") }' >
     					<li class="nav-item">
-    						<a class="nav-link" href="#" id="login_btn"><img src="resources/img/login.png" alt=""></a>
+    						<a class="nav-link" href="member/logout" id="logout_btn"><img src="resources/img/logout.png" alt=""></a>
     					</li>
     				</c:when>
     				<c:otherwise>
    						<li class="nav-item">
-    						<a class="nav-link" href="member/logout" id="logout_btn"><img src="resources/img/logout.png" alt=""></a>
+    						<a class="nav-link" href="#" id="login_btn"><img src="resources/img/login.png" alt=""></a>
     					</li>
     				</c:otherwise>
     				</c:choose>
@@ -505,9 +512,11 @@
 		        var animalList = [];
 
 		        $('.animal:checked').each(function() {
+        	  		$(this).addClass('clicked');
 		        	animalList.push($(this).val());
-		        	$('input[name=animalList]').val(animalList);
+		        	console.log(animalList);
 		        });
+		        	$('input[name=animalList]').val(animalList.join(','));
 		        	console.log($('input[name=animalList]').val());
 			});
 		})
@@ -697,10 +706,8 @@
 		                data: { email: email },
 		                success: function(result) {
 		                    $inputCode.show().css();
-		                    code = result;
-		                    const $emailCode = $('.input_code #emailCode');
+		                    console.log(result);
 		                    $joinBtn.removeAttr('disabled');
-		                    
 		                },
 		                error: function() {
 		                    console.log('이메일 인증 AJAX 통신 실패~');
@@ -710,13 +717,12 @@
 		            alert('이메일을 입력해주세요.');
 		        }
 		        
-		
 		    });
 		    
 
 		});
-		
 		 $('.input_code #checkEmailCode').click(function() {
+		console.log(code);
          	
              const $emailCode = $('.input_code #emailCode');
              const $checkEmailCode = $('#checkEmailCode');
