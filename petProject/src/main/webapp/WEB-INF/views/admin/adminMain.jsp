@@ -26,9 +26,11 @@
 					</ul>
 				</li>
 				<li class="nav-item"><a class="nav-link" href="#">게시글관리</a>
-					<li><a class="nav-link" href="#">동물병원</a></li>
-					<li><a class="nav-link" href="#">동물병원</a></li>
-					<li><a class="nav-link" href="#">동물병원</a></li>
+					<ul>
+						<li><a class="nav-link" href="#">동물병원</a></li>
+						<li><a class="nav-link" href="#">동물병원</a></li>
+						<li><a class="nav-link" href="#">동물병원</a></li>
+					</ul>
 				</li>
 			</ul>
 		</div>
