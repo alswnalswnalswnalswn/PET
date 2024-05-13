@@ -38,6 +38,7 @@
 		<mapper resource="/mapper/member-mapper.xml" />
 		<mapper resource="/mapper/community-mapper.xml" />
 		<mapper resource="/mapper/info-mapper.xml" />
+		<mapper resource="/mapper/reser-mapper.xml" />
 	</mappers>
 	
 </configuration>

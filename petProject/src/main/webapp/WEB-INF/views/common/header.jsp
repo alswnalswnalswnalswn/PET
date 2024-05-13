@@ -215,7 +215,7 @@
 	    border:1px solid black;
 	    font-weight:bold;
     }
-	.clicked {
+	.checked {
 	  	background-color: rgba(242, 189, 108, 0.82);
 	    color:white;
     	border:0;
@@ -265,6 +265,13 @@
 		height : 30px;
 		margin : 7px 10px;
 	}
+	.emailCode{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 7px 10px;
+	}
 	#checkMyEmail{
 		position : absolute;
 		width:100px;
@@ -286,6 +293,23 @@
 		width:265px;
 		border-radius:10px;
 		cursor: pointer;	
+	}
+	.animalList > label{
+		cursor:pointer;
+    	width:70px;
+    	height:25px;
+    	border-radius : 30px;
+	    display: inline-block;
+	    padding: 10px;
+	    cursor: pointer;
+	    font-size:13px;
+	    text-align:center;
+	    line-height:0;
+	    border:1px solid black;
+	    font-weight:bold;
+	}
+	.checked{
+		background-color: rgba(122, 88, 33, 0.92);
 	}
 </style>
 </head>
@@ -313,9 +337,18 @@
             	
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
+            		<c:choose>
+            		<c:when test="${loginUser eq null }">
     					<li class="nav-item">
     						<a class="nav-link" href="#" id="login_btn"><img src="resources/img/login.png" alt=""></a>
     					</li>
+    				</c:when>
+    				<c:otherwise>
+   						<li class="nav-item">
+    						<a class="nav-link" href="member/logout" id="logout_btn"><img src="resources/img/logout.png" alt=""></a>
+    					</li>
+    				</c:otherwise>
+    				</c:choose>
     					<li class="nav-item">
       						<a class="nav-link" href="#"><img src="resources/img/mypage.png" alt=""></a>
     					</li>
@@ -445,13 +478,13 @@
 				</div>
 					
 				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br>
-					<span class="animal" data-animal="A1">강아지</span>
-					<span class="animal" data-animal="A2">고양이</span>
-					<span class="animal" data-animal="A3">토끼</span>
-					<span class="animal" data-animal="A4">물고기</span>
-					<span class="animal" data-animal="A5">새</span>
-					<span class="animal" data-animal="A6">햄스터</span>
-					<input type="hidden" name="animal" value="A1" >
+					<input type="hidden" name="animalList" value="" >
+					<label for="animaldog"><input type="checkbox" class="animal" name="animal" value="A1" id="animaldog" style="display:none;">강아지</label>
+					<label for="animalcat"><input type="checkbox" class="animal" name="animal" value="A2" id="animalcat" style="display:none;">고양이</label>
+					<label for="animalrab"><input type="checkbox" class="animal" name="animal" value="A3" id="animalrab" style="display:none;">토끼</label>
+					<label for="animalfish"><input type="checkbox" class="animal" name="animal" value="A4" id="animalfish" style="display:none;">물고기</label>
+					<label for="animalbird"><input type="checkbox" class="animal" name="animal" value="A5" id="animalbird" style="display:none;">새</label>
+					<label for="animalham"><input type="checkbox" class="animal" name="animal" value="A6" id="animalham" style="display:none;">햄스터</label>
 				</div>
 				<div class="input_btn2"><button type="submit" id="join-btn" class="btn">회원가입</button></div>
 		    </form>	
@@ -464,24 +497,20 @@
 
 
 	<script>
-	var animalCode = "";
+	var code = "";
+	var animalList = [];
 	 $(() => {
 		$(document).ready(function(){
-			$('.animal').click(function(){	
-			$(this).toggleClass('clicked');
-			
-			var selectedCodes = [];
-			
-		      // 선택된 동물들의 코드를 배열에 추가
-		      $('.animal.clicked').each(function() {
-		        var animalCode = $(this).data('animal');
-		        selectedCodes.push(animalCode);
-		      });
-		      $('#animalForm input[name="animal"]').val(selectedCodes.join(','));
-		      console.log($('input[name="animal"]'));
+		   $('.animal').change(function() {
+		        var animalList = [];
+
+		        $('.animal:checked').each(function() {
+		        	animalList.push($(this).val());
+		        	$('input[name=animalList]').val(animalList);
+		        });
+		        	console.log($('input[name=animalList]').val());
 			});
-		});
-		
+		})
 		
 		<!------------ 아이디 ------------>
 		
@@ -668,25 +697,9 @@
 		                data: { email: email },
 		                success: function(result) {
 		                    $inputCode.show().css();
-		                    const code = result;
+		                    code = result;
 		                    const $emailCode = $('.input_code #emailCode');
 		                    $joinBtn.removeAttr('disabled');
-		                    /*
-		                    $emailCode.keyup(function(){
-		                    	
-		                    	if($emailCode.val().length == 6){
-		                    	
-			                    	if($emailCode.val() === code){
-			                    		console.log('성공');
-			                    	} else {
-			                    		console.log('실패');
-			                    	}
-		                    	} else{
-		                    		console.log('실패임');
-		                    	}
-		                    });
-		                    
-		                    */
 		                    
 		                },
 		                error: function() {
@@ -696,22 +709,36 @@
 		        } else {
 		            alert('이메일을 입력해주세요.');
 		        }
+		        
+		
 		    });
 		    
 
-		});/*
+		});
+		
 		 $('.input_code #checkEmailCode').click(function() {
          	
              const $emailCode = $('.input_code #emailCode');
+             const $checkEmailCode = $('#checkEmailCode');
 				if ($emailCode.val() !== '') {
 					$.ajax({
 						url: 'member/checkCode',
 						type: 'get',
-						data: { email: $emailCode.val(),
+						data: { 
+								email: $emailCode.val(),
 								code : code
 							  },
 						success: function(result) {
-						   console.log(result);
+							
+	    					if(result.substr(4) == "N"){
+	    						$emailCode.show().css('color', 'crimson').text('인증코드가 일치하지 않습니다.');
+	    						$emailCode.css('border', '1px solid crimson');
+	    						$joinBtn.attr('disabled', true);
+	    					} else{
+	    						$emailCode.css('border', '1px solid lightgreen');
+	    						$checkEmailCode.css('width', '100px').html('인증 완료');
+	    						$joinBtn.removeAttr('disabled');
+	    					}
 						},
 						error: function() {
 						    console.log('이메일 인증 AJAX 통신 실패~');
@@ -721,7 +748,7 @@
 				    alert('이메일을 입력해주세요.');
 				}
 			});
-		*/
+		
 	 
 	 });
 	 

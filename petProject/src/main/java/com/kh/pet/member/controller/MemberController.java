@@ -61,10 +61,16 @@ public class MemberController {
 		return mv;
 	}
 	
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginUser");
+		return "redirect:/";
+	}
+	
 	@PostMapping("join")
-	public String join(Member member, HttpSession session, List<Animal> animal) {
+	public String join(Member member, HttpSession session, List<Animal> animalList) {
 		
-		System.out.println(animal);
+		System.out.println(animalList);
 		
 		if(member.getMemberId().equals("admin")) {
 			member.setMemberStatus("A");
@@ -72,9 +78,9 @@ public class MemberController {
 			member.setMemberStatus("C");
 		}
 		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
-		System.out.println("암호문 : " + encPwd);
+		// System.out.println("암호문 : " + encPwd);
 		member.setMemberPwd(encPwd);
-		memberService.join(member, animal);
+		memberService.join(member, animalList);
 		return "login";
 	}
 	

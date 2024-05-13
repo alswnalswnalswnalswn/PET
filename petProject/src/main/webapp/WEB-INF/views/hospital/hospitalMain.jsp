@@ -14,13 +14,26 @@
 <body>
 	<jsp:include page="../common/header.jsp" />
 	
-	<div class="wrap">
+	<div class="hospital_wrap">
 		<div class="map_wrap">
 			<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
 	
 			<div id="menu_wrap" class="bg_white">
 				<ul id="placesList"></ul>
 				<div id="pagination"></div>
+			</div>
+			
+			<div id="menu_detail" class="bg_white">
+				<div id="placeName"></div>
+				<div id="newAddr"></div>
+				<div id="oldAddr"></div>
+				<div id="placeDayOn"></div>
+				<div id="placeDayOff"></div>
+				<div id="placeTel"></div>
+				<button class="btn btn-secondary" onclick="reservation(this.value);" id="reserBtn">예약하기</button>
+				
+				<div id="reserInfo">123</div>
+			
 			</div>
 		</div>
 	</div>
@@ -59,6 +72,8 @@
 			displayMarker(locPosition, message);
 		}
 		
+		var hospitalList = [];
+		
 		
 		$(() => {
 			moveMarkers();
@@ -85,6 +100,8 @@
 		    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 		    	success : result => {
 		    		
+					hospitalList = result;
+					
     		    	var listEl = document.getElementById('placesList');
 		            listEl.innerHTML = '';
     		    	var itemStr = '',
@@ -93,7 +110,7 @@
     		    	
 		            result.forEach((result, index) => {
 		            	markersAndInfowindow(result, map);
-		            	itemStr += '<li class="item">'
+		            	itemStr += '<li class="item" id="li' + result.placeNo + '">'
 		            			 + '<span class="markerbg"></span>'
 			            		 + '<div class="info">'
 			            		 + '<h5>' + result.placeName + '</h5>'
@@ -148,6 +165,54 @@
 	        markers = [];
 	    }
 	    
+	    // 상세 div 표시 함수
+	   
+       	$(() => {
+       		$('#placesList').on('click', '.item', e => {
+       			
+       			$('#menu_detail').css('display','block');
+				
+       			const test = $(e.currentTarget).attr('id').substring(2);
+       			var hospital = '';
+       			
+       			for(let i in hospitalList){
+       				if(hospitalList[i].placeNo == test){
+       					hospital = hospitalList[i];
+       				}
+       			}
+       			
+       			$('#placeName').html(hospital.placeName);
+       			$('#newAddr').html(hospital.newAddr);
+       			$('#oldAddr').html(hospital.oldAddr);
+       			$('#placeDayOn').html(hospital.placeDayOn);
+       			$('#placeDayOff').html(hospital.placeDayOff);
+       			$('#placeTel').html(hospital.placeTel);
+       			console.log($('#placeDayOn').html());
+       			
+       			if($('#placeDayOn').html() === '정보없음'){
+       				$('#reserBtn').css('display','none');
+       			}else {
+	       			$('#reserBtn').val(hospital.placeNo);
+       			}
+       			
+       			// console.log($('#reserBtn').val());
+       			// console.log(hospital);
+       		});
+       	});
+	    
+	    function reservation(result){
+	    	// console.log(result);
+	    	$('#reserInfo').css('display', 'block');
+	    	
+	    	$.ajax({
+	    		url : "reservation",
+	    		data : {}
+	    	});
+	    	
+	    	
+	    	
+	    }
+      
 		
 	</script>
 <jsp:include page="../common/footer.jsp" />
