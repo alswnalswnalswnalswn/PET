@@ -265,6 +265,13 @@
 		height : 30px;
 		margin : 7px 10px;
 	}
+	.emailCode{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 7px 10px;
+	}
 	#checkMyEmail{
 		position : absolute;
 		width:100px;
@@ -313,9 +320,18 @@
             	
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
+            		<c:choose>
+            		<c:when test="${loginUser eq null }">
     					<li class="nav-item">
     						<a class="nav-link" href="#" id="login_btn"><img src="resources/img/login.png" alt=""></a>
     					</li>
+    				</c:when>
+    				<c:otherwise>
+   						<li class="nav-item">
+    						<a class="nav-link" href="member/logout" id="logout_btn"><img src="resources/img/logout.png" alt=""></a>
+    					</li>
+    				</c:otherwise>
+    				</c:choose>
     					<li class="nav-item">
       						<a class="nav-link" href="#"><img src="resources/img/mypage.png" alt=""></a>
     					</li>
@@ -464,7 +480,7 @@
 
 
 	<script>
-	var animalCode = "";
+	var code = "";
 	 $(() => {
 		$(document).ready(function(){
 			$('.animal').click(function(){	
@@ -668,7 +684,7 @@
 		                data: { email: email },
 		                success: function(result) {
 		                    $inputCode.show().css();
-		                    const code = result;
+		                    code = result;
 		                    const $emailCode = $('.input_code #emailCode');
 		                    $joinBtn.removeAttr('disabled');
 		                    /*
@@ -696,13 +712,17 @@
 		        } else {
 		            alert('이메일을 입력해주세요.');
 		        }
+		        
+		
 		    });
 		    
 
-		});/*
+		});
+		
 		 $('.input_code #checkEmailCode').click(function() {
          	
              const $emailCode = $('.input_code #emailCode');
+             const $checkEmailCode = $('#checkEmailCode');
 				if ($emailCode.val() !== '') {
 					$.ajax({
 						url: 'member/checkCode',
@@ -711,7 +731,15 @@
 								code : code
 							  },
 						success: function(result) {
-						   console.log(result);
+							
+	    					if(result.substr(4) == "N"){
+	    						$emailCode.show().css('color', 'crimson').text('인증코드가 일치하지 않습니다.');
+	    						$emailCode.css('border', '1px solid crimson');
+	    						$joinBtn.attr('disabled', true);
+	    					} else{
+	    						$emailCode.css('border', '1px solid lightgreen');
+	    						$checkEmailCode.css('width', '100px').html('인증 완료');
+	    					}
 						},
 						error: function() {
 						    console.log('이메일 인증 AJAX 통신 실패~');
@@ -721,7 +749,7 @@
 				    alert('이메일을 입력해주세요.');
 				}
 			});
-		*/
+		
 	 
 	 });
 	 

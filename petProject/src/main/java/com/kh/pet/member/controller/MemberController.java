@@ -61,6 +61,12 @@ public class MemberController {
 		return mv;
 	}
 	
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginUser");
+		return "redirect:/";
+	}
+	
 	@PostMapping("join")
 	public String join(Member member, HttpSession session, List<Animal> animal) {
 		
