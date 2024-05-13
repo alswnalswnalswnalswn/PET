@@ -49,12 +49,21 @@
 			CATEGORY_CODE
 	FROM
 			TB_PLACE
-	WHERE
-			CATEGORY_CODE = #{categoryCode}	
-	AND
-			TO_NUMBER(PLACE_LAT) BETWEEN #{swLat} AND #{neLat}
+   WHERE
+   			TO_NUMBER(PLACE_LAT) BETWEEN #{swLat} AND #{neLat}
 	AND
 			TO_NUMBER(PLACE_LON) BETWEEN #{swLng} AND #{neLng}
+	AND
+	<choose>
+		<when test="categoryCode == 'P1'">
+			CATEGORY_CODE = 'P1'
+		</when>
+		<otherwise>
+			CATEGORY_CODE IN ('P2' , 'P3') 
+		</otherwise>
+	</choose>
+	
+			
 			
 	
 			

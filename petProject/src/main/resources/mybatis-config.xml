@@ -17,9 +17,13 @@
 		<typeAlias type="java.util.List" alias="list" />
 		<typeAlias type="com.kh.pet.info.model.vo.Info" alias="info" />
 		<typeAlias type="com.kh.pet.common.model.vo.Attachment" alias="attachment"/>
+		<typeAlias type="com.kh.pet.info.model.vo.Reply" alias="reply"/>
+		<typeAlias type="com.kh.pet.info.model.vo.Comment" alias="comment"/>
 	</typeAliases>
 	
-	
+	<typeHandlers>
+	    <typeHandler handler="org.apache.ibatis.type.LocalDateTimeTypeHandler" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+	</typeHandlers>
 	
 	
 	

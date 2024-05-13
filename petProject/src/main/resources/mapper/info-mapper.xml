@@ -13,21 +13,42 @@
 		<result column="BOARD_NO" property="boardNo"/>
 		<result column="ATT_LELVEL" property="attLevel"/>
 	</resultMap>
+	<resultMap type="comment" id="commentResultSet">
+		<result column="COMMENT_NO" property="commentNo"/>
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="COMMENT_WRITER" property="commentWriter"/>
+		<result column="COMMENT_CONTENT" property="commentContent"/>
+		<result column="COMM.CREATE_DATE" property="createDate"/>
+		<result column="COMM.UPDATE_DATE" property="updateDate"/>
+		<result column="COMMENT_STATUS" property="connentStatus"/>
+	</resultMap>
+	<resultMap type="reply" id="replyResultSet">
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="REPLY_WRITER" property="replyWriter"/>
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="REPLY.REPLY_CONTENT" property="replyContent"/>
+		<result column="REPLY.CREATE_DATE" property="createDate"/>
+		<result column="REPLY.UPDATE_DATE" property="updateDate"/>
+		<result column="REPLY_STATUS" property="replyStatus"/>
+		<collection resultMap="commentResultSet" property="commentList" />
+	</resultMap>
 	
 	<resultMap type="info" id="infoResultSet">
 		<result column="BOARD_NO" property="boardNo"/>
 		<result column="BOARD_TITLE" property="boardTitle"/>
 		<result column="BOARD_CONTENT" property="boardContent"/>
 		<result column="BOARD_COUNT" property="boardCount"/>
-		<result column="CREATE_DATE" property="createDate"/>
-		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="BOARD_WRITER" property="memberNo"/>
 		<result column="BO_CATEGORY_NAME" property="categoryCode"/>
 		<result column="UPDATE_DATE" property="updateDate"/>
 		<result column="BOARD_STATUS" property="boardStatus"/>
 		
 		<result column="BOARD_LIKE" property="boardLike"/>
 		
-		<collection resultMap="attachmentResultSet" property="attachment"/>
+		<collection resultMap="attachmentResultSet" property="attachmentList"/>
+		
+		<collection resultMap="replyResultSet" property="replyList"></collection>
 	</resultMap>
 	
 	<select id="selectDate" parameterType="_int" resultMap="infoResultSet">
@@ -36,22 +57,39 @@
 		       BOARD_TITLE,
 		       BOARD_CONTENT,
 		       BOARD_COUNT,
-		       CREATE_DATE,
-		       MEMBER_NO,
+		       TB_INFO.CREATE_DATE,
 		       BO_CATEGORY_NAME,
-		       UPDATE_DATE,
+		       TB_INFO.UPDATE_DATE,
 		       BOARD_STATUS,
 		       BOARD_LIKE,
+               TB_MEMBER.NICKNAME BOARD_WRITER,
+               
 		       ATT_NO,
 		       ATT_PATH,
 		       ORIGIN_NAME,
 		       CHANGE_NAME,
 		       ATT_STATUS,
-		       ATT_LELVEL
+		       ATT_LELVEL,
+               
+               REPLY_NO,
+               REPLY.REPLY_CONTENT,
+               REPLY_WRITER,
+               REPLY.CREATE_DATE,
+               REPLY.UPDATE_DATE,
+               REPLY_STATUS,
+               
+               COMMENT_NO,
+               COMMENT_CONTENT,
+               COMM.CREATE_DATE,
+               COMM.UPDATE_DATE,
+               COMMENT_STATUS,
+               COMMENT_WRITER
 		  FROM
 		       TB_INFO
 		  JOIN
 		       TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+          JOIN
+               TB_MEMBER ON(TB_MEMBER.MEMBER_NO =TB_INFO.MEMBER_NO)
 		  LEFT
 		  JOIN
 		       (SELECT
@@ -67,10 +105,39 @@
 		       TB_ATTACHMENT USING(BOARD_NO)
 		  JOIN
 		       TB_BOARD_BRIDGE USING(BOARD_NO)
+          LEFT
+          JOIN
+               TB_REPLY REPLY USING(BOARD_NO)
+          LEFT
+          JOIN
+               (SELECT
+                       REPLY_NO,
+                       NICKNAME REPLY_WRITER
+                  FROM
+                       TB_REPLY
+                  JOIN
+                       TB_MEMBER USING(MEMBER_NO)) USING (REPLY_NO)
+          LEFT
+          JOIN
+               (SELECT
+                       REPLY_NO,
+                       COMMENT_NO,
+                       COMMENT_CONTENT,
+                       CREATE_DATE,
+                       UPDATE_DATE,
+                       COMMENT_STATUS,
+                       NICKNAME COMMENT_WRITER
+                  FROM
+                       TB_COMMENT
+                  JOIN
+                       TB_MEMBER USING(MEMBER_NO)) COMM USING (REPLY_NO)
 		 WHERE
 		       BOARD_STATUS = 'Y'
 		   AND
 		       PLACE_NO = ${placeNo}
+         ORDER
+            BY
+               REPLY.CREATE_DATE,COMM.CREATE_DATE
 	</select>
 	
 	
