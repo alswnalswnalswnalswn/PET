@@ -40,6 +40,7 @@
 
 .bg_white {
 	background: #fff;
+	float : left;
 }
 
 #menu_wrap hr {
@@ -48,22 +49,18 @@
 	border: 0;
 	border-top: 2px solid #5F5F5F;
 	margin: 3px 0;
-}
-
-#menu_wrap .option {
 	text-align: center;
-}
-
-#menu_wrap .option p {
 	margin: 10px 0;
+	margin-left: 5px;
 }
 
-#menu_wrap .option button {
-	margin-left: 5px;
+#placeList {
+	z-index : -1;
 }
 
 #placesList li {
 	list-style: none;
+	z-index : 1;
 }
 
 #placesList .item {
@@ -115,6 +112,43 @@
 		no-repeat;
 }
 
+#menu_detail {
+	width : 350px;
+	display : none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 250px;
+	z-index: 1;
+	margin: 10px 0 30px 10px;
+	padding: 5px;
+	overflow-y: auto;
+	z-index: 1;
+	font-size: 12px;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.7);
+	
+}
+
+#reserInfo {
+	display : none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 #pagination {
 	margin: 10px auto;
 	text-align: center;
@@ -130,3 +164,4 @@
 	cursor: default;
 	color: #777;
 }
+*/
