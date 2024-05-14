@@ -165,6 +165,16 @@
 	    color:white;
 	    font-weight: bold;
     }
+    
+    #search-btn{
+    	width: 100%;
+	    height: 40px;
+	    font-size: 14px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+    }
     #logout_btn > img{
     	width: 35px;
     	height:35px;
@@ -269,7 +279,7 @@
 		height : 30px;
 		margin : 7px 10px;
 	}
-	.checkEmail{
+	.checkEmail, .checkEmailimg{
 		position : absolute;
 		right : 0;
 		width: 30px;
@@ -291,9 +301,9 @@
 	}
 	#checkMyEmail, #checkMyOneEmail{
 		position : absolute;
-		width:100px;
-		height:30px;
-		font-size:15px;
+		width:90px;
+		height:25px;
+		font-size:13px;
 		display:block;
 		right : 0;
 		border:0;
@@ -302,9 +312,10 @@
 		background-color: rgba(242, 189, 108, 0.82);
 		color: white;
 	}
+	
 	#checkMyEmail:hover, #checkMyOneEmail:hover{
 		cursor : pointer;
-		font-size:16px;
+		font-size:14px;
 	}
 	.input_code{
 		width: 300px;
@@ -315,6 +326,33 @@
 		border:1px solid rgb(230, 230, 230);
 		float:left;
 	}
+	.input_code2{
+		width: 180px;
+		height:80px;
+		border-radius:10px;
+	}
+	.input_code2 > #emailCode2{
+		border:1px solid rgb(230, 230, 230);
+		float:right;
+	}
+	
+	#checkEmailCode, #checkEmailCode2{
+		width:80px;
+		height:25px;
+		font-size:14px;
+		display:block;
+		border:0;
+		background-radius : 10px;
+		box-shadow : 1px 1px 2px;
+		background-color: rgba(242, 189, 108, 0.82);
+		color: white;
+	}
+	
+	#checkEmailCode:hover, #checkEmailCode2:hover{
+		cursor : pointer;
+		font-size:15px;
+	}
+	
 	#kakaologin{
 		width:265px;
 		border-radius:10px;
@@ -361,6 +399,32 @@
 	}
 	#btn_search{
 		width :100px;
+	}
+	.or_line{
+		height : 40px;
+		width : 260px;
+		margin:auto;
+		display:flex;
+		justify-content:space-between;
+	}
+	#line1{
+		width : 40%;
+		height : 100%;
+		border-bottom:1px solid rgb(179, 179, 179);
+	}
+		
+	#line2{
+		width : 40%;
+		height : 100%;
+		border-bottom:1px solid rgb(179, 179, 179);
+	}
+	
+	#or_text{
+		width : 20%;
+		height : 100%;
+		text-align: center;
+		line-height: 90px;
+		margin:auto;
 	}
 </style>
 </head>
@@ -473,8 +537,15 @@
 							<a href="" id="searchPwd" data-toggle="modal" data-target="#searchMyPwd" class="close" data-dismiss="modal">비밀번호 찾기</a>
 						</div>
 						<div class="input_btn">
-							<a id="kakao-login-btn"><img src="resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
 							<button type="submit" id="login-btn" class="btn">로그인</button>
+						</div>
+						<div class="or_line">
+							<div id="line1"></div>
+							<div id="or_text">또는</div>
+							<div id="line2"></div>
+						</div>
+						<div class="input_btn">
+							<a id="kakao-login-btn"><img src="resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
 						</div>
 					</form>
 				</div>
@@ -508,14 +579,20 @@
 					<div class="input_form">
 						<input type="text" name="memberName" placeholder="성함을 입력해주세요">
 					</div>
-					<div class="input_form">
+					<div class="input_form bt">
 						<input type="text" id="myEmail" name="email" placeholder="이메일을 입력해주세요">
+						<div id="checkEmailon" class="danger" style="font-size:0.7em; display:none;"></div>
+						<img src="resources/img/check.png" class="checkEmailimg" style="display:none;">
 					</div>
 					<div id="insertMail">
-						<button type="button" id="checkMyEmail">이메일 인증</button>
+						<button type="button" id="checkMyOneEmail">이메일 인증</button>
+					</div>
+					<div class="input_code2" style="font-size:15px; display:none;">
+						&nbsp;&nbsp;인증번호를 입력하세요 <input type="text" name="emailCode" id="emailCode2">
+						&nbsp;&nbsp;<button type="button" id="checkEmailCode2">인증하기</button>
 					</div>
 					<div class="input_btn">
-						<button type="submit" id="login-btn" class="btn">아이디 찾기</button>
+						<button type="submit" id="search-btn" class="btn">아이디 찾기</button>
 					</div>
 				</form>
 			</div>
@@ -541,16 +618,18 @@
 					</div>
 					<div class="input_form">
 						<input type="text" id="myEmail" name="email" placeholder="이메일을 입력해주세요">
+						<div id="checkEmailon" class="danger" style="font-size:0.7em; display:none;"></div>
+						<img src="resources/img/check.png" class="checkEmailimg" style="display:none;">
 					</div>
 					<div id="insertMail">
-						<button type="button" id="checkMyEmail">이메일 인증</button>
+						<button type="button" id="checkMyOneEmail">이메일 인증</button>
 					</div>
-					<div class="input_code" style="font-size:15px; display:none;">
-						&nbsp;&nbsp;인증번호를 입력하세요 <input type="text" name="emailCode" id="emailCode">
-						&nbsp;&nbsp;<button type="button" id="checkEmailCode">인증하기</button>
+					<div class="input_code2" style="font-size:15px; display:none;">
+						&nbsp;&nbsp;인증번호를 입력하세요 <input type="text" name="emailCode" id="emailCode2">
+						&nbsp;&nbsp;<button type="button" id="checkEmailCode2">인증하기</button>
 					</div>
 					<div class="input_btn">
-						<button type="submit" id="login-btn" class="btn">비밀번호 찾기</button>
+						<button type="submit" id="search-btn" class="btn">비밀번호 찾기</button>
 					</div>
 				</form>
 			</div>
@@ -657,6 +736,7 @@
 		const $checkId = $('#checkId');
 		const $joinBtn = $('#join-btn');
 		const $check = $('.check');
+		const $loginBtn = $('#login_btn');
 		
 		$userId.keyup(function(){
 			
@@ -789,6 +869,9 @@
 			}
 		});
 		
+		
+		<!-- 회원가입용 이메일 인증 -->
+		
 		const $email = $('.input_form #email');
 		const $checkEmail = $('#checkEmail');
 		const $checkE = $('.checkEmail');
@@ -801,14 +884,16 @@
 					url : 'member/checkEmail',
 					data : {email : $email.val()},
 					success : function(result){
-						// console.log(result);
+						console.log(result);
     					if(result.substr(4) == "N"){
     						$checkEmail.show().css('color', 'crimson').text('가입된 이메일입니다.');
     						$email.css('border', '1px solid crimson');
     						$joinBtn.attr('disabled', true);
+    						$email.val("");
     					} else{
     						$email.css('border', '1px solid lightgreen');
     						$checkE.show().css();
+    						$joinBtn.removeAttr('disabled');
     					}
     				},
     				error : function(){
@@ -830,35 +915,6 @@
 
 		        if (email !== '') {
 		            $checkMyEmail.css('width', '150px').html('인증번호 전송완료');
-		            $.ajax({
-		                url: 'member/emailCheck.do',
-		                type: 'get',
-		                data: { email: email },
-		                success: function(result) {
-		                    $inputCode.show().css();
-		                    console.log(result);
-		                    $joinBtn.removeAttr('disabled');
-		                },
-		                error: function() {
-		                    console.log('이메일 인증 AJAX 통신 실패~');
-		                }
-		            });
-		        } else {
-		            alert('이메일을 입력해주세요.');
-		        }
-		        
-		    });
-		});
-		
-		$(document).ready(function() {
-			
-		    $('#checkMyOneEmail').click(function() {
-		        const $checkMyEmail = $('#checkMyOneEmail');
-		        const $inputCode = $('.input_code');
-		        var email = $('#email').val().trim();
-
-		        if (email !== '') {
-		            $checkMyOneEmail.css('width', '150px').html('인증번호 전송완료');
 		            $.ajax({
 		                url: 'member/emailCheck.do',
 		                type: 'get',
@@ -912,7 +968,104 @@
 				    alert('이메일을 입력해주세요.');
 				}
 			});
+		<!-- 아이디 / 비번 찾기용 이메일 인증 -->
+		 
+		const $myEmail = $('.input_form bt #myEmail');
+		const $checkEmailon = $('#checkEmailon');
+		const $checkEmailimg = $('.checkEmailimg');
+		const $checkMyOneEmail = $('#checkMyOneEmail');
+		const $searchBtn = $('#search-btn');
 		
+		$myEmail.keyup(function(){
+			
+			if($myEmail.val().length > 10){
+				$.ajax({
+					url : 'member/checkEmail',
+					data : {email : $myEmail.val()},
+					success : function(result){
+						// console.log(result);
+    					if(result.substr(4) == "N"){
+    						$myEmail.css('border', '1px solid lightgreen');
+    						$checkEmailimg.show().css();
+    					} else{
+    						$checkEmailon.show().css('color', 'crimson').text('가입된 이메일이 아닙니다.');
+    						$myEmail.css('border', '1px solid crimson');
+    						$searchBtn.attr('disabled', true);
+    						$myEmail.val("");
+    					}
+    				},
+    				error : function(){
+    					console.log('이메일 중복체크용 AJAX 통신 실패~');
+    				}
+    			});
+			} else {
+				$checkEmailon.hide();
+				$searchBtn.attr('disabled', true);
+			}
+		});
+		 
+		$(document).ready(function() {
+			
+		    $('#checkMyOneEmail').click(function() {
+		        const $checkMyOneEmail = $('#checkMyOneEmail');
+		        const $inputCode2 = $('.input_code2');
+		        var myEmail = $('#myEmail').val().trim();
+
+		        if (email !== '') {
+		            $checkMyOneEmail.css('width', '150px').html('인증번호 전송완료');
+		            $.ajax({
+		                url: 'member/emailCheck.do',
+		                type: 'get',
+		                data: { email: myEmail },
+		                success: function(result) {
+		                    $inputCode2.show().css();
+		                    $searchBtn.removeAttr('disabled');
+		                },
+		                error: function() {
+		                    console.log('이메일 인증 AJAX 통신 실패~');
+		                }
+		            });
+		        } else {
+		            alert('이메일을 입력해주세요.');
+		        }
+		        
+		    });
+		});
+		
+		
+		 $('.input_code2 #checkEmailCode2').click(function() {
+	         	
+             const $emailCode2 = $('.input_code2 #emailCode');
+             const $checkEmailCode2 = $('#checkEmailCode');
+				if ($emailCode2.val() !== '') {
+					$.ajax({
+						url: 'member/checkCode',
+						type: 'get',
+						data: { 
+								email: $emailCode2.val(),
+								code : code2
+							  },
+						success: function(result) {
+							
+	    					if(result.substr(4) == "N"){
+	    						$emailCode2.show().css('color', 'crimson').text('인증코드가 일치하지 않습니다.');
+	    						$emailCode2.css('border', '1px solid crimson');
+	    						$checkEmailCode2.attr('disabled', true);
+	    						$searchBtn.attr('disabled', true);
+	    					} else{
+	    						$emailCode2.css('border', '1px solid lightgreen');
+	    						$checkEmailCode2.css('width', '100px').html('인증 완료');
+	    						$searchBtn.removeAttr('disabled');
+	    					}
+						},
+						error: function() {
+						    console.log('이메일 인증 AJAX 통신 실패~');
+						}
+					});
+				} else {
+				    alert('이메일을 입력해주세요.');
+				}
+			});
 	 
 	 });
 	 

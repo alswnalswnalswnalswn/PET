@@ -115,6 +115,19 @@
 				)
 	</insert>
 	
+	<select id="searchId" parameterType="member" resultMap="memberResultSet">
+		SELECT
+		        MEMBER_ID
+		  FROM 
+		        TB_MEMBER
+		 WHERE
+		        MEMBER_NAME = #{memberName}
+		   AND
+		        EMAIL = #{email}
+		   AND
+		   	 	MEMBER_STATUS = 'C'
+	</select>
+	
 	<select id="selectMember" resultType="_int" parameterType="string">
 		SELECT
 		       MEMBER_NO

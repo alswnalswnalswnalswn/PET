@@ -95,29 +95,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping("searchId")
-	public String searchId(String memberName, String email, HttpServletRequest request) {
-		String remoteAddr = request.getRemoteAddr();
+	public String searchId(Member member, HttpSession session) {
 		
-		Random r = new Random();
-		int i = r.nextInt(10000);
-		Format f = new DecimalFormat("000000");
-		String code = f.format(i);
+		String memberId = memberService.searchId(member);
 		
-		CertVO certVo = CertVO.builder().who(remoteAddr).secret(code).build();
-		
-		memberService.sendMail(certVo);
-		
-		MimeMessage message = sender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-		
-		helper.setTo(email);
-		helper.setSubject("냥이랑 멍이랑에서 보낸 인증번호입니다.");
-		helper.setText("인증번호 : " + code);
-		
-		sender.send(message);
-		
-		
-		return memberService.searchId(memberName, email) > 0 ? "NNNNN" : "NNNNY";
+		if(memberId == null) {
+			session.setAttribute("alertMsg", "가입되어 있는 정보가 없습니다. 다시 입력 해주세요");
+		}
+		return memberId;
 	}
 	
 	@ResponseBody

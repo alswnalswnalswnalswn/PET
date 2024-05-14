@@ -53,4 +53,8 @@ public class MemberRepository {
 		sqlSession.delete("memberMapper.deleteCert", certVo);
 	}
 
+	public String searchId(SqlSessionTemplate sqlSession, Member member) {
+		return sqlSession.selectOne("memberMapper.searchId", member);
+	}
+
 }
