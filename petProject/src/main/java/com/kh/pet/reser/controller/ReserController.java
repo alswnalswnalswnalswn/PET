@@ -20,6 +20,11 @@ public class ReserController {
 		return "hospital/deleteLaterFolder/deleteLater";
 	}
 	
+	@GetMapping("a")
+	public String test() {
+		return "hospital/NewFile";
+	}
+	
 	@GetMapping("hospital")
 	public String hospitalForwarding() {
 		return "hospital/hospitalMain";

@@ -8,21 +8,31 @@
 <title>좀 쉬셔요</title>
 
 	<style>
-	.wrap{
+	.wrap123{
 		width: 1200px;
 		height: 1000px;
-		margin: auto;
+		position: relative;
+        width: 100%;
+        height: 100vh; /* 화면 전체 높이에 맞추려면 사용 */
 	}
+	
+	.wrap456{
+		position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+	}
+	
 	</style>
 </head>
 <body>
 
 	<jsp:include page="../../common/header.jsp" />
 	
-	<div class="wrap">
-		<iframe width="438" height="778" src="https://www.youtube.com/embed/9jkGrG9U524" title="[아이브] 장원영 띵띵땅땅 💖" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-		<img width="310"/>
-		<iframe width="438" height="778" src="https://www.youtube.com/embed/APNLUFUI4us" title="#차은우 #디올 #더현대서울 #더현대 #chaeunwoo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>	
+	<div class="wrap123">
+		<div class="wrap456">
+			<iframe width="850" height="703" src="https://www.youtube.com/embed/ATK7gAaZTOM" title="(여자)아이들((G)I-DLE) - &#39;나는 아픈 건 딱 질색이니까(Fate)&#39; LIVE CLIP" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+		</div>
 	</div>
 	
 	

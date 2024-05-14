@@ -57,9 +57,9 @@
         <div id="footer-content">
             COMPANY : 냥이랑 멍이랑 ㅣ OWNER : 김건희<br><br>
 
-Tel. 010-6547-7902 l neorangofficial@gmail.com<br><br>
-
-울산 남구 삼산로45번길 30 103동 308호 l Biz License 338-55-00507<br><br>
+			Tel. 010-6547-7902 l neorangofficial@gmail.com<br><br>
+			
+			울산 남구 삼산로45번길 30 103동 308호 l Biz License 338-55-00507<br><br>
         </div>
     </div>
 </body>
