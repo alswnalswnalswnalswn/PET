@@ -368,6 +368,7 @@
 <script>
 </script>
 
+
 	<c:if test="${ not empty alertMsg }">
 		<script>
 			alert('${alertMsg}');
@@ -399,7 +400,7 @@
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
             		<c:choose>
-            		<c:when test='${ loginUser ne null and loginUser.getMemberStatus().equals("C") }' >
+            		<c:when test='${ loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
     					<li class="nav-item">
     						<a class="nav-link" href="member/logout" id="logout_btn"><img src="resources/img/logout.png" alt=""></a>
     					</li>
@@ -508,7 +509,7 @@
 						<input type="text" name="memberName" placeholder="성함을 입력해주세요">
 					</div>
 					<div class="input_form">
-						<input type="text" name="email" placeholder="이메일을 입력해주세요">
+						<input type="text" id="myEmail" name="email" placeholder="이메일을 입력해주세요">
 					</div>
 					<div id="insertMail">
 						<button type="button" id="checkMyEmail">이메일 인증</button>
@@ -539,10 +540,14 @@
 						<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 					</div>
 					<div class="input_form">
-						<input type="text" name="email" placeholder="이메일을 입력해주세요">
+						<input type="text" id="myEmail" name="email" placeholder="이메일을 입력해주세요">
 					</div>
 					<div id="insertMail">
 						<button type="button" id="checkMyEmail">이메일 인증</button>
+					</div>
+					<div class="input_code" style="font-size:15px; display:none;">
+						&nbsp;&nbsp;인증번호를 입력하세요 <input type="text" name="emailCode" id="emailCode">
+						&nbsp;&nbsp;<button type="button" id="checkEmailCode">인증하기</button>
 					</div>
 					<div class="input_btn">
 						<button type="submit" id="login-btn" class="btn">비밀번호 찾기</button>
@@ -843,11 +848,38 @@
 		        }
 		        
 		    });
-		    
-
 		});
+		
+		$(document).ready(function() {
+			
+		    $('#checkMyOneEmail').click(function() {
+		        const $checkMyEmail = $('#checkMyOneEmail');
+		        const $inputCode = $('.input_code');
+		        var email = $('#email').val().trim();
+
+		        if (email !== '') {
+		            $checkMyOneEmail.css('width', '150px').html('인증번호 전송완료');
+		            $.ajax({
+		                url: 'member/emailCheck.do',
+		                type: 'get',
+		                data: { email: email },
+		                success: function(result) {
+		                    $inputCode.show().css();
+		                    $joinBtn.removeAttr('disabled');
+		                },
+		                error: function() {
+		                    console.log('이메일 인증 AJAX 통신 실패~');
+		                }
+		            });
+		        } else {
+		            alert('이메일을 입력해주세요.');
+		        }
+		        
+		    });
+		});
+		
+		
 		 $('.input_code #checkEmailCode').click(function() {
-		console.log(code);
          	
              const $emailCode = $('.input_code #emailCode');
              const $checkEmailCode = $('#checkEmailCode');
