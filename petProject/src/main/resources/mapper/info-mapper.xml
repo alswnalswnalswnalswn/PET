@@ -139,7 +139,13 @@
                REPLY.CREATE_DATE,COMM.CREATE_DATE
 	</select>
 	
+	<insert id="inserReply" parameterType="reply">
+		INSERT
+		  INTO
+		      TB_REPLY
+		VALUES(SEQ_REPNO.NEXTVAL,#{memberNo},#{boardNo},#{replyContent},DEFAULT,DEFAULT,DEFAULT)
 	
+	</insert>
 	
 	
 	

@@ -120,7 +120,6 @@
         }
         .reply_write{
         	border:2px solid gray;
-        	padding: 10px;
         	width:100%;
         }
         .reply_writer{
@@ -146,15 +145,49 @@
 		    resize: none;
 		    padding: 10px;
 		    border: none;
+		    margin-left: 10px;
+		    margin-bottom: 5px;
 		    
         }
 		.reply_write_content{
 			position: relative;
 		}
+		.write-btn-cansle{
+			position: absolute;
+			right : 10px;
+			bottom : 40px;
+			border:none;
+        	background: white;
+        	font-weight: 700;
+        	font-size: 14px;
+		}
+		.comment-write-btn{
+			position: absolute;
+			right : 10px;
+			bottom : 10px;
+			border:none;
+        	background: white;
+        	font-weight: 700;
+        	font-size: 14px;
+		}
+
         .write-btn{
         	position: absolute;
-        	right : 0;
-        	bottom : 5px;
+        	right : 10px;
+        	bottom : 10px;
+        	border:none;
+        	background: white;
+        	font-weight: 700;
+        	font-size: 14px;
+        }
+        .write-btn:hover{
+        	background:rgba(3, 199, 90, 0.12);
+        	color:#009f47;
+        }
+        .comment_btn, .comment_btn:hover{
+        	text-decoration: none;
+        	color:gray;
+        	cursor: pointer;
         }
 </style>
 </head>
@@ -170,7 +203,7 @@
 		</div>
 	</div>
 	<script>
-		var loginUser = '${sessionScope.loginUser}';
+		var boardNo = '';
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
 			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -198,7 +231,6 @@
 		    var swLat = bounds.getSouthWest().getLat();
 		    var swLng = bounds.getSouthWest().getLng();
 			
-		    console.log(bounds);
 		    $.ajax({
 		        url: "places/P2/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 		        success: result => {
@@ -292,17 +324,26 @@
 		}
 		
 		$(() => {
+			
+			$('#wrap').on('click','.comment_btn', e => {
+				$('.comment_writer').html(replyWrite('comment_write'));
+			});
+			
 			$('#wrap').on('click','.write-btn', e => {
 				const $reply = $('.write_content');
+				const $placeNoReply = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
 				$.ajax({
 					url : 'date',
 					method : 'post',
 					data : {
-						memberNo : '${loginUser.memberNo}',
-						replyContent : $reply.val()
+						memberNo : '${sessionScope.loginUser.memberNo}',
+						replyContent : $reply.val(),
+						boardNo : boardNo
 					},
 					success : result => {
-						console.log(result);
+						if(result == 'Y'){
+							detailDateAjax($placeNoReply);
+						}
 					}
 				});
 			});
@@ -310,91 +351,7 @@
 			
 			$('#wrap').on('click','.detail-btn', e => {
 				const $placeNo = $(e.target).attr('id');
-				$.ajax({
-					url : 'date/'+ $placeNo,
-					success: result => {
-						console.log(result);
-						
-						let createDate = result.createDate.date;
-						let createTime = result.createDate.time;
-						let replyList = result.replyList;
-						
-						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day, createTime.hour, createTime.minute ,createTime.second);
-
-						let text = '<div class="menu_head">' +
-							            '<div class="menu_heads">' +
-						                '<div class="menu_title">' + result.boardTitle  +'</div>' +
-						                '<div class="menu_close">X</div>' +
-						            '</div>' + 
-						            '<div class="menu_heads">' +
-						                '<div class="heads_content">' +
-						                    '<div>' + result.memberNo + '</div>' +
-						                    '<div>' +
-						                        '<div class="menu_create_date">' + dateFormat(fullDate) + ' 조회  ' + result.boardCount + '</div>' +
-						                    '</div>' +
-						                '</div>' +
-									'</div>' +
-						            
-						        '</div>' +
-								        '<div class="menu_body">' +
-								            '<div class="menu_content">' +
-								             	result.boardContent +
-								                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 ' + replyList.length + '</div>' +
-								            '</div>' +
-								        '</div>' +
-				
-								        '<div class="menu_footer">' +
-								            '<div class="footer_title">댓글</div>';
-								            if(loginUser != null){
-								            text += '<div class="reply_write">' +
-										            	'<div class="reply_writer">${sessionScope.loginUser.nickname}</div>' +
-										            	'<div class="reply_write_content">' +
-										            		'<textarea class="write_content" placeholder="댓글을 남겨보세요" onkeydown="resize(this)" onkeyup="resize(this)"></textarea>' +
-										            		'<button class="write-btn">등록</button>' +
-										            	'</div>' +
-										            '</div>';
-								            }
-								            text += '<div class="footer_content">';
-								               
-								               for(let i in replyList){
-								            	   let commentList = replyList[i].commentList;
-												   
-								            	   let replyCreateDate = replyList[i].createDate.date;
-								            	   let replyCreateTime = replyList[i].createDate.time;
-								            	   var replyDate = new Date(replyCreateDate.year, replyCreateDate.month - 1, replyCreateDate.day, replyCreateTime.hour, replyCreateTime.minute ,replyCreateTime.second);
-								            	   text += '<div class="reply">' +
-								            		   			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
-								                    			'<div class="reply_content">' + replyList[i].replyContent + '</div>' +
-								                    			'<div class="reply_createDate">' + dateFormat(replyDate) + '</div>' +
-								                    		'</div>';
-								                    		for(let j in commentList){
-								                    			
-								                    			if(replyList[i].replyNo == commentList[j].replyNo){
-								                    				if(commentList[j].commentContent != null){
-								                    					console.log(commentList[j].createDate);
-										                    			let commentCreateDate = commentList[j].createDate.date;
-										                    			let commentCreateTime = commentList[j].createDate.time;
-										                    			
-										                    			var commentDate = new Date(commentCreateDate.year, commentCreateDate.month - 1, commentCreateDate.day, commentCreateTime.hour, commentCreateTime.minute ,commentCreateTime.second);
-									                    				text += '<div class="comment">' +
-												                    				'<div class="reply_writer">' + commentList[j].commentWriter + '</div>' +
-													                    			'<div class="reply_content">' + commentList[j].commentContent + '</div>' +
-													                    			'<div class="reply_createDate">' + dateFormat(commentDate) + '</div>' +
-													                    		'</div>';
-								                    				}
-								                    				
-								                    			}
-								                    		}
-								               }
-
-								                text += '</div></div>';
-								                
-						$('#menu_detail').css('display','block').html(text);
-
-					}
-					
-					
-				});
+				detailDateAjax($placeNo);
 				
 			});
 			
@@ -423,7 +380,103 @@
 
 	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
         	        
-	}
+		}
+		function replyWrite(write) {
+			if(write != 'reply_write'){
+				btnText = '<button class="write-btn-cansle">취소</button>'
+			} else{
+				btnText = '';
+			}
+			
+			return '<div class="' + write + '">' +
+        	'<div class="reply_writer">${sessionScope.loginUser.nickname}</div>' +
+        	'<div class="reply_write_content">' +
+        		'<textarea class="write_content" placeholder="댓글을 남겨보세요" onkeydown="resize(this)" onkeyup="resize(this)"></textarea>' +
+        		'<button class="comment-write-btn">등록</button>' + btnText +
+        	'</div>' +
+        '</div>';			
+		}
+		
+		function detailDateAjax($placeNo) {
+			$.ajax({
+				url : 'date/'+ $placeNo,
+				success: result => {
+					
+					let createDate = result.createDate.date;
+					let createTime = result.createDate.time;
+					let replyList = result.replyList;
+					
+					var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day, createTime.hour, createTime.minute ,createTime.second);
+					boardNo = result.boardNo;
+					let text = '<div class="menu_head" id="' + $placeNo + '">' +
+						            '<div class="menu_heads">' +
+					                '<div class="menu_title">' + result.boardTitle  +'</div>' +
+					                '<div class="menu_close">X</div>' +
+					            '</div>' + 
+					            '<div class="menu_heads">' +
+					                '<div class="heads_content">' +
+					                    '<div>' + result.memberNo + '</div>' +
+					                    '<div>' +
+					                        '<div class="menu_create_date">' + dateFormat(fullDate) + ' 조회  ' + result.boardCount + '</div>' +
+					                    '</div>' +
+					                '</div>' +
+								'</div>' +
+					            
+					        '</div>' +
+							        '<div class="menu_body">' +
+							            '<div class="menu_content">' +
+							             	result.boardContent +
+							                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 ' + replyList.length + '</div>' +
+							            '</div>' +
+							        '</div>' +
+			
+							        '<div class="menu_footer">' +
+							            '<div class="footer_title">댓글</div>';
+							            if('${sessionScope.loginUser}' != ''){
+							            text += replyWrite("reply_write");
+							            }
+							            text += '<div class="footer_content">';
+							               
+							               for(let i in replyList){
+							            	   let commentList = replyList[i].commentList;
+											   
+							            	   let replyCreateDate = replyList[i].createDate.date;
+							            	   let replyCreateTime = replyList[i].createDate.time;
+							            	   var replyDate = new Date(replyCreateDate.year, replyCreateDate.month - 1, replyCreateDate.day, replyCreateTime.hour, replyCreateTime.minute ,replyCreateTime.second);
+							            	   text += '<div class="reply" id="' + replyList[i].replyNo + '">' +
+							            		   			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
+							                    			'<div class="reply_content">' + replyList[i].replyContent + '</div>' +
+							                    			'<div class="reply_createDate">' + dateFormat(replyDate) + '&emsp;<a class="comment_btn">답글쓰기</a></div>' +
+							                    			'<div class="comment_writer"></div>' +
+							                    		'</div>';
+							                    		for(let j in commentList){
+							                    			
+							                    			if(replyList[i].replyNo == commentList[j].replyNo){
+							                    				if(commentList[j].commentContent != null){
+									                    			let commentCreateDate = commentList[j].createDate.date;
+									                    			let commentCreateTime = commentList[j].createDate.time;
+									                    			
+									                    			var commentDate = new Date(commentCreateDate.year, commentCreateDate.month - 1, commentCreateDate.day, commentCreateTime.hour, commentCreateTime.minute ,commentCreateTime.second);
+								                    				text += '<div class="comment">' +
+											                    				'<div class="reply_writer">' + commentList[j].commentWriter + '</div>' +
+												                    			'<div class="reply_content">' + commentList[j].commentContent + '</div>' +
+												                    			'<div class="reply_createDate">' + dateFormat(commentDate) + '</div>' +
+												                    		'</div>';
+							                    				}
+							                    				
+							                    			}
+							                    		}
+							               }
+
+							                text += '</div></div>';
+							                
+					$('#menu_detail').css('display','block').html(text);
+
+				}
+				
+				
+			});
+		}
 	</script>
 	
 	

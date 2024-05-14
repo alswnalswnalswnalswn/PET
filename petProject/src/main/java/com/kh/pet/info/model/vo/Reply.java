@@ -14,6 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Reply {
 	private int replyNo;
+	private int memberNo;
 	private String replyWriter;
 	private int boardNo;
 	private String replyContent;
