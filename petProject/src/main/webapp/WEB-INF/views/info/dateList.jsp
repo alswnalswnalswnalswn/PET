@@ -111,17 +111,50 @@
         }
         .reply{
             border-bottom: 1px solid gray;
-            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+        .comment{
+       		margin-top: 2px;
+        	margin-left: 20px;
+        	border-bottom: 1px solid gray;
+        }
+        .reply_write{
+        	border:2px solid gray;
+        	padding: 10px;
+        	width:100%;
         }
         .reply_writer{
             font-weight: 700;
-            margin-bottom: 5px;
+            font-size: 14px;
+            margin: 5px;
+            padding : 7px;
             
         }
         .reply_content{
             font-size: 13px;
             word-break:break-all;
             padding-bottom: 5px;
+        }
+        .reply_createDate{
+        	font-size: 10px;
+        	padding-bottom: 5px;
+        }
+        .write_content{
+        	width: 85%;
+        	height: 47px;
+		    overflow-y: hidden;
+		    resize: none;
+		    padding: 10px;
+		    border: none;
+		    
+        }
+		.reply_write_content{
+			position: relative;
+		}
+        .write-btn{
+        	position: absolute;
+        	right : 0;
+        	bottom : 5px;
         }
 </style>
 </head>
@@ -137,6 +170,7 @@
 		</div>
 	</div>
 	<script>
+		var loginUser = '${sessionScope.loginUser}';
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
 			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -236,7 +270,7 @@
 		
 		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 		if (navigator.geolocation) {
-
+			
 			// GeoLocation을 이용해서 접속 위치를 얻어옵니다
 			navigator.geolocation.getCurrentPosition(function(position) {
 
@@ -258,7 +292,20 @@
 		}
 		
 		$(() => {
-			
+			$('#wrap').on('click','.write-btn', e => {
+				const $reply = $('.write_content');
+				$.ajax({
+					url : 'date',
+					method : 'post',
+					data : {
+						memberNo : '${loginUser.memberNo}',
+						replyContent : $reply.val()
+					},
+					success : result => {
+						console.log(result);
+					}
+				});
+			});
 			
 			
 			$('#wrap').on('click','.detail-btn', e => {
@@ -266,11 +313,12 @@
 				$.ajax({
 					url : 'date/'+ $placeNo,
 					success: result => {
+						console.log(result);
+						
 						let createDate = result.createDate.date;
 						let createTime = result.createDate.time;
 						let replyList = result.replyList;
-						console.log(replyList);
-						console.log(result);
+						
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day, createTime.hour, createTime.minute ,createTime.second);
 
 						let text = '<div class="menu_head">' +
@@ -291,19 +339,52 @@
 								        '<div class="menu_body">' +
 								            '<div class="menu_content">' +
 								             	result.boardContent +
-								                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 8</div>' +
+								                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 ' + replyList.length + '</div>' +
 								            '</div>' +
 								        '</div>' +
 				
 								        '<div class="menu_footer">' +
-								            '<div class="footer_title">댓글</div>' +
-								            '<div class="footer_content">';
+								            '<div class="footer_title">댓글</div>';
+								            if(loginUser != null){
+								            text += '<div class="reply_write">' +
+										            	'<div class="reply_writer">${sessionScope.loginUser.nickname}</div>' +
+										            	'<div class="reply_write_content">' +
+										            		'<textarea class="write_content" placeholder="댓글을 남겨보세요" onkeydown="resize(this)" onkeyup="resize(this)"></textarea>' +
+										            		'<button class="write-btn">등록</button>' +
+										            	'</div>' +
+										            '</div>';
+								            }
+								            text += '<div class="footer_content">';
 								               
 								               for(let i in replyList){
+								            	   let commentList = replyList[i].commentList;
+												   
+								            	   let replyCreateDate = replyList[i].createDate.date;
+								            	   let replyCreateTime = replyList[i].createDate.time;
+								            	   var replyDate = new Date(replyCreateDate.year, replyCreateDate.month - 1, replyCreateDate.day, replyCreateTime.hour, replyCreateTime.minute ,replyCreateTime.second);
 								            	   text += '<div class="reply">' +
 								            		   			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
 								                    			'<div class="reply_content">' + replyList[i].replyContent + '</div>' +
+								                    			'<div class="reply_createDate">' + dateFormat(replyDate) + '</div>' +
 								                    		'</div>';
+								                    		for(let j in commentList){
+								                    			
+								                    			if(replyList[i].replyNo == commentList[j].replyNo){
+								                    				if(commentList[j].commentContent != null){
+								                    					console.log(commentList[j].createDate);
+										                    			let commentCreateDate = commentList[j].createDate.date;
+										                    			let commentCreateTime = commentList[j].createDate.time;
+										                    			
+										                    			var commentDate = new Date(commentCreateDate.year, commentCreateDate.month - 1, commentCreateDate.day, commentCreateTime.hour, commentCreateTime.minute ,commentCreateTime.second);
+									                    				text += '<div class="comment">' +
+												                    				'<div class="reply_writer">' + commentList[j].commentWriter + '</div>' +
+													                    			'<div class="reply_content">' + commentList[j].commentContent + '</div>' +
+													                    			'<div class="reply_createDate">' + dateFormat(commentDate) + '</div>' +
+													                    		'</div>';
+								                    				}
+								                    				
+								                    			}
+								                    		}
 								               }
 
 								                text += '</div></div>';
@@ -322,6 +403,10 @@
 			});
 			
 		});
+		function resize(obj) {
+            obj.style.height = '1px';
+            obj.style.height = (3 + obj.scrollHeight) + 'px';
+        }
 		
 		function dateFormat(date) {
 	        let month = date.getMonth() + 1;
@@ -337,6 +422,7 @@
 	        second = second >= 10 ? second : '0' + second;
 
 	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        	        
 	}
 	</script>
 	
