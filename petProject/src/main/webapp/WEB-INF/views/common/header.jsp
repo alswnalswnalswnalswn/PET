@@ -165,6 +165,11 @@
 	    color:white;
 	    font-weight: bold;
     }
+    #logout_btn > img{
+    	width: 35px;
+    	height:35px;
+    	margin-top : 2px;
+    }
     #join-btn{
     	width: 100%;
 	    height: 40px;
@@ -280,12 +285,11 @@
 	}
 	#insertMail{
 		position : relative;
-		border: 1px solid black;
 		height : 50px;
 		top : 10px;
 		margin : auto;
 	}
-	#checkMyEmail{
+	#checkMyEmail, #checkMyOneEmail{
 		position : absolute;
 		width:100px;
 		height:30px;
@@ -298,20 +302,7 @@
 		background-color: rgba(242, 189, 108, 0.82);
 		color: white;
 	}
-	 #checkMyOneEmail{
-		position : absolute;
-		width:100px;
-		height:30px;
-		font-size:15px;
-		display:block;
-		right : 0;
-		border:0;
-		background-radius : 10px;
-		box-shadow : 1px 1px 2px;
-		background-color: rgba(242, 189, 108, 0.82);
-		color: white;
-	}
-	#checkMyEmail, #checkMyOneEmail:hover{
+	#checkMyEmail:hover, #checkMyOneEmail:hover{
 		cursor : pointer;
 		font-size:16px;
 	}
@@ -375,17 +366,6 @@
 </head>
 <body>
 <script>
-	$('#searchId').click(function (event) {
-		// #mylogin 모달을 닫기
-		$('.close').click();
-	});
-	$('#searchPwd').click(function (event) {
-		// #mylogin 모달을 닫기
-		$('#mylogin').modal('hide');
-		$('#mylogin').on('hidden.bs.modal', function (event) {
-			$('#searchMyPwd').modal('show');
-		});
-	});
 </script>
 
 	<c:if test="${ not empty alertMsg }">
