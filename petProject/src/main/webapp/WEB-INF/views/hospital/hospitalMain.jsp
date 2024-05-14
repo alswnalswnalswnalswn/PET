@@ -32,7 +32,36 @@
 				<div id="placeTel"></div>
 				<button class="btn btn-secondary" onclick="reservation(this.value);" id="reserBtn">예약하기</button>
 				
-				<div id="reserInfo">123</div>
+				<div id="reserInfo">
+					<span>원하시는 예약 날짜를 선택해주세요.</span>
+					<div class="calendar-area">
+						<div class="calendar_month">
+							<button type="btn-prev">&lt;</button>
+							<span></span>
+							<button type="btn-next">&gt;</button>
+						</div>
+						<table class="calendar-table">
+							<thead>
+								<tr>
+									<th>일</th>
+									<th>월</th>
+									<th>화</th>
+									<th>수</th>
+									<th>목</th>
+									<th>금</th>
+									<th>토</th>
+								</tr>
+							</thead>
+							<tbody class="calendar_body">
+								
+								
+								
+							</tbody>
+						</table>
+						
+					</div>
+
+				</div>
 			
 			</div>
 		</div>
@@ -164,7 +193,7 @@
 	        }   
 	        markers = [];
 	    }
-	    
+	    var hospital = '';
 	    // 상세 div 표시 함수
 	   
        	$(() => {
@@ -173,14 +202,14 @@
        			$('#menu_detail').css('display','block');
 				
        			const test = $(e.currentTarget).attr('id').substring(2);
-       			var hospital = '';
        			
        			for(let i in hospitalList){
        				if(hospitalList[i].placeNo == test){
        					hospital = hospitalList[i];
        				}
        			}
-       			
+       			console.log(1);
+       			console.log(hospital);
        			$('#placeName').html(hospital.placeName);
        			$('#newAddr').html(hospital.newAddr);
        			$('#oldAddr').html(hospital.oldAddr);
@@ -189,9 +218,11 @@
        			$('#placeTel').html(hospital.placeTel);
        			console.log($('#placeDayOn').html());
        			
-       			if($('#placeDayOn').html() === '정보없음'){
+       			if(hospital.placeDayOn === '정보없음'){
        				$('#reserBtn').css('display','none');
+       				$('#reserInfo').css('display','none');
        			}else {
+       				$('#reserBtn').css('display','block');
 	       			$('#reserBtn').val(hospital.placeNo);
        			}
        			
@@ -204,12 +235,27 @@
 	    	// console.log(result);
 	    	$('#reserInfo').css('display', 'block');
 	    	
+	    	const now = new Date();
+	    	const year = (now.getFullYear()-2000);
+	    	const month = now.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줍니다.
+	    	const date = now.getDate();
+	    	const daytime = now + year +month + date;
+	    	const a = year + '.' + month
+	    	$('.calendar_month>span').html(a);
 	    	
+	    	console.log(year);
+	    	console.log(daytime);
+	    	/*
 	    	$.ajax({
 	    		url : "reservation",
-	    		data : {}
+	    		data : {
+	    			
+	    		},
+	    		success : {
+	    			
+	    		}
 	    	});
-	    	
+	    	*/
 	    	
 	    	
 	    }
