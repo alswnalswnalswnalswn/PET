@@ -131,7 +131,7 @@
     #login-area{
     	width:100%;
     	height:500px;
-    	padding:30px 100px;
+    	padding:0px 100px;
     }
     #login-area input{
    	    border: none;
@@ -244,6 +244,12 @@
 		height : 30px;
 		margin : 7px 10px;
 	}
+	#login{
+		line-height:100px;
+	}
+	#join{
+		line-height:100px;
+	}
 	.checkNick{
 		position : absolute;
 		right : 0;
@@ -311,9 +317,47 @@
 	.checked{
 		background-color: rgba(122, 88, 33, 0.92);
 	}
+	.select_btn{
+		text-align : center;
+		font-size : 15px;
+		position : relative;
+		width : 240px;
+		margin : auto;
+	}
+	.select_btn a {
+		color: black;
+	}
+	#searchId{
+		position : absolute;
+		left : 0;
+	}
+	#searchPwd{
+		position : absolute;	
+		right : 0;
+	}
+	#btn_search{
+		width :100px;
+	}
 </style>
 </head>
 <body>
+<script>
+	$('#searchId').click(function (event) {
+		// #mylogin 모달을 닫기
+		$('#mylogin').modal('hide');
+		$('#mylogin').on('hidden.bs.modal', function (event) {
+			$('#searchMyId').modal('show');
+		});
+	});
+	$('#searchPwd').click(function (event) {
+		// #mylogin 모달을 닫기
+		$('#mylogin').modal('hide');
+		$('#mylogin').on('hidden.bs.modal', function (event) {
+			$('#searchMyPwd').modal('show');
+		});
+	});
+</script>
+
 	<c:if test="${ not empty alertMsg }">
 		<script>
 			alert('${alertMsg}');
@@ -394,35 +438,39 @@
     </div>
     
     
-    <div class="modal fade" id="mylogin">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h3 align="center">로그인</h3>
-        
-        
-		<div id="login-area">
-			<form action="member/login" method="post">
-				<div class="input_form">
-					<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
+	<div class="modal fade" id="mylogin">
+		  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+		  
+			  <!-- Modal body -->
+		        <div class="modal-body">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h3 align="center" id="login">로그인</h3>
+		      
+		      
+				<div id="login-area">
+					<form action="member/login" method="post">
+						<div class="input_form">
+							<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
+						</div>
+						<div class="input_form brt">
+							<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
+							</div>
+						<div class="select_btn">
+							<a href="" id="searchId" data-toggle="modal" data-target="#searchMyId">아이디 찾기</a>
+							<span id="btn_search">/</span>
+							<a href="" id="searchPwd" data-toggle="modal" data-target="#searchMyPwd">비밀번호 찾기</a>
+						</div>
+						<div class="input_btn">
+							<a id="kakao-login-btn"><img src="resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
+							<button type="submit" id="login-btn" class="btn">로그인</button>
+						</div>
+					</form>
 				</div>
-     			<div class="input_form brt">
-     				<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
-     			</div>
-     			<div class="input_btn">
-     			<a id="kakao-login-btn"><img src="resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
-     			<button type="submit" id="login-btn" class="btn">로그인</button>
-     			</div>
-     		</form>
+				</div>
+			</div>
 		</div>
-	       
-		</div>
-		</div>
-	</div>
-</div>     		
+	</div>     		
 	<script>
 		$(() => {
 			
@@ -430,7 +478,68 @@
 				location.href='https://kauth.kakao.com/oauth/authorize?client_id=bf4263613861b95f8402b64976c94858&redirect_uri=http://localhost:7777/pet/member/code&response_type=code&scope=profile_image,profile_nickname';
 			});
 		});
+		
 	</script>		
+	
+	
+	<div class="modal fade" id="searchMyId">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+			
+			<!-- Modal body -->
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 align="center" id="login">아이디찾기</h3>
+			    
+			    
+			<div id="login-area">
+				<form action="member/searchId" method="post">
+					<div class="input_form">
+						<input type="text" name="memberName" placeholder="성함을 입력해주세요">
+					</div>
+					<div class="input_form brt">
+						<input type="password" name="email" placeholder="이메일을 입력해주세요">
+					</div>
+					<div class="input_btn">
+						<button type="submit" id="login-btn" class="btn">아이디 찾기</button>
+					</div>
+				</form>
+			</div>
+			</div>
+			</div>
+		</div>
+	</div>   
+	
+	<div class="modal fade" id="searchMyPwd">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+			
+			<!-- Modal body -->
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 align="center" id="login">비밀번호 찾기</h3>
+			    
+			    
+			<div id="login-area">
+				<form action="member/searchPwd" method="post">
+					<div class="input_form">
+						<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
+					</div>
+					<div class="input_form brt">
+						<input type="password" name="email" placeholder="이메일을 입력해주세요">
+					</div>
+					<div class="input_btn">
+						<button type="submit" id="login-btn" class="btn">비밀번호 찾기</button>
+					</div>
+				</form>
+			</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	 
           		
 <div class="modal fade" id="myjoin">
     <div class="modal-dialog modal-dialog-centered">
@@ -439,7 +548,7 @@
         <!-- Modal body -->
         <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h3 align="center">회원가입</h3>
+        <h3 align="center" id="join">회원가입</h3>
         
 		<div id="join-area">
 			<form action="member/join" method="post">
@@ -739,6 +848,7 @@
 	    					if(result.substr(4) == "N"){
 	    						$emailCode.show().css('color', 'crimson').text('인증코드가 일치하지 않습니다.');
 	    						$emailCode.css('border', '1px solid crimson');
+	    						$checkEmailCode.attr('disabled', true);
 	    						$joinBtn.attr('disabled', true);
 	    					} else{
 	    						$emailCode.css('border', '1px solid lightgreen');

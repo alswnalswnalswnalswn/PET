@@ -94,6 +94,32 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping("searchId")
+	public String searchId(String memberName, String email, HttpServletRequest request) {
+		String remoteAddr = request.getRemoteAddr();
+		
+		Random r = new Random();
+		int i = r.nextInt(10000);
+		Format f = new DecimalFormat("000000");
+		String code = f.format(i);
+		
+		CertVO certVo = CertVO.builder().who(remoteAddr).secret(code).build();
+		
+		memberService.sendMail(certVo);
+		
+		MimeMessage message = sender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+		
+		helper.setTo(email);
+		helper.setSubject("냥이랑 멍이랑에서 보낸 인증번호입니다.");
+		helper.setText("인증번호 : " + code);
+		
+		sender.send(message);
+		
+		
+		return memberService.searchId(memberName, email) > 0 ? "NNNNN" : "NNNNY";
+	}
+	
 	@ResponseBody
 	@GetMapping("idCheck")
 	public String idCheck(String checkId) {
@@ -151,7 +177,7 @@ public class MemberController {
 		helper.setText("인증번호 : " + code);
 		
 		sender.send(message);
-		System.out.println(code);
+		
 		return code;
 		
 	}
