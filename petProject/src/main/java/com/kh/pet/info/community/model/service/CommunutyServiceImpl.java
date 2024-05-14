@@ -1,4 +1,4 @@
-package com.kh.pet.community.model.service;
+package com.kh.pet.info.community.model.service;
 
 import org.springframework.stereotype.Service;
 

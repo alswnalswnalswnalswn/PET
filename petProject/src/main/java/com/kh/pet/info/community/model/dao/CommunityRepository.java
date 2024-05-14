@@ -1,4 +1,4 @@
-package com.kh.pet.community.model.dao;
+package com.kh.pet.info.community.model.dao;
 
 import org.springframework.stereotype.Repository;
 
