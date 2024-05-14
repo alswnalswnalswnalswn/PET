@@ -165,6 +165,11 @@
 	    color:white;
 	    font-weight: bold;
     }
+    #logout_btn > img{
+    	width: 35px;
+    	height:35px;
+    	margin-top : 2px;
+    }
     #join-btn{
     	width: 100%;
 	    height: 40px;
@@ -278,13 +283,28 @@
 		height : 30px;
 		margin : 7px 10px;
 	}
-	#checkMyEmail{
+	#insertMail{
+		position : relative;
+		height : 50px;
+		top : 10px;
+		margin : auto;
+	}
+	#checkMyEmail, #checkMyOneEmail{
 		position : absolute;
 		width:100px;
 		height:30px;
 		font-size:15px;
 		display:block;
 		right : 0;
+		border:0;
+		background-radius : 10px;
+		box-shadow : 1px 1px 2px;
+		background-color: rgba(242, 189, 108, 0.82);
+		color: white;
+	}
+	#checkMyEmail:hover, #checkMyOneEmail:hover{
+		cursor : pointer;
+		font-size:16px;
 	}
 	.input_code{
 		width: 300px;
@@ -329,11 +349,15 @@
 	}
 	#searchId{
 		position : absolute;
+		font-size : 15px;
 		left : 0;
+		top:5px;
 	}
 	#searchPwd{
 		position : absolute;	
+		font-size : 15px;
 		right : 0;
+		top:5px;
 	}
 	#btn_search{
 		width :100px;
@@ -342,20 +366,6 @@
 </head>
 <body>
 <script>
-	$('#searchId').click(function (event) {
-		// #mylogin 모달을 닫기
-		$('#mylogin').modal('hide');
-		$('#mylogin').on('hidden.bs.modal', function (event) {
-			$('#searchMyId').modal('show');
-		});
-	});
-	$('#searchPwd').click(function (event) {
-		// #mylogin 모달을 닫기
-		$('#mylogin').modal('hide');
-		$('#mylogin').on('hidden.bs.modal', function (event) {
-			$('#searchMyPwd').modal('show');
-		});
-	});
 </script>
 
 	<c:if test="${ not empty alertMsg }">
@@ -457,9 +467,9 @@
 							<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
 							</div>
 						<div class="select_btn">
-							<a href="" id="searchId" data-toggle="modal" data-target="#searchMyId">아이디 찾기</a>
+							<a href="" id="searchId" data-toggle="modal" data-target="#searchMyId" class="close" data-dismiss="modal">아이디 찾기</a>
 							<span id="btn_search">/</span>
-							<a href="" id="searchPwd" data-toggle="modal" data-target="#searchMyPwd">비밀번호 찾기</a>
+							<a href="" id="searchPwd" data-toggle="modal" data-target="#searchMyPwd" class="close" data-dismiss="modal">비밀번호 찾기</a>
 						</div>
 						<div class="input_btn">
 							<a id="kakao-login-btn"><img src="resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
@@ -497,8 +507,11 @@
 					<div class="input_form">
 						<input type="text" name="memberName" placeholder="성함을 입력해주세요">
 					</div>
-					<div class="input_form brt">
-						<input type="password" name="email" placeholder="이메일을 입력해주세요">
+					<div class="input_form">
+						<input type="text" name="email" placeholder="이메일을 입력해주세요">
+					</div>
+					<div id="insertMail">
+						<button type="button" id="checkMyEmail">이메일 인증</button>
 					</div>
 					<div class="input_btn">
 						<button type="submit" id="login-btn" class="btn">아이디 찾기</button>
@@ -525,8 +538,11 @@
 					<div class="input_form">
 						<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 					</div>
-					<div class="input_form brt">
-						<input type="password" name="email" placeholder="이메일을 입력해주세요">
+					<div class="input_form">
+						<input type="text" name="email" placeholder="이메일을 입력해주세요">
+					</div>
+					<div id="insertMail">
+						<button type="button" id="checkMyEmail">이메일 인증</button>
 					</div>
 					<div class="input_btn">
 						<button type="submit" id="login-btn" class="btn">비밀번호 찾기</button>
