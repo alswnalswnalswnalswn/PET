@@ -368,6 +368,7 @@
 <script>
 </script>
 
+
 	<c:if test="${ not empty alertMsg }">
 		<script>
 			alert('${alertMsg}');
