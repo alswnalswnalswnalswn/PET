@@ -35,63 +35,32 @@
 
 				<div id="reserInfo">
 					<span>원하시는 예약 날짜를 선택해주세요.</span>
-					<div class="month">
-						<ul>
-							<li class="prev"><a>&#10094;</a></li>
-							<li class="next">&#10095;</li>
-							<li class="year_li">2024<br>
-								<span style="font-size: 18px">8월</span>
-							</li>
-						</ul>
+
+					<div class="sec_cal">
+						<div class="cal_nav">
+							<a class="nav-btn go-prev">prev</a>
+							<div class="year-month"></div>
+							<a class="nav-btn go-next">next</a>
+						</div>
+						
+						<div class="cal_wrap">
+							<div class="days">
+								<div class="day">MON</div>
+								<div class="day">TUE</div>
+								<div class="day">WED</div>
+								<div class="day">THU</div>
+								<div class="day">FRI</div>
+								<div class="day">SAT</div>
+								<div class="day">SUN</div>
+							</div>
+							<div class="dates">
+								
+							</div>
+						</div>
 					</div>
-
-					<ul class="weekdays">
-						<li>Mo</li>
-						<li>Tu</li>
-						<li>We</li>
-						<li>Th</li>
-						<li>Fr</li>
-						<li>Sa</li>
-						<li>Su</li>
-					</ul>
-
-					<ul class="days">
-						<li><button>1</button></li>
-						<li><button>2</button></li>
-						<li><button>3</button></li>
-						<li><button>4</button></li>
-						<li><button>5</button></li>
-						<li><button>6</button></li>
-						<li><button>7</button></li>
-						<li><button>8</button></li>
-						<li><button>9</button></li>
-						<li><button class="button active">10</button></li>
-						<li><button>11</button></li>
-						<li><button>12</button></li>
-						<li><button>13</button></li>
-						<li><button>14</button></li>
-						<li><button>15</button></li>
-						<li><button>16</button></li>
-						<li><button>17</button></li>
-						<li><button>18</button></li>
-						<li><button>19</button></li>
-						<li><button>20</button></li>
-						<li><button>21</button></li>
-						<li><button>22</button></li>
-						<li><button>23</button></li>
-						<li><button>24</button></li>
-						<li><button>25</button></li>
-						<li><button>26</button></li>
-						<li><button>27</button></li>
-						<li><button>28</button></li>
-						<li><button>29</button></li>
-						<li><button>30</button></li>
-						<li><button>31</button></li>
-					</ul>
 
 
 				</div>
-
 			</div>
 
 		</div>
@@ -137,6 +106,7 @@
 		
 		$(() => {
 			moveMarkers();
+			calendarInit();
 		});
 		
 		kakao.maps.event.addListener(map, 'dragend', () => {
@@ -239,15 +209,13 @@
        					hospital = hospitalList[i];
        				}
        			}
-       			console.log(1);
-       			console.log(hospital);
+
        			$('#placeName').html(hospital.placeName);
        			$('#newAddr').html(hospital.newAddr);
        			$('#oldAddr').html(hospital.oldAddr);
        			$('#placeDayOn').html(hospital.placeDayOn);
        			$('#placeDayOff').html(hospital.placeDayOff);
        			$('#placeTel').html(hospital.placeTel);
-       			console.log($('#placeDayOn').html());
        			
        			if(hospital.placeDayOn === '정보없음'){
        				$('#reserBtn').css('display','none');
@@ -257,45 +225,78 @@
 	       			$('#reserBtn').val(hospital.placeNo);
        			}
        			
-       			// console.log($('#reserBtn').val());
-       			// console.log(hospital);
        		});
        	});
+	    
+       	function calendarInit() {
+
+       	    // 날짜 정보 가져오기
+       	    var date = new Date(); // 현재 날짜(로컬 기준) 가져오기
+
+       	    // 캘린더 렌더링
+       	    renderCalender(date);
+
+       	    function renderCalender(date) {
+
+       	        // 렌더링을 위한 데이터 정리
+       	        var currentYear = date.getFullYear(),
+       	        currentMonth = date.getMonth(),
+       	        currentDate = date.getDate();
+
+       	        // 이전 달의 마지막 날 날짜와 요일 구하기
+       	        var startDay = new Date(currentYear, currentMonth, 0);
+       	        var prevDate = startDay.getDate();
+       	        var prevDay = startDay.getDay();
+
+       	        // 이번 달의 마지막날 날짜와 요일 구하기
+       	        var endDay = new Date(currentYear, currentMonth + 1, 0);
+       	        var nextDate = endDay.getDate();
+       	        var nextDay = endDay.getDay();
+
+       	        // 현재 월 표기
+       	        $('.year-month').text(currentYear + '.' + (currentMonth + 1));
+
+       	        // 렌더링 html 요소 생성
+       	        calendar = document.querySelector('.dates')
+       	        calendar.innerHTML = '';
+       	        
+       	        // 지난달
+       	        for (var i = prevDate - prevDay + 1; i <= prevDate; i++) {
+       	            calendar.innerHTML = calendar.innerHTML + '<div class="day prev disable">' + i + '</div>'
+       	        }
+       	        // 이번달
+       	        for (var i = 1; i <= nextDate; i++) {
+       	            calendar.innerHTML = calendar.innerHTML + '<div class="day current">' + i + '</div>'
+       	        }
+       	        // 다음달
+       	        for (var i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
+       	            calendar.innerHTML = calendar.innerHTML + '<div class="day next disable">' + i + '</div>'
+       	        }
+
+       	        // 오늘 날짜 표기
+       	        if (date.getMonth() == currentMonth) {
+       	            todayDate = date.getDate();
+       	            var currentMonthDate = document.querySelectorAll('.dates .current');
+       	            currentMonthDate[todayDate -1].classList.add('today');
+       	        }
+       	    }
+
+       	    // 이전달로 이동
+       	    $('.go-prev').on('click', () => {
+       	        thisMonth = new Date(currentYear, currentMonth - 1, 1);
+       	        renderCalender(thisMonth);
+       	    });
+
+       	    // 다음달로 이동
+       	    $('.go-next').on('click', () => {
+       	        thisMonth = new Date(currentYear, currentMonth + 1, 1);
+       	        renderCalender(thisMonth); 
+       	    });
+       	}
 	    
 	    function reservation(result){
 	    	// console.log(result);
 	    	$('#reserInfo').css('display', 'block');
-	    	
-	    	const now = new Date();
-	    	const year = now.getFullYear();
-	    	const month = now.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줍니다.
-
-	    	const yearAndMonth = year + '.' + month
-	    	
-	    	const date = new Date(this.currentMonth);
-	        let weekList = [];
-	        date.setDate(1);
-	    	
-	        console.log(date);
-	    	
-	    	
-	    	
-	    	$('.calendar_month>span').html(yearAndMonth);
-	    	
-	    	
-	    	console.log(year);
-	    	console.log(daytime);
-	    	/*
-	    	$.ajax({
-	    		url : "reservation",
-	    		data : {
-	    			
-	    		},
-	    		success : {
-	    			
-	    		}
-	    	});
-	    	*/
 	    	
 	    	
 	    }
