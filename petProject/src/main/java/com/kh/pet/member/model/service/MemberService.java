@@ -28,4 +28,6 @@ public interface MemberService {
 
 	boolean validate(CertVO certVo);
 
+	String searchId(Member member);
+
 }
