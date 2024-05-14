@@ -18,16 +18,16 @@
 		<result column="REPLY_NO" property="replyNo"/>
 		<result column="COMMENT_WRITER" property="commentWriter"/>
 		<result column="COMMENT_CONTENT" property="commentContent"/>
-		<result column="COMM.CREATE_DATE" property="createDate"/>
-		<result column="COMM.UPDATE_DATE" property="updateDate"/>
+		<result column="COMMENT_CREATE_DATE" property="createDate"/>
+		<result column="COMMENT_UPDATE_DATE" property="updateDate"/>
 		<result column="COMMENT_STATUS" property="connentStatus"/>
 	</resultMap>
 	<resultMap type="reply" id="replyResultSet">
 		<result column="REPLY_NO" property="replyNo"/>
 		<result column="REPLY_WRITER" property="replyWriter"/>
-		<result column="REPLY.REPLY_CONTENT" property="replyContent"/>
-		<result column="REPLY.CREATE_DATE" property="createDate"/>
-		<result column="REPLY.UPDATE_DATE" property="updateDate"/>
+		<result column="REPLY_CONTENT" property="replyContent"/>
+		<result column="REPLY_CREATE_DATE" property="createDate"/>
+		<result column="REPLY_UPDATE_DATE" property="updateDate"/>
 		<result column="REPLY_STATUS" property="replyStatus"/>
 		<collection resultMap="commentResultSet" property="commentList" />
 	</resultMap>
@@ -56,9 +56,9 @@
 		       BOARD_TITLE,
 		       BOARD_CONTENT,
 		       BOARD_COUNT,
-		       TB_INFO.CREATE_DATE,
+		       TB_INFO.CREATE_DATE CREATE_DATE,
 		       BO_CATEGORY_NAME,
-		       TB_INFO.UPDATE_DATE,
+		       TB_INFO.UPDATE_DATE UPDATE_DATE,
 		       BOARD_STATUS,
 		       BOARD_LIKE,
                TB_MEMBER.NICKNAME BOARD_WRITER,
@@ -71,16 +71,16 @@
 		       ATT_LELVEL,
                
                REPLY_NO,
-               REPLY.REPLY_CONTENT,
+               REPLY.REPLY_CONTENT REPLY_CONTENT,
                REPLY_WRITER,
-               REPLY.CREATE_DATE,
-               REPLY.UPDATE_DATE,
+               REPLY.CREATE_DATE REPLY_CREATE_DATE,
+               REPLY.UPDATE_DATE REPLY_UPDATE_DATE,
                REPLY_STATUS,
                
                COMMENT_NO,
                COMMENT_CONTENT,
-               COMM.CREATE_DATE,
-               COMM.UPDATE_DATE,
+               COMM.CREATE_DATE COMMENT_CREATE_DATE,
+               COMM.UPDATE_DATE COMMENT_UPDATE_DATE,
                COMMENT_STATUS,
                COMMENT_WRITER
 		  FROM
