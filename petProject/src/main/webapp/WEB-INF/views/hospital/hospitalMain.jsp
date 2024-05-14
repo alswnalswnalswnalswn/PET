@@ -7,22 +7,23 @@
 <meta charset="UTF-8">
 <title>동물병원</title>
 
-	<link rel="stylesheet" href="resources/css/hospital/hospitalMain.css"/>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=265dcb92e33a3dc46e2d0249640f425e"></script>
-	
+<link rel="stylesheet" href="resources/css/hospital/hospitalMain.css" />
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=265dcb92e33a3dc46e2d0249640f425e"></script>
+
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
-	
+
 	<div class="hospital_wrap">
 		<div class="map_wrap">
-			<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
-	
+			<div id="map"
+				style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
+
 			<div id="menu_wrap" class="bg_white">
 				<ul id="placesList"></ul>
 				<div id="pagination"></div>
 			</div>
-			
+
 			<div id="menu_detail" class="bg_white">
 				<div id="placeName"></div>
 				<div id="newAddr"></div>
@@ -31,42 +32,72 @@
 				<div id="placeDayOff"></div>
 				<div id="placeTel"></div>
 				<button class="btn btn-secondary" onclick="reservation(this.value);" id="reserBtn">예약하기</button>
-				
+
 				<div id="reserInfo">
 					<span>원하시는 예약 날짜를 선택해주세요.</span>
-					<div class="calendar-area">
-						<div class="calendar_month">
-							<button type="btn-prev">&lt;</button>
-							<span></span>
-							<button type="btn-next">&gt;</button>
-						</div>
-						<table class="calendar-table">
-							<thead>
-								<tr>
-									<th>일</th>
-									<th>월</th>
-									<th>화</th>
-									<th>수</th>
-									<th>목</th>
-									<th>금</th>
-									<th>토</th>
-								</tr>
-							</thead>
-							<tbody class="calendar_body">
-								
-								
-								
-							</tbody>
-						</table>
-						
+					<div class="month">
+						<ul>
+							<li class="prev"><a>&#10094;</a></li>
+							<li class="next">&#10095;</li>
+							<li class="year_li">2024<br>
+								<span style="font-size: 18px">8월</span>
+							</li>
+						</ul>
 					</div>
 
+					<ul class="weekdays">
+						<li>Mo</li>
+						<li>Tu</li>
+						<li>We</li>
+						<li>Th</li>
+						<li>Fr</li>
+						<li>Sa</li>
+						<li>Su</li>
+					</ul>
+
+					<ul class="days">
+						<li><button>1</button></li>
+						<li><button>2</button></li>
+						<li><button>3</button></li>
+						<li><button>4</button></li>
+						<li><button>5</button></li>
+						<li><button>6</button></li>
+						<li><button>7</button></li>
+						<li><button>8</button></li>
+						<li><button>9</button></li>
+						<li><button class="button active">10</button></li>
+						<li><button>11</button></li>
+						<li><button>12</button></li>
+						<li><button>13</button></li>
+						<li><button>14</button></li>
+						<li><button>15</button></li>
+						<li><button>16</button></li>
+						<li><button>17</button></li>
+						<li><button>18</button></li>
+						<li><button>19</button></li>
+						<li><button>20</button></li>
+						<li><button>21</button></li>
+						<li><button>22</button></li>
+						<li><button>23</button></li>
+						<li><button>24</button></li>
+						<li><button>25</button></li>
+						<li><button>26</button></li>
+						<li><button>27</button></li>
+						<li><button>28</button></li>
+						<li><button>29</button></li>
+						<li><button>30</button></li>
+						<li><button>31</button></li>
+					</ul>
+
+
 				</div>
-			
+
 			</div>
+
 		</div>
 	</div>
-	
+	</div>
+
 	<script>
 	
 		/* 지도 생성 */
@@ -236,12 +267,21 @@
 	    	$('#reserInfo').css('display', 'block');
 	    	
 	    	const now = new Date();
-	    	const year = (now.getFullYear()-2000);
+	    	const year = now.getFullYear();
 	    	const month = now.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줍니다.
-	    	const date = now.getDate();
-	    	const daytime = now + year +month + date;
-	    	const a = year + '.' + month
-	    	$('.calendar_month>span').html(a);
+
+	    	const yearAndMonth = year + '.' + month
+	    	
+	    	const date = new Date(this.currentMonth);
+	        let weekList = [];
+	        date.setDate(1);
+	    	
+	        console.log(date);
+	    	
+	    	
+	    	
+	    	$('.calendar_month>span').html(yearAndMonth);
+	    	
 	    	
 	    	console.log(year);
 	    	console.log(daytime);
@@ -262,6 +302,6 @@
       
 		
 	</script>
-<jsp:include page="../common/footer.jsp" />
+	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>
