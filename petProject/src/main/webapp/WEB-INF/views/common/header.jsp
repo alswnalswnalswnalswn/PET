@@ -441,11 +441,12 @@
 	<c:set var="loginUser" value="${ sessionScope.loginUser }" scope="session" />
     <div id="header">
         <div id="header1">
-            <div id="logo"><img src="resources/img/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${ pageContext.request.contextPath}'"></div>
+         
+            <div id="logo"><img src="${sessionScope.path}/resources/img/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${sessionScope.path}'"></div>
             <div id="search_form">
                 <form action="#">
                     <input type="text" name="query" id="in_text" placeholder="  검색어를 입력하세요">
-                    <img src="resources/img/searchform.png" alt="" id="search_img">
+                    <img src="${sessionScope.path}/resources/img/searchform.png" alt="" id="search_img">
                 </form>
             </div>
             <div id="menubar">
@@ -465,20 +466,20 @@
             		<c:choose>
             		<c:when test='${ loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
     					<li class="nav-item">
-    						<a class="nav-link" href="member/logout" id="logout_btn"><img src="resources/img/logout.png" alt=""></a>
+    						<a class="nav-link" href="${sessionScope.path}/member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/logout.png" alt=""></a>
     					</li>
     				</c:when>
     				<c:otherwise>
    						<li class="nav-item">
-    						<a class="nav-link" href="#" id="login_btn"><img src="resources/img/login.png" alt=""></a>
+    						<a class="nav-link" href="#" id="login_btn"><img src="${sessionScope.path}/resources/img/login.png" alt=""></a>
     					</li>
     				</c:otherwise>
     				</c:choose>
     					<li class="nav-item">
-      						<a class="nav-link" href="#"><img src="resources/img/mypage.png" alt=""></a>
+      						<a class="nav-link" href="#"><img src="${sessionScope.path}/resources/img/mypage.png" alt=""></a>
     					</li>
     					<li class="nav-item">
-      						<a class="nav-link" href="#"><img src="resources/img/cart.png" alt=""></a>
+      						<a class="nav-link" href="#"><img src="${sessionScope.path}/resources/img/cart.png" alt=""></a>
     					</li>
   					</ul>
             	</div>
@@ -504,7 +505,7 @@
                 <li><a href="community">커뮤니티</a></li>
                 <li><a href="#">지식</a></li>
                 <li><a href="#">쇼핑</a></li>
-                <li><a href="info">데이트</a></li>
+                <li><a href="info/I4">데이트</a></li>
                 <li><a href="hospital">동물병원</a></li>
                 <li><a href="#">공지사항</a></li>
             </ul>
@@ -523,7 +524,7 @@
 		      
 		      
 				<div id="login-area">
-					<form action="member/login" method="post">
+					<form action="${sessionScope.path}/member/login" method="post">
 						<div class="input_form">
 							<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 						</div>
@@ -544,7 +545,7 @@
 							<div id="line2"></div>
 						</div>
 						<div class="input_btn">
-							<a id="kakao-login-btn"><img src="resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
+							<a id="kakao-login-btn"><img src="${sessionScope.path}/resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
 						</div>
 					</form>
 				</div>
@@ -574,7 +575,7 @@
 			    
 			    
 			<div id="login-area">
-				<form action="member/searchId" method="post">
+				<form action="${sessionScope.path}/member/searchId" method="post">
 					<div class="input_form">
 						<input type="text" name="memberName" placeholder="성함을 입력해주세요">
 					</div>
@@ -611,7 +612,7 @@
 			    
 			    
 			<div id="login-area">
-				<form action="member/searchPwd" method="post">
+				<form action="${sessionScope.path}/member/searchPwd" method="post">
 					<div class="input_form">
 						<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 					</div>
@@ -650,7 +651,7 @@
         <h3 align="center" id="join">회원가입</h3>
         
 		<div id="join-area">
-			<form action="member/join" method="post">
+			<form action="${sessionScope.path}/member/join" method="post">
 			<input type="hidden" name="code" id="myCode">
 				<div class="input_form">
 					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요 (3~10 영/숫자)" required>
@@ -770,7 +771,7 @@
 		    // 비밀번호 입력란의 입력을 감지하는 이벤트 핸들러
 		    $('.input_form #memberPwd1, .input_form #memberPwd2').on('input', function() {
 		        const $userPwd1 = $('.input_form #memberPwd1');
-		        const $userPwd2 = $('.input_form #memberPwd2');b
+		        const $userPwd2 = $('.input_form #memberPwd2');
 		        const $checkPwd = $('#checkPwd');
 		        const $checkP = $('.checkPwd');
 		        const $joinBtn = $('#joinBtn');
