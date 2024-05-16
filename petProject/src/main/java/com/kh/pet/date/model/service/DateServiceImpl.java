@@ -1,5 +1,7 @@
 package com.kh.pet.date.model.service;
 
+import java.util.HashMap;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,11 @@ public class DateServiceImpl implements DateService {
 	@Override
 	public int insertComment(Comment comment) {
 		return dateRepository.insertComment(sqlSession,comment);
+	}
+
+	@Override
+	public int updateRepCom(HashMap<String, String> map) {
+		return dateRepository.updateRepCom(sqlSession,map);
 	}
 	
 

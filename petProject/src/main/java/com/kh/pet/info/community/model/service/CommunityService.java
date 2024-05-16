@@ -11,5 +11,6 @@ public interface CommunityService {
 	
 	int selectListCount(HashMap<String, String> commMap);
 	List<Info> selectCommunityList(HashMap<String, String> commMap, RowBounds rowBounds);
-
+	
+	Info communityDetail(int boardNo);
 }

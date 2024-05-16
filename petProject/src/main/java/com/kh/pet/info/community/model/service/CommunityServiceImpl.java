@@ -30,5 +30,10 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityRepository.selectCommunityList(sqlSession, commMap, rowBounds);
 	}
 
+	@Override
+	public Info communityDetail(int boardNo) {
+		return communityRepository.communityDetail(sqlSession, boardNo);
+	}
+
 
 }

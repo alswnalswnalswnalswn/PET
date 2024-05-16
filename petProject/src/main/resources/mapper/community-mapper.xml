@@ -139,7 +139,9 @@
 		</choose>
 	</select>
 	
-	
+	<select id="communityDetail" resultType='info'>
+		
+	</select>
 	
 	
 	

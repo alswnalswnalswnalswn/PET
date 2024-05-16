@@ -515,7 +515,7 @@
                 <li><a href="community">커뮤니티</a></li>
                 <li><a href="#">지식</a></li>
                 <li><a href="#">쇼핑</a></li>
-                <li><a href="info/I4">데이트</a></li>
+                <li><a href="${sessionScope.path}/info/date">데이트</a></li>
                 <li><a href="hospital">동물병원</a></li>
                 <li><a href="#">공지사항</a></li>
             </ul>

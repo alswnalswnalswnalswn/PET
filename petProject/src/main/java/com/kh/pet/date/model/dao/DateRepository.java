@@ -1,5 +1,7 @@
 package com.kh.pet.date.model.dao;
 
+import java.util.HashMap;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +23,10 @@ public class DateRepository {
 
 	public int insertComment(SqlSessionTemplate sqlSession, Comment comment) {
 		return sqlSession.insert("infoMapper.insertComment",comment);
+	}
+
+	public int updateRepCom(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.update("infoMapper.updateRepCom",map);
 	}
 
 }
