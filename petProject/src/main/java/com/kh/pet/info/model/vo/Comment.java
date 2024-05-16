@@ -16,6 +16,7 @@ import lombok.ToString;
 public class Comment {
 	private int commentNo;
 	private int replyNo;
+	private int memberNo;
 	private String commentWriter;
 	private String commentContent;
 	private LocalDateTime createDate;

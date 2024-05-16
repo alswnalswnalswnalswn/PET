@@ -161,7 +161,7 @@
         	font-weight: 700;
         	font-size: 14px;
 		}
-		.comment-write-btn{
+		.comment_write_btn{
 			position: absolute;
 			right : 10px;
 			bottom : 10px;
@@ -171,7 +171,7 @@
         	font-size: 14px;
 		}
 
-        .write-btn{
+        .reply_write_btn{
         	position: absolute;
         	right : 10px;
         	bottom : 10px;
@@ -188,6 +188,9 @@
         	text-decoration: none;
         	color:gray;
         	cursor: pointer;
+        }
+        .comment_writer{
+        	margin-left: 20px;
         }
 </style>
 </head>
@@ -232,7 +235,7 @@
 		    var swLng = bounds.getSouthWest().getLng();
 			
 		    $.ajax({
-		        url: "places/P2/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
+		        url: "${sessionScope.path}/places/P2/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 		        success: result => {
 		            var divList = document.getElementById('placesList');
 		            var positions = [];
@@ -326,14 +329,44 @@
 		$(() => {
 			
 			$('#wrap').on('click','.comment_btn', e => {
-				$('.comment_writer').html(replyWrite('comment_write'));
+				$(e.target).parent().siblings('.comment_writer').html(replyWrite('comment_write'));
+			});
+			$('#wrap').on('click','.write-btn-cansle', e => {
+				$(e.target).parent().parent().html('');
+			});
+			$('#wrap').on('click','.comment_write_btn', e => {
+				const $comment = $(e.target).siblings('.write_content').val();
+				
+				const $replyNo = $(e.target).parents('.comment_writer').parent().attr('id').substr(6);
+				
+				const $placeNoComment = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
+				
+				$.ajax({
+					url : '${sessionScope.path}/date/comment',
+					method : 'post',
+					data : {
+						memberNo : '${sessionScope.loginUser.memberNo}',
+						commentContent : $comment,
+						replyNo : $replyNo
+					},
+					success : result => {
+						if(result == 'Y'){
+							detailDateAjax($placeNoComment);
+						}
+					}
+				});
+				
+				
+				
 			});
 			
-			$('#wrap').on('click','.write-btn', e => {
-				const $reply = $('.write_content');
+			$('#wrap').on('click','.reply_write .reply_write_btn', e => {
+				const $reply = $('.reply_write .write_content');
+				console.log($reply.val());
 				const $placeNoReply = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
+				console.log($placeNoReply);
 				$.ajax({
-					url : 'date',
+					url : '${sessionScope.path}/date',
 					method : 'post',
 					data : {
 						memberNo : '${sessionScope.loginUser.memberNo}',
@@ -383,7 +416,7 @@
 		}
 		function replyWrite(write) {
 			if(write != 'reply_write'){
-				btnText = '<button class="write-btn-cansle">취소</button>'
+				btnText = '<button class="write-btn-cansle">취소</button>';
 			} else{
 				btnText = '';
 			}
@@ -392,14 +425,14 @@
         	'<div class="reply_writer">${sessionScope.loginUser.nickname}</div>' +
         	'<div class="reply_write_content">' +
         		'<textarea class="write_content" placeholder="댓글을 남겨보세요" onkeydown="resize(this)" onkeyup="resize(this)"></textarea>' +
-        		'<button class="comment-write-btn">등록</button>' + btnText +
+        		'<button class="' + write + '_btn">등록</button>' + btnText +
         	'</div>' +
         '</div>';			
 		}
 		
 		function detailDateAjax($placeNo) {
 			$.ajax({
-				url : 'date/'+ $placeNo,
+				url : '${sessionScope.path}/date/'+ $placeNo,
 				success: result => {
 					
 					let createDate = result.createDate.date;
@@ -410,28 +443,28 @@
 					boardNo = result.boardNo;
 					let text = '<div class="menu_head" id="' + $placeNo + '">' +
 						            '<div class="menu_heads">' +
-					                '<div class="menu_title">' + result.boardTitle  +'</div>' +
-					                '<div class="menu_close">X</div>' +
-					            '</div>' + 
-					            '<div class="menu_heads">' +
-					                '<div class="heads_content">' +
-					                    '<div>' + result.memberNo + '</div>' +
-					                    '<div>' +
-					                        '<div class="menu_create_date">' + dateFormat(fullDate) + ' 조회  ' + result.boardCount + '</div>' +
-					                    '</div>' +
-					                '</div>' +
-								'</div>' +
+					                	'<div class="menu_title">' + result.boardTitle  +'</div>' +
+					                	'<div class="menu_close">X</div>' +
+					            	'</div>' + 
+					            	'<div class="menu_heads">' +
+					                	'<div class="heads_content">' +
+					                    	'<div>' + result.memberNo + '</div>' +
+					                    	'<div>' +
+					                        	'<div class="menu_create_date">' + dateFormat(fullDate) + ' 조회  ' + result.boardCount + '</div>' +
+					                    	'</div>' +
+					                	'</div>' +
+									'</div>' +
 					            
-					        '</div>' +
-							        '<div class="menu_body">' +
-							            '<div class="menu_content">' +
-							             	result.boardContent +
-							                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 ' + replyList.length + '</div>' +
-							            '</div>' +
-							        '</div>' +
+					        	'</div>' +
+						        '<div class="menu_body">' +
+						            '<div class="menu_content">' +
+						             	result.boardContent +
+						                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 ' + replyList.length + '</div>' +
+						            '</div>' +
+						        '</div>' +
 			
-							        '<div class="menu_footer">' +
-							            '<div class="footer_title">댓글</div>';
+						        '<div class="menu_footer">' +
+						            '<div class="footer_title">댓글</div>';
 							            if('${sessionScope.loginUser}' != ''){
 							            text += replyWrite("reply_write");
 							            }
@@ -443,11 +476,14 @@
 							            	   let replyCreateDate = replyList[i].createDate.date;
 							            	   let replyCreateTime = replyList[i].createDate.time;
 							            	   var replyDate = new Date(replyCreateDate.year, replyCreateDate.month - 1, replyCreateDate.day, replyCreateTime.hour, replyCreateTime.minute ,replyCreateTime.second);
-							            	   text += '<div class="reply" id="' + replyList[i].replyNo + '">' +
+							            	   text += '<div class="reply" id="reply_' + replyList[i].replyNo + '">' +
 							            		   			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
 							                    			'<div class="reply_content">' + replyList[i].replyContent + '</div>' +
-							                    			'<div class="reply_createDate">' + dateFormat(replyDate) + '&emsp;<a class="comment_btn">답글쓰기</a></div>' +
-							                    			'<div class="comment_writer"></div>' +
+							                    			'<div class="reply_createDate">' + dateFormat(replyDate); 
+							                    			if('${sessionScope.loginUser}' != ''){
+							                    				text += '&emsp;<a class="comment_btn">답글쓰기</a>';
+							                    			}
+							                    			text += '</div><div class="comment_writer"></div>' +
 							                    		'</div>';
 							                    		for(let j in commentList){
 							                    			

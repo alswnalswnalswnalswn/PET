@@ -147,7 +147,13 @@
 	
 	</insert>
 	
+	<insert id="insertComment" parameterType="comment">
+		INSERT
+		  INTO
+		      TB_COMMENT
+		VALUES(SEQ_COMNO.NEXTVAL,#{replyNo},#{memberNo},#{commentContent},DEFAULT,DEFAULT,DEFAULT)
 	
+	</insert>
 	
 	
 	
