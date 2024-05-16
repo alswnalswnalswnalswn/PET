@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<title>Document</title>
+<title>header</title>
 <style>
     div {
         box-sizing: border-box;
@@ -245,16 +245,6 @@
     	border:0;
     	font-weight:bold;
 	}
-	#join-area input{
-		border : none;
-		outline:none;
-		border-radius : 15px;
-	}
-	
-	#join-area .input_form{
-		border-radius : 15px;
-		position : relative;
-	}
 	.check{
 		position : absolute;
 		right : 0;
@@ -459,17 +449,6 @@
                     <img src="${sessionScope.path}/resources/img/searchform.png" alt="" id="search_img">
                 </form>
             </div>
-            <div id="menubar">
-            	<div id="loginMenu">
-            		<ul class="nav flex-column"id="loginForm">
-            			<li class="nav-item"  >
-            				<a class="nav-link" style="padding:.2rem .5rem;" href="#" data-toggle="modal" data-target="#mylogin">로그인</a>
-            			</li>
-            			<li class="nav-item">
-            				<a class="nav-link" style="padding:.2rem .5rem;" href="#"  data-toggle="modal" data-target="#myjoin">회원가입</a>
-            			</li>
-            		</ul>
-            	</div>
             	
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
