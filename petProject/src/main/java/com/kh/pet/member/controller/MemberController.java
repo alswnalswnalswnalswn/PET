@@ -93,18 +93,6 @@ public class MemberController {
 		}
 		return "redirect:/";
 	}
-	
-	@RequestMapping("searchId")
-	public String searchId(Member member, HttpSession session) {
-		
-		String memberId = memberService.searchId(member);
-		
-		if(memberId == null) {
-			session.setAttribute("alertMsg", "가입되어 있는 정보가 없습니다. 다시 입력 해주세요");
-		}
-		return memberId;
-	}
-	
 	@ResponseBody
 	@GetMapping("idCheck")
 	public String idCheck(String checkId) {
@@ -177,6 +165,84 @@ public class MemberController {
 		boolean result = memberService.validate(certVo);
 		
 		return "result : " + result;
+	}
+	
+	
+	@RequestMapping("searchId")
+	public String searchId(String email, String memberName, HttpServletRequest request, HttpSession session) throws MessagingException  {
+		Member member = new Member();
+		member.setEmail(email);
+		member.setMemberName(memberName);
+		String id = memberService.searchId(member);
+		if(id != null) {
+			String remoteAddr = request.getRemoteAddr();
+			
+			CertVO certVo = CertVO.builder().who(remoteAddr).secret(id).build();
+			
+			memberService.sendMail(certVo);
+			
+			MimeMessage message = sender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+			
+			helper.setTo(email);
+			helper.setSubject("냥이랑 멍이랑에서 보낸 아이디입니다.");
+			helper.setText("아이디 : " + id);
+			
+			sender.send(message);
+			
+			session.setAttribute("alertMsg", "메일을 확인해주세요");
+		} else {
+			session.setAttribute("alertMsg", "가입된 정보가 없습니다. 다시 입력 해주세요");
+		}
+		return "redirect:/";
+	}
+	
+	@RequestMapping("searchPwd")
+	public String searchPwd(String email, String memberId, HttpServletRequest request, HttpSession session) throws MessagingException  {
+		Member member = new Member();
+		member.setEmail(email);
+		member.setMemberId(memberId);
+		int memberNo = memberService.searchPwd(member);
+		if(memberNo > 0) {
+			String remoteAddr = request.getRemoteAddr();
+			
+			Random r = new Random();
+			int i = r.nextInt(10);
+			Format f = new DecimalFormat("00");
+			String memberPwd = "abcd" + f.format(i);
+			
+			String encPwd = bcryptPasswordEncoder.encode(memberPwd);
+			member.setMemberNo(memberNo);
+			member.setMemberPwd(encPwd);
+
+			CertVO certVo = CertVO.builder().who(remoteAddr).secret(memberPwd).build();
+				
+			if(memberService.updatePwd(member) > 0) {
+				
+				memberService.sendMail(certVo);
+				
+				MimeMessage message = sender.createMimeMessage();
+				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+				
+				helper.setTo(email);
+				helper.setSubject("냥이랑 멍이랑에서 보낸 임시비밀번호입니다.");
+				helper.setText("비밀번호 : " + memberPwd);
+				
+				sender.send(message);
+				
+				session.setAttribute("alertMsg", "메일을 확인해주세요");	
+			} else {
+				session.setAttribute("alertMsg", "가입된 정보가 없습니다. 다시 입력 해주세요");
+			}
+		} else {
+			session.setAttribute("alertMsg", "가입된 정보가 없습니다. 다시 입력 해주세요");
+		}
+		return "redirect:/";
+	}
+	
+	@RequestMapping("myPage")
+	public String myPage() {
+		return "member/myPage";
 	}
 	
 	@GetMapping("kakao")

@@ -57,4 +57,12 @@ public class MemberRepository {
 		return sqlSession.selectOne("memberMapper.searchId", member);
 	}
 
+	public int searchPwd(SqlSessionTemplate sqlSession, Member member) {
+		return sqlSession.selectOne("memberMapper.searchPwd", member);
+	}
+
+	public int updatePwd(SqlSessionTemplate sqlSession, Member member) {
+		return sqlSession.update("memberMapper.updatePwd", member);
+	}
+
 }
