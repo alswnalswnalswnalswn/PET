@@ -57,16 +57,24 @@
 			
 			
 		</div>
-		
-		<div>
-			여따 게시글 표시
-			
+
+		<div class="communityList">
 			
 		</div>
+		
+		<div class="btnDiv">
+		
+		</div>
+
+
+
+
+
+
 	</div>
 	
 	<script>
-	
+		
 		// 초기 변수 선언
 		var $selectCategory = $('#selectCategory');
 		var $selectAnimal = $('#selectAnimal');	
@@ -81,7 +89,7 @@
 			
 			$selectCategory.text(categoryText);
 			
-			ajaxText(animalVal, categoryVal);
+			ajaxTest(animalVal, categoryVal, 1);
 			
 			
 		}
@@ -93,12 +101,12 @@
 			
 			$selectAnimal.text(animalText);
 			
-			ajaxText(animalVal, categoryVal);
+			ajaxTest(animalVal, categoryVal, 1);
 			
 			
 		}
 		
-		function ajaxText(animal, category){
+		function ajaxTest(animal, category, page){
 			
 			$.ajax({
 				url : 'selectCommunityList',
@@ -109,13 +117,65 @@
 				},
 				success : result => {
 					console.log(result);
+					var str = '';
+					for(let i in result){
+						str += '<div class="strList">'
+							+ '<div>' + result[i].boardContent + '</div>'
+							+ '</div>';
+					};
+					
+					$('.communityList').html(str);
+					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
+						$('.btnDiv').html('<button id="showMoreBtn" onclick="showMore();">더 보기</button>');
+					}
+					else{
+						$('.btnDiv').html('');
+					}
+					
 				}
-				
 			});
-			
+		}
+		
+		function showMore(animal, category){
+			$.ajax({
+				url : 'selectCommunityList',
+				data : {
+					page : ++page,
+					animal : animal,
+					category : category
+				},
+				success : result => {
+					var str = '';
+					for(let i in result){
+						str += '<div class="strList">'
+							+ '<div>' + result[i].boardContent + '</div>'
+							+ '</div>';
+					};
+					$('.communityList').append(str);
+					
+					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
+						$('.btnDiv').html('<button id="showMoreBtn" onclick="showMore();">더 보기</button>');
+					}
+					else{
+						$('.btnDiv').html('');
+					}
+					
+				}
+			});
 		}
 		
 		
+		
+		$(() => {
+			ajaxTest('A0', 'I0');
+		});
+		
+		$(() => {
+			$('.strList div').click(() => {
+				var num = $(this).text();
+				console.log(num);
+			});
+		});
 		
 	</script>
 	

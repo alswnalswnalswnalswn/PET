@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.kh.pet.common.model.vo.Attachment;
+import com.kh.pet.common.model.vo.PageInfo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,5 +32,7 @@ public class Info {
 	private List<Attachment> attachmentList;
 	
 	private List<Reply> replyList;
+	
+	private PageInfo pageInfo;
 
 }

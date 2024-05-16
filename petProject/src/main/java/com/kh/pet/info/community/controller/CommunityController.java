@@ -41,11 +41,12 @@ public class CommunityController {
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
 				);
+		List<Info> listInfo = communityService.selectCommunityList(commMap, rowBounds);
 		
-		System.out.println(commMap);
-		System.out.println(pi);
-		
-		return communityService.selectCommunityList(commMap, rowBounds);
+		for(Info i : listInfo) {
+			i.setPageInfo(pi);
+		}
+		return listInfo;
 	}
 	
 	
