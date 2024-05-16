@@ -324,22 +324,33 @@
 		}
 		
 		$(() => {
-
+			
+			$('#wrap').on('click','.update_write_btn', e => {
+				const $updateContent = $(e.target).prev();
+				const $updateNo = $(e.target).parents('.update_area').prev().attr('id');
+				let words = $(e.target).parents('.update_area').prev().attr('id').split('_');
+				const placeNo = $(e.target).parents('menu_footer').siblings('.menu_head').attr('id');
+				$.ajax({
+					url : '/date',
+					method : 'put',
+					data : {
+						type : words[0],
+						number : words[1],
+						content : $updateContent.val()
+					},
+					success : result => {
+						console.log(result);
+						detailDateAjax(placeNo);
+					}
+				});
+				
+			});
+			
 			$('#wrap').on('click','.update_btn', e => {
 				const $updateBtn = $(e.target).parent().parent();
 				const $updateContent = $(e.target).parent().siblings('.reply_content');
-				if($updateBtn.attr('class') == 'reply'){
-					const $replyNo = $updateBtn.attr('id').substr(6);
-					
-
-					
-					
-					$(e.target).parent().parent().html(replyWrite("update_write",$updateContent.text()));
-					
-				}
-				else{
-				}
-			
+				$(e.target).parent().parent().hide();
+				$(e.target).parent().parent().next().show();
 			});
 
 			$('#wrap').on('click','.comment_btn', e => {
@@ -348,7 +359,8 @@
 			});
 			$('#wrap').on('click','.write-btn-cansle', e => {
 				if($(e.target).prev().attr('class') == 'update_write_btn'){
-					
+					$(e.target).parents('.update_area').prev().show();
+					$(e.target).parents('.update_area').hide();
 				}
 				else{
 					$(e.target).parent().parent().html('');
@@ -397,6 +409,7 @@
 					success : result => {
 						if(result == 'Y'){
 							detailDateAjax($placeNoReply);
+							
 						}
 					}
 				});
@@ -405,7 +418,9 @@
 			
 			$('#wrap').on('click','.detail-btn', e => {
 				const $placeNo = $(e.target).attr('id');
+				$('#menu_detail').scrollTop(0);
 				detailDateAjax($placeNo);
+				
 				
 			});
 			
@@ -459,7 +474,6 @@
 					let createDate = result.createDate.date;
 					let createTime = result.createDate.time;
 					let replyList = result.replyList;
-					
 					var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day, createTime.hour, createTime.minute ,createTime.second);
 					boardNo = result.boardNo;
 					let text = '<div class="menu_head" id="' + $placeNo + '">' +
@@ -509,7 +523,7 @@
 										       				text += '&emsp;<a class="update_btn">수정</a>&emsp;<a class="delete_btn">삭제</a>';
 										       			}
 										       			text += '</div><div class="comment_writer"></div>' +
-										       		'</div>'+ '<div class="update_area" style="display:none">' + replyWrite('reply_write', replyList[i].replyContent) + '</div>';
+										       		'</div>'+ '<div class="update_area" style="display:none">' + replyWrite('update_write', replyList[i].replyContent) + '</div>';
 										            	   
 						                    		for(let j in commentList){
 						                    			
@@ -526,7 +540,7 @@
 										                    				if('${sessionScope.loginUser.nickname}' == commentList[j].commentWriter){
 											                    				text += '&emsp;<a class="update_btn">수정</a>&emsp;<a class="delete_btn">삭제</a>';
 											                    			}
-											                    text += '</div></div>';
+											                    text += '</div></div><div class="update_area" style="display:none">' + replyWrite('update_write', replyList[i].replyContent) + '</div>';
 						                    				}
 						                    				
 						                    			}
