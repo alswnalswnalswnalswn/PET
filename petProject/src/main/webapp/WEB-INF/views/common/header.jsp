@@ -620,7 +620,7 @@
 					<div class="input_form bt">
 						<input type="text" id="myEmail" name="email" placeholder="이메일을 입력해주세요">
 						<div id="checkEmailon" class="danger" style="font-size:0.7em; display:none;"></div>
-						<img src="resources/img/check.png" class="checkEmailimg" style="display:none;">
+						<img src="${sessionScope.path }/resources/img/check.png" class="checkEmailimg" style="display:none;">
 					</div>
 					<div class="input_btn">
 						<button type="submit" id="search-btn" class="btn">비밀번호 찾기</button>
@@ -650,7 +650,7 @@
 				<div class="input_form">
 					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요 (3~10 영/숫자)" required>
 					<div id="checkId" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="resources/img/check.png" class="check" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/check.png" class="check" style="display:none;">
 				</div>
 					
 					
@@ -660,7 +660,7 @@
 				<div class="input_form">
 					<input type="text" id="memberPwd2" maxlength="16" placeholder="비밀번호를 한번 더 입력해주세요" required>
 					<div id="checkPwd" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="resources/img/check.png" class="checkPwd" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/check.png" class="checkPwd" style="display:none;">
 				</div>
 					<span class="danger_pwd"></span>
 				<div class="input_form">
@@ -669,17 +669,17 @@
 				<div class="input_form">
 					<input type="text" id="nickname" name="nickname" maxlength="30" placeholder="닉네임을 입력해주세요" required>
 					<div id="checkNick" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="resources/img/check.png" class="checkNick" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/check.png" class="checkNick" style="display:none;">
 				</div>
 				<div class="input_form">
 					<input type="text" id="phone" name="phone" maxlength="13" placeholder="'-' 를 포함한 전화번호를 입력해주세요" required>
 					<div id="checkPhone" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="resources/img/check.png" class="checkPhone" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/check.png" class="checkPhone" style="display:none;">
 				</div>
 				<div class="input_form">
 					<input type="text" id="email" name="email" maxlength="30" placeholder="이메일을 입력해주세요" required>
 					<div id="checkEmail" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="resources/img/check.png" class="checkEmail" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/check.png" class="checkEmail" style="display:none;">
 					<button type="button" id="checkMyEmail">이메일 인증</button>
 				</div>
 				<div class="input_code" style="font-size:15px; display:none;">

@@ -258,7 +258,7 @@ public class MemberController {
 		
 		memberService.selectMember(sm);
 		
-		session.setAttribute("loginUser", sm);
+		session.setAttribute("socialLogin", sm);
 		
 		return "redirect:kakao";
 	}
