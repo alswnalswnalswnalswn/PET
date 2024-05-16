@@ -15,10 +15,9 @@ public class InfoController {
 	public ModelAndView selectAll(@PathVariable("category") String category,ModelAndView mv) {
 		
 		switch (category) {
-		case "I4":
+		case "date":
 			mv.setViewName("info/dateList");
 			break;
-
 		default:
 			break;
 		}
