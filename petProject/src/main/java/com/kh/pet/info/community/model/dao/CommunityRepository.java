@@ -19,5 +19,9 @@ public class CommunityRepository {
 	public List<Info> selectCommunityList(SqlSessionTemplate sqlSession, HashMap<String, String> commMap, RowBounds rowBounds){
 		return sqlSession.selectList("communityMapper.selectCommunityList", commMap, rowBounds);
 	}
+	
+	public Info communityDetail(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.selectOne("communityMapper.communityDetail", boardNo);
+	}
 
 }
