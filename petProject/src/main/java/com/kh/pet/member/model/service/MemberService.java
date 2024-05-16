@@ -30,4 +30,9 @@ public interface MemberService {
 
 	String searchId(Member member);
 
+	int searchPwd(Member member);
+
+	int updatePwd(Member member);
+
+
 }
