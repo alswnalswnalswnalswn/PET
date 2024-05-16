@@ -8,4 +8,5 @@ public class SocialMember {
 	private String id;
 	private String nickname;
 	private String thumbnailImage;
+	private String memberStatus;
 }

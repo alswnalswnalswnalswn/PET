@@ -6,18 +6,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.pet.member.model.dao.MemberRepository;
+import com.kh.pet.member.model.vo.Member;
 import com.kh.pet.member.model.vo.SocialMember;
 
 @Service
 public class KakaoService {
+	
+	@Autowired
+	private MemberRepository memberRepository;
+	
+	@Autowired
+	private SqlSessionTemplate sqlSession;
 
 	public String getToken(String code) throws IOException, ParseException{
 		String tokenUrl = "https://kauth.kakao.com/oauth/token";
@@ -76,10 +85,6 @@ public class KakaoService {
 		sm.setId(responseObj.get("id").toString());
 		
 		JSONObject propObj = (JSONObject)responseObj.get("properties");
-		
-		System.out.println(propObj);
-		
-		sm.setId(responseObj.get("id").toString());
 		sm.setNickname(propObj.get("nickname").toString());
 		sm.setThumbnailImage(propObj.get("thumbnail_image").toString());
 		

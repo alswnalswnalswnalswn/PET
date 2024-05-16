@@ -4,9 +4,140 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="communityMapper">
 
+	<resultMap type="info" id="infoResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+	</resultMap>
+
+
+	<select id="selectListCount" parameterType="hashmap" resultType="_int">
+		SELECT 
+				COUNT(*) 
+		FROM(
+            SELECT 
+                    BOARD_NO,
+                    CATEGORY_CODE,
+                    ANIMAL_CODE,
+                    ANIMAL_NAME,
+                    BOARD_STATUS,
+                    BO_CATEGORY_NAME,
+                    ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS rn
+            FROM
+                    TB_INFO
+            LEFT JOIN
+                    TB_BOARD_ANIMAL USING(BOARD_NO)
+            LEFT JOIN
+                    TB_ANIMAL USING(ANIMAL_CODE)
+            LEFT JOIN
+                    TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+            )
+		WHERE 
+				RN = 1
+		AND 
+				BOARD_STATUS = 'Y'
+		<choose>
+			<when test="animal == 'A1'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A2'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A3'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A4'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A5'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A6'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<otherwise>
+				
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="category == 'I1'">
+				AND CATEGORY_CODE = #{category}
+			</when>
+			<when test="category == 'I2'">
+				AND CATEGORY_CODE = #{category}
+			</when>
+			<otherwise>
+				AND CATEGORY_CODE IN ('I1', 'I2')
+			</otherwise>
+		</choose>
+				
+	</select>
 	
-	
-	
+	<select id="selectCommunityList" parameterType="hashmap" resultMap="infoResultSet">
+		SELECT
+				BOARD_NO,
+				BOARD_TITLE,
+				BOARD_CONTENT,
+				CATEGORY_CODE
+		FROM(
+            SELECT 
+                    BOARD_NO,
+                    CATEGORY_CODE,
+                    BOARD_TITLE,
+                    BOARD_CONTENT,
+                    ANIMAL_CODE,
+                    ANIMAL_NAME,
+                    BOARD_STATUS,
+                    BO_CATEGORY_NAME,
+                    ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS rn
+            FROM
+                    TB_INFO
+            LEFT JOIN
+                    TB_BOARD_ANIMAL USING(BOARD_NO)
+            LEFT JOIN
+                    TB_ANIMAL USING(ANIMAL_CODE)
+            LEFT JOIN
+                    TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+            )
+		WHERE
+				BOARD_STATUS = 'Y'
+		AND
+				RN = 1
+		<choose>
+			<when test="animal == 'A1'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A2'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A3'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A4'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A5'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<when test="animal == 'A6'">
+				AND ANIMAL_CODE = #{animal}
+			</when>
+			<otherwise>
+				
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="category == 'I1'">
+				AND CATEGORY_CODE = #{category}
+			</when>
+			<when test="category == 'I2'">
+				AND CATEGORY_CODE = #{category}
+			</when>
+			<otherwise>
+				AND CATEGORY_CODE IN ('I1', 'I2')
+			</otherwise>
+		</choose>
+	</select>
 	
 	
 	
