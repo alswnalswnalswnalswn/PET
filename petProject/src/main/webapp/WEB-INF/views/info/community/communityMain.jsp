@@ -120,6 +120,7 @@
 					var str = '';
 					for(let i in result){
 						str += '<div class="strList">'
+							+ '<input type="hidden" value="' + result[i].boardNo + '">'
 							+ '<div>' + result[i].boardContent + '</div>'
 							+ '</div>';
 					};
@@ -148,6 +149,7 @@
 					var str = '';
 					for(let i in result){
 						str += '<div class="strList">'
+							+ '<input type="hidden" value="' + result[i].boardNo + '">'
 							+ '<div>' + result[i].boardContent + '</div>'
 							+ '</div>';
 					};
@@ -171,10 +173,27 @@
 		});
 		
 		$(() => {
-			$('.strList div').click(() => {
-				var num = $(this).text();
-				console.log(num);
+			
+			var parentDiv = '',
+			hiddenValue = '';
+			
+			$('.communityList').on('click', '.strList div', function(e)  {
+				
+				parentDiv = $(this).parent();
+				hiddenValue = parentDiv.find('input[type="hidden"]').val();
+				
 			});
+			
+			$.ajax({
+				url : 'communityDetail',
+				data : {
+					boardNo : hiddenValue 
+				},
+				success : result => {
+					console.log(result);
+				}
+			});
+			
 		});
 		
 	</script>

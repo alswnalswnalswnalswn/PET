@@ -49,6 +49,10 @@ public class CommunityController {
 		return listInfo;
 	}
 	
+	public Info communityDetail(int boardNo) {
+		return communityService.communityDetail(boardNo);
+	}
+	
 	
 	
 	
