@@ -20,35 +20,37 @@
 					<div class="input-group-prepend">
 						<button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">Dropdown button</button>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">Link 1</a> 
-							<a class="dropdown-item" href="#">Link 2</a> 
-							<a class="dropdown-item" href="#">Link 3</a>
+							<a class="dropdown-item" href="#">전체</a> 
+							<a class="dropdown-item" href="#">글 제목</a> 
+							<a class="dropdown-item" href="#">글 내용</a>
 						</div>
 					</div>
-					<input type="text" class="form-control" placeholder="Username">
-					<button class="btn btn-primary" type="button">OK</button>
+					<input type="text" class="form-control">
+					<button class="btn btn-primary" type="button">검색</button>
 				</div>
 			</div>
 			
 			<div>
 				<div class="btn-group">
 					<div class="btn-group">
-						<button id="selectCategory" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">게시판 선택</button>
+						<button id="selectCategory" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="categoryAll">게시판 선택</button>
 						<div class="dropdown-menu">
-							<button class="dropdown-item category" onclick="searchCategory(this);">전체</button> 
-							<button class="dropdown-item category" onclick="searchCategory(this);">자유게시판</button> 
-							<button class="dropdown-item category" onclick="searchCategory(this);">질문게시판</button>
+							<button class="dropdown-item category" onclick="searchCategory(this);" value="categoryAll">전체</button> 
+							<button class="dropdown-item category" onclick="searchCategory(this);" value="I1">자유게시판</button> 
+							<button class="dropdown-item category" onclick="searchCategory(this);" value="I2">질문게시판</button>
 						</div>
 					</div>
 					<div class="btn-group">
-						<select id="selectAnimal" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">동물 선택</select>
-							<option class="dropdown-item animal1">전체</option> 
-							<option class="dropdown-item animal2">강아지</option> 
-							<option class="dropdown-item animal3">고양이</option>
-							<option class="dropdown-item animal4">토끼</option>
-							<option class="dropdown-item animal5">물고기</option>
-							<option class="dropdown-item animal6">새</option>
-							<option class="dropdown-item animal7">햄스터</option>
+						<button id="selectAnimal" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="animalAll">동물 선택</button>
+						<div class="dropdown-menu">
+							<button class="dropdown-item" onclick="searchAnimal(this);" value="animalAll">전체</button> 
+							<button class="dropdown-item" onclick="searchAnimal(this);" value="A1">강아지</button> 
+							<button class="dropdown-item" onclick="searchAnimal(this);" value="A2">고양이</button>
+							<button class="dropdown-item" onclick="searchAnimal(this);" value="A3">토끼</button>
+							<button class="dropdown-item" onclick="searchAnimal(this);" value="A4">물고기</button>
+							<button class="dropdown-item" onclick="searchAnimal(this);" value="A5">새</button>
+							<button class="dropdown-item" onclick="searchAnimal(this);" value="A6">햄스터</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -64,68 +66,54 @@
 	</div>
 	
 	<script>
-	/*
-		function ajaxText(animal, category){
-			$.ajax({
-				
-			})
-		}
-		*/
+	
+		// 초기 변수 선언
+		var $selectCategory = $('#selectCategory');
+		var $selectAnimal = $('#selectAnimal');	
+		var categoryVal, animalVal = '';
+		var categoryText, animalText = '';
+		var page = 1;
+
 		function searchCategory(result){
 			
-			const $selectCategory = $('#selectCategory');
+			categoryVal = $(result).val();
+			categoryText = $(result).text();
 			
-			const category = $(this).text();
-			const animal = $('.animal').text();
+			$selectCategory.text(categoryText);
 			
-			//$selectCategory.text(category);
+			ajaxText(animalVal, categoryVal);
 			
-			// ajaxText(animal, category)
-			
-			
-			console.log(category);
-			//console.log(animal);
-
 			
 		}
 		
-		
-	/*
-		function searchCategory(result){
-			
-			const $selectCategory = $('#selectCategory');
-			
-			const category = $(result).text();
-			const animal = $('#selectAnimal').text();
-			
-			$selectCategory.text(category);
-			ajaxText(animal, category)
-			// console.log(category);
-			// console.log(animal);
-
-			$.ajax()
-			
-		}
-	*/
-		/*
 		function searchAnimal(result){
 			
-			const $selectAnimal = $('#selectAnimal');
+			animalVal = $(result).val();
+			animalText = $(result).text();
 			
-			const animal = $(result).text();
-			const category = $('#selectCategory').text();
+			$selectAnimal.text(animalText);
 			
-			$selectAnimal.text(animal);
+			ajaxText(animalVal, categoryVal);
 			
-			ajaxText(animal, category);
-			
-			console.log(category);
-			console.log(animal);
-			
-			$.ajax()
 			
 		}
-		*/
+		
+		function ajaxText(animal, category){
+			
+			$.ajax({
+				url : 'selectCommunityList',
+				data : {
+					page : page,
+					animal : animal,
+					category : category
+				},
+				success : result => {
+					console.log(result);
+				}
+				
+			});
+			
+		}
 		
 		
 		
