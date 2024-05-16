@@ -464,7 +464,7 @@
             		<c:choose>
             		<c:when test='${ loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
     					<li class="nav-item">
-    						<a class="nav-link" href="member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/logout.png" alt=""></a>
+    						<a class="nav-link" href="${sessionScope.path}/member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/logout.png" alt=""></a>
     					</li>
     				</c:when>
     				<c:otherwise>
