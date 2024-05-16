@@ -429,6 +429,7 @@
 </style>
 </head>
 <body>
+ 
 	<c:set var="path" value="${ pageContext.request.contextPath}" scope="session"/>
 
 	<c:if test="${ not empty alertMsg }">

@@ -416,7 +416,7 @@
 		}
 		function replyWrite(write) {
 			if(write != 'reply_write'){
-				btnText = '<button class="write-btn-cansle">취소</button>'
+				btnText = '<button class="write-btn-cansle">취소</button>';
 			} else{
 				btnText = '';
 			}
@@ -443,28 +443,28 @@
 					boardNo = result.boardNo;
 					let text = '<div class="menu_head" id="' + $placeNo + '">' +
 						            '<div class="menu_heads">' +
-					                '<div class="menu_title">' + result.boardTitle  +'</div>' +
-					                '<div class="menu_close">X</div>' +
-					            '</div>' + 
-					            '<div class="menu_heads">' +
-					                '<div class="heads_content">' +
-					                    '<div>' + result.memberNo + '</div>' +
-					                    '<div>' +
-					                        '<div class="menu_create_date">' + dateFormat(fullDate) + ' 조회  ' + result.boardCount + '</div>' +
-					                    '</div>' +
-					                '</div>' +
-								'</div>' +
+					                	'<div class="menu_title">' + result.boardTitle  +'</div>' +
+					                	'<div class="menu_close">X</div>' +
+					            	'</div>' + 
+					            	'<div class="menu_heads">' +
+					                	'<div class="heads_content">' +
+					                    	'<div>' + result.memberNo + '</div>' +
+					                    	'<div>' +
+					                        	'<div class="menu_create_date">' + dateFormat(fullDate) + ' 조회  ' + result.boardCount + '</div>' +
+					                    	'</div>' +
+					                	'</div>' +
+									'</div>' +
 					            
-					        '</div>' +
-							        '<div class="menu_body">' +
-							            '<div class="menu_content">' +
-							             	result.boardContent +
-							                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 ' + replyList.length + '</div>' +
-							            '</div>' +
-							        '</div>' +
+					        	'</div>' +
+						        '<div class="menu_body">' +
+						            '<div class="menu_content">' +
+						             	result.boardContent +
+						                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 ' + replyList.length + '</div>' +
+						            '</div>' +
+						        '</div>' +
 			
-							        '<div class="menu_footer">' +
-							            '<div class="footer_title">댓글</div>';
+						        '<div class="menu_footer">' +
+						            '<div class="footer_title">댓글</div>';
 							            if('${sessionScope.loginUser}' != ''){
 							            text += replyWrite("reply_write");
 							            }
@@ -479,8 +479,11 @@
 							            	   text += '<div class="reply" id="reply_' + replyList[i].replyNo + '">' +
 							            		   			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
 							                    			'<div class="reply_content">' + replyList[i].replyContent + '</div>' +
-							                    			'<div class="reply_createDate">' + dateFormat(replyDate) + '&emsp;<a class="comment_btn">답글쓰기</a></div>' +
-							                    			'<div class="comment_writer"></div>' +
+							                    			'<div class="reply_createDate">' + dateFormat(replyDate); 
+							                    			if('${sessionScope.loginUser}' != ''){
+							                    				text += '&emsp;<a class="comment_btn">답글쓰기</a>';
+							                    			}
+							                    			text += '</div><div class="comment_writer"></div>' +
 							                    		'</div>';
 							                    		for(let j in commentList){
 							                    			
