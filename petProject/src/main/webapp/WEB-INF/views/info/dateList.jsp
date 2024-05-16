@@ -161,7 +161,7 @@
         	font-weight: 700;
         	font-size: 14px;
 		}
-		.comment-write-btn{
+		.comment_write_btn{
 			position: absolute;
 			right : 10px;
 			bottom : 10px;
@@ -171,7 +171,7 @@
         	font-size: 14px;
 		}
 
-        .write-btn{
+        .reply_write_btn{
         	position: absolute;
         	right : 10px;
         	bottom : 10px;
@@ -188,6 +188,9 @@
         	text-decoration: none;
         	color:gray;
         	cursor: pointer;
+        }
+        .comment_writer{
+        	margin-left: 20px;
         }
 </style>
 </head>
@@ -326,12 +329,40 @@
 		$(() => {
 			
 			$('#wrap').on('click','.comment_btn', e => {
-				$('.comment_writer').html(replyWrite('comment_write'));
+				$(e.target).parent().siblings('.comment_writer').html(replyWrite('comment_write'));
+			});
+			$('#wrap').on('click','.write-btn-cansle', e => {
+				$(e.target).parent().parent().html('');
+			});
+			$('#wrap').on('click','.comment_write_btn', e => {
+				const $comment = $(e.target).siblings('.write_content').val();
+				
+				const $replyNo = $(e.target).parents('.comment_writer').parent().attr('id').substr(6);
+				
+				$.ajax({
+					url : 'date',
+					method : 'post',
+					data : {
+						memberNo : '${sessionScope.loginUser.memberNo}',
+						replyContent : $reply.val(),
+						boardNo : boardNo
+					},
+					success : result => {
+						if(result == 'Y'){
+							detailDateAjax($placeNoReply);
+						}
+					}
+				});
+				
+				
+				
 			});
 			
-			$('#wrap').on('click','.write-btn', e => {
-				const $reply = $('.write_content');
+			$('#wrap').on('click','.reply_write .reply_write_btn', e => {
+				const $reply = $('.reply_write .write_content');
+				console.log($reply.val());
 				const $placeNoReply = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
+				console.log($placeNoReply);
 				$.ajax({
 					url : 'date',
 					method : 'post',
@@ -392,7 +423,7 @@
         	'<div class="reply_writer">${sessionScope.loginUser.nickname}</div>' +
         	'<div class="reply_write_content">' +
         		'<textarea class="write_content" placeholder="댓글을 남겨보세요" onkeydown="resize(this)" onkeyup="resize(this)"></textarea>' +
-        		'<button class="comment-write-btn">등록</button>' + btnText +
+        		'<button class="' + write + '_btn">등록</button>' + btnText +
         	'</div>' +
         '</div>';			
 		}
@@ -443,7 +474,7 @@
 							            	   let replyCreateDate = replyList[i].createDate.date;
 							            	   let replyCreateTime = replyList[i].createDate.time;
 							            	   var replyDate = new Date(replyCreateDate.year, replyCreateDate.month - 1, replyCreateDate.day, replyCreateTime.hour, replyCreateTime.minute ,replyCreateTime.second);
-							            	   text += '<div class="reply" id="' + replyList[i].replyNo + '">' +
+							            	   text += '<div class="reply" id="reply_' + replyList[i].replyNo + '">' +
 							            		   			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
 							                    			'<div class="reply_content">' + replyList[i].replyContent + '</div>' +
 							                    			'<div class="reply_createDate">' + dateFormat(replyDate) + '&emsp;<a class="comment_btn">답글쓰기</a></div>' +
