@@ -429,9 +429,7 @@
 </style>
 </head>
 <body>
-<script>
-</script>
-
+	<c:set var="path" value="${ pageContext.request.contextPath}" scope="session"/>
 
 	<c:if test="${ not empty alertMsg }">
 		<script>
@@ -442,11 +440,11 @@
 	<c:set var="loginUser" value="${ sessionScope.loginUser }" scope="session" />
     <div id="header">
         <div id="header1">
-            <div id="logo"><img src="resources/img/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${ pageContext.request.contextPath}'"></div>
+            <div id="logo"><img src="${sessionScope.path}/resources/img/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${sessionScope.path}'"></div>
             <div id="search_form">
                 <form action="#">
                     <input type="text" name="query" id="in_text" placeholder="  검색어를 입력하세요">
-                    <img src="resources/img/searchform.png" alt="" id="search_img">
+                    <img src="${sessionScope.path}/resources/img/searchform.png" alt="" id="search_img">
                 </form>
             </div>
             <div id="menubar">
@@ -466,20 +464,20 @@
             		<c:choose>
             		<c:when test='${ loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
     					<li class="nav-item">
-    						<a class="nav-link" href="member/logout" id="logout_btn"><img src="resources/img/logout.png" alt=""></a>
+    						<a class="nav-link" href="member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/logout.png" alt=""></a>
     					</li>
     				</c:when>
     				<c:otherwise>
    						<li class="nav-item">
-    						<a class="nav-link" href="#" id="login_btn"><img src="resources/img/login.png" alt=""></a>
+    						<a class="nav-link" href="#" id="login_btn"><img src="${sessionScope.path}/resources/img/login.png" alt=""></a>
     					</li>
     				</c:otherwise>
     				</c:choose>
     					<li class="nav-item">
-      						<a class="nav-link" href="#"><img src="resources/img/mypage.png" alt=""></a>
+      						<a class="nav-link" href="#"><img src="${sessionScope.path}/resources/img/mypage.png" alt=""></a>
     					</li>
     					<li class="nav-item">
-      						<a class="nav-link" href="#"><img src="resources/img/cart.png" alt=""></a>
+      						<a class="nav-link" href="#"><img src="${sessionScope.path}/resources/img/cart.png" alt=""></a>
     					</li>
   					</ul>
             	</div>
@@ -505,7 +503,7 @@
                 <li><a href="community">커뮤니티</a></li>
                 <li><a href="#">지식</a></li>
                 <li><a href="#">쇼핑</a></li>
-                <li><a href="info">데이트</a></li>
+                <li><a href="info/I4">데이트</a></li>
                 <li><a href="hospital">동물병원</a></li>
                 <li><a href="#">공지사항</a></li>
             </ul>
@@ -545,7 +543,7 @@
 							<div id="line2"></div>
 						</div>
 						<div class="input_btn">
-							<a id="kakao-login-btn"><img src="resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
+							<a id="kakao-login-btn"><img src="${sessionScope.path}/resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
 						</div>
 					</form>
 				</div>

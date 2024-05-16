@@ -339,17 +339,19 @@
 				
 				const $replyNo = $(e.target).parents('.comment_writer').parent().attr('id').substr(6);
 				
+				const $placeNoComment = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
+				
 				$.ajax({
-					url : 'date',
+					url : 'date/comment',
 					method : 'post',
 					data : {
 						memberNo : '${sessionScope.loginUser.memberNo}',
-						replyContent : $reply.val(),
-						boardNo : boardNo
+						commentContent : $comment,
+						replyNo : $replyNo
 					},
 					success : result => {
 						if(result == 'Y'){
-							detailDateAjax($placeNoReply);
+							detailDateAjax($placeNoComment);
 						}
 					}
 				});

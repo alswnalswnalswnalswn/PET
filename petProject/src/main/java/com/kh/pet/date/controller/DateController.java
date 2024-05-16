@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.pet.date.model.service.DateService;
+import com.kh.pet.info.model.vo.Comment;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.info.model.vo.Reply;
 
@@ -32,4 +33,10 @@ public class DateController {
 	public String insertReply(Reply reply) {
 		return dateService.insertReply(reply) > 0 ? "Y" : "N";
 	}
+	
+	@PostMapping("/comment")
+	public String insertComment(Comment comment) {
+		return dateService.insertComment(comment) > 0 ? "Y" : "N";
+	}
+	
 }

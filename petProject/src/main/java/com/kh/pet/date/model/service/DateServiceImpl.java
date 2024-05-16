@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.pet.date.model.dao.DateRepository;
+import com.kh.pet.info.model.vo.Comment;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.info.model.vo.Reply;
 import com.kh.pet.place.model.vo.Place;
@@ -26,6 +27,11 @@ public class DateServiceImpl implements DateService {
 	@Override
 	public int insertReply(Reply reply) {
 		return dateRepository.insertReply(sqlSession,reply);
+	}
+
+	@Override
+	public int insertComment(Comment comment) {
+		return dateRepository.insertComment(sqlSession,comment);
 	}
 	
 

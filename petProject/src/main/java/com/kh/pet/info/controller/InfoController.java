@@ -11,9 +11,17 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("info")
 public class InfoController {
 
-	@GetMapping("date")
-	public ModelAndView selectAll(ModelAndView mv) {
-		mv.setViewName("info/dateList");
+	@GetMapping("/{category}")
+	public ModelAndView selectAll(@PathVariable("category") String category,ModelAndView mv) {
+		
+		switch (category) {
+		case "I4":
+			mv.setViewName("info/dateList");
+			break;
+
+		default:
+			break;
+		}
 		return mv;
 	}
 
