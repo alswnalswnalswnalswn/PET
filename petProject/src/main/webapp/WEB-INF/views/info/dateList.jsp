@@ -235,7 +235,7 @@
 		    var swLng = bounds.getSouthWest().getLng();
 			
 		    $.ajax({
-		        url: "places/P2/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
+		        url: "${sessionScope.path}/places/P2/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
 		        success: result => {
 		            var divList = document.getElementById('placesList');
 		            var positions = [];
@@ -342,7 +342,7 @@
 				const $placeNoComment = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
 				
 				$.ajax({
-					url : 'date/comment',
+					url : '${sessionScope.path}/date/comment',
 					method : 'post',
 					data : {
 						memberNo : '${sessionScope.loginUser.memberNo}',
@@ -366,7 +366,7 @@
 				const $placeNoReply = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
 				console.log($placeNoReply);
 				$.ajax({
-					url : 'date',
+					url : '${sessionScope.path}/date',
 					method : 'post',
 					data : {
 						memberNo : '${sessionScope.loginUser.memberNo}',
@@ -432,7 +432,7 @@
 		
 		function detailDateAjax($placeNo) {
 			$.ajax({
-				url : 'date/'+ $placeNo,
+				url : '${sessionScope.path}/date/'+ $placeNo,
 				success: result => {
 					
 					let createDate = result.createDate.date;

@@ -522,7 +522,7 @@
 		      
 		      
 				<div id="login-area">
-					<form action="member/login" method="post">
+					<form action="${sessionScope.path}/member/login" method="post">
 						<div class="input_form">
 							<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 						</div>
@@ -573,7 +573,7 @@
 			    
 			    
 			<div id="login-area">
-				<form action="member/searchId" method="post">
+				<form action="${sessionScope.path}/member/searchId" method="post">
 					<div class="input_form">
 						<input type="text" name="memberName" placeholder="성함을 입력해주세요">
 					</div>
@@ -610,7 +610,7 @@
 			    
 			    
 			<div id="login-area">
-				<form action="member/searchPwd" method="post">
+				<form action="${sessionScope.path}/member/searchPwd" method="post">
 					<div class="input_form">
 						<input type="text" name="memberId" placeholder="아이디를 입력해주세요">
 					</div>
@@ -649,7 +649,7 @@
         <h3 align="center" id="join">회원가입</h3>
         
 		<div id="join-area">
-			<form action="member/join" method="post">
+			<form action="${sessionScope.path}/member/join" method="post">
 			<input type="hidden" name="code" id="myCode">
 				<div class="input_form">
 					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요 (3~10 영/숫자)" required>
