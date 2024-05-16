@@ -15,7 +15,7 @@ import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.info.model.vo.Reply;
 
 @RestController
-@RequestMapping("date")
+@RequestMapping("info/date")
 public class DateController {
 
 	@Autowired
@@ -29,12 +29,12 @@ public class DateController {
 	}
 	
 	
-	@PostMapping
+	@PostMapping("reply")
 	public String insertReply(Reply reply) {
 		return dateService.insertReply(reply) > 0 ? "Y" : "N";
 	}
 	
-	@PostMapping("/comment")
+	@PostMapping("comment")
 	public String insertComment(Comment comment) {
 		return dateService.insertComment(comment) > 0 ? "Y" : "N";
 	}
