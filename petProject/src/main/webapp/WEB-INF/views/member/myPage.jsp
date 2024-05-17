@@ -368,6 +368,7 @@
                         console.log(fileName);
                         var newImgUrl = "${sessionScope.path}/resources/img/" + response.profile;
                         $('#profile_img img').attr('src', newImgUrl);
+                        location.refresh(true);
                     },
                     error: function(response) {
                         alert('프로필 사진 업로드에 실패했습니다.');
