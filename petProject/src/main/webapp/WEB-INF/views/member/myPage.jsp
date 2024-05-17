@@ -16,7 +16,7 @@
 <style>
     #myoutput{
         width: 1200px;
-        height: 1500px;
+        height: 1600px;
         border-top: 1px solid rgb(230, 230, 230);
         margin: auto;
     }
@@ -208,13 +208,10 @@
     }
         
     .animalList{
-	    background: #fff;
-	    box-sizing: border-box;
-	    position: relative;
-	    margin-bottom:15px;
-    	width: 100%;
+    	width:450px;
     	height:100px;
     	margin:auto;
+    	position : relative;
     }
     .animal{
     	width:70px;
@@ -228,6 +225,7 @@
 	    line-height:0;
 	    border:1px solid black;
 	    font-weight:bold;
+	    position: absolute;
     }
 	.clicked {
 	  	background-color: rgba(242, 189, 108, 0.82);
@@ -254,6 +252,21 @@
         font-size :13px;
         color: white;
     }	
+    .down{
+   		position: absolute;
+        width : 40px;
+        height: 25px;
+        font-size :12px;
+        right : 15px;
+        top : 6px;
+        border-radius : 5px;
+        border: 0;
+        background-color:rgba(197, 173, 135, 0.82);
+    }
+   	.down:hover {
+        font-size :13px;
+        color: white;
+    }
     .new{
     	width : 80%;
 		position : relative;
@@ -286,7 +299,7 @@
             <div id="myheader">
                 <div id="myname">
                     <div id="profile">
-                        <input type="file" name="프로필" id="my_profile">
+                        <input type="file" name="profile" id="my_profile">
                         <div id="profile_img"><img src="${sessionScope.path}/resources/img/${ loginUser.profile }" alt="기본프로필사진"></div>
                     </div>
                     <div id="name">
@@ -334,6 +347,21 @@
             });
         });
         
+        function updateProfile(){
+        	$.ajax({
+        		url : 'upProfile',
+        		data : {
+        			profile : $('#my_profile').val(),
+        			memberNo : '${loginUser.memberNo}'
+        		},
+        		success : function(result){
+        			console.log(result);
+        		}, 
+        		error : function(result){
+        			console.log('실패~');
+        		}
+        	})
+        }
         
     </script>
     
@@ -354,7 +382,8 @@
 					
 					
 				<div class="input_form">
-					<input type="password" id="memberPwd1" value="******" required readonly><button type="button" class="up">수정</button>
+					<input type="password" id="memberPwd1" value="******" required readonly>
+					<button type="button" class="up">수정</button>
 					<div class="new" style="display:none;">
 						<input type="password" id="nowPwd" name="memberPwd" maxlength="16" required placeholder="현재 비밀번호를 입력하세요">
 						<div id="checkOriginPwd" class="danger" style="font-size:0.7em; display:none;"></div>
@@ -365,25 +394,29 @@
 						<img src="${sessionScope.path}/resources/img/check.png" class="checkPwd" style="display:none;">
 					</div>
 				</div>
-					<span class="danger_pwd"></span>
 				<div class="input_form">
-					<input type="text" value="${loginUser.memberName }" readonly><button type="button" class="up">수정</button>
+					<input type="text" value="${loginUser.memberName }" readonly>
+					<button type="button" class="up">수정</button>
 					<div class="new" style="display:none;"><input type="text" name="memberName" maxlength="10"></div>
 				</div>
 				<div class="input_form">
-					<input type="text" id="nickname" value="${loginUser.nickname }" required readonly><button type="button" class="up">수정</button>
+					<input type="text" id="nickname" value="${loginUser.nickname }" required readonly>
+					<button type="button" class="up">수정</button>
 					<div class="new" style="display:none;"><input type="text" id="nickname" name="nickname" maxlength="30" required></div>
 				</div>
 				<div class="input_form">
-					<input type="text" id="phone" value="${loginUser.phone }" required readonly><button type="button" class="up">수정</button>
+					<input type="text" id="phone" value="${loginUser.phone }" required readonly>
+					<button type="button" class="up">수정</button>
 					<div class="new" style="display:none;"><input type="text" id="phone" name="phone" maxlength="13" required></div>
 				</div>
 				<div class="input_form">
-					<input type="text" id="email" value="${loginUser.email }" required readonly><button type="button" class="up">수정</button>
+					<input type="text" id="email" value="${loginUser.email }" required readonly>
+					<button type="button" class="up">수정</button>
 					<div class="new" style="display:none;"><input type="text" id="email" name="email" maxlength="30" required></div>
 				</div>
 					
-				<div class="animalList"><span><small>내 추천 동물 ${loginUser.animalName }</small></span><br><br><button class="up">수정</button>
+				<div class="animalList"><span><small>내 추천 동물 ${loginUser.animalName }</small></span><br><br>
+				<button type="button" class="up">수정</button>
 				<div class="new" style="display:none;">
 					<input type="hidden" name="animalList" value="" >
 					<label for="animaldog"><input type="checkbox" class="animal" name="animal" value="A1" id="animaldog" style="display:none;">강아지</label>
@@ -411,7 +444,7 @@
 		        var animalList = [];
 
 		        $('.animal:checked').each(function() {
-        	  		$(this).addClass('clicked');
+        	  		$(this).addClass('.clicked');
 		        	animalList.push($(this).val());
 		        	console.log(animalList);
 		        });
@@ -464,12 +497,10 @@
 	        const $up = $('.up');
 		
 		$(document).ready(function() {
-		    // 비밀번호 입력란의 입력을 감지하는 이벤트 핸들러
 		        
-		        // 비밀번호 길이가 4자 이상인지 확인
 		        if ($newPwd.val().length >= 4 && $newPwdCheck.val().length >= 4) {
 		        	
-		            if ($newPwd.val() === $newPwdCheck.val()) { // 비밀번호가 일치하는지 확인
+		            if ($newPwd.val() === $newPwdCheck.val()) {
 		                $newPwd.css('border', '1px solid lightgreen');
 		                $newPwdCheck.css('border', '1px solid lightgreen');
 		                $checkP.show().css();
@@ -490,15 +521,9 @@
 		        }
 		    });
 		});
-	    $('.up').click(() => {
-	        if($('.up').innerText == "완료"){
-        		newDiv.innserText = $('#newPwd').val();
-	       	}
-        })
 		
-		
-	    const newPassword = $('#newPwd').val()
-		
+	    
+	    
         document.querySelectorAll(".up").forEach(function(button) {
             button.addEventListener("click", function() {
                 var newDiv = this.nextElementSibling;
@@ -511,14 +536,16 @@
                         newDiv.style.display = "none";
                         this.innerText = "수정";
                         this.style.width = "40px";
-                    }
-                }
+                	};
+                };
             });
         });
+        
+		<!-- 비밀번호수정 -->
 		
 		$('#info-btn').click(() => {
             $.ajax({
-            	url : 'member/update',
+            	url : 'update',
             	data : {
             			memberNo : $('#memberId').val(),
             			memberPwd : $('#memberPwd').val(),
