@@ -155,7 +155,27 @@
 	
 	</insert>
 	
-	
+	<update id="updateRepCom" parameterType="hashmap">
+		UPDATE
+			  <choose>
+			  <when test="type == reply">
+			   TB_REPLY
+		   SET
+		   	   REPLY_CONTENT = #{content},
+		   	   UPDATE_DATE = SYSDATE
+		 WHERE
+		 	   REPLY_NO = #{number}
+			  </when>
+			  <otherwise>
+			   TB_COMMENT
+		   SET
+		   	   COMMENT_CONTENT = #{content},
+		   	   UPDATE_DATE = SYSDATE
+		 WHERE
+		 	   COMMENT_NO = #{number}
+			  </otherwise>
+			  </choose>  	   
+	</update>
 	
 	
 </mapper>
