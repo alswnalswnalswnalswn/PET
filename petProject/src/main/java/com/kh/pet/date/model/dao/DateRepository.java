@@ -16,6 +16,9 @@ public class DateRepository {
 	public int updateCount(SqlSessionTemplate sqlSession, int placeNo) {
 		return sqlSession.update("infoMapper.updateCount",placeNo);
 	}
+	public int likeCheck(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.selectOne("infoMapper.likeCheck",map);
+	}
 	public Info selectDate(SqlSessionTemplate sqlSession, int placeNo) {
 		return sqlSession.selectOne("infoMapper.selectDate",placeNo);
 	}
@@ -30,6 +33,12 @@ public class DateRepository {
 
 	public int updateRepCom(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.update("infoMapper.updateRepCom",map); 
+	}
+	public int insertLike(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.insert("infoMapper.insertLike",map);
+	}
+	public int deleteLike(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.delete("infoMapper.deleteLike",map);
 	}
 
 

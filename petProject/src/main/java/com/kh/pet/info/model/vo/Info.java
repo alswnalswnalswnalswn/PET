@@ -28,6 +28,7 @@ public class Info {
 	private String boardStatus;
 	
 	private int boardLike;
+	private int likeCheck;
 	
 	private int sumCount;
 	

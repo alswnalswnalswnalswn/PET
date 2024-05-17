@@ -21,6 +21,10 @@ public class DateServiceImpl implements DateService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
+	@Override
+	public int likeCheck(HashMap<String, Integer> map) {
+		return dateRepository.likeCheck(sqlSession,map);
+	}
 	
 	@Override
 	public int updateCount(int placeNo) {
@@ -46,6 +50,17 @@ public class DateServiceImpl implements DateService {
 	public int updateRepCom(HashMap<String, String> map) {
 		return dateRepository.updateRepCom(sqlSession,map);
 	}
+
+	@Override
+	public int insertLike(HashMap<String, Integer> map) {
+		return dateRepository.insertLike(sqlSession,map);
+	}
+
+	@Override
+	public int deleteLike(HashMap<String, Integer> map) {
+		return dateRepository.deleteLike(sqlSession,map);
+	}
+
 
 	
 	
