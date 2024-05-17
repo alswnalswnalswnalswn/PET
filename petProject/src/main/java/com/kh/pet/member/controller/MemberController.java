@@ -162,10 +162,16 @@ public class MemberController {
 	@ResponseBody
 	@GetMapping("pwdCheck")
 	public String pwdCheck(Member member) {
-		System.out.println(member);
 		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
 		member.setMemberPwd(encPwd);
 		return memberService.pwdCheck(member) > 0 ? "NNNNN" : "NNNNY";
+	}
+	@ResponseBody
+	@GetMapping("updatePwd")
+	public String updatePwd(Member member) {
+		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
+		member.setMemberPwd(encPwd);
+		return memberService.updatePwd(member) > 0 ? "NNNNN" : "NNNNY";
 	}
 	
 	@ResponseBody
@@ -295,6 +301,28 @@ public class MemberController {
 	public String myPage() {
 		return "member/myPage";
 	}
+	
+	@RequestMapping("upProfile")
+	public String upProfile(HttpServletRequest request, Member member, MultipartFile upfile, HttpSession session) {
+		System.out.println(member.getProfile());
+		
+		if(!upfile.getOriginalFilename().equals("")) {
+			
+			member.setOriginName(upfile.getOriginalFilename());
+			member.setChangeName(saveFile(upfile, session));
+			member.setProfile(member.getChangeName());
+			
+		}
+		memberService.update(member);
+		
+		return member.getProfile();
+	}
+	
+	
+	
+	
+	
+	
 	
 	@GetMapping("kakao")
 	public String kakaologin() {
