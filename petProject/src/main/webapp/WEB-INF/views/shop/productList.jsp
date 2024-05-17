@@ -7,9 +7,8 @@
 <meta charset="UTF-8">
 <title>쇼핑 메인페이지</title>
 	<style>
-		#wrap div{
-			border: 1px solid red;
-		
+		div{
+			box-sizing: border-box;
 		}
 		#wrap{
 			width: 1200px;
@@ -34,10 +33,41 @@
 			height: 100%;
 			width:600px;
 		}
+		.anmal_category{
+			height: 60%;
+			padding-top: 40px;
+		}
+		.use_category{
+			height: 40%;
+		}
 		.nav-item > img{
 			width: 90px;
-			height: 55px;
+			height: 70px;
 		}
+		.use_category > div{
+			margin-top:10px;
+			float: right;
+		}
+		.custom-col-5 {
+	      flex: 0 0 20%;
+	      max-width: 20%;
+	    }
+	    #productList{
+	    	width: 1200px;
+	    	margin: auto;
+	    }
+	    .card{
+	    	margin:10px;
+	    }
+	    .product_img{
+	    	width: 100%;
+	    	height: 190px;
+	    }
+	    .card-text{
+	    	padding-left: 5px;
+	    	font-size: 12px;
+	    	font-weight: bold;
+	    }
 	</style>
 
 </head>
@@ -60,10 +90,83 @@
 					</ul>
 				</div>
 				<div class="use_category">
+					<div>
+						<select>
+							<option>전체</option>
+							<option>식품</option>
+							<option>생필품</option>
+						</select>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="shop_body">
+			<div class="row" id="productList">
+				<div class="custom-col-5" >
+					<div class="card">
+					  <div class="card-body">
+					    <img class="product_img" src="">
+					    <p class="card-text">습식사료 푸치앤머트 375g <br>
+1ea</p>
+					    <a href="#" class="card-link">Card link</a>
+					    <a href="#" class="card-link">Another link</a>
+					  </div>
+					</div>
+				</div>
+				<div class="custom-col-5" >
+					<div class="card">
+					  <div class="card-body">
+					    <h4 class="card-title">Card title</h4>
+					    <p class="card-text">Some example text. Some example text.</p>
+					    <a href="#" class="card-link">Card link</a>
+					    <a href="#" class="card-link">Another link</a>
+					  </div>
+					</div>
+				</div>
+				<div class="custom-col-5" >
+					<div class="card">
+					  <div class="card-body">
+					    <h4 class="card-title">Card title</h4>
+					    <p class="card-text">Some example text. Some example text.</p>
+					    <a href="#" class="card-link">Card link</a>
+					    <a href="#" class="card-link">Another link</a>
+					  </div>
+					</div>
+				</div>
+				<div class="custom-col-5" >
+					<div class="card">
+					  <div class="card-body">
+					    <h4 class="card-title">Card title</h4>
+					    <p class="card-text">Some example text. Some example text.</p>
+					    <a href="#" class="card-link">Card link</a>
+					    <a href="#" class="card-link">Another link</a>
+					  </div>
+					</div>
+				</div>
+				<div class="custom-col-5" >
+					<div class="card">
+					  <div class="card-body">
+					    <h4 class="card-title">Card title</h4>
+					    <p class="card-text">Some example text. Some example text.</p>
+					    <a href="#" class="card-link">Card link</a>
+					    <a href="#" class="card-link">Another link</a>
+					  </div>
+					</div>
+				</div>
+		      
+		      <div class="custom-col-5" >
+					<div class="card">
+					  <div class="card-body">
+					    <h4 class="card-title">Card title</h4>
+					    <p class="card-text">Some example text. Some example text.</p>
+					    <a href="#" class="card-link">Card link</a>
+					    <a href="#" class="card-link">Another link</a>
+					  </div>
+					</div>
+				</div>
+		      
+		    </div>
+						
 		</div>
 	
 	
