@@ -18,5 +18,13 @@ public interface DateService {
 
 	int updateRepCom(HashMap<String, String> map);
 
+	int likeCheck(HashMap<String, Integer> map);
+
+	int insertLike(HashMap<String, Integer> map);
+
+	int deleteLike(HashMap<String, Integer> map);
+
+
+
 	
 }
