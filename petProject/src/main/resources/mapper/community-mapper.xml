@@ -139,8 +139,16 @@
 		</choose>
 	</select>
 	
-	<select id="communityDetail" resultType='info'>
-		
+	<select id="communityDetail" parameterType="_int" resultMap="infoResultSet">
+		SELECT
+   				BOARD_NO,
+				BOARD_TITLE,
+				BOARD_CONTENT,
+				CATEGORY_CODE
+    	FROM 
+    			TB_INFO
+    	WHERE 
+    			BOARD_NO = #{boardNo}
 	</select>
 	
 	

@@ -116,7 +116,8 @@
 				       TB_LIKE
 				 GROUP
 				    BY
-				       BOARD_NO) USING(BOARD_NO)
+				       BOARD_NO
+				) USING(BOARD_NO)
 		  LEFT
 		  JOIN
 		       TB_ATTACHMENT USING(BOARD_NO)
@@ -133,7 +134,8 @@
                   FROM
                        TB_REPLY
                   JOIN
-                       TB_MEMBER USING(MEMBER_NO)) USING (REPLY_NO)
+                       TB_MEMBER USING(MEMBER_NO)
+                ) USING (REPLY_NO)
           LEFT
           JOIN
                (SELECT
@@ -163,7 +165,8 @@
                   JOIN
                       TB_COMMENT USING(REPLY_NO)      
                 GROUP
-                   BY BOARD_NO) USING (BOARD_NO)
+                   BY BOARD_NO
+                   ) USING (BOARD_NO)
 		 WHERE
 		       BOARD_STATUS = 'Y'
 		   AND

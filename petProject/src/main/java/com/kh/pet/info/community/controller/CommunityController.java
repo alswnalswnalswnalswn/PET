@@ -46,9 +46,16 @@ public class CommunityController {
 		for(Info i : listInfo) {
 			i.setPageInfo(pi);
 		}
+		
+		
+		
+		
+		
 		return listInfo;
 	}
 	
+	@ResponseBody
+	@RequestMapping("communityDetail")
 	public Info communityDetail(int boardNo) {
 		return communityService.communityDetail(boardNo);
 	}
