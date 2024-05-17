@@ -34,5 +34,9 @@ public interface MemberService {
 
 	int updatePwd(Member member);
 
+	int update(Member member);
+
+	int pwdCheck(Member member);
+
 
 }

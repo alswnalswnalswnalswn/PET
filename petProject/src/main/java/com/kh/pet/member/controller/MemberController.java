@@ -1,15 +1,20 @@
 package com.kh.pet.member.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -20,6 +25,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.Animal;
@@ -48,12 +55,10 @@ public class MemberController {
 	public ModelAndView login(Member member, HttpSession session, ModelAndView mv) {
 		
 		Member loginUser = memberService.login(member);
-		
 		if(loginUser != null && bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
-			System.out.println(memberService.login(member));
+			
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("redirect:/");
-			
 		} else {
 			session.setAttribute("alertMsg", "일치하지 않는 정보입니다. 다시 로그인 해주세요");
 			mv.setViewName("redirect:/");
@@ -78,11 +83,11 @@ public class MemberController {
 			member.setMemberStatus("C");
 		}
 		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
-		// System.out.println("암호문 : " + encPwd);
+		
 		member.setMemberPwd(encPwd);
 		int memberNo = memberService.join(member);
 		if(memberNo > 0) {
-			System.out.println(memberNo);
+			
 			for(int i = 0; i < animalList.length; i++) {
 				String animalCode = animalList[i];
 				Animal animal = new Animal();
@@ -93,6 +98,44 @@ public class MemberController {
 		}
 		return "redirect:/";
 	}
+	
+	public String saveFile(MultipartFile upfile, HttpSession session) {
+		
+		String originName = upfile.getOriginalFilename();
+		
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		int ranNum = (int)Math.random() * 90000 + 10000;
+		
+		String changeName = "profile" + ranNum + ext;
+		System.out.println(changeName);
+		String savePath = session.getServletContext().getRealPath("/resources/reviewImage/");
+		
+			try {
+				upfile.transferTo(new File(savePath + changeName));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}		
+		return changeName;
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("update")
+	public String update(HttpServletRequest request, Member member, MultipartFile upfile, HttpSession session, MultipartRequest multiRequest) {
+		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
+		member.setMemberPwd(encPwd);
+		System.out.println(member);
+		if(!upfile.getOriginalFilename().equals("")) {
+					
+			member.setOriginName(upfile.getOriginalFilename());
+			member.setChangeName(saveFile(upfile, session));
+			member.setProfile(member.getChangeName());
+			
+		}
+		return memberService.update(member) > 0 ? "NNNNN" : "NNNNY";
+	}
+	
 	@ResponseBody
 	@GetMapping("idCheck")
 	public String idCheck(String checkId) {
@@ -115,6 +158,14 @@ public class MemberController {
 	@GetMapping("checkEmail")
 	public String checkEmail(String email) {
 		return memberService.checkEmail(email) > 0 ? "NNNNN" : "NNNNY";
+	}
+	@ResponseBody
+	@GetMapping("pwdCheck")
+	public String pwdCheck(Member member) {
+		System.out.println(member);
+		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
+		member.setMemberPwd(encPwd);
+		return memberService.pwdCheck(member) > 0 ? "NNNNN" : "NNNNY";
 	}
 	
 	@ResponseBody

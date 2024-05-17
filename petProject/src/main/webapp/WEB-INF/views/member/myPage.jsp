@@ -190,7 +190,6 @@
    	    border: none;
 	    box-shadow: none;
 	    padding: 12px 16px;
-	    width: 100%;
 	    line-height: 1.2;
 		outline:none;
 		border-radius : 15px;
@@ -205,7 +204,7 @@
 	    position: relative;
 	    margin-bottom:15px;
 	    width :100%;
-   	    height :40px;
+   	    height :auto;
     }
         
     .animalList{
@@ -255,13 +254,32 @@
         font-size :13px;
         color: white;
     }	
-	
+    .new{
+    	width : 80%;
+		position : relative;
+    }
+    .new input{
+    	margin-top:15px;
+    }
+  	.checkPwd{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 15px 10px;
+	}
+  	.checkOriginPwd{
+		position : absolute;
+		right : 0;
+		width: 30px;
+		height : 30px;
+		margin : 17px 10px;
+	}
 </style>
 </head>
 <body>
 	
 	<jsp:include page="../common/header.jsp" />
-	
 	<c:set var="loginUser" value="${ sessionScope.loginUser }" scope="session" />
 	<div id="myoutput">
         <div id="myback">
@@ -269,10 +287,10 @@
                 <div id="myname">
                     <div id="profile">
                         <input type="file" name="프로필" id="my_profile">
-                        <div id="profile_img"><img src="${sessionScope.path}/resources/img/profile.png" alt="기본프로필사진"></div>
-                    </div>  
+                        <div id="profile_img"><img src="${sessionScope.path}/resources/img/${ loginUser.profile }" alt="기본프로필사진"></div>
+                    </div>
                     <div id="name">
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;홍순자</span><span id="nim"><small>&nbsp;님</small></span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;${ loginUser.nickname }</span><span id="nim"><small>&nbsp;님</small></span>
                     </div>  
                     <div id="update">
                         <button id="update_info" type="button" data-toggle="modal" data-target="#myInfo">정보 수정</button>
@@ -315,22 +333,9 @@
                 $('#my_profile').click();
             });
         });
+        
+        
     </script>
-   	<c:choose>
-	<c:when test="${ empty sessionScope.loginUser }">
-		<ul class="nav flex-column"id="loginForm">
-			<li class="nav-item"  >
-				<a class="nav-link" style="padding:.2rem .5rem;" href="#" data-toggle="modal" data-target="#mylogin">로그인</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" style="padding:.2rem .5rem;" href="#"  data-toggle="modal" data-target="#myjoin">회원가입</a>
-			</li>
-		</ul>
-	</c:when>
-	<c:otherwise>
-	
-	</c:otherwise>
-	</c:choose>
     
     <div class="modal fade" id="myInfo">
     <div class="modal-dialog modal-dialog-centered">
@@ -349,23 +354,37 @@
 					
 					
 				<div class="input_form">
-					<input type="text" id="memberPwd1" name="memberPwd" maxlength="16" value="${loginUser.memberPwd }" required readonly><button type="button" class="up">수정</button>
+					<input type="password" id="memberPwd1" value="******" required readonly><button type="button" class="up">수정</button>
+					<div class="new" style="display:none;">
+						<input type="password" id="nowPwd" name="memberPwd" maxlength="16" required placeholder="현재 비밀번호를 입력하세요">
+						<div id="checkOriginPwd" class="danger" style="font-size:0.7em; display:none;"></div>
+						<img src="${sessionScope.path}/resources/img/check.png" class="checkOriginPwd" style="display:none;">
+						<input type="password" id="newPwd" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 입력하세요">
+						<input type="password" id="newPwdCheck" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 한번 더 입력하세요">
+						<div id="checkPwd" class="danger" style="font-size:0.7em; display:none;"></div>
+						<img src="${sessionScope.path}/resources/img/check.png" class="checkPwd" style="display:none;">
+					</div>
 				</div>
 					<span class="danger_pwd"></span>
 				<div class="input_form">
-					<input type="text" name="memberName" maxlength="10" value="${loginUser.memberName }" readonly><button type="button" class="up">수정</button>
+					<input type="text" value="${loginUser.memberName }" readonly><button type="button" class="up">수정</button>
+					<div class="new" style="display:none;"><input type="text" name="memberName" maxlength="10"></div>
 				</div>
 				<div class="input_form">
-					<input type="text" id="nickname" name="nickname" maxlength="30" value="${loginUser.nickname }" required readonly><button type="button" class="up">수정</button>
+					<input type="text" id="nickname" value="${loginUser.nickname }" required readonly><button type="button" class="up">수정</button>
+					<div class="new" style="display:none;"><input type="text" id="nickname" name="nickname" maxlength="30" required></div>
 				</div>
 				<div class="input_form">
-					<input type="text" id="phone" name="phone" maxlength="13" value="${loginUser.phone }" required readonly><button type="button" class="up">수정</button>
+					<input type="text" id="phone" value="${loginUser.phone }" required readonly><button type="button" class="up">수정</button>
+					<div class="new" style="display:none;"><input type="text" id="phone" name="phone" maxlength="13" required></div>
 				</div>
 				<div class="input_form">
-					<input type="text" id="email" name="email" maxlength="30" value="${loginUser.email }" required readonly><button type="button" class="up">수정</button>
+					<input type="text" id="email" value="${loginUser.email }" required readonly><button type="button" class="up">수정</button>
+					<div class="new" style="display:none;"><input type="text" id="email" name="email" maxlength="30" required></div>
 				</div>
 					
-				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br><button class="up">수정</button>
+				<div class="animalList"><span><small>내 추천 동물 ${loginUser.animalName }</small></span><br><br><button class="up">수정</button>
+				<div class="new" style="display:none;">
 					<input type="hidden" name="animalList" value="" >
 					<label for="animaldog"><input type="checkbox" class="animal" name="animal" value="A1" id="animaldog" style="display:none;">강아지</label>
 					<label for="animalcat"><input type="checkbox" class="animal" name="animal" value="A2" id="animalcat" style="display:none;">고양이</label>
@@ -373,6 +392,7 @@
 					<label for="animalfish"><input type="checkbox" class="animal" name="animal" value="A4" id="animalfish" style="display:none;">물고기</label>
 					<label for="animalbird"><input type="checkbox" class="animal" name="animal" value="A5" id="animalbird" style="display:none;">새</label>
 					<label for="animalham"><input type="checkbox" class="animal" name="animal" value="A6" id="animalham" style="display:none;">햄스터</label>
+				</div>
 				</div>
 				<div class="input_btn2"><button type="submit" id="info-btn" class="btn">수정 완료</button></div>
 		</div>
@@ -398,28 +418,125 @@
 		        	$('input[name=animalList]').val(animalList.join(','));
 		        	console.log($('input[name=animalList]').val());
 			});
+		});
+		<!-- 비밀번호 일치 확인 -->
+		const $nowPwd = $('.input_form #nowPwd');
+		const $checkOriginPwd = $('#checkOriginPwd');
+		const $checkPwdimg = $('.checkOriginPwd');
+        const $up = $('.up');
+
+		$nowPwd.keyup(function(){
+					
+			if($nowPwd.val().length > 0){
+				$.ajax({
+					url : 'pwdCheck',
+					data : {memberPwd : $nowPwd.val(),
+							memberNo : '${loginUser.memberNo}'
+							},
+					type : 'get',		
+					success : function(result){
+    					if(result.substr(4) == "N"){
+    						$checkOriginPwd.show().css('color', 'crimson').text('현재 비밀번호가 올바르지 않습니다.');
+    						$nowPwd.css('border', '1px solid crimson');
+    						$up.attr('disabled', true);
+    					} else{
+    						$nowPwd.css('border', '1px solid lightgreen');
+    						$checkPwdimg.show().css();
+    						$up.removeAttr('disabled');
+    					}
+    				},
+    				error : function(){
+    					console.log('아이디 중복체크용 AJAX 통신 실패~');
+    				}
+    			});
+			} else {
+				$checkOriginPwd.hide();
+				$up.attr('disabled', true);
+			}
+		});
+					
+		<!-- 비밀번호 재확인 -->
+	    $('.input_form #newPwd, .input_form #newPwdCheck').on('input', function() {
+	        const $newPwd = $('.input_form #newPwd');
+	        const $newPwdCheck = $('.input_form #newPwdCheck');
+	        const $checkPwd = $('#checkPwd');
+	        const $checkP = $('.checkPwd');
+	        const $up = $('.up');
+		
+		$(document).ready(function() {
+		    // 비밀번호 입력란의 입력을 감지하는 이벤트 핸들러
+		        
+		        // 비밀번호 길이가 4자 이상인지 확인
+		        if ($newPwd.val().length >= 4 && $newPwdCheck.val().length >= 4) {
+		        	
+		            if ($newPwd.val() === $newPwdCheck.val()) { // 비밀번호가 일치하는지 확인
+		                $newPwd.css('border', '1px solid lightgreen');
+		                $newPwdCheck.css('border', '1px solid lightgreen');
+		                $checkP.show().css();
+		                $up.removeAttr('disabled');
+		                $checkOriginPwd.show().css();
+		            } else {
+		                $checkPwd.show().css('color', 'crimson').text('비밀번호가 일치하지 않습니다.');
+		                $newPwd.css('border', '1px solid crimson');
+		                $newPwdCheck.css('border', '1px solid crimson');
+		                $up.attr('disabled', true);
+		            }
+		        } else {
+	                $newPwd.removeAttr.css();
+	                $newPwdCheck.removeAttr.css();
+		            $checkPwd.hide();
+		            $checkP.hide();
+		            $up.attr('disabled', true);
+		        }
+		    });
+		});
+	    $('.up').click(() => {
+	        if($('.up').innerText == "완료"){
+        		newDiv.innserText = $('#newPwd').val();
+	       	}
+        })
+		
+		
+	    const newPassword = $('#newPwd').val()
+		
+        document.querySelectorAll(".up").forEach(function(button) {
+            button.addEventListener("click", function() {
+                var newDiv = this.nextElementSibling;
+                if (newDiv.classList.contains("new")) {
+                    if (newDiv.style.display === "none" || newDiv.style.display === "") {
+                        newDiv.style.display = "block";
+                        this.innerText = "완료";
+                        this.style.width = "45px";
+                    } else {
+                        newDiv.style.display = "none";
+                        this.innerText = "수정";
+                        this.style.width = "40px";
+                    }
+                }
+            });
+        });
+		
+		$('#info-btn').click(() => {
+            $.ajax({
+            	url : 'member/update',
+            	data : {
+            			memberNo : $('#memberId').val(),
+            			memberPwd : $('#memberPwd').val(),
+            			memberName : $('#memberName').val(),
+            			email : $('#email').val(),
+            			nickname : $('#nickname').val(),
+            			phone : $('#phone').val(),
+            			profile : $('#my_profile').val()
+            			},
+            	success : function(result){
+            		alert('정보 수정이 완료되었습니다.');
+            	},
+            	error : function(result){
+            		alert('정보 수정에 실패하였습니다.');
+            	}
+            })
 		})
 		
-	    document.querySelectorAll('.up').forEach(function(button) {
-	    	
-	        button.addEventListener('click', function() {
-	            var input = button.parentElement.querySelector('input');
-                var readonlyStatus = input.getAttribute('readonly');
-                if (readonlyStatus === null) {
-                    // readonly 속성이 없으면 추가
-                    input.setAttribute('readonly', 'readonly');
-                    // 버튼 텍스트와 너비 변경
-                    button.textContent = '수정';
-                    button.style.width = '40px';
-                } else {
-                    // readonly 속성이 있으면 제거
-                    input.removeAttribute('readonly');
-                    // 버튼 텍스트와 너비 변경
-                    button.textContent = '수정완료';
-                    button.style.width = '70px';
-                }
-	        });
-	    });
 	})			
     </script>
     

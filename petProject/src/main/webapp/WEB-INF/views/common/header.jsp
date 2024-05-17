@@ -56,6 +56,7 @@
         border: 1px solid rgb(179, 179, 179);
         margin: 0;
         padding: 0;
+        outline : none;
     }
     #search_img{
         width: 40px;
@@ -485,12 +486,31 @@
     					</li>
     				</c:otherwise>
     				</c:choose>
+			        <c:choose>
+			        	<c:when test="${loginUser eq null  }">
+			        	<li class="nav-item">
+			         		<a class="nav-link" href="${sessionScope.path}" id="logoutMP" onclick="alert('로그인이 필요합니다.')"><img src="${sessionScope.path}/resources/img/mypage.png" alt=""></a>
+			         	</li>
+			         	</c:when>	
+			        	<c:otherwise>
     					<li class="nav-item">
       						<a class="nav-link" href="${sessionScope.path }/member/myPage"><img src="${sessionScope.path}/resources/img/mypage.png" alt=""></a>
     					</li>
+			         	</c:otherwise>
+			       </c:choose>
+			       
+			        <c:choose>
+			        	<c:when test="${loginUser eq null  }">
+			        	<li class="nav-item">
+			         		<a class="nav-link" href="${sessionScope.path}" id="logoutMP" onclick="alert('로그인이 필요합니다.')"><img src="${sessionScope.path}/resources/img/cart.png" alt=""></a>
+			         	</li>
+			         	</c:when>	
+			        	<c:otherwise>
     					<li class="nav-item">
       						<a class="nav-link" href="#"><img src="${sessionScope.path}/resources/img/cart.png" alt=""></a>
     					</li>
+    			   		</c:otherwise>
+			        </c:choose>
   					</ul>
             	</div>
                 
