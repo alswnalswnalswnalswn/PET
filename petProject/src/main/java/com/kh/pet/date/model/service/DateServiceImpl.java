@@ -21,6 +21,12 @@ public class DateServiceImpl implements DateService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
+	
+	@Override
+	public int updateCount(int placeNo) {
+		return dateRepository.updateCount(sqlSession,placeNo);
+	}
+	
 	@Override
 	public Info selectDate(int placeNo) {
 		return dateRepository.selectDate(sqlSession,placeNo);
@@ -40,6 +46,8 @@ public class DateServiceImpl implements DateService {
 	public int updateRepCom(HashMap<String, String> map) {
 		return dateRepository.updateRepCom(sqlSession,map);
 	}
+
+	
 	
 
 }

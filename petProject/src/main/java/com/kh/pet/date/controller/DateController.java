@@ -3,12 +3,16 @@ package com.kh.pet.date.controller;
 import java.text.ParseException;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.pet.date.model.service.DateService;
@@ -24,7 +28,9 @@ public class DateController {
 	DateService dateService;
 	
 	@GetMapping("/{placeNo}")
-	public Info selectDate(@PathVariable("placeNo")int placeNo) throws ParseException {
+	public Info selectDate(@PathVariable("placeNo")int placeNo, HttpSession session) throws ParseException {
+
+		dateService.updateCount(placeNo);
 		
 		Info dateInfo = dateService.selectDate(placeNo);
 		return dateInfo;
@@ -41,10 +47,11 @@ public class DateController {
 		return dateService.insertComment(comment) > 0 ? "Y" : "N";
 	}
 	
-	@PutMapping
-	public String updateRepCom(String type, String number, String content) {
+	@PostMapping
+	public String updateRepCom(@RequestParam("type") String type,@RequestParam("number") String number,@RequestParam("content") String content) {
 		
 		HashMap<String,String> map = new HashMap();
+		System.out.println(type+number+content);
 		
 		map.put("type", type);
 		

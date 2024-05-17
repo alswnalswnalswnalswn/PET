@@ -29,10 +29,14 @@ public class Info {
 	
 	private int boardLike;
 	
+	private int sumCount;
+	
 	private List<Attachment> attachmentList;
 	
 	private List<Reply> replyList;
 	
 	private PageInfo pageInfo;
 
+	
+	
 }

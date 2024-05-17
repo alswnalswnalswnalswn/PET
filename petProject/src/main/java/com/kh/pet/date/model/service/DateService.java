@@ -8,6 +8,7 @@ import com.kh.pet.info.model.vo.Reply;
 
 public interface DateService {
 
+	int updateCount(int placeNo);
 
 	Info selectDate(int placeNo);
 
@@ -17,4 +18,5 @@ public interface DateService {
 
 	int updateRepCom(HashMap<String, String> map);
 
+	
 }

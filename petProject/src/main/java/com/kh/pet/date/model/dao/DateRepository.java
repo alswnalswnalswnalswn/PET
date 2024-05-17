@@ -13,6 +13,9 @@ import com.kh.pet.place.model.vo.Place;
 @Repository
 public class DateRepository {
 
+	public int updateCount(SqlSessionTemplate sqlSession, int placeNo) {
+		return sqlSession.update("infoMapper.updateCount",placeNo);
+	}
 	public Info selectDate(SqlSessionTemplate sqlSession, int placeNo) {
 		return sqlSession.selectOne("infoMapper.selectDate",placeNo);
 	}
@@ -26,7 +29,8 @@ public class DateRepository {
 	}
 
 	public int updateRepCom(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
-		return sqlSession.update("infoMapper.updateRepCom",map);
+		return sqlSession.update("infoMapper.updateRepCom",map); 
 	}
+
 
 }
