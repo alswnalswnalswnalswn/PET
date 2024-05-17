@@ -245,11 +245,6 @@ public class MemberController {
 		return "member/myPage";
 	}
 	
-	@RequestMapping("myInfo")
-	public String myInfo() {
-		return "member/myInfo";
-	}
-	
 	@GetMapping("kakao")
 	public String kakaologin() {
 		return "redirect:/";

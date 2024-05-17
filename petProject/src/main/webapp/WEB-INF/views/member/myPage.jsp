@@ -16,7 +16,7 @@
 <style>
     #myoutput{
         width: 1200px;
-        height: 1500px;
+        height: 1400px;
         border-top: 1px solid rgb(230, 230, 230);
         margin: auto;
     }
@@ -110,7 +110,7 @@
     }
     #content2{
         width: 100%;
-        height: 70%;
+        height: 700px;
         border-top: 2px solid rgb(230, 230, 230);
         padding-top: 30px;
         padding-left: 10px;
@@ -123,7 +123,7 @@
         float: left;
         text-align: center;
         width: 15%;
-        margin-left: 8.2%;
+        margin-left: 80px;
         transform: translate(0%, 40%);
         height:62%;
         border-radius: 60% 60%;
@@ -154,12 +154,11 @@
         line-height: 70px;
     }
     #content > a:hover {
-   		font-size: 18px;
-   		color: rgba(197, 173, 135, 0.82);
+    
     }
     #content > a > img{
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
     }
     #main{
         margin: auto;
@@ -176,86 +175,6 @@
         font-weight: bold;
         border-radius: 10px;
     }
-    
-    #info-btn{
-    	width: 100%;
-	    height: 40px;
-	    font-size: 14px;
-	    border-radius: 10px;
-	    background-color: rgb(94, 87, 59);
-	    color:white;
-	    font-weight: bold;
-    }
-    #info-area input{
-   	    border: none;
-	    box-shadow: none;
-	    padding: 12px 16px;
-	    width: 100%;
-	    line-height: 1.2;
-		outline:none;
-		border-radius : 15px;
-		border: 1px solid #e0e0e0;
-		width :80%;
-	    height :40px;
-    }
-    
-    #info-area .input_form{
-	    background: #fff;
-	    box-sizing: border-box;
-	    position: relative;
-	    margin-bottom:15px;
-	    width :100%;
-   	    height :40px;
-    }
-        
-    .animalList{
-	    background: #fff;
-	    box-sizing: border-box;
-	    position: relative;
-	    margin-bottom:15px;
-    	width: 100%;
-    	height:100px;
-    	margin:auto;
-    }
-    .animal{
-    	width:70px;
-    	height:25px;
-    	border-radius : 30px;
-	    display: inline-block;
-	    padding: 10px;
-	    cursor: pointer;
-	    font-size:13px;
-	    text-align:center;
-	    line-height:0;
-	    border:1px solid black;
-	    font-weight:bold;
-    }
-	.clicked {
-	  	background-color: rgba(242, 189, 108, 0.82);
-	    color:white;
-    	border:0;
-    	font-weight:bold;
-	}
-    
-  	#myInfo{
-		margin:30px 0px 20px;
-	}
-   	.up{
-   		position: absolute;
-        width : 40px;
-        height: 25px;
-        font-size :12px;
-        right : 15px;
-        top : 6px;
-        border-radius : 5px;
-        border: 0;
-        background-color:rgba(197, 173, 135, 0.82);
-    }
-   	.up:hover {
-        font-size :13px;
-        color: white;
-    }	
-	
 </style>
 </head>
 <body>
@@ -269,13 +188,13 @@
                 <div id="myname">
                     <div id="profile">
                         <input type="file" name="프로필" id="my_profile">
-                        <div id="profile_img"><img src="${sessionScope.path}/resources/img/profile.png" alt="기본프로필사진"></div>
+                        <div id="profile_img"><img src="${sessionScope.path}/resources/img/${profile }.png" alt="기본프로필사진"></div>
                     </div>  
                     <div id="name">
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;홍순자</span><span id="nim"><small>&nbsp;님</small></span>
                     </div>  
                     <div id="update">
-                        <button id="update_info" type="button" data-toggle="modal" data-target="#myInfo">정보 수정</button>
+                        <button id="update_info" type="button">정보 수정</button>
                     </div>  
                 </div>
             </div>
@@ -293,7 +212,7 @@
                     <div>배송완료</div>
                 </div>
                 <div id="content2">
-                    <div id="content"><a href="" data-toggle="modal" data-target="#myInfo"><img src="${sessionScope.path}/resources/img/selectmyinfo.png" alt=""><br>내 정보 조회</a></div>
+                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/selectmyinfo.png" alt=""><br>내 정보 조회</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/board.png" alt=""><br>내가 쓴 게시글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/comment.png" alt=""><br>내가 쓴 댓글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/like2.png" alt=""><br>내 좋아요</a></div>
@@ -316,113 +235,6 @@
             });
         });
     </script>
-   	<c:choose>
-	<c:when test="${ empty sessionScope.loginUser }">
-		<ul class="nav flex-column"id="loginForm">
-			<li class="nav-item"  >
-				<a class="nav-link" style="padding:.2rem .5rem;" href="#" data-toggle="modal" data-target="#mylogin">로그인</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" style="padding:.2rem .5rem;" href="#"  data-toggle="modal" data-target="#myjoin">회원가입</a>
-			</li>
-		</ul>
-	</c:when>
-	<c:otherwise>
-	
-	</c:otherwise>
-	</c:choose>
-    
-    <div class="modal fade" id="myInfo">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h3 align="center" id="myInfo">내 정보 조회</h3>
-        
-		<div id="info-area">
-			<input type="hidden" name="code" id="myCode">
-				<div class="input_form">
-					<input type="text" id="memberId" name="memberId" maxlength="10" value="${loginUser.memberId }" readonly>
-				</div>
-					
-					
-				<div class="input_form">
-					<input type="text" id="memberPwd1" name="memberPwd" maxlength="16" value="${loginUser.memberPwd }" required readonly><button type="button" class="up">수정</button>
-				</div>
-					<span class="danger_pwd"></span>
-				<div class="input_form">
-					<input type="text" name="memberName" maxlength="10" value="${loginUser.memberName }" readonly><button type="button" class="up">수정</button>
-				</div>
-				<div class="input_form">
-					<input type="text" id="nickname" name="nickname" maxlength="30" value="${loginUser.nickname }" required readonly><button type="button" class="up">수정</button>
-				</div>
-				<div class="input_form">
-					<input type="text" id="phone" name="phone" maxlength="13" value="${loginUser.phone }" required readonly><button type="button" class="up">수정</button>
-				</div>
-				<div class="input_form">
-					<input type="text" id="email" name="email" maxlength="30" value="${loginUser.email }" required readonly><button type="button" class="up">수정</button>
-				</div>
-					
-				<div class="animalList"><span><small>추천 받을 동물을 고르세요 (선택)</small></span><br><br><button class="up">수정</button>
-					<input type="hidden" name="animalList" value="" >
-					<label for="animaldog"><input type="checkbox" class="animal" name="animal" value="A1" id="animaldog" style="display:none;">강아지</label>
-					<label for="animalcat"><input type="checkbox" class="animal" name="animal" value="A2" id="animalcat" style="display:none;">고양이</label>
-					<label for="animalrab"><input type="checkbox" class="animal" name="animal" value="A3" id="animalrab" style="display:none;">토끼</label>
-					<label for="animalfish"><input type="checkbox" class="animal" name="animal" value="A4" id="animalfish" style="display:none;">물고기</label>
-					<label for="animalbird"><input type="checkbox" class="animal" name="animal" value="A5" id="animalbird" style="display:none;">새</label>
-					<label for="animalham"><input type="checkbox" class="animal" name="animal" value="A6" id="animalham" style="display:none;">햄스터</label>
-				</div>
-				<div class="input_btn2"><button type="submit" id="info-btn" class="btn">수정 완료</button></div>
-		</div>
-	        
-		</div>
-		</div>
-	</div>
-</div>
-    
-   	<script>
-	var code = "";
-	var animalList = [];
-	 $(() => {
-		$(document).ready(function(){
-		   $('.animal').change(function() {
-		        var animalList = [];
-
-		        $('.animal:checked').each(function() {
-        	  		$(this).addClass('clicked');
-		        	animalList.push($(this).val());
-		        	console.log(animalList);
-		        });
-		        	$('input[name=animalList]').val(animalList.join(','));
-		        	console.log($('input[name=animalList]').val());
-			});
-		})
-		
-	    document.querySelectorAll('.up').forEach(function(button) {
-	    	
-	        button.addEventListener('click', function() {
-	            var input = button.parentElement.querySelector('input');
-                var readonlyStatus = input.getAttribute('readonly');
-                if (readonlyStatus === null) {
-                    // readonly 속성이 없으면 추가
-                    input.setAttribute('readonly', 'readonly');
-                    // 버튼 텍스트와 너비 변경
-                    button.textContent = '수정';
-                    button.style.width = '40px';
-                } else {
-                    // readonly 속성이 있으면 제거
-                    input.removeAttribute('readonly');
-                    // 버튼 텍스트와 너비 변경
-                    button.textContent = '수정완료';
-                    button.style.width = '70px';
-                }
-	        });
-	    });
-	})			
-    </script>
-    
    			
 	
 </body>
