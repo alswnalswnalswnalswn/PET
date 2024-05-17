@@ -35,6 +35,7 @@
 		<result column="NICKNAME" property="nickname"/>
 		<result column="PHONE" property="phone"/>
 		<result column="MEMBER_STATUS" property="memberStatus"/>
+		<result column="MEMBER_PROFILE" property="profile"/>
 		<result column="ANIMAL_NAME" property="animalName"/>
 		<result column="ANIMAL_CODE" property="animalCode"/>
 		<collection resultMap="memberCouponResultSet" property="couponList"/>
@@ -74,6 +75,17 @@
 		  		TB_MEMBER
 		 WHERE
 		 		EMAIL = #{email} 						
+	</select>	
+	
+	<select id="pwdCheck" parameterType="member" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_MEMBER
+		 WHERE
+		 		MEMBER_PWD = #{memberPwd}
+		   AND
+		   		MEMBER_NO = #{memberNo}						
 	</select>
 	
 	<select id="login" parameterType="member" resultMap="memberResultSet">
@@ -87,7 +99,8 @@
 		       PHONE,
 		       MEMBER_STATUS,
 		       TO_CHAR(ENROLL_DATE , 'YYYY/MM/DD') AS ENROLL_DATE, 
-    		   TO_CHAR(MODIFY_DATE , 'YYYY/MM/DD') AS MODIFY_DATE
+    		   TO_CHAR(MODIFY_DATE , 'YYYY/MM/DD') AS MODIFY_DATE,
+    		   MEMBER_PROFILE
 		  FROM
 		       TB_MEMBER
 		 WHERE
@@ -111,9 +124,28 @@
 				#{phone},
 				#{memberStatus},
 				SYSDATE,
-				SYSDATE
+				SYSDATE,
+				DEFAULT
 				)
 	</insert>
+	
+	<update id="update" parameterType="member">
+		UPDATE
+				TB_MEMBER
+		   SET
+		   		MEMBER_PWD = #{memberPwd},
+		   		MEMBER_NAME = #{memberName},
+		   		EMAIL = #{email},
+		   		NICKNAME = #{nickname},
+		   		PHONE = #{phone},
+		   		MODIFY_DATE = SYSDATE,
+		   		MEMBER_PROFILE = #{profile}
+		 WHERE
+		        MEMBER_NO = #{memberNo}
+		   AND
+		   	 	MEMBER_STATUS = 'C'
+		   				
+	</update>
 	
 	<select id="searchId" parameterType="member" resultType="string">
 		SELECT

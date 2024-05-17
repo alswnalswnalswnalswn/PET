@@ -28,7 +28,9 @@ public class Member {
 	private Date ModifyDate;
 	private String animalName;
 	private String animalCode;
-	
+	private String profile;
+	private String originName;
+	private String changeName;
 	private String[] animalList;
 	private List<MemberCoupon> couponList;
 	
