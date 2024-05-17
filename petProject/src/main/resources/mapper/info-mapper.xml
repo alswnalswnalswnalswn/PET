@@ -45,11 +45,27 @@
 		
 		<result column="BOARD_LIKE" property="boardLike"/>
 		
+		<result column="SUM_COUNT" property="sumCount"/>
+		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
 		
 		<collection resultMap="replyResultSet" property="replyList"/>
 	</resultMap>
-	
+	<update id="updateCount" parameterType="_int">
+		UPDATE
+		       TB_INFO
+		   SET
+		       BOARD_COUNT = BOARD_COUNT +1
+		 WHERE
+		       BOARD_NO = (SELECT
+							       BOARD_NO
+							  FROM
+							       TB_INFO
+							  JOIN
+							       TB_BOARD_BRIDGE USING(BOARD_NO)
+							 WHERE
+							       PLACE_NO = #{placeNo})
+	</update>
 	<select id="selectDate" parameterType="_int" resultMap="infoResultSet">
 		SELECT
 		       BOARD_NO,
@@ -62,6 +78,8 @@
 		       BOARD_STATUS,
 		       BOARD_LIKE,
                TB_MEMBER.NICKNAME BOARD_WRITER,
+               
+               REP_COUNT+COMMENT_COUNT SUM_COUNT,
                
 		       ATT_NO,
 		       ATT_PATH,
@@ -129,7 +147,23 @@
                   FROM
                        TB_COMMENT
                   JOIN
-                       TB_MEMBER USING(MEMBER_NO)) COMM USING (REPLY_NO)
+                       TB_MEMBER USING(MEMBER_NO)
+               ) COMM USING (REPLY_NO)
+         JOIN
+               (SELECT
+                       BOARD_NO,
+                       COUNT(REPLY_NO) REP_COUNT,
+                       COUNT(COMMENT_NO) COMMENT_COUNT
+                  FROM
+                       TB_INFO
+                  LEFT
+                  JOIN
+                       TB_REPLY USING(BOARD_NO)
+                  LEFT
+                  JOIN
+                      TB_COMMENT USING(REPLY_NO)      
+                GROUP
+                   BY BOARD_NO) USING (BOARD_NO)
 		 WHERE
 		       BOARD_STATUS = 'Y'
 		   AND
@@ -158,13 +192,13 @@
 	<update id="updateRepCom" parameterType="hashmap">
 		UPDATE
 			  <choose>
-			  <when test="type == reply">
+			  <when test="type == 'reply'">
 			   TB_REPLY
 		   SET
 		   	   REPLY_CONTENT = #{content},
 		   	   UPDATE_DATE = SYSDATE
 		 WHERE
-		 	   REPLY_NO = #{number}
+		 	   REPLY_NO = TO_NUMBER(#{number})
 			  </when>
 			  <otherwise>
 			   TB_COMMENT
@@ -172,7 +206,7 @@
 		   	   COMMENT_CONTENT = #{content},
 		   	   UPDATE_DATE = SYSDATE
 		 WHERE
-		 	   COMMENT_NO = #{number}
+		 	   COMMENT_NO = TO_NUMBER(#{number})
 			  </otherwise>
 			  </choose>  	   
 	</update>

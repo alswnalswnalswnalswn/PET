@@ -12,6 +12,12 @@
 <meta charset="UTF-8">
 <title>데이트 게시판</title>
 <style>
+
+img{
+	width:28px;
+	height:28px;
+}
+
 #wrap {
 	width: 1200px;
 	height: 1000px;
@@ -329,10 +335,13 @@
 				const $updateContent = $(e.target).prev();
 				const $updateNo = $(e.target).parents('.update_area').prev().attr('id');
 				let words = $(e.target).parents('.update_area').prev().attr('id').split('_');
-				const placeNo = $(e.target).parents('menu_footer').siblings('.menu_head').attr('id');
+				const placeNo = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
+				console.log(words[0]);
+				console.log(words[1]);
+				/*
 				$.ajax({
-					url : '/date',
-					method : 'put',
+					url : 'date',
+					method : 'PUT',
 					data : {
 						type : words[0],
 						number : words[1],
@@ -343,7 +352,20 @@
 						detailDateAjax(placeNo);
 					}
 				});
-				
+				*/
+				$.ajax({
+					url : 'date',
+					type : 'post',
+					data : {
+						type : words[0],
+						number : words[1],
+						content : $updateContent.val()
+					},
+					success : result => {
+						console.log(result);
+						detailDateAjax(placeNo);
+					}
+				});
 			});
 			
 			$('#wrap').on('click','.update_btn', e => {
@@ -360,6 +382,7 @@
 			$('#wrap').on('click','.write-btn-cansle', e => {
 				if($(e.target).prev().attr('class') == 'update_write_btn'){
 					$(e.target).parents('.update_area').prev().show();
+					$(e.target).siblings('.write_content').val($(e.target).parents('.update_area').prev().children('.reply_content').text());
 					$(e.target).parents('.update_area').hide();
 				}
 				else{
@@ -470,7 +493,7 @@
 			$.ajax({
 				url : 'date/'+ $placeNo,
 				success: result => {
-					
+					console.log(result);
 					let createDate = result.createDate.date;
 					let createTime = result.createDate.time;
 					let replyList = result.replyList;
@@ -494,7 +517,7 @@
 						        '<div class="menu_body">' +
 						            '<div class="menu_content">' +
 						             	result.boardContent +
-						                '<div class="menu_like">좋아요 ' + result.boardLike + ' 댓글 ' + replyList.length + '</div>' +
+						                '<div class="menu_like"><img class="like_btn" src="${sessionScope.path }/resources/img/heart.png"> ' + result.boardLike + ' 댓글 ' + result.sumCount + '</div>' +
 						            '</div>' +
 						        '</div>' +
 			
@@ -510,12 +533,23 @@
 											   
 							            	   let replyCreateDate = replyList[i].createDate.date;
 							            	   let replyCreateTime = replyList[i].createDate.time;
+							            	   let replyUpdateDate = replyList[i].updateDate.date;
+							            	   let replyUpdateTime = replyList[i].updateDate.time;
+							            	   
+							            	   
+							            	   var replyUpdate = new Date(replyUpdateDate.year, replyUpdateDate.month - 1, replyUpdateDate.day, replyUpdateTime.hour, replyUpdateTime.minute ,replyUpdateTime.second);
 							            	   var replyDate = new Date(replyCreateDate.year, replyCreateDate.month - 1, replyCreateDate.day, replyCreateTime.hour, replyCreateTime.minute ,replyCreateTime.second);
 							            	   
 							            	   text += '<div class="reply" id="reply_' + replyList[i].replyNo + '">' +
 										          			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
-										       				'<div class="reply_content">' + replyList[i].replyContent + '</div>' +
-										       				'<div class="reply_createDate">' + dateFormat(replyDate); 
+										       				'<div class="reply_content">' + replyList[i].replyContent + '</div>';
+										       				
+							            	   			if(replyUpdate.getTime() === replyDate.getTime()){
+							            	   				text += '<div class="reply_createDate">' + dateFormat(replyDate); 
+										       			}
+							            	   			else{
+						                    				text += '<div class="reply_createDate">' + dateFormat(replyUpdate) + '&emsp;(수정됨)';
+						                    			}
 										       			if('${sessionScope.loginUser}' != ''){
 										       				text += '&emsp;<a class="comment_btn">답글쓰기</a>';
 										       			}
@@ -531,16 +565,23 @@
 						                    				if(commentList[j].commentContent != null){
 								                    			let commentCreateDate = commentList[j].createDate.date;
 								                    			let commentCreateTime = commentList[j].createDate.time;
-								                    			
+								                    			let commentUpdateTime = commentList[j].updateDate.time;
+								                    			let commentUpdateDate = commentList[j].updateDate.date;
+								                    			var commentUpdate = new Date(commentUpdateDate.year, commentUpdateDate.month - 1, commentUpdateDate.day, commentUpdateTime.hour, commentUpdateTime.minute ,commentUpdateTime.second);
 								                    			var commentDate = new Date(commentCreateDate.year, commentCreateDate.month - 1, commentCreateDate.day, commentCreateTime.hour, commentCreateTime.minute ,commentCreateTime.second);
 							                    				text += '<div class="comment" id="comment_' + commentList[j].commentNo + '">' +
 										                    				'<div class="reply_writer">' + commentList[j].commentWriter + '</div>' +
-											                    			'<div class="reply_content">' + commentList[j].commentContent + '</div>' +
-											                    			'<div class="reply_createDate">' + dateFormat(commentDate);
+											                    			'<div class="reply_content">' + commentList[j].commentContent + '</div>';
+											                    			if(commentUpdate.getTime() === commentDate.getTime()){
+											                    				text += '<div class="reply_createDate">' + dateFormat(commentDate);
+											                    			}
+											                    			else{
+											                    				text += '<div class="reply_createDate">' + dateFormat(commentUpdate) + '&emsp;(수정됨)';
+											                    			}
 										                    				if('${sessionScope.loginUser.nickname}' == commentList[j].commentWriter){
 											                    				text += '&emsp;<a class="update_btn">수정</a>&emsp;<a class="delete_btn">삭제</a>';
 											                    			}
-											                    text += '</div></div><div class="update_area" style="display:none">' + replyWrite('update_write', replyList[i].replyContent) + '</div>';
+											                    text += '</div></div><div class="update_area" style="display:none">' + replyWrite('update_write', commentList[j].commentContent) + '</div>';
 						                    				}
 						                    				
 						                    			}
