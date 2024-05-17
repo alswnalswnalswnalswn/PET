@@ -14,27 +14,99 @@
 	<select id="selectListCount" parameterType="hashmap" resultType="_int">
 		SELECT 
 				COUNT(*) 
-		FROM(
-            SELECT 
-                    BOARD_NO,
-                    CATEGORY_CODE,
-                    ANIMAL_CODE,
-                    ANIMAL_NAME,
-                    BOARD_STATUS,
-                    BO_CATEGORY_NAME,
-                    ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS rn
-            FROM
-                    TB_INFO
-            LEFT JOIN
-                    TB_BOARD_ANIMAL USING(BOARD_NO)
-            LEFT JOIN
-                    TB_ANIMAL USING(ANIMAL_CODE)
-            LEFT JOIN
-                    TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
-            )
+		FROM
+				(
+				SELECT
+						BOARD_NO,
+						BOARD_TITLE,
+						BOARD_CONTENT,
+						TB_MEMBER.NICKNAME BOARD_WRITER,
+						BO_CATEGORY_NAME,
+						BO_CATEGORY_CODE CATEGORY_CODE,
+						ANIMAL_CODE,
+						ANIMAL_NAME,
+						TB_INFO.CREATE_DATE BOARD_CREATE_DATE,
+						LIKE_COUNT,
+						REPLY_COUNT + COMMENT_COUNT REPLY_SUM,
+						REPLY_WRITER,
+						REPLY_CONTENT,
+						REPLY_CREATE_DATE,
+						COMMENT_WRITER,
+						COMMENT_CONTENT,
+						COMMENT_CREATE_DATE,
+						ATT_NO,
+						BOARD_STATUS,
+						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS rn
+				FROM
+						TB_INFO
+				LEFT JOIN
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				LEFT JOIN
+						TB_ANIMAL USING(ANIMAL_CODE)
+				LEFT JOIN
+						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+				LEFT JOIN
+						TB_MEMBER USING(MEMBER_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								COUNT(*) LIKE_COUNT, 
+								BOARD_NO 
+						FROM 
+								TB_LIKE 
+						GROUP BY 
+								BOARD_NO
+						) USING (BOARD_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								REPLY_NO, 
+								NICKNAME REPLY_WRITER, 
+								REPLY_CONTENT, 
+								CREATE_DATE REPLY_CREATE_DATE, 
+								REPLY_STATUS, 
+								BOARD_NO 
+						FROM 
+								TB_REPLY 
+						LEFT JOIN
+								TB_MEMBER USING(MEMBER_NO)
+						) USING (BOARD_NO)
+				LEFT JOIN
+						(
+						SELECT COUNT(*) REPLY_COUNT, BOARD_NO FROM TB_REPLY GROUP BY BOARD_NO) USING(BOARD_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								COMMENT_NO, 
+								NICKNAME COMMENT_WRITER, 
+								COMMENT_CONTENT,
+								TB_COMMENT.CREATE_DATE COMMENT_CREATE_DATE, 
+								BOARD_NO
+						FROM 	
+								TB_COMMENT 
+						LEFT JOIN 
+								TB_MEMBER USING(MEMBER_NO) 
+						LEFT JOIN 
+								TB_REPLY USING(REPLY_NO)
+						) USING (BOARD_NO)
+				LEFT JOIN 
+						(
+						SELECT 
+								COUNT(*) COMMENT_COUNT, 
+								REPLY_NO 
+						FROM 
+								TB_COMMENT 
+						GROUP BY 
+								REPLY_NO
+						) USING(REPLY_NO)
+				LEFT JOIN 
+						TB_ATTACHMENT USING(BOARD_NO)
+				ORDER BY 
+						BOARD_NO
+				)
 		WHERE 
-				RN = 1
-		AND 
+				rn = 1
+		AND
 				BOARD_STATUS = 'Y'
 		<choose>
 			<when test="animal == 'A1'">
