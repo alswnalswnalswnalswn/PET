@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<title>Insert title here</title>
+<title>마이페이지</title>
 <style>
     #myoutput{
         width: 1200px;
@@ -301,7 +301,9 @@
                     <div id="profile"  >
                     <form id="uploadForm" method="post" enctype="multpart/form-data">
                         <input type="file" name="profile" id="my_profile" multiple="true">
-                        <div id="profile_img"><img src="${sessionScope.path}/resources/img/${ loginUser.profile }" alt="기본프로필사진"></div>
+                        <div id="profile_img">
+                       		<img src="${sessionScope.path}/resources/img/${ loginUser.profile }" alt="프로필사진">
+                        </div>
                         <input type="hidden" name="memberNo" value="${loginUser.memberNo }">
                    </form>
                    </div>
@@ -365,10 +367,9 @@
                     success: function(response) {
                         alert('프로필 사진이 성공적으로 업로드되었습니다.');
                         var fileName = $('#my_profile')[0].files[0].name;
-                        console.log(fileName);
-                        var newImgUrl = "${sessionScope.path}/resources/img/" + response.profile;
+                        var newImgUrl = "${sessionScope.path}/resources/img/${sessionScope.profile}";
                         $('#profile_img img').attr('src', newImgUrl);
-                        location.refresh(true);
+                        location.reload();
                     },
                     error: function(response) {
                         alert('프로필 사진 업로드에 실패했습니다.');

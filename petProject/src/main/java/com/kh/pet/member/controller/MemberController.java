@@ -275,7 +275,7 @@ public class MemberController {
 		
 		String ext = originName.substring(originName.lastIndexOf("."));
 		
-		int ranNum = (int)Math.random() * 9000 + 1000;
+		int ranNum = (int)(Math.random() * 90000) + 10000;
 		
 		String changeName = "profile" + ranNum + ext;
 		
@@ -293,22 +293,22 @@ public class MemberController {
 	@PostMapping("upProfile")
 	public ModelAndView upProfile(MultipartHttpServletRequest request, HttpSession session, ModelAndView mv) {
 		
-		Member loginUser = (Member)session.getAttribute("loginUser");
-		loginUser.getMemberNo();
-		int memberNo = loginUser.getMemberNo();
+		Member member = (Member)session.getAttribute("loginUser");
+		member.getMemberNo();
+		int memberNo = member.getMemberNo();
 		
 		MultipartFile file = request.getFile("profile");
-		
-		Member member = new Member();
         if (!file.isEmpty()) {
         	member.setOriginName(file.getOriginalFilename());
         	member.setChangeName(saveFile(file, session));
+        	member.setProfile(member.getChangeName());
         }
-		
-		member.setProfile(member.getChangeName());
-		member.setMemberNo(memberNo);
+		System.out.println(memberNo);
+		System.out.println(member.getChangeName());
+		System.out.println(member);
 		if(memberService.upProfile(member) > 0) {
-			mv.addObject("loginUser", loginUser);
+			
+			session.setAttribute("profile", member.getProfile());
 			mv.setViewName("redirect:/");
 		} else {
 			session.setAttribute("alertMsg", "프로필 수정에 실패하였습니다. 다시 시도 해주세요");

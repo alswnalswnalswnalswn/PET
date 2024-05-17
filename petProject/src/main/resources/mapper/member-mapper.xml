@@ -204,7 +204,7 @@
 		 	   MEMBER_ID = #{memberId}
 	</select>
 	
-	<select id="selectUpMember" resultType="string" parameterType="_int">
+	<select id="selectUpMember" resultType="member" parameterType="_int">
 		SELECT
 		       MEMBER_NO,
 		       MEMBER_ID,
@@ -220,7 +220,7 @@
 		  FROM
 		       TB_MEMBER
 		 WHERE 
-		 	   MEMBER_ID = #{memberId}
+		 	   MEMBER_NO = #{memberNo}
 	</select>
 	
 	<insert id="insertAnimals" parameterType="animal">
