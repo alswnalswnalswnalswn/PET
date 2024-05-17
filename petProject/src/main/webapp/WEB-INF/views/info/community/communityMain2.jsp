@@ -54,15 +54,53 @@
 					</div>
 				</div>
 			</div>
+			
+			
 		</div>
-		
-		<div class="content_wrap">
-				
+
+		<div class="communityList">
+			
+			
 		</div>
 		
 		<div class="btnDiv">
 			
 		</div>
+
+
+		<div class="content_wrap">
+		
+			<div class="left_header">
+				<img width="100%" height="100%" src="resources/img/heart.png">
+			</div>
+			
+			<div class= "center_content">
+				<div class="content_writer">
+					중앙 작성자 이름
+				</div>
+				<div class="animalAndCategory">
+					작성자 이름 옆에 동물이랑 카테고리
+				</div>
+				<div class="content_text">
+					그 아래에 게시글 내용
+				</div>
+			</div>
+			
+			<div class="content_reaction">
+				<div class="cr_detail">
+					<img src="resources/img/like.png"><div>좋아요</div>
+				</div>
+				<div class="cr_detail">
+					<img src="resources/img/like.png"><div>조회수</div>
+				</div>
+				<div class="cr_detail">
+					<img src="resources/img/like.png"><div>댓글수</div>
+				</div>
+			</div>			
+			
+			
+		</div>
+
 
 
 	</div>
@@ -108,22 +146,11 @@
 					
 					var str = '';
 					for(let i in result){
-						str += '<div class= "ajaxWrap">'
-							+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png"></div>'
-							+ '<input type="hidden" value="' + 1 + '">'
-							+ '<div class= "center_content">'
-							+ '<div class="content_writer">' + 2 + '</div>'
-							+ '<div class="animalAndCategory">' + 3 + '</div>'
-							+ '<div class="content_text">' + 4 + '</div>'
-							+ '</div>'
-							+ '<div class="content_reaction">'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 5 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 6 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 7 + '</div></div>'
-							+ '</div>'
-							+ '</div>'
+						str += '<div class="strList">'
+							+ '<input type="hidden" value="' + result[i].boardNo + '">'
+							+ '<div>' + result[i].boardContent + '</div>'
+							+ '</div>';
 					};
-					
 					$('.content_wrap').append(str);
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
@@ -159,23 +186,13 @@
 					//console.log(result);
 					var str = '';
 					for(let i in result){
-						str += '<div class= "ajaxWrap">'
-							+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png"></div>'
-							+ '<input type="hidden" value="' + 1 + '">'
-							+ '<div class= "center_content">'
-							+ '<div class="content_writer">' + 2 + '</div>'
-							+ '<div class="animalAndCategory">' + 3 + '</div>'
-							+ '<div class="content_text">' + 4 + '</div>'
-							+ '</div>'
-							+ '<div class="content_reaction">'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 5 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 6 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 7 + '</div></div>'
-							+ '</div>'
-							+ '</div>'
+						str += '<div class="strList">'
+							+ '<input type="hidden" value="' + result[i].boardNo + '">'
+							+ '<div>' + result[i].boardContent + '</div>'
+							+ '</div>';
 					};
 					
-					$('.content_wrap').html(str);
+					$('.communityList').html(str);
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
 						$('.btnDiv').html('<button id="showMoreBtn" onclick="showMore();">더 보기</button>');
 					}
