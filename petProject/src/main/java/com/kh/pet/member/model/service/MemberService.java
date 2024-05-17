@@ -38,5 +38,9 @@ public interface MemberService {
 
 	int pwdCheck(Member member);
 
+	int upProfile(Member member);
+
+	Member selectUpMember(int memberNo);
+
 
 }

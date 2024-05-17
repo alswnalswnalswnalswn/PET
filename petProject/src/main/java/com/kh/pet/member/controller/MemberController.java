@@ -4,17 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -23,9 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -99,26 +97,6 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	public String saveFile(MultipartFile upfile, HttpSession session) {
-		
-		String originName = upfile.getOriginalFilename();
-		
-		String ext = originName.substring(originName.lastIndexOf("."));
-		
-		int ranNum = (int)Math.random() * 90000 + 10000;
-		
-		String changeName = "profile" + ranNum + ext;
-		System.out.println(changeName);
-		String savePath = session.getServletContext().getRealPath("/resources/reviewImage/");
-		
-			try {
-				upfile.transferTo(new File(savePath + changeName));
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
-			}		
-		return changeName;
-	}
-	
 	
 	@ResponseBody
 	@GetMapping("update")
@@ -177,18 +155,7 @@ public class MemberController {
 	@ResponseBody
 	@GetMapping("emailCheck.do")
 	public String emailCheck(String email, HttpServletRequest request) throws MessagingException {
-		/*
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setSubject("축축");
-		message.setText("인증번호를 입력하세요~~");
-		String to = "rjsgml922@naver.com";
-		message.setTo(to);
-		
-		sender.send(message);
-		return "common/header";
-		 */
 		String remoteAddr = request.getRemoteAddr();
-		// System.out.println(remoteAddr);
 		
 		Random r = new Random();
 		int i = r.nextInt(10000);
@@ -302,21 +269,76 @@ public class MemberController {
 		return "member/myPage";
 	}
 	
-	@RequestMapping("upProfile")
-	public String upProfile(HttpServletRequest request, Member member, MultipartFile upfile, HttpSession session) {
-		System.out.println(member.getProfile());
+	
+	public String saveFile(MultipartFile file, HttpSession session) {
+		String originName = file.getOriginalFilename();
 		
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		int ranNum = (int)Math.random() * 9000 + 1000;
+		
+		String changeName = "profile" + ranNum + ext;
+		
+		String savePath = session.getServletContext().getRealPath("/resources/img/");
+		
+			try {
+				file.transferTo(new File(savePath + changeName));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}		
+		return changeName;
+	}
+
+	@ResponseBody
+	@PostMapping("upProfile")
+	public ModelAndView upProfile(MultipartHttpServletRequest request, HttpSession session, ModelAndView mv) {
+		
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		loginUser.getMemberNo();
+		int memberNo = loginUser.getMemberNo();
+		
+		MultipartFile file = request.getFile("profile");
+		
+		Member member = new Member();
+        if (!file.isEmpty()) {
+        	member.setOriginName(file.getOriginalFilename());
+        	member.setChangeName(saveFile(file, session));
+        }
+		
+		member.setProfile(member.getChangeName());
+		member.setMemberNo(memberNo);
+		if(memberService.upProfile(member) > 0) {
+			mv.addObject("loginUser", loginUser);
+			mv.setViewName("redirect:/");
+		} else {
+			session.setAttribute("alertMsg", "프로필 수정에 실패하였습니다. 다시 시도 해주세요");
+			mv.setViewName("redirect:/");
+		}
+		
+		return mv;
+		/*
 		if(!upfile.getOriginalFilename().equals("")) {
-			
+			// 첨부파일이 존재했다 => 업로드 + Board객체에 originName + changeName
 			member.setOriginName(upfile.getOriginalFilename());
 			member.setChangeName(saveFile(upfile, session));
-			member.setProfile(member.getChangeName());
-			
 		}
-		memberService.update(member);
+		System.out.println(member);
 		
-		return member.getProfile();
+		if(memberService.upProfile(member) > 0) {
+			Member loginUser = memberService.selectUpMember(member.getMemberNo());
+			session.setAttribute("loginUser", loginUser);
+			mv.setViewName("redirect:/");
+		} else {
+			session.setAttribute("alertMsg", "프로필 수정에 실패하였습니다. 다시 시도 해주세요");
+			mv.setViewName("redirect:/");
+		}
+		
+		return mv;
+		*/
+		
+		
 	}
+	
 	
 	
 	

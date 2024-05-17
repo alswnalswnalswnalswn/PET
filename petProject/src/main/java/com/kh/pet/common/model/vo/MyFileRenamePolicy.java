@@ -18,10 +18,6 @@ public class MyFileRenamePolicy implements FileRenamePolicy{
       
       return new File(originFile.getParent(), changeName);
       
-      
-      
    }
-   
-      
    
 }
