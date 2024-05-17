@@ -11,5 +11,5 @@ public interface FileRenamePolicy {
 	     * @return 변경된 파일 객체
 	     */
 	    public File rename(File file);
-
+	    
 }

@@ -69,7 +69,7 @@
         width: 130px;
         height: 130px;
     }
-    #profile_img > img{
+    #profile_img img{
         width: 120px;
         height:110px;
         padding-left: 5px;
@@ -298,10 +298,13 @@
         <div id="myback">
             <div id="myheader">
                 <div id="myname">
-                    <div id="profile">
-                        <input type="file" name="profile" id="my_profile">
+                    <div id="profile"  >
+                    <form id="uploadForm" method="post" enctype="multpart/form-data">
+                        <input type="file" name="profile" id="my_profile" multiple="true">
                         <div id="profile_img"><img src="${sessionScope.path}/resources/img/${ loginUser.profile }" alt="기본프로필사진"></div>
-                    </div>
+                        <input type="hidden" name="memberNo" value="${loginUser.memberNo }">
+                   </form>
+                   </div>
                     <div id="name">
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;${ loginUser.nickname }</span><span id="nim"><small>&nbsp;님</small></span>
                     </div>  
@@ -347,6 +350,32 @@
             });
         });
         
+        $(document).ready(function() {
+            $('#my_profile').on('change', function() {
+            	var form = $('#uploadForm')[0];
+            	var formData = new FormData(form);
+            	console.log(form);
+                $.ajax({
+                    url: 'upProfile',
+                    type : 'POST',
+                    data : formData,
+       			    processData:false,
+       			    contentType:false,
+       			    cache:false,
+                    success: function(response) {
+                        alert('프로필 사진이 성공적으로 업로드되었습니다.');
+                        var fileName = $('#my_profile')[0].files[0].name;
+                        console.log(fileName);
+                        var newImgUrl = "${sessionScope.path}/resources/img/" + response.profile;
+                        $('#profile_img img').attr('src', newImgUrl);
+                    },
+                    error: function(response) {
+                        alert('프로필 사진 업로드에 실패했습니다.');
+                    }
+                });
+            });
+        });
+        <!--
         function updateProfile(){
         	$.ajax({
         		url : 'upProfile',
@@ -362,7 +391,7 @@
         		}
         	})
         }
-        
+        -->
     </script>
     
     <div class="modal fade" id="myInfo">

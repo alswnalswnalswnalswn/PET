@@ -73,4 +73,12 @@ public class MemberRepository {
 		return sqlSession.selectOne("memberMapper.pwdCheck", member);
 	}
 
+	public int upProfile(SqlSessionTemplate sqlSession, Member member) {
+		return sqlSession.update("memberMapper.upProfile", member);
+	}
+
+	public Member selectUpMember(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectOne("memberMapper.selectUpMember", memberNo);
+	}
+
 }

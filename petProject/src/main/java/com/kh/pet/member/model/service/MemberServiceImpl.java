@@ -97,5 +97,15 @@ public class MemberServiceImpl implements MemberService {
 		return memberRepository.pwdCheck(sqlSession, member);
 	}
 
+	@Override
+	public int upProfile(Member member) {
+		return memberRepository.upProfile(sqlSession, member);
+	}
+
+	@Override
+	public Member selectUpMember(int memberNo) {
+		return memberRepository.selectUpMember(sqlSession, memberNo);
+	}
+
 
 }
