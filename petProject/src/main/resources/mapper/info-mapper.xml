@@ -51,6 +51,26 @@
 		
 		<collection resultMap="replyResultSet" property="replyList"/>
 	</resultMap>
+	
+	<select id="likeCheck" parameterType="hashmap" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_LIKE
+		 WHERE
+		 	   MEMBER_NO = #{loginUser}
+		   AND
+		   	   BOARD_NO = (SELECT
+							      BOARD_NO
+							 FROM
+							      TB_INFO
+							 JOIN
+							      TB_BOARD_BRIDGE USING(BOARD_NO)
+							WHERE
+							      PLACE_NO = #{placeNo})	
+	</select>
+	
+	
 	<update id="updateCount" parameterType="_int">
 		UPDATE
 		       TB_INFO
@@ -116,7 +136,8 @@
 				       TB_LIKE
 				 GROUP
 				    BY
-				       BOARD_NO) USING(BOARD_NO)
+				       BOARD_NO
+				) USING(BOARD_NO)
 		  LEFT
 		  JOIN
 		       TB_ATTACHMENT USING(BOARD_NO)
@@ -133,7 +154,8 @@
                   FROM
                        TB_REPLY
                   JOIN
-                       TB_MEMBER USING(MEMBER_NO)) USING (REPLY_NO)
+                       TB_MEMBER USING(MEMBER_NO)
+                ) USING (REPLY_NO)
           LEFT
           JOIN
                (SELECT
@@ -163,7 +185,8 @@
                   JOIN
                       TB_COMMENT USING(REPLY_NO)      
                 GROUP
-                   BY BOARD_NO) USING (BOARD_NO)
+                   BY BOARD_NO
+                   ) USING (BOARD_NO)
 		 WHERE
 		       BOARD_STATUS = 'Y'
 		   AND
@@ -211,5 +234,19 @@
 			  </choose>  	   
 	</update>
 	
+	<insert id="insertLike" parameterType="hashmap">
+		INSERT
+		  INTO
+		  	   TB_LIKE
+		VALUES(#{memberNo},#{boardNo})
+	</insert>
 	
+	<delete id="deleteLike" parameterType="hashmap">
+		DELETE
+			   TB_LIKE
+	   	 WHERE
+	   	 	   MEMBER_NO = #{memberNo}
+	   	   AND
+	   	   	   BOARD_NO = #{boardNo}
+	</delete>
 </mapper>

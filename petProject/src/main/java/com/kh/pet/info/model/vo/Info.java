@@ -4,6 +4,7 @@ package com.kh.pet.info.model.vo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.common.model.vo.PageInfo;
 
@@ -28,6 +29,7 @@ public class Info {
 	private String boardStatus;
 	
 	private int boardLike;
+	private int likeCheck;
 	
 	private int sumCount;
 	
@@ -36,6 +38,8 @@ public class Info {
 	private List<Reply> replyList;
 	
 	private PageInfo pageInfo;
+	
+	private List<Animal> animalList;
 
 	
 	

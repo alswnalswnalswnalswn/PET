@@ -13,7 +13,7 @@
 <title>데이트 게시판</title>
 <style>
 
-img{
+.menu_body img{
 	width:28px;
 	height:28px;
 }
@@ -209,7 +209,8 @@ img{
 		</div>
 	</div>
 	<script>
-		var boardNo = '';
+		var placeNo = 0;
+		var boardNo = 0;
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
 			center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -331,11 +332,49 @@ img{
 		
 		$(() => {
 			
+			$('#wrap').on('click','.like_btn_cansle', e => {
+				
+				const requestObj = {
+						boardNum : boardNo,
+						memberNo : '${loginUser.memberNo}'
+				};
+				
+				$.ajax({
+					url : 'date/like',
+					type : 'delete',
+					data : JSON.stringify(requestObj)	
+					,
+					success : result => {
+						console.log(result);
+						detailDateAjax(placeNo);
+					}
+				});
+			});
+			
+			$('#wrap').on('click','.like_btn', e => {
+				if('${sessionScope.loginUser}' == ''){
+					alert('로그인 후 이용해주세요');
+				}else{
+					
+					$.ajax({
+						url : 'date/like',
+						type : 'post',
+						data : {
+							boardNo : boardNo,
+							memberNo : '${loginUser.memberNo}'
+						},
+						success : result => {
+							console.log(result);
+							detailDateAjax(placeNo);
+						}
+					});
+				}
+				
+			});
 			$('#wrap').on('click','.update_write_btn', e => {
 				const $updateContent = $(e.target).prev();
 				const $updateNo = $(e.target).parents('.update_area').prev().attr('id');
 				let words = $(e.target).parents('.update_area').prev().attr('id').split('_');
-				const placeNo = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
 				console.log(words[0]);
 				console.log(words[1]);
 				/*
@@ -395,8 +434,6 @@ img{
 				
 				const $replyNo = $(e.target).parents('.comment_writer').parent().attr('id').substr(6);
 				
-				const $placeNoComment = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
-				
 				$.ajax({
 					url : 'date/comment',
 					method : 'post',
@@ -407,7 +444,7 @@ img{
 					},
 					success : result => {
 						if(result == 'Y'){
-							detailDateAjax($placeNoComment);
+							detailDateAjax(placeNo);
 						}
 					}
 				});
@@ -418,9 +455,6 @@ img{
 			
 			$('#wrap').on('click','.reply_write .reply_write_btn', e => {
 				const $reply = $('.reply_write .write_content');
-				console.log($reply.val());
-				const $placeNoReply = $(e.target).parents('.menu_footer').siblings('.menu_head').attr('id');
-				console.log($placeNoReply);
 				$.ajax({
 					url : 'date/reply',
 					method : 'post',
@@ -431,7 +465,7 @@ img{
 					},
 					success : result => {
 						if(result == 'Y'){
-							detailDateAjax($placeNoReply);
+							detailDateAjax(placeNo);
 							
 						}
 					}
@@ -490,6 +524,7 @@ img{
 		}
 		
 		function detailDateAjax($placeNo) {
+			placeNo = $placeNo;
 			$.ajax({
 				url : 'date/'+ $placeNo,
 				success: result => {
@@ -517,14 +552,22 @@ img{
 						        '<div class="menu_body">' +
 						            '<div class="menu_content">' +
 						             	result.boardContent +
-						                '<div class="menu_like"><img class="like_btn" src="${sessionScope.path }/resources/img/heart.png"> ' + result.boardLike + ' 댓글 ' + result.sumCount + '</div>' +
+						                '<div class="menu_like">&ensp;';
+						                if(result.likeCheck == 0){
+						                	text += '<img class="like_btn" src="${sessionScope.path }/resources/img/like.png"> ';
+						                }
+						                else{
+						                	text += '<img class="like_btn_cansle" src="${sessionScope.path }/resources/img/like2.png"> ';
+						                }
+						                
+						                text += result.boardLike + '&emsp;<img src="${sessionScope.path }/resources/img/reply.png"> ' + result.sumCount + '</div>' +
 						            '</div>' +
 						        '</div>' +
 			
 						        '<div class="menu_footer">' +
 						            '<div class="footer_title">댓글</div>';
 							            if('${sessionScope.loginUser}' != ''){
-							            text += replyWrite("reply_write",'');
+							            text += replyWrite("reply_write",'');	
 							            }
 							            text += '<div class="footer_content">';
 							               
