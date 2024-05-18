@@ -70,33 +70,7 @@
 
 		<div class="content_wrap">
 		
-			<div class="left_header">
-				<img width="100%" height="100%" src="resources/img/heart.png">
-			</div>
 			
-			<div class= "center_content">
-				<div class="content_writer">
-					중앙 작성자 이름
-				</div>
-				<div class="animalAndCategory">
-					작성자 이름 옆에 동물이랑 카테고리
-				</div>
-				<div class="content_text">
-					그 아래에 게시글 내용
-				</div>
-			</div>
-			
-			<div class="content_reaction">
-				<div class="cr_detail">
-					<img src="resources/img/like.png"><div>좋아요</div>
-				</div>
-				<div class="cr_detail">
-					<img src="resources/img/like.png"><div>조회수</div>
-				</div>
-				<div class="cr_detail">
-					<img src="resources/img/like.png"><div>댓글수</div>
-				</div>
-			</div>			
 			
 			
 		</div>

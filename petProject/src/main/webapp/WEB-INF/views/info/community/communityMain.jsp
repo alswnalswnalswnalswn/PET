@@ -105,7 +105,6 @@
 					category : category
 				},
 				success : result => {
-					
 					var str = '';
 					for(let i in result){
 						str += '<div class= "ajaxWrap">'
@@ -156,21 +155,23 @@
 					page : page
 				},
 				success : result => {
-					//console.log(result);
+					console.log(result);
 					var str = '';
 					for(let i in result){
 						str += '<div class= "ajaxWrap">'
-							+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png"></div>'
-							+ '<input type="hidden" value="' + 1 + '">'
+							+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png">'
+							+ '</div>'
+							+ '<input type="hidden" value="' + result[i].boardNo + '">'
 							+ '<div class= "center_content">'
-							+ '<div class="content_writer">' + 2 + '</div>'
-							+ '<div class="animalAndCategory">' + 3 + '</div>'
-							+ '<div class="content_text">' + 4 + '</div>'
+							+ '<div class="content_writer">' + 2/*result[i].boardWriter*/ + '</div>'
+							+ '<div class="animalAndCategory">' + 3/*result[i].animalList */ + '</div>'
+							+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
+							+ '<div class="content_text">' + result[i].boardContent + '</div>'
 							+ '</div>'
 							+ '<div class="content_reaction">'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 5 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 6 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 7 + '</div></div>'
+							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>좋아요 : ' + 5 + '</div></div>'
+							+ '<div class="cr_detail"><img src="resources/img/reply.png"><div>댓글 : ' + 6 + '</div></div>'
+							+ '<div class="cr_detail"><img src="resources/img/searchform.png"><div>조회수 : ' + 7 + '</div></div>'
 							+ '</div>'
 							+ '</div>'
 					};
@@ -200,10 +201,10 @@
 			var parentDiv = '',
 			hiddenValue = '';
 			
-			$('.communityList').on('click', '.strList div', function(e)  {
+			$('.content_wrap').on('click', '.ajaxWrap div', function(e)  {
 				parentDiv = $(this).parent();
 				hiddenValue = parentDiv.find('input[type="hidden"]').val();
-				// console.log(hiddenValue);
+				console.log(hiddenValue);
 			
 				$.ajax({
 					url : 'communityDetail',
