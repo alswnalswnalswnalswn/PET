@@ -4,6 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="infoMapper">
 	
+	
+	
 	<resultMap type="attachment" id="attachmentResultSet">
 		<result column="ATT_NO" property="attNo"/>
 		<result column="ATT_PATH" property="attPath"/>
@@ -20,7 +22,7 @@
 		<result column="COMMENT_CONTENT" property="commentContent"/>
 		<result column="COMMENT_CREATE_DATE" property="createDate"/>
 		<result column="COMMENT_UPDATE_DATE" property="updateDate"/>
-		<result column="COMMENT_STATUS" property="connentStatus"/>
+		<result column="COMMENT_STATUS" property="commentStatus"/>
 	</resultMap>
 	<resultMap type="reply" id="replyResultSet">
 		<result column="REPLY_NO" property="replyNo"/>

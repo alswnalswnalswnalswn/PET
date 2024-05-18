@@ -136,7 +136,20 @@
 			});
 		}
 		
-		
+		function dateFormat(date) {
+	        let month = date.getMonth() + 1;
+	        let day = date.getDate();
+	        let hour = date.getHours();
+	        let minute = date.getMinutes();
+	        let second = date.getSeconds();
+	        month = month >= 10 ? month : '0' + month;
+	        day = day >= 10 ? day : '0' + day;
+	        hour = hour >= 10 ? hour : '0' + hour;
+	        minute = minute >= 10 ? minute : '0' + minute;
+	        second = second >= 10 ? second : '0' + second;
+	        
+	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+		}
 		
 		
 		
@@ -163,15 +176,16 @@
 							+ '</div>'
 							+ '<input type="hidden" value="' + result[i].boardNo + '">'
 							+ '<div class= "center_content">'
-							+ '<div class="content_writer">' + 2/*result[i].boardWriter*/ + '</div>'
-							+ '<div class="animalAndCategory">' + 3/*result[i].animalList */ + '</div>'
+							+ '<div class="content_writer">' + result[i].memberNo + '</div>'
+							+ '<div class="animalAndCategory">' + result[i].animalList[0].animalName + '</div>'
 							+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
 							+ '<div class="content_text">' + result[i].boardContent + '</div>'
+							+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
 							+ '</div>'
 							+ '<div class="content_reaction">'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>좋아요 : ' + 5 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/reply.png"><div>댓글 : ' + 6 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/searchform.png"><div>조회수 : ' + 7 + '</div></div>'
+							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>좋아요 : ' + result[i].boardLike + '</div></div>'
+							+ '<div class="cr_detail"><img src="resources/img/reply.png"><div>댓글 : ' + result[i].sumCount + '</div></div>'
+							+ '<div class="cr_detail"><img src="resources/img/searchform.png"><div>조회수 : ' + result[i].boardCount + '</div></div>'
 							+ '</div>'
 							+ '</div>'
 					};
@@ -195,6 +209,10 @@
 			ajaxTest('A0', 'I0', 1);
 		});
 		
+		function showDetail(){
+			
+		}
+		
 		
 		$(() => {
 			
@@ -212,7 +230,7 @@
 						boardNo : hiddenValue 
 					},
 					success : result => {
-						console.log(result);
+						//console.log(result);
 						let str = '';
 						
 					}
