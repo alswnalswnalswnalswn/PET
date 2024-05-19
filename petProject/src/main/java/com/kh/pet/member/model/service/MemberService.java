@@ -1,7 +1,11 @@
 package com.kh.pet.member.model.service;
 
 
+import java.util.List;
+import java.util.Map;
+
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 import com.kh.pet.member.model.vo.SocialMember;
@@ -41,6 +45,8 @@ public interface MemberService {
 	int upProfile(Member member);
 
 	Member selectUpMember(int memberNo);
+
+	List<Info> selectCategory(Map<String, Object> map);
 
 
 }
