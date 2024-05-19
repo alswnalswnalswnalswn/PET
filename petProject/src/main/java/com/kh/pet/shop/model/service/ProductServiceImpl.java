@@ -1,5 +1,6 @@
 package com.kh.pet.shop.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -19,13 +20,14 @@ public class ProductServiceImpl implements ProductService {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public int selectListCount(String category) {
-		return productRepository.selectListCount(sqlSession,category);
+	public int selectListCount(HashMap<String, String> map) {
+		
+		return productRepository.selectListCount(sqlSession,map);
 	}
 
 	@Override
-	public List<Product> selectAll(String category, RowBounds rowBounds) {
-		return productRepository.selectAll(sqlSession, category,rowBounds);
+	public List<Product> selectAll(HashMap<String, String> map, RowBounds rowBounds) {
+		return productRepository.selectAll(sqlSession, map,rowBounds);
 	}
 	
 	

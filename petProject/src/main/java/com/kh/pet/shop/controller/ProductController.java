@@ -1,8 +1,10 @@
 package com.kh.pet.shop.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,25 +18,31 @@ import com.kh.pet.shop.model.vo.Product;
 @RestController
 @RequestMapping("products")
 public class ProductController {
-
+	
+	@Autowired
 	ProductService productService;
 	
-	@GetMapping()
-	public List<Product> selectAll(@PathVariable(required = false)int page,
-								   @PathVariable(required = false)String category){
+	@GetMapping("/{page}/{category}/{animal}")
+	public List<Product> selectAll(@PathVariable int page,
+            					   @PathVariable String category,
+            					   @PathVariable String animal){
+		HashMap<String, String> map = new HashMap();
 		
-		PageInfo pi = Pagination.getPageInfo(productService.selectListCount(category), page, 10, 10);
+		map.put("category", category);
+		map.put("animal", animal);
 		
+		PageInfo pi = Pagination.getPageInfo(productService.selectListCount(map), page, 15, 10);
+
 		RowBounds rowBounds = new RowBounds(
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
 				);
-		List<Product> productList = productService.selectAll(category,rowBounds);
+		List<Product> productList = productService.selectAll(map,rowBounds);
 				
 		for(Product product : productList) {
 			product.setPageInfo(pi);
 		}
-		
+
 		return productList;
 	}
 
