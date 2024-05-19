@@ -269,8 +269,6 @@
 				)
 		WHERE 
 				BOARD_STATUS = 'Y'
-		AND
-				RN = 1
 		<choose>
 			<when test="animal == 'A1'">
 				AND ANIMAL_CODE = #{animal}
@@ -305,6 +303,8 @@
 				AND CATEGORY_CODE IN ('I1', 'I2')
 			</otherwise>
 		</choose>
+		ORDER BY 
+				BOARD_NO DESC
 	</select>
 	
 	<select id="communityDetail" parameterType="_int" resultMap="infoResultSet">
