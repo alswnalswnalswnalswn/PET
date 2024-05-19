@@ -67,6 +67,22 @@
 	    	padding-left: 5px;
 	    	font-size: 12px;
 	    	font-weight: bold;
+	    	margin-bottom: 10px;
+	    }
+	    .card_btn{
+	    	text-align: right;
+	    }
+	    .card_btn img{
+	    	weight:30px;
+	    	height:30px;
+	    }
+	    .card_price{
+	    	padding : 0 5px;
+	    	color:rgb(211, 84, 0);
+	    	font-weight:bold
+	    }
+	    .card_btn{
+	    	padding : 0 5px;
 	    }
 	</style>
 
@@ -106,50 +122,54 @@
 					<div class="card">
 					  <div class="card-body">
 					    <img class="product_img" src="">
-					    <p class="card-text">습식사료 푸치앤머트 375g <br>
-1ea</p>
-					    <a href="#" class="card-link">Card link</a>
-					    <a href="#" class="card-link">Another link</a>
+					    <p class="card-text">습식사료 푸치앤머트 375g <br> 1ea</p>
+					    <div class="card_price">10,800원</div>
+					    <div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart.png" /></div>
+					    
 					  </div>
 					</div>
 				</div>
 				<div class="custom-col-5" >
 					<div class="card">
 					  <div class="card-body">
-					    <h4 class="card-title">Card title</h4>
-					    <p class="card-text">Some example text. Some example text.</p>
-					    <a href="#" class="card-link">Card link</a>
-					    <a href="#" class="card-link">Another link</a>
+					    <img class="product_img" src="">
+					    <p class="card-text">습식사료 푸치앤머트 375g <br> 1ea</p>
+					    <div class="card_price">10,800원</div>
+					    <div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart.png" /></div>
+					    
 					  </div>
 					</div>
 				</div>
 				<div class="custom-col-5" >
 					<div class="card">
 					  <div class="card-body">
-					    <h4 class="card-title">Card title</h4>
-					    <p class="card-text">Some example text. Some example text.</p>
-					    <a href="#" class="card-link">Card link</a>
-					    <a href="#" class="card-link">Another link</a>
+					    <img class="product_img" src="">
+					    <p class="card-text">습식사료 푸치앤머트 375g <br> 1ea</p>
+					    <div class="card_price">10,800원</div>
+					    <div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart.png" /></div>
+					    
 					  </div>
 					</div>
 				</div>
 				<div class="custom-col-5" >
 					<div class="card">
 					  <div class="card-body">
-					    <h4 class="card-title">Card title</h4>
-					    <p class="card-text">Some example text. Some example text.</p>
-					    <a href="#" class="card-link">Card link</a>
-					    <a href="#" class="card-link">Another link</a>
+					    <img class="product_img" src="">
+					    <p class="card-text">습식사료 푸치앤머트 375g <br> 1ea</p>
+					    <div class="card_price">10,800원</div>
+					    <div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart.png" /></div>
+					    
 					  </div>
 					</div>
 				</div>
 				<div class="custom-col-5" >
 					<div class="card">
 					  <div class="card-body">
-					    <h4 class="card-title">Card title</h4>
-					    <p class="card-text">Some example text. Some example text.</p>
-					    <a href="#" class="card-link">Card link</a>
-					    <a href="#" class="card-link">Another link</a>
+					    <img class="product_img" src="">
+					    <p class="card-text">습식사료 푸치앤머트 375g <br> 1ea</p>
+					    <div class="card_price">10,800원</div>
+					    <div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart.png" /></div>
+					    
 					  </div>
 					</div>
 				</div>
@@ -157,21 +177,28 @@
 		      <div class="custom-col-5" >
 					<div class="card">
 					  <div class="card-body">
-					    <h4 class="card-title">Card title</h4>
-					    <p class="card-text">Some example text. Some example text.</p>
-					    <a href="#" class="card-link">Card link</a>
-					    <a href="#" class="card-link">Another link</a>
+					    <img class="product_img" src="">
+					    <p class="card-text">습식사료 푸치앤머트 375g <br> 1ea</p>
+					    <div class="card_price">10,800원</div>
+					    <div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart.png" /></div>
+					    
 					  </div>
 					</div>
 				</div>
 		      
 		    </div>
-						
+				
 		</div>
 	
 	
 	</div>
-	
+	<script>
+		$(() => {
+			$.ajax({
+				url : 'pro'
+			});		
+		});
+	</script>
 	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopMapper">
+	<resultMap type="productOption" id="productOptionResultSet">
+		<result column="COLOR_NAME" property="colorName"/>
+		<result column="SIZE_NAME" property="sizeName"/>
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_AMOUNT" property="productAmount"/>
+	</resultMap>
+
+	<resultMap type="product" id="productResultSet">
+		<result column="PRODUCT_NO" property="productNo"/>
+		<result column="PRODUCT_NAME" property="productName"/>
+		<result column="PRICE" property="price"/>
+		<result column="PRODUCT_DATE" property="productDate"/>
+		<result column="UPDATE_DATE" property="updateDate"/>
+		<result column="PRODUCT_DETAIL" property="productDetail"/>
+		<result column="PR_CATEGORY_NAME" property="prCategoryName"/>
+		
+		<collection resultMap="productOptionResultSet" property="optionList"/>
+	</resultMap>
+	
+	<select id="selectListCount" parameterType="string" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_PRODUCT
+
+		 <if test="category == P1">
+		 WHERE
+		 	   PR_CATEGORY_CODE = 'P1'
+		 </if>
+		 <if test="category == P2">
+		 WHERE
+		 	   PR_CATEGORY_CODE = 'P1'
+		 </if>
+	</select>
+	
+	<select id="selectAll" parameterType="string" resultMap="productResultSet">
+		SELECT
+		       PRODUCT_NO,
+		       PRODUCT_NAME,
+		       PRICE,
+		       PRODUCT_DATE,
+		       
+		       PR_CATEGORY_NAME
+		  FROM
+		       TB_PRODUCT
+		  JOIN
+		       TB_PRODUCT_CATEGORY USING(PR_CATEGORY_CODE)
+		 <if test="category == P1">
+		 WHERE
+		 	   PR_CATEGORY_CODE = 'P1'
+		 </if>
+		 <if test="category == P2">
+		 WHERE
+		 	   PR_CATEGORY_CODE = 'P1'
+		 </if>
+	</select>
+	
+	
+	
+</mapper>
