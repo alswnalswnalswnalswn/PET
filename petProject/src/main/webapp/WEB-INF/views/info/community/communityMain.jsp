@@ -68,6 +68,10 @@
 	</div>
 	
 	<script>
+	
+		$(() => {
+			ajaxTest('A0', 'I0', 1);
+		});
 		
 		// 초기 변수 선언
 		var $selectCategory = $('#selectCategory');
@@ -94,47 +98,6 @@
 			ajaxTest(animalVal, categoryVal, 1);
 		}
 		
-		
-		
-		function showMore(animal, category){
-			$.ajax({
-				url : 'selectCommunityList',
-				data : {
-					page : ++page,
-					animal : animal,
-					category : category
-				},
-				success : result => {
-					var str = '';
-					for(let i in result){
-						str += '<div class= "ajaxWrap">'
-							+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png"></div>'
-							+ '<input type="hidden" value="' + 1 + '">'
-							+ '<div class= "center_content">'
-							+ '<div class="content_writer">' + 2 + '</div>'
-							+ '<div class="animalAndCategory">' + 3 + '</div>'
-							+ '<div class="content_text">' + 4 + '</div>'
-							+ '</div>'
-							+ '<div class="content_reaction">'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 5 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 6 + '</div></div>'
-							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>' + 7 + '</div></div>'
-							+ '</div>'
-							+ '</div>'
-					};
-					
-					$('.content_wrap').append(str);
-					
-					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-						$('.btnDiv').html('<button id="showMoreBtn" onclick="showMore();">더 보기</button>');
-					}
-					else{
-						$('.btnDiv').html('');
-					}
-					
-				}
-			});
-		}
 		
 		function dateFormat(date) {
 	        let month = date.getMonth() + 1;
@@ -168,16 +131,30 @@
 					page : page
 				},
 				success : result => {
-					console.log(result);
+					// console.log(result);
+					
 					var str = '';
+					
 					for(let i in result){
+						
+						var animalListStr = '';
+						
+						var animalListResult = result[i].animalList;
+						
+						for(let i in animalListResult){
+							animalListStr += '<div class="animalAndCategory">' 
+										  + animalListResult[i].animalName
+										  + '</div>'
+						}
+						animalListStr += '<br clear="both">';
+						
 						str += '<div class= "ajaxWrap">'
 							+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png">'
 							+ '</div>'
 							+ '<input type="hidden" value="' + result[i].boardNo + '">'
 							+ '<div class= "center_content">'
 							+ '<div class="content_writer">' + result[i].memberNo + '</div>'
-							+ '<div class="animalAndCategory">' + result[i].animalList[0].animalName + '</div>'
+							+ animalListStr
 							+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
 							+ '<div class="content_text">' + result[i].boardContent + '</div>'
 							+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
@@ -188,57 +165,125 @@
 							+ '<div class="cr_detail"><img src="resources/img/searchform.png"><div>조회수 : ' + result[i].boardCount + '</div></div>'
 							+ '</div>'
 							+ '</div>'
+							+ '<div class="ajaxDetail"></div>'
 					};
 					
 					$('.content_wrap').html(str);
+					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
 						$('.btnDiv').html('<button id="showMoreBtn" onclick="showMore();">더 보기</button>');
 					}
 					else{
 						$('.btnDiv').html('');
 					}
+
+					$('.ajaxWrap').click(function() {
+						
+						
+						var $ajaxDetail = $(this).next('.ajaxDetail'),
+						boardNo = $(this).find('input[type="hidden"]').val();
+						
+						console.log(boardNo);
+						//location.href = 'communityDetail?boardNo=' + boardNo;
+							/*
+						$.ajax({
+							url : 'communityDetail',
+							data: {
+								boardNo: $(this).find('input[type="hidden"]').val()
+							},
+							success: result => {
+								console.log(result);
+								
+								let detailStr = '<marquee>123</marquee>';
+								
+								
+								$ajaxDetail.html(detailStr);
+								
+								if($ajaxDetail.css('display') == 'none'){
+
+				                   $ajaxDetail.siblings('.ajaxDetail').slideUp(1000);
+				                   $ajaxDetail.siblings('.ajaxDetail').text('');
+
+				                   $ajaxDetail.slideDown(1000);
+				                }
+				                else{
+				                	$ajaxDetail.slideUp(1000);
+				                	$ajaxDetail.text('');
+				                }
+							}
+						});
+						*/
+					});
 				}
 			});
 		}
 		
-		
-		
-		
-		
-		$(() => {
-			ajaxTest('A0', 'I0', 1);
-		});
-		
-		function showDetail(){
-			
+		function showMore(animal, category){
+			$.ajax({
+				url : 'selectCommunityList',
+				data : {
+					page : ++page,
+					animal : animal,
+					category : category
+				},
+				success : result => {
+					// console.log(result);
+					
+					var str = '';
+					
+					for(let i in result){
+						
+						var animalListStr = '';
+						
+						var animalListResult = result[i].animalList;
+						
+						for(let i in animalListResult){
+							animalListStr += '<div class="animalAndCategory">' 
+										  + animalListResult[i].animalName
+										  + '</div>'
+						}
+						animalListStr += '<br clear="both">';
+						
+						str += '<div class= "ajaxWrap">'
+							+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png">'
+							+ '</div>'
+							+ '<input type="hidden" value="' + result[i].boardNo + '">'
+							+ '<div class= "center_content">'
+							+ '<div class="content_writer">' + result[i].memberNo + '</div>'
+							+ animalListStr
+							+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
+							+ '<div class="content_text">' + result[i].boardContent + '</div>'
+							+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
+							+ '</div>'
+							+ '<div class="content_reaction">'
+							+ '<div class="cr_detail"><img src="resources/img/like.png"><div>좋아요 : ' + result[i].boardLike + '</div></div>'
+							+ '<div class="cr_detail"><img src="resources/img/reply.png"><div>댓글 : ' + result[i].sumCount + '</div></div>'
+							+ '<div class="cr_detail"><img src="resources/img/searchform.png"><div>조회수 : ' + result[i].boardCount + '</div></div>'
+							+ '</div>'
+							+ '</div>'
+							+ '<div class="ajaxDetail"></div>'
+					};
+					
+					$('.content_wrap').append(str);
+					
+					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
+						$('.btnDiv').html('<button id="showMoreBtn" onclick="showMore();">더 보기</button>');
+					}
+					else{
+						$('.btnDiv').html('');
+					}
+					
+					$('.ajaxWrap').click(function() {
+
+						var $ajaxDetail = $(this).next('.ajaxDetail'),
+						boardNo = $(this).find('input[type="hidden"]').val();
+						
+					});
+						
+				}
+			});
 		}
 		
-		
-		$(() => {
-			
-			var parentDiv = '',
-			hiddenValue = '';
-			
-			$('.content_wrap').on('click', '.ajaxWrap div', function(e)  {
-				parentDiv = $(this).parent();
-				hiddenValue = parentDiv.find('input[type="hidden"]').val();
-				console.log(hiddenValue);
-			
-				$.ajax({
-					url : 'communityDetail',
-					data : {
-						boardNo : hiddenValue 
-					},
-					success : result => {
-						//console.log(result);
-						let str = '';
-						
-					}
-				});
-			});
-			
-			
-		});
 		
 	</script>
 	

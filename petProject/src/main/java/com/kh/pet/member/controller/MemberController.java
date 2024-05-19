@@ -339,7 +339,10 @@ public class MemberController {
 	public String myboard() {
 		return "member/myboard";
 	}
-	
+	@PostMapping("selectCategory")
+	public String selectCategory(String animalName) {
+		memberService.selectCategory(animalName);
+	}
 	
 	
 	
