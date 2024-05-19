@@ -1,11 +1,12 @@
 package com.kh.pet.member.model.service;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.dao.MemberRepository;
@@ -112,7 +113,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Info> selectCategory(Map<String, Object> map) {
+	public List<Info> selectCategory(HashMap<String, Object> map) {
 		return memberRepository.selectCategory(sqlSession, map);
 	}
 

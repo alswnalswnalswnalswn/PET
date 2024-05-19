@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -19,7 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +30,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.service.KakaoService;
 import com.kh.pet.member.model.service.MemberService;
 import com.kh.pet.member.model.vo.CertVO;
@@ -340,8 +343,22 @@ public class MemberController {
 		return "member/myboard";
 	}
 	@PostMapping("selectCategory")
-	public String selectCategory(String animalName) {
-		memberService.selectCategory(animalName);
+	public ModelAndView selectCategory(String animalName, int memberNo, ModelAndView mv, HttpSession session) {
+	    
+		System.out.println(memberNo);
+		HashMap<String, Object> map = new HashMap<>();
+	    map.put("animalName", animalName);
+	    map.put("memberNo", memberNo);
+		List<Info> myBoard = memberService.selectCategory(map);
+		
+		if(myBoard != null) {
+			session.setAttribute("boardList", myBoard);
+			mv.setViewName("redirect:/");
+		} else {
+			session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
+			mv.setViewName("redirect:/");
+		}
+		return mv;
 	}
 	
 	

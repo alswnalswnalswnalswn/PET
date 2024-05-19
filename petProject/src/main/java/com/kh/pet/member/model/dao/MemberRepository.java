@@ -1,6 +1,7 @@
 package com.kh.pet.member.model.dao;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +86,7 @@ public class MemberRepository {
 		return sqlSession.selectOne("memberMapper.selectUpMember", memberNo);
 	}
 
-	public List<Info> selectCategory(SqlSessionTemplate sqlSession, Map<String, Object> map) {
+	public List<Info> selectCategory(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
 		return sqlSession.selectList("memberMapper.selectCategory", map);
 	}
 

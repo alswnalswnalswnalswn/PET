@@ -35,7 +35,7 @@
 	#searchcon{
 		width : 200px;
 		height : 100%;
-		border-bottom : 1px solid black;
+		border-bottom : 1px solid rgb(235, 235, 235);
 	}
 	#searchContent{
 		outline : none;
@@ -190,6 +190,7 @@
 	<script>
 		$('.category').click(function(){
 			var categoryValue = $(this).text().trim().substring(2);
+			
 			console.log(categoryValue);
 			$.ajax({
 				url : 'selectCategory',

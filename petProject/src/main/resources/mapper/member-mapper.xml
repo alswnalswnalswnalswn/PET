@@ -45,9 +45,8 @@
 		<result column="UPDATE_DATE" property="updateDate"/>
 		<result column="BOARD_STATUS" property="boardStatus"/>
 		<result column="CATEGORY_CODE" property="categoryCode"/>
-		
+		<result column="MEMBER_NO" property="memberNo"/>
 		<result column="BOARD_LIKE" property="boardLike"/>
-		
 		<result column="SUM_COUNT" property="sumCount"/>
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
@@ -310,7 +309,7 @@
 	</delete>
 	
 	
-	<select id="selectCommunityList" parameterType="hashmap" resultMap="infoResultSet">
+	<select id="selectCategory" parameterType="hashmap" resultMap="infoResultSet">
 		SELECT 
 				BOARD_NO,
                 BOARD_WRITER,
@@ -383,38 +382,31 @@
 				BOARD_STATUS = 'Y'
 		AND
 				RN = 1
+   		AND 
+   				MEMBER_NO = #{memberNo}
+    	AND 
+    			ANIMAL_NAME = #{animalName}		
 		<choose>
-			<when test="animal == 'A1'">
-				AND ANIMAL_CODE = #{animal}
+			<when test="animalName == '강아지'">
+				AND ANIMAL_CODE = 'A1'
 			</when>
-			<when test="animal == 'A2'">
-				AND ANIMAL_CODE = #{animal}
+			<when test="animalName == '고양이'">
+				AND ANIMAL_CODE = 'A2'
 			</when>
-			<when test="animal == 'A3'">
-				AND ANIMAL_CODE = #{animal}
+			<when test="animalName == '토끼'">
+				AND ANIMAL_CODE = 'A3'
 			</when>
-			<when test="animal == 'A4'">
-				AND ANIMAL_CODE = #{animal}
+			<when test="animalName == '물고기'">
+				AND ANIMAL_CODE = 'A4'
 			</when>
-			<when test="animal == 'A5'">
-				AND ANIMAL_CODE = #{animal}
+			<when test="animalName == '새'">
+				AND ANIMAL_CODE = 'A5'
 			</when>
-			<when test="animal == 'A6'">
-				AND ANIMAL_CODE = #{animal}
+			<when test="animalName == '햄스터'">
+				AND ANIMAL_CODE = 'A6'
 			</when>
 			<otherwise>
 				
-			</otherwise>
-		</choose>
-		<choose>
-			<when test="category == 'I1'">
-				AND CATEGORY_CODE = #{category}
-			</when>
-			<when test="category == 'I2'">
-				AND CATEGORY_CODE = #{category}
-			</when>
-			<otherwise>
-				AND CATEGORY_CODE IN ('I1', 'I2')
 			</otherwise>
 		</choose>
 	</select>
