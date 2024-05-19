@@ -303,9 +303,6 @@ public class MemberController {
         	member.setChangeName(saveFile(file, session));
         	member.setProfile(member.getChangeName());
         }
-		System.out.println(memberNo);
-		System.out.println(member.getChangeName());
-		System.out.println(member);
 		if(memberService.upProfile(member) > 0) {
 			
 			session.setAttribute("profile", member.getProfile());
@@ -336,7 +333,11 @@ public class MemberController {
 		return mv;
 		*/
 		
-		
+	}
+	
+	@RequestMapping("myboard")
+	public String myboard() {
+		return "member/myboard";
 	}
 	
 	

@@ -330,7 +330,7 @@
                 </div>
                 <div id="content2">
                     <div id="content"><a href="" data-toggle="modal" data-target="#myInfo"><img src="${sessionScope.path}/resources/img/selectmyinfo.png" alt=""><br>내 정보 조회</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/board.png" alt=""><br>내가 쓴 게시글</a></div>
+                    <div id="content"><a href="${sessionScope.path }/member/myboard"><img src="${sessionScope.path}/resources/img/board.png" alt=""><br>내가 쓴 게시글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/comment.png" alt=""><br>내가 쓴 댓글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/like2.png" alt=""><br>내 좋아요</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/heart.png" alt=""><br>내가 찜한 상품</a></div>
@@ -377,23 +377,6 @@
                 });
             });
         });
-        <!--
-        function updateProfile(){
-        	$.ajax({
-        		url : 'upProfile',
-        		data : {
-        			profile : $('#my_profile').val(),
-        			memberNo : '${loginUser.memberNo}'
-        		},
-        		success : function(result){
-        			console.log(result);
-        		}, 
-        		error : function(result){
-        			console.log('실패~');
-        		}
-        	})
-        }
-        -->
     </script>
     
     <div class="modal fade" id="myInfo">

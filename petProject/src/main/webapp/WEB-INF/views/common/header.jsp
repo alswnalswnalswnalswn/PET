@@ -53,7 +53,7 @@
         width: 380px;
         height: 50px;
         border-radius: 10px;
-        border: 1px solid rgb(179, 179, 179);
+        border: 1px solid rgb(235, 235, 235);
         margin: 0;
         padding: 0;
         outline : none;
