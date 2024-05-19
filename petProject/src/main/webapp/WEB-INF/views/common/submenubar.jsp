@@ -8,7 +8,6 @@
 <style>
 	div{
 		box-sizing: border-box;
-		border : 1px solid black;
 	}
 	#submenubar{
 		width : 1200px;
@@ -106,12 +105,19 @@
 		margin-top : 30px;
 	}
 	#boardinfo, #aniinfo{
-		width:50%;
-		height : 100%;
-		padding-top : 40px;
 	}
 	#boardinfo{
+	}
+	#sksnrl1{
+		width : 100%;
+		height : 25%;
 		float: left;
+		border : 1px solid red;
+		
+	}
+	#sksnrl2{
+		width : 100%;
+		height: 75%;
 	}
 </style>
 </head>
@@ -129,22 +135,22 @@
 		</div>
 		<div id="selectctg">
 			<div id="select">
-			<div id="sksnrl1">
-				<div id="selectstyle">
-					<span id="styleboard">글 성격</span>
+				<div id="sksnrl1">
+					<div id="selectstyle">
+						<span id="styleboard">글 성격</span>
+					</div>
+					<div id="selectani">		
+						<span id="styleani">반려 동물</span>
+					</div>
 				</div>
-				<div id="boardinfo">
-					
+				<div id="sksnrl2">	
+					<div id="aniinfo">
+						
+					</div>
+					<div id="boardinfo">
+						
+					</div>
 				</div>
-			</div>
-			<div id="sksnrl2">
-				<div id="selectani">		
-					<span id="styleani">반려 동물</span>
-				</div>
-				<div id="aniinfo">
-					
-				</div>
-			</div>
 			</div>
 			<div id="line"></div>
 		</div>
