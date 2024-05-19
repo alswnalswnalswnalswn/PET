@@ -13,7 +13,6 @@
 		width : 1200px;
 		height: 150px;
 		margin : auto;
-		border : 1px solid black;
 	}
 	#submenubar > searchForm{
 		float : left;
@@ -64,21 +63,25 @@
 	#selectctg{
 		width : 50%;
 		height: 100%;
-		border : 1px solid black;
 		float: left;
 		position: relative;
 	}
 	#select{
 		width : 220px;
 	 	justify-content: space-between;
-		height: 100%;
+		height: 200px;
 		position: absolute;
 		transform : translate(100%);
+        display: flex;
+        flex-direction: column;
+        top : 30%;
 	}
 	#selectstyle, #selectani{
 		width : 50%;
 		height : 30px;
 		float : left;
+	    display: flex;	
+    	justify-content: center;
 	}
 	#styleboard, #styleani{
 		width : 90px;
@@ -100,25 +103,47 @@
 	}
 	#line{
 		width : 300px;
-		border: 1px solid rgb(204, 204, 204);
 		margin-left: 180px;
-		margin-top : 30px;
-	}
-	#boardinfo, #aniinfo{
-	}
-	#boardinfo{
+		margin-top : 13%;
+		border: 1px solid rgba(190, 190, 190, 0.2);
 	}
 	#sksnrl1{
 		width : 100%;
-		height : 25%;
+		height : 22%;
 		float: left;
-		border : 1px solid red;
-		
 	}
 	#sksnrl2{
 		width : 100%;
-		height: 75%;
+		height: 78%;
+        display: flex;
 	}
+	#boardinfo{
+		width : 48%;
+		height: 45%;
+		background-color: rgba(190, 190, 190, 0.2);
+	    border-radius: 10px;
+	}
+	#aniinfo{
+		width : 48%;
+		height: 100%;
+		background-color: rgba(190, 190, 190, 0.2);
+	    border-radius: 10px;
+	}
+	#boardinfo{
+		margin-right : 2%;
+	}
+	#aniinfo{
+		margin-left : 2%;
+	}
+	span{
+		text-align: center;
+		cursor: pointer;
+		font-size: 15px;
+	}
+	span:hover{
+		font-size: 16px;
+	}
+	
 </style>
 </head>
 <body>
@@ -144,11 +169,17 @@
 					</div>
 				</div>
 				<div id="sksnrl2">	
-					<div id="aniinfo">
-						
-					</div>
 					<div id="boardinfo">
-						
+						<span id="freecon"># 자유</span><br>
+						<span id="quescon"># 질문</span><br>
+					</div>
+					<div id="aniinfo">
+						<span class="category" id="dogcon"># 강아지</span><br>
+						<span class="category" id="catcon"># 고양이</span><br>
+						<span class="category" id="rabcon"># 토끼</span><br>
+						<span class="category" id="fishcon"># 물고기</span><br>
+						<span class="category" id="birdcon"># 새</span><br>
+						<span class="category" id="hamcon"># 햄스터</span><br>
 					</div>
 				</div>
 			</div>
@@ -157,9 +188,24 @@
 	</div>
 	
 	<script>
-		$(() => {
-			
-		})
+		$('.category').click(function(){
+			var categoryValue = $(this).text().trim().substring(2);
+			console.log(categoryValue);
+			$.ajax({
+				url : 'selectCategory',
+				type: 'POST',
+				data : {
+						animalName: categoryValue,
+						memberNo : '${loginUser.memberNo}'
+						},
+				success: function(result){
+				     console.log('AJAX 요청이 성공적으로 완료되었습니다.');
+				},
+				error: function(result){
+				    console.error('AJAX 요청 중 오류가 발생하였습니다: ' + result);
+				}
+			});
+		});
 	</script>
 	
 	

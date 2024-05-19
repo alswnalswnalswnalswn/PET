@@ -1,10 +1,14 @@
 package com.kh.pet.member.model.dao;
 
 
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 
@@ -79,6 +83,10 @@ public class MemberRepository {
 
 	public Member selectUpMember(SqlSessionTemplate sqlSession, int memberNo) {
 		return sqlSession.selectOne("memberMapper.selectUpMember", memberNo);
+	}
+
+	public List<Info> selectCategory(SqlSessionTemplate sqlSession, Map<String, Object> map) {
+		return sqlSession.selectList("memberMapper.selectCategory", map);
 	}
 
 }
