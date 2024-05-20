@@ -24,9 +24,6 @@ public class CommunityRepository {
 		return sqlSession.selectList("communityMapper.selectCommunityList", list);
 	}
 	
-	
-	
-	
 	public List<Info> communityDetail(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.selectList("communityMapper.communityDetail", boardNo);
 	}
