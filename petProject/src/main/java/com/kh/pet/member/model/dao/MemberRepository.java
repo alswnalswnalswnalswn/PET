@@ -90,8 +90,12 @@ public class MemberRepository {
 		return sqlSession.selectList("memberMapper.selectCategory", map);
 	}
 
-	public List<Info> selectAllBoard(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectList("memberMapper.selectAllBoard");
+	public List<Info> selectAllBoard(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectList("memberMapper.selectAllBoard", memberNo);
+	}
+
+	public Info selectBoardDetail(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.selectOne("memberMapper.selectBoardDetail", boardNo);
 	}
 
 }

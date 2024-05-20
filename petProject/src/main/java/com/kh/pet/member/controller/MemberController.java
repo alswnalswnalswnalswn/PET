@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -344,8 +345,10 @@ public class MemberController {
 	}
 	@RequestMapping("selectAllBoard")
 	public ModelAndView selectAllBoard(ModelAndView mv, HttpSession session) {
-		List<Info> boardList = memberService.selectAllBoard();
-		System.out.println(boardList);
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int memberNo = loginUser.getMemberNo();
+		List<Info> boardList = memberService.selectAllBoard(memberNo);
+		
 		if(boardList != null) {
 			session.setAttribute("boardList", boardList);
 			mv.setViewName("member/myboard");
@@ -375,7 +378,21 @@ public class MemberController {
 		return mv;
 	}
 	
-	
+	@RequestMapping("selectBoardDetail")
+	public ModelAndView selectBoardDetail(int boardNo, ModelAndView mv, HttpSession session) {
+		Info board = memberService.selectBoardDetail(boardNo);
+		System.out.println(board);
+		String createDate = board.getCreateDate().toString().trim().substring(11);
+		System.out.println(createDate);
+
+		if(board != null) {
+			mv.setViewName("member/infoDetail");
+		} else {
+			session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
+			mv.setViewName("redirect:/");
+		}
+		return mv;
+	}
 	
 	
 	
