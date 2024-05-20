@@ -20,8 +20,8 @@ public class CommunityRepository {
 		return sqlSession.selectList("communityMapper.selectCommunityList", commMap, rowBounds);
 	}
 	
-	public Info communityDetail(SqlSessionTemplate sqlSession, int boardNo) {
-		return sqlSession.selectOne("communityMapper.communityDetail", boardNo);
+	public List<Info> communityDetail(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.selectList("communityMapper.communityDetail", boardNo);
 	}
 
 }
