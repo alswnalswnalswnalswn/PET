@@ -27,7 +27,9 @@ public class Info {
 	private String categoryCode;
 	private LocalDateTime  updateDate;
 	private String boardStatus;
-	
+	private String attPath;
+	private String changeName;
+	private String originName;
 	private int boardLike;
 	private int likeCheck;
 	

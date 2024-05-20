@@ -342,6 +342,20 @@ public class MemberController {
 	public String myboard() {
 		return "member/myboard";
 	}
+	@RequestMapping("selectAllBoard")
+	public ModelAndView selectAllBoard(ModelAndView mv, HttpSession session) {
+		List<Info> boardList = memberService.selectAllBoard();
+		System.out.println(boardList);
+		if(boardList != null) {
+			session.setAttribute("boardList", boardList);
+			mv.setViewName("member/myboard");
+		} else {
+			session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
+			mv.setViewName("member/myboard");
+		}
+		return mv;
+	}
+	
 	@PostMapping("selectCategory")
 	public ModelAndView selectCategory(String animalName, int memberNo, ModelAndView mv, HttpSession session) {
 	    
@@ -350,7 +364,7 @@ public class MemberController {
 	    map.put("animalName", animalName);
 	    map.put("memberNo", memberNo);
 		List<Info> myBoard = memberService.selectCategory(map);
-		
+		System.out.println(myBoard);
 		if(myBoard != null) {
 			session.setAttribute("boardList", myBoard);
 			mv.setViewName("redirect:/");
