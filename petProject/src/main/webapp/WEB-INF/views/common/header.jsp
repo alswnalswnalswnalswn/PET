@@ -453,11 +453,11 @@
     <div id="header">
         <div id="header1">
          
-            <div id="logo"><img src="${sessionScope.path}/resources/img/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${sessionScope.path}'"></div>
+            <div id="logo"><img src="${sessionScope.path}/resources/img/common/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${sessionScope.path}'"></div>
             <div id="search_form">
                 <form action="#">
                     <input type="text" name="query" id="in_text" placeholder="  검색어를 입력하세요">
-                    <img src="${sessionScope.path}/resources/img/searchform.png" alt="" id="search_img">
+                    <img src="${sessionScope.path}/resources/img/common/searchform.png" alt="" id="search_img">
                 </form>
             </div>
             <div id="menubar">
@@ -482,19 +482,19 @@
     				</c:when>
     				<c:otherwise>
    						<li class="nav-item">
-    						<a class="nav-link" href="#" id="login_btn"><img src="${sessionScope.path}/resources/img/login.png" alt=""></a>
+    						<a class="nav-link" href="#" id="login_btn"><img src="${sessionScope.path}/resources/img/common/login.png" alt=""></a>
     					</li>
     				</c:otherwise>
     				</c:choose>
 			        <c:choose>
 			        	<c:when test="${loginUser eq null  }">
 			        	<li class="nav-item">
-			         		<a class="nav-link" href="${sessionScope.path}" id="logoutMP" onclick="alert('로그인이 필요합니다.')"><img src="${sessionScope.path}/resources/img/mypage.png" alt=""></a>
+			         		<a class="nav-link" href="${sessionScope.path}" id="logoutMP" onclick="alert('로그인이 필요합니다.')"><img src="${sessionScope.path}/resources/img/common/mypage.png" alt=""></a>
 			         	</li>
 			         	</c:when>	
 			        	<c:otherwise>
     					<li class="nav-item">
-      						<a class="nav-link" href="${sessionScope.path }/member/myPage"><img src="${sessionScope.path}/resources/img/mypage.png" alt=""></a>
+      						<a class="nav-link" href="${sessionScope.path }/member/myPage"><img src="${sessionScope.path}/resources/img/common/mypage.png" alt=""></a>
     					</li>
 			         	</c:otherwise>
 			       </c:choose>
@@ -502,12 +502,12 @@
 			        <c:choose>
 			        	<c:when test="${loginUser eq null  }">
 			        	<li class="nav-item">
-			         		<a class="nav-link" href="${sessionScope.path}" id="logoutMP" onclick="alert('로그인이 필요합니다.')"><img src="${sessionScope.path}/resources/img/cart.png" alt=""></a>
+			         		<a class="nav-link" href="${sessionScope.path}" id="logoutMP" onclick="alert('로그인이 필요합니다.')"><img src="${sessionScope.path}/resources/img/common/cart.png" alt=""></a>
 			         	</li>
 			         	</c:when>	
 			        	<c:otherwise>
     					<li class="nav-item">
-      						<a class="nav-link" href="#"><img src="${sessionScope.path}/resources/img/cart.png" alt=""></a>
+      						<a class="nav-link" href="#"><img src="${sessionScope.path}/resources/img/common/cart.png" alt=""></a>
     					</li>
     			   		</c:otherwise>
 			        </c:choose>
@@ -640,7 +640,7 @@
 					<div class="input_form bt">
 						<input type="text" id="myEmail" name="email" placeholder="이메일을 입력해주세요">
 						<div id="checkEmailon" class="danger" style="font-size:0.7em; display:none;"></div>
-						<img src="${sessionScope.path }/resources/img/check.png" class="checkEmailimg" style="display:none;">
+						<img src="${sessionScope.path }/resources/img/common/check.png" class="checkEmailimg" style="display:none;">
 					</div>
 					<div class="input_btn">
 						<button type="submit" id="search-btn" class="btn">비밀번호 찾기</button>
@@ -670,7 +670,7 @@
 				<div class="input_form">
 					<input type="text" id="memberId" name="memberId" maxlength="10" placeholder="아이디를 입력해주세요 (3~10 영/숫자)" required>
 					<div id="checkId" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="${sessionScope.path}/resources/img/check.png" class="check" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/common/check.png" class="check" style="display:none;">
 				</div>
 					
 					
@@ -680,7 +680,7 @@
 				<div class="input_form">
 					<input type="text" id="memberPwd2" maxlength="16" placeholder="비밀번호를 한번 더 입력해주세요" required>
 					<div id="checkPwd" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="${sessionScope.path}/resources/img/check.png" class="checkPwd" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/common/check.png" class="checkPwd" style="display:none;">
 				</div>
 					<span class="danger_pwd"></span>
 				<div class="input_form">
@@ -689,17 +689,17 @@
 				<div class="input_form">
 					<input type="text" id="nickname" name="nickname" maxlength="30" placeholder="닉네임을 입력해주세요" required>
 					<div id="checkNick" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="${sessionScope.path}/resources/img/check.png" class="checkNick" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/common/check.png" class="checkNick" style="display:none;">
 				</div>
 				<div class="input_form">
 					<input type="text" id="phone" name="phone" maxlength="13" placeholder="'-' 를 포함한 전화번호를 입력해주세요" required>
 					<div id="checkPhone" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="${sessionScope.path}/resources/img/check.png" class="checkPhone" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/common/check.png" class="checkPhone" style="display:none;">
 				</div>
 				<div class="input_form">
 					<input type="text" id="email" name="email" maxlength="30" placeholder="이메일을 입력해주세요" required>
 					<div id="checkEmail" class="danger" style="font-size:0.7em; display:none;"></div>
-					<img src="${sessionScope.path}/resources/img/check.png" class="checkEmail" style="display:none;">
+					<img src="${sessionScope.path}/resources/img/common/check.png" class="checkEmail" style="display:none;">
 					<button type="button" id="checkMyEmail">이메일 인증</button>
 				</div>
 				<div class="input_code" style="font-size:15px; display:none;">

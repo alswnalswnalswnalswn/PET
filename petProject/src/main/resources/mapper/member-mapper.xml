@@ -50,6 +50,7 @@
 		<result column="ATT_PATH" property="attPath"/>
 		<result column="CHANGE_NAME" property="changeName"/>
 		<result column="SUM_COUNT" property="sumCount"/>
+		<result column="LIKECHECK" property="likeCheck" />
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
 		
@@ -310,100 +311,223 @@
 		delete TB_CERT where who = #{who} and code = #{secret}
 	</delete>
 	
-	<select id="selectAllBoard" resultMap="infoResultSet">
-		    SELECT * 
-		    FROM (
-		        SELECT 
-		            BOARD_NO,
-		            BOARD_WRITER,
-		            TB_ANIMAL.ANIMAL_NAME,
-		            TB_INFO.CREATE_DATE,
-		            TB_INFO.BOARD_TITLE,
-		            TB_INFO.BOARD_CONTENT,
-		            TB_INFO.BOARD_COUNT,
-		            NVL(BOARD_LIKE, 0) BOARD_LIKE,
-		            ATT_PATH,
-		            CHANGE_NAME,
-		            SUM_COUNT,
-		            ROWNUM AS RN
-		        FROM (
-						SELECT
-								BOARD_NO,
-								BOARD_TITLE,
-								BOARD_CONTENT,
-		                        BOARD_COUNT,
-								TB_MEMBER.NICKNAME BOARD_WRITER,
-								BO_CATEGORY_NAME,
-								BO_CATEGORY_CODE CATEGORY_CODE,
-								ANIMAL_CODE,
-								ANIMAL_NAME,
-								TB_INFO.CREATE_DATE CREATE_DATE,
-								NVL(LIKE_COUNT, 0) BOARD_LIKE,
-								REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
-								BOARD_STATUS,
-								ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS RN
-						FROM
-								TB_INFO
-						LEFT JOIN
-								TB_BOARD_ANIMAL USING(BOARD_NO)
-						LEFT JOIN
-								TB_ANIMAL USING(ANIMAL_CODE)
-						LEFT JOIN
-								TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
-						LEFT JOIN
-								TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
-						LEFT JOIN
-								(
-								SELECT 
-										COUNT(*) LIKE_COUNT, 
-										BOARD_NO 
-								FROM 
-										TB_LIKE 
-								GROUP BY 
-										BOARD_NO
-								) USING (BOARD_NO)
-						LEFT JOIN
-								(
-								SELECT 
-										BOARD_NO,
-		                                COUNT(REPLY_NO) REPLY_COUNT,
-		                                COUNT(COMMENT_NO) COMMENT_COUNT
-								FROM 
-										TB_INFO 
-								LEFT JOIN
-										TB_REPLY USING(BOARD_NO)
-		                        LEFT JOIN
-		                                TB_COMMENT USING(REPLY_NO)
-		                        GROUP BY
-		                                BOARD_NO
-								) USING (BOARD_NO)				
-						
-						LEFT JOIN 
-								TB_ATTACHMENT USING(BOARD_NO)
-						ORDER BY 
+	<select id="selectAllBoard" parameterType="_int" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO,
+          		BOARD_WRITER,
+				TB_ANIMAL.ANIMAL_NAME,
+				TB_INFO.CREATE_DATE,
+				TB_INFO.BOARD_TITLE,
+				TB_INFO.BOARD_CONTENT,
+				TB_INFO.BOARD_COUNT,
+				NVL(BOARD_LIKE, 0) BOARD_LIKE,
+				ATT_PATH,
+				CHANGE_NAME,
+				SUM_COUNT,
+				LIKECHECK,
+				ROWNUM
+      	  FROM (
+			   SELECT
+						BOARD_NO,
+						BOARD_TITLE,
+						BOARD_CONTENT,
+                        BOARD_COUNT,
+						TB_MEMBER.NICKNAME BOARD_WRITER,
+						BO_CATEGORY_NAME,
+						BO_CATEGORY_CODE CATEGORY_CODE,
+						ANIMAL_CODE,
+						ANIMAL_NAME,
+						TB_INFO.CREATE_DATE CREATE_DATE,
+						NVL(LIKE_COUNT, 0) BOARD_LIKE,
+						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+						BOARD_STATUS,
+						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS RN
+				FROM
+						TB_INFO
+				LEFT JOIN
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				LEFT JOIN
+						TB_ANIMAL USING(ANIMAL_CODE)
+				LEFT JOIN
+						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+				LEFT JOIN
+						TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								COUNT(*) LIKE_COUNT, 
+								BOARD_NO 
+						FROM 
+								TB_LIKE 
+						GROUP BY 
 								BOARD_NO
-						)
-		          JOIN
-		                TB_INFO USING (BOARD_NO)
-		          LEFT
-		          JOIN
-		                TB_BOARD_ANIMAL USING (BOARD_NO)
-		          LEFT
-		          JOIN
-		                TB_ATTACHMENT USING(BOARD_NO)
-		          LEFT
-		          JOIN
-		                TB_ANIMAL ON (TB_BOARD_ANIMAL.ANIMAL_CODE = TB_ANIMAL.ANIMAL_CODE)
-		          JOIN
-		                TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
-				WHERE 
-						TB_INFO.BOARD_STATUS = 'Y'
-		          AND
-		                RN = 1
-		          AND
-		                TB_INFO.CATEGORY_CODE != 'I4'
-		        )
-		WHERE RN BETWEEN 1 AND 10
+						) USING (BOARD_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								BOARD_NO,
+		                              COUNT(REPLY_NO) REPLY_COUNT,
+		                              COUNT(COMMENT_NO) COMMENT_COUNT
+						FROM 
+								TB_INFO 
+						LEFT JOIN
+								TB_REPLY USING(BOARD_NO)
+                        LEFT JOIN
+                                TB_COMMENT USING(REPLY_NO)
+                        GROUP BY
+                                BOARD_NO
+						) USING (BOARD_NO)				
+		
+				LEFT JOIN 
+						TB_ATTACHMENT USING(BOARD_NO)
+				ORDER BY 
+						BOARD_NO
+				)
+		        JOIN
+		              TB_INFO USING (BOARD_NO)
+		        LEFT
+		        JOIN
+		              TB_BOARD_ANIMAL USING (BOARD_NO)
+		        LEFT
+		        JOIN
+		              TB_ATTACHMENT USING(BOARD_NO)
+		        LEFT
+		        JOIN
+		              TB_ANIMAL ON (TB_BOARD_ANIMAL.ANIMAL_CODE = TB_ANIMAL.ANIMAL_CODE)
+		        JOIN
+		              TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
+		        LEFT
+		        JOIN
+		        	(
+		      SELECT
+				       BOARD_NO,
+				       COUNT(*) LIKECHECK
+				  FROM
+				       TB_LIKE
+				 WHERE
+				       MEMBER_NO = #{memberNo}
+				 GROUP
+				    BY
+				       BOARD_NO) USING (BOARD_NO)
+		 WHERE 
+				TB_INFO.BOARD_STATUS = 'Y'
+           AND
+                RN = 1
+           AND
+           		ATT_LEVEL = 1     
+           AND
+                TB_INFO.CATEGORY_CODE != 'I4'
+		   AND
+  				TB_INFO.MEMBER_NO = #{memberNo}     
+  		   AND ROWNUM BETWEEN 1 AND 10
+	</select>
+	
+	<select id="selectBoardDetail" parameterType="_int" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO,
+          		BOARD_WRITER,
+				TB_ANIMAL.ANIMAL_NAME,
+				TB_INFO.CREATE_DATE,
+				TB_INFO.BOARD_TITLE,
+				TB_INFO.BOARD_CONTENT,
+				TB_INFO.BOARD_COUNT,
+				NVL(BOARD_LIKE, 0) BOARD_LIKE,
+				ATT_PATH,
+				CHANGE_NAME,
+				SUM_COUNT,
+				LIKECHECK,
+				ROWNUM
+      	  FROM (
+			   SELECT
+						BOARD_NO,
+						BOARD_TITLE,
+						BOARD_CONTENT,
+                        BOARD_COUNT,
+						TB_MEMBER.NICKNAME BOARD_WRITER,
+						BO_CATEGORY_NAME,
+						BO_CATEGORY_CODE CATEGORY_CODE,
+						ANIMAL_CODE,
+						ANIMAL_NAME,
+						TB_INFO.CREATE_DATE CREATE_DATE,
+						NVL(LIKE_COUNT, 0) BOARD_LIKE,
+						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+						BOARD_STATUS,
+						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS RN
+				FROM
+						TB_INFO
+				LEFT JOIN
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				LEFT JOIN
+						TB_ANIMAL USING(ANIMAL_CODE)
+				LEFT JOIN
+						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+				LEFT JOIN
+						TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								COUNT(*) LIKE_COUNT, 
+								BOARD_NO 
+						FROM 
+								TB_LIKE 
+						GROUP BY 
+								BOARD_NO
+						) USING (BOARD_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								BOARD_NO,
+		                              COUNT(REPLY_NO) REPLY_COUNT,
+		                              COUNT(COMMENT_NO) COMMENT_COUNT
+						FROM 
+								TB_INFO 
+						LEFT JOIN
+								TB_REPLY USING(BOARD_NO)
+                        LEFT JOIN
+                                TB_COMMENT USING(REPLY_NO)
+                        GROUP BY
+                                BOARD_NO
+						) USING (BOARD_NO)				
+		
+				LEFT JOIN 
+						TB_ATTACHMENT USING(BOARD_NO)
+				ORDER BY 
+						BOARD_NO
+				)
+		        JOIN
+		              TB_INFO USING (BOARD_NO)
+		        LEFT
+		        JOIN
+		              TB_BOARD_ANIMAL USING (BOARD_NO)
+		        LEFT
+		        JOIN
+		              TB_ATTACHMENT USING(BOARD_NO)
+		        LEFT
+		        JOIN
+		              TB_ANIMAL ON (TB_BOARD_ANIMAL.ANIMAL_CODE = TB_ANIMAL.ANIMAL_CODE)
+		        JOIN
+		              TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
+		        LEFT
+		        JOIN
+		        	(
+		      SELECT
+				       BOARD_NO,
+				       COUNT(*) LIKECHECK
+				  FROM
+				       TB_LIKE
+				 GROUP
+				    BY
+				       BOARD_NO) USING (BOARD_NO)
+		 WHERE 
+				TB_INFO.BOARD_STATUS = 'Y'
+           AND
+           		ATT_LEVEL = 1     
+           AND
+                TB_INFO.CATEGORY_CODE != 'I4'
+		   AND
+  				BOARD_NO = #{boardNo} 
+  		   AND ROWNUM BETWEEN 1 AND 10
+	
 	</select>
 	
 	<select id="selectCategory" parameterType="hashmap" resultMap="infoResultSet">

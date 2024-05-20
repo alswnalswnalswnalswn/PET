@@ -153,15 +153,28 @@
 		height: auto;
 		margin : auto;
 	}
-	#myboard{
+	.myboard{
 		width : 900px;
 		height: 150px;
 		border: 1px solid rgb(214, 214, 214);
 		margin : auto;
 		border-radius: 10px;
+		display: flex;
+		line-height : 2.5;
+		position : relative;
+		cursor :pointer;
+	}
+	.myboard:hover{
+	    transform: translateY(-5px);
+    	transition: transform 0.3s ease;
+    	box-shadow : 1px 1px 1px;
 	}
 	#thumbnail{
 		width :150px;
+		height: 150px;
+	}
+	#boardlist{
+		width :650px;
 		height: 150px;
 	}
 	#thumbnail img{
@@ -181,6 +194,89 @@
 		position : absolute;
 		right: 0;
 		transform: translate(0, 10%);
+	    font-size: 15px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+	    bolder: 0;
+	    cursor :pointer;
+	}
+	#mainbtn:hover{
+		font-size: 16px;
+		width: 141px;
+		height: 51px;
+	}
+	#boardheader{
+		width :650px;
+		height: 25%;
+		display: flex;
+	}
+	#boardme{
+		width :120px;
+		height: 100%;
+		font-size : 18px;
+		font-weight :bold;
+		float: left;
+		display: flex;
+	}
+	#myboardAni{
+		width : 410px;
+		height: 100%;
+	}
+	#boardCreate{
+		width : 120px;
+		height: 100%;
+	}
+	#boardtitle{
+		width :650px;
+		height: 25%;
+	}
+	#boardcontent{
+		width :650px;
+		height: 50%;
+	}
+	#boardLike{
+		width :50px;
+		height :100%;	
+		position :absolute;
+		right: 0;	
+	}
+	#likeinfo{
+		width : 100%;
+		height: 25%;
+	}
+	#likeboard{
+		width : 100%;
+		height: 25%;
+	}
+	#seeboard{
+		width : 100%;
+		height: 25%;
+	}
+	#replyboard{
+		width : 100%;
+		height: 25%;
+	}
+	#boardoutput >a{
+	    text-decoration: none;
+	    color: black; 
+	}
+	#detailbtn{
+		border: 0;
+		background-color: white;
+		color : black;
+		width :30px;
+		height: 20px;
+		margin-left: 10px;
+	}
+	#likeboard>img{
+		width : 55%;
+		height: 75%;
+	}
+	#replyboard>img{
+		width : 55%;
+		height: 75%;
 	}
 </style>
 </head>
@@ -224,7 +320,7 @@
 			</div>
 			<div id="line"></div>
 		</div>
-	</div>
+	</div>${boradList}
 	<div id="needgongan1"></div>
 		<div id="boardoutput">
 		<c:choose>
@@ -237,18 +333,42 @@
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="b" items="${ boardList }">
-				<div id="myboard">
-					<div id="thumbnail">
-					<c:choose>
-						<c:when test="${ b.changeName eq null }">
-							<img src="${sessionScope.path}/resources/img/profile.png" alt="">
-						</c:when>
-						<c:otherwise>
-							<img src="${sessionScope.path}/${b.attPath }${b.changeName}" alt="">
-						</c:otherwise>
-					</c:choose>
+					<div id="myboard" class="myboard" data-board-no="${b.boardNo}">
+						<div id="thumbnail">
+						<c:choose>
+							<c:when test="${ b.changeName eq null }">
+								<img src="${sessionScope.path}/resources/img/profile.png" alt="">
+							</c:when>
+							<c:otherwise>
+								<img src="${sessionScope.path}/${b.attPath }${b.changeName}" alt="">
+							</c:otherwise>
+						</c:choose>
+						</div>
+						<div id="boardlist">
+							<div id="boardheader">
+								<div id="boardme">&nbsp;&nbsp;&nbsp;${b.memberNo }</div>
+								<div id="myboardAni"><span class="category" id="myani"></span></div>
+								<div id="boardCreate">&nbsp;&nbsp;&nbsp;${b.createDate }</div>
+							</div>	
+							<div id="boardtitle">&nbsp;&nbsp;&nbsp;${b.boardTitle }</div>
+							<div id="boardcontent">&nbsp;&nbsp;&nbsp;${b.boardContent }</div>
+							<script>
+							</script>
+						</div>
+						<div id="boardLike">
+							<div id="likeinfo"><button id="detailbtn">˚&nbsp;˚&nbsp;˚</button></div>
+							<c:choose>
+								<c:when test="${ b.likeCheck != 1 }">
+									<div id="likeboard"><img src="${sessionScope.path }/resources/img/common/like.png">(${b.boardLike })</div>
+								</c:when>
+								<c:otherwise>
+									<div id="likeboard"><img src="${sessionScope.path }/resources/img/common/like2.png">(${b.boardLike })</div>
+								</c:otherwise>
+							</c:choose>
+							<div id="seeboard"><span>조회</span>(${b.boardCount })</div>
+							<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">(${b.sumCount })</div>
+						</div>
 					</div>
-				</div>
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
@@ -257,7 +377,6 @@
 		<a href=""><button id="mainbtn">메인으로</button></a>
 	</div>
 	
-	${bl.attPath }${bl.changeName}
 	<script>
 		$('.category').click(function(){
 			var categoryValue = $(this).text().trim().substring(2);
@@ -277,10 +396,16 @@
 				}
 			});
 		});
+		
+		$('.myboard').click(function(){
+			const boardNo = $(this).data('board-no');
+			console.log(boardNo);
+			location.href= 'selectBoardDetail?boardNo=' + boardNo;
+		})
 	</script>
 	
 	
-	
+	<jsp:include page="../common/footer.jsp"/>
 	
 	
 	
