@@ -16,7 +16,7 @@
 	<div class="wrap">
 	
 		<div class="community_header">
-			<div class="search_form">
+			<div class="searchCategory">
 				<select>
 					<option name="searchAll">전체</option>
 					<option name="title">제목</option>
