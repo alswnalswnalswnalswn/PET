@@ -16,8 +16,16 @@ public class ProductRepository {
 		return sqlSession.selectOne("shopMapper.selectListCount",map);
 	}
 
-	public List<Product> selectAll(SqlSessionTemplate sqlSession, HashMap<String, String> map, RowBounds rowBounds) {
-		return sqlSession.selectList("shopMapper.selectAll",map,rowBounds);
+	public Product selectOne(SqlSessionTemplate sqlSession, int productNo) {
+		return sqlSession.selectOne("shopMapper.selectOne",productNo);
+	}
+
+	public List<Product> selectCount(SqlSessionTemplate sqlSession, HashMap<String, String> map, RowBounds rowBounds) {
+		return sqlSession.selectList("shopMapper.selectCount",map,rowBounds);
+	}
+
+	public List<Product> selectAll(SqlSessionTemplate sqlSession, List<Product> list) {
+		return sqlSession.selectList("shopMapper.selectAll",list);
 	}
 
 }

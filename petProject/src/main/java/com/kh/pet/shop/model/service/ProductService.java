@@ -11,6 +11,12 @@ public interface ProductService {
 
 	int selectListCount(HashMap<String, String> map);
 
-	List<Product> selectAll(HashMap<String, String> map, RowBounds rowBounds);
+	Product selectOne(int productNo);
+
+	List<Product> selectCount(HashMap<String, String> map, RowBounds rowBounds);
+
+	List<Product> selectAll(List<Product> list);
+	
+	
 
 }

@@ -108,7 +108,7 @@
 		       ORIGIN_NAME,
 		       CHANGE_NAME,
 		       ATT_STATUS,
-		       ATT_LELVEL,
+		       ATT_LEVEL,
                
                REPLY_NO,
                REPLY.REPLY_CONTENT REPLY_CONTENT,

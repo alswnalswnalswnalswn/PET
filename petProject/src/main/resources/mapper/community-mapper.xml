@@ -101,7 +101,45 @@
 				BOARD_STATUS = 'Y'
 	</select>
 	
-	<select id="selectCommunityList" parameterType="hashmap" resultMap="infoResultSet">
+	<select id="selectAllList" parameterType="hashMap" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO
+		FROM
+				TB_INFO
+		<choose>
+			<when test="animal == 'A0'">
+				<choose>
+					<when test="category == 'I0'">
+						WHERE CATEGORY_CODE IN ('I1', 'I2')	
+					</when>
+					<otherwise>
+						WHERE CATEGORY_CODE = #{category}	
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				JOIN 
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				WHERE
+						ANIMAL_CODE = #{animal}
+				<choose>
+					<when test="category == 'I0'">
+						AND CATEGORY_CODE IN ('I1', 'I2')	
+					</when>
+					<otherwise>
+						AND CATEGORY_CODE = #{category}	
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+		AND
+				BOARD_STATUS = 'Y'
+		ORDER BY
+				BOARD_NO DESC
+	
+	</select>
+	
+	<select id="selectCommunityList" parameterType="java.util.List" resultMap="infoResultSet">
 		SELECT
 		        BOARD_NO,
 		        NICKNAME BOARD_WRITER,
@@ -114,7 +152,8 @@
 		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
 		        BOARD_STATUS,
 		        CATEGORY_CODE,
-		        ANIMAL_NAME
+		        ATT_PATH,
+		        CHANGE_NAME
 		FROM
 		        TB_INFO
 		LEFT JOIN
@@ -147,35 +186,16 @@
 		                TB_COMMENT USING(REPLY_NO)
 		        GROUP BY
 		                BOARD_NO
-		        ) USING (BOARD_NO)		
-		<choose>
-			<when test="animal == 'A0'">
-				<choose>
-					<when test="category == 'I0'">
-						WHERE CATEGORY_CODE IN ('I1', 'I2')	
-					</when>
-					<otherwise>
-						WHERE CATEGORY_CODE = #{category}	
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				JOIN 
-						TB_BOARD_ANIMAL USING(BOARD_NO)
-				WHERE
-						ANIMAL_CODE = #{animal}
-				<choose>
-					<when test="category == 'I0'">
-						AND CATEGORY_CODE IN ('I1', 'I2')	
-					</when>
-					<otherwise>
-						AND CATEGORY_CODE = #{category}	
-					</otherwise>
-				</choose>
-			</otherwise>
-		</choose>
-		AND
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        TB_ATTACHMENT USING(BOARD_NO)
+		WHERE
 				BOARD_STATUS = 'Y'
+		AND
+				BOARD_NO IN
+				<foreach collection="list" item="item" open="(" separator="," close=")">
+			   		#{item.boardNo}
+			  	</foreach>
 		ORDER BY 
 				BOARD_NO DESC
 	</select>
@@ -203,7 +223,7 @@
                 COMMENT_WRITER,
                 COMMENT_CONTENT,
                 COMMENT_CREATE_DATE,
-                COMMENT_STATUS
+                COMMENT_STATUS,
                 
                 
 		FROM

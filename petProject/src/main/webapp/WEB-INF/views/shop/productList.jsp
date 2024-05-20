@@ -58,6 +58,7 @@
 	    }
 	    .card{
 	    	margin:10px;
+	    	cursor: pointer;
 	    }
 	    .anmal_category ul{
 	    	border:none;
@@ -146,14 +147,24 @@
 	
 	</div>
 	<script>
-		let page = 1;
-		let text = '';
-		let category = 'P0';
-		let animal = 'A0';
+		
 		
 		$(() => {
+			let page = 1;
+			let text = '';
+			let category = 'P0';
+			let animal = 'A0';
 			selectList(page, category, animal);
 			let selectedAnimal = null;
+			
+			$('#productList').on('click','.card', e => {
+				const productNo = $(e.currentTarget).attr('id');
+				
+				location.href="product/" + productNo;
+				
+			});
+			
+			
 			
 			$('#product_category').change(function() {
                 category = $(this).val();
@@ -162,7 +173,7 @@
             });
 			
 			$('.nav-item').click(function() {
-				$animal = $(this).attr('id');
+				animal = $(this).attr('id');
 				
 				if(selectedAnimal != null){
 					$('#'+selectedAnimal).find('img').css({
@@ -170,7 +181,7 @@
 			            'height': '70px'
 			        });
 				}
-				selectedAnimal = $animal;
+				selectedAnimal = animal;
 				
 				$(this).find('img').css({
 		            'width': '95px',
@@ -179,39 +190,53 @@
 				
 				
 				text = '';
-				selectList(page, category, $animal);
+				selectList(page, category, animal);
 			});
 			
 			$('.refresh_btn > img').click(function() {
 				page = page+1;
 				selectList(page, category, animal);
 			});
+			
+			
+			
+			
+			
+			
+			
+			function selectList(pageNumber,categoryCode,animalCode) {
+				$.ajax({
+					url : 'products/' + pageNumber + '/' + categoryCode + '/' + animalCode,
+					type : 'get',
+					success : result => {
+						console.log(result);
+						result.forEach( item => {
+							text+='<div class="custom-col-5" >' +
+									'<div class="card" id="'+ item.productNo +'">' +
+										'<div class="card-body">' +
+											'<img class="product_img" src="${sessionScope.path }' + item.attachment.attPath + item.attachment.changeName + '">' +
+						    				'<p class="card-text">' + item.productName + '</p>' +
+						    				'<div class="card_price">' + item.price + '원</div>' +
+						    				'<div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart2.png" /></div>' +
+										'</div>' +
+									'</div>' +
+								  '</div>';
+							if(item.pageInfo.endPage == page){
+								$('.refresh_btn').css('display','none');
+							}
+							else{
+								$('.refresh_btn').css('display','block');
+							}
+						});
+						$('#productList').html(text);
+					}
+					
+					
+				});
+			}
 		});
 		
-		function selectList(pageNumber,categoryCode,animalCode) {
-			$.ajax({
-				url : 'products/' + pageNumber + '/' + categoryCode + '/' + animalCode,
-				type : 'get',
-				success : result => {
-					
-					result.forEach( item => {
-						text+='<div class="custom-col-5" >' +
-								'<div class="card">' +
-									'<div class="card-body">' +
-										'<img class="product_img" src="${sessionScope.path }' + item.attachment.attPath + item.attachment.changeName + '">' +
-					    				'<p class="card-text">' + item.productName + '</p>' +
-					    				'<div class="card_price">' + item.price + '원</div>' +
-					    				'<div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart2.png" /></div>' +
-									'</div>' +
-								'</div>' +
-							  '</div>';
-					});
-					$('#productList').html(text);
-				}
-				
-				
-			});
-		}
+		
 	</script>
 	<jsp:include page="../common/footer.jsp" />
 </body>

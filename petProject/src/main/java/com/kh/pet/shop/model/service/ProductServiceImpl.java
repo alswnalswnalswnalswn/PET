@@ -26,8 +26,18 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> selectAll(HashMap<String, String> map, RowBounds rowBounds) {
-		return productRepository.selectAll(sqlSession, map,rowBounds);
+	public Product selectOne(int productNo) {
+		return productRepository.selectOne(sqlSession,productNo);
+	}
+
+	@Override
+	public List<Product> selectCount(HashMap<String, String> map, RowBounds rowBounds) {
+		return productRepository.selectCount(sqlSession,map,rowBounds);
+	}
+
+	@Override
+	public List<Product> selectAll(List<Product> list) {
+		return productRepository.selectAll(sqlSession,list);
 	}
 	
 	
