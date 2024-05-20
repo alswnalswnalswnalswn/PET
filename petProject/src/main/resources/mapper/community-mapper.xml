@@ -201,127 +201,55 @@
 	</select>
 	
 	<select id="communityDetail" parameterType="_int" resultMap="infoResultSet">
-		SELECT 
-				BOARD_NO,
-                BOARD_TITLE,
-                BOARD_WRITER,
-                CREATE_DATE,
-                BOARD_CONTENT,
-                BOARD_COUNT,
-                BOARD_LIKE,
-                SUM_COUNT,
-                
-                ATT_NO,
-                ATT_PATH,
-                ATT_STATUS,
-                
-                REPLY_NO,
-                REPLY_WRITER,
-                REPLY_CONTENT,
-                
-                COMMENT_NO,
-                COMMENT_WRITER,
-                COMMENT_CONTENT,
-                COMMENT_CREATE_DATE,
-                COMMENT_STATUS,
-                
-                
+		SELECT
+		        BOARD_NO,
+		        NICKNAME BOARD_WRITER,
+		        ANIMAL_NAME,
+		        CREATE_DATE,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        BOARD_COUNT,
+		        NVL(BOARD_LIKE, 0) BOARD_LIKE,
+		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+		        BOARD_STATUS,
+		        CATEGORY_CODE,
+		        ATT_PATH,
+		        CHANGE_NAME
 		FROM
-				(
-				SELECT
-						BOARD_NO,
-						BOARD_TITLE,
-						BOARD_CONTENT,
-						TB_MEMBER.NICKNAME BOARD_WRITER,
-						BO_CATEGORY_NAME,
-						BO_CATEGORY_CODE CATEGORY_CODE,
-						ANIMAL_CODE,
-						ANIMAL_NAME,
-						TB_INFO.CREATE_DATE CREATE_DATE,
-						NVL(BOARD_LIKE, 0) BOARD_LIKE,
-						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
-						REPLY_WRITER,
-						REPLY_CONTENT,
-						REPLY_CREATE_DATE,
-						COMMENT_WRITER,
-						COMMENT_CONTENT,
-						COMMENT_CREATE_DATE,
-						ATT_NO,
-						BOARD_STATUS,
-                        COMMENT_STATUS,
-                        COMMENT_NO,
-                        REPLY_NO,
-                        ATT_STATUS,
-                        BOARD_COUNT,
-                        ATT_PATH,
-						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS rn
-				FROM
-						TB_INFO
-				LEFT JOIN
-						TB_BOARD_ANIMAL USING(BOARD_NO)
-				LEFT JOIN
-						TB_ANIMAL USING(ANIMAL_CODE)
-				LEFT JOIN
-						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
-				LEFT JOIN
-						TB_MEMBER USING(MEMBER_NO)
-				LEFT JOIN
-						(
-						SELECT 
-								COUNT(*) BOARD_LIKE, 
-								BOARD_NO 
-						FROM 
-								TB_LIKE 
-						GROUP BY 
-								BOARD_NO
-						) USING (BOARD_NO)
-				LEFT JOIN
-						(
-						SELECT 
-								REPLY_NO, 
-								NICKNAME REPLY_WRITER, 
-								REPLY_CONTENT, 
-								CREATE_DATE REPLY_CREATE_DATE, 
-								REPLY_STATUS, 
-								BOARD_NO 
-						FROM 
-								TB_REPLY 
-						LEFT JOIN
-								TB_MEMBER USING(MEMBER_NO)
-						) USING (BOARD_NO)
-				LEFT JOIN
-						(
-						SELECT COUNT(*) REPLY_COUNT, BOARD_NO FROM TB_REPLY GROUP BY BOARD_NO) USING(BOARD_NO)
-				LEFT JOIN
-						(
-						SELECT 
-								COMMENT_NO, 
-								NICKNAME COMMENT_WRITER, 
-								COMMENT_CONTENT,
-								TB_COMMENT.CREATE_DATE COMMENT_CREATE_DATE, 
-								BOARD_NO,
-                                COMMENT_STATUS
-						FROM 	
-								TB_COMMENT 
-						LEFT JOIN 
-								TB_MEMBER USING(MEMBER_NO) 
-						LEFT JOIN 
-								TB_REPLY USING(REPLY_NO)
-						) USING (BOARD_NO)
-				LEFT JOIN 
-						(
-						SELECT 
-								COUNT(*) COMMENT_COUNT, 
-								REPLY_NO 
-						FROM 
-								TB_COMMENT 
-						GROUP BY 
-								REPLY_NO
-						) USING(REPLY_NO)
-				LEFT JOIN 
-						TB_ATTACHMENT USING(BOARD_NO)
-				
-				)
+		        TB_INFO
+		LEFT JOIN
+		        TB_BOARD_ANIMAL USING(BOARD_NO)
+		LEFT JOIN
+		        TB_ANIMAL USING(ANIMAL_CODE)
+		LEFT JOIN
+		        TB_MEMBER USING(MEMBER_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                COUNT(*) BOARD_LIKE, 
+		                BOARD_NO 
+		        FROM 
+		                TB_LIKE 
+		        GROUP BY 
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                BOARD_NO,
+		                COUNT(REPLY_NO) REPLY_COUNT,
+		                COUNT(COMMENT_NO) COMMENT_COUNT
+		        FROM 
+		                TB_INFO 
+		        LEFT JOIN
+		                TB_REPLY USING(BOARD_NO)
+		        LEFT JOIN
+		                TB_COMMENT USING(REPLY_NO)
+		        GROUP BY
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        TB_ATTACHMENT USING(BOARD_NO)
 		WHERE 
 				BOARD_NO = #{boardNo}
 	</select>
