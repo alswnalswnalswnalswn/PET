@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -380,17 +380,25 @@ public class MemberController {
 	
 	@RequestMapping("selectBoardDetail")
 	public ModelAndView selectBoardDetail(int boardNo, ModelAndView mv, HttpSession session) {
-		Info board = memberService.selectBoardDetail(boardNo);
-		System.out.println(board);
-		String createDate = board.getCreateDate().toString().trim().substring(11);
-		System.out.println(createDate);
-
-		if(board != null) {
+		Info info = memberService.selectBoardDetail(boardNo);
+			System.out.println(info);
+		/*	
+		if(info != null) {
+			session.setAttribute("info", info);
 			mv.setViewName("member/infoDetail");
 		} else {
 			session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
 			mv.setViewName("redirect:/");
 		}
+		*/
+			if(info != null) {
+				mv.addObject("info", info).setViewName("member/infoDetail");
+			} else {
+				session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
+				mv.setViewName("redirect:/");
+			}
+			
+			
 		return mv;
 	}
 	

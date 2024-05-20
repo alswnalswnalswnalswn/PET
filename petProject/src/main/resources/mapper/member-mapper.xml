@@ -431,7 +431,7 @@
 				TB_INFO.BOARD_TITLE,
 				TB_INFO.BOARD_CONTENT,
 				TB_INFO.BOARD_COUNT,
-				NVL(BOARD_LIKE, 0) BOARD_LIKE,
+				BOARD_LIKE,
 				ATT_PATH,
 				CHANGE_NAME,
 				SUM_COUNT,
@@ -519,14 +519,15 @@
 				    BY
 				       BOARD_NO) USING (BOARD_NO)
 		 WHERE 
+		 <!-- 
 				TB_INFO.BOARD_STATUS = 'Y'
            AND
            		ATT_LEVEL = 1     
            AND
                 TB_INFO.CATEGORY_CODE != 'I4'
-		   AND
+		   AND  -->
   				BOARD_NO = #{boardNo} 
-  		   AND ROWNUM BETWEEN 1 AND 10
+  		  <!-- AND ROWNUM BETWEEN 1 AND 10 --> 
 	
 	</select>
 	

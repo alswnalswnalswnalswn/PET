@@ -320,7 +320,7 @@
 			</div>
 			<div id="line"></div>
 		</div>
-	</div>${boradList}
+	</div>
 	<div id="needgongan1"></div>
 		<div id="boardoutput">
 		<c:choose>
@@ -333,6 +333,11 @@
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="b" items="${ boardList }">
+					<script>
+					    let createDate = dateFormat('${b.createDate}');
+					    console.log(createDate);
+					</script>
+				
 					<div id="myboard" class="myboard" data-board-no="${b.boardNo}">
 						<div id="thumbnail">
 						<c:choose>
@@ -403,7 +408,24 @@
 			location.href= 'selectBoardDetail?boardNo=' + boardNo;
 		})
 	</script>
+	<script>
+		function dateFormat(date) {
+	        let month = date.getMonth() + 1;
+	        let day = date.getDate();
+	        let hour = date.getHours();
+	        let minute = date.getMinutes();
+	        let second = date.getSeconds();
 	
+	        month = month >= 10 ? month : '0' + month;
+	        day = day >= 10 ? day : '0' + day;
+	        hour = hour >= 10 ? hour : '0' + hour;
+	        minute = minute >= 10 ? minute : '0' + minute;
+	        second = second >= 10 ? second : '0' + second;
+	
+	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+	    	        
+		}
+	</script>
 	
 	<jsp:include page="../common/footer.jsp"/>
 	
