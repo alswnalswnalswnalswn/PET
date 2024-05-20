@@ -47,6 +47,8 @@
 		<result column="CATEGORY_CODE" property="categoryCode"/>
 		<result column="MEMBER_NO" property="memberNo"/>
 		<result column="BOARD_LIKE" property="boardLike"/>
+		<result column="ATT_PATH" property="attPath"/>
+		<result column="CHANGE_NAME" property="changeName"/>
 		<result column="SUM_COUNT" property="sumCount"/>
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
@@ -308,19 +310,20 @@
 		delete TB_CERT where who = #{who} and code = #{secret}
 	</delete>
 	
-	
-	<select id="selectCategory" parameterType="hashmap" resultMap="infoResultSet">
+		<select id="selectAllBoard" resultMap="infoResultSet">
 		SELECT 
 				BOARD_NO,
                 BOARD_WRITER,
-                ANIMAL_NAME,
-                CREATE_DATE,
-                BOARD_TITLE,
-                BOARD_CONTENT,
-                BOARD_COUNT,
+                TB_ANIMAL.ANIMAL_NAME,
+                TB_INFO.CREATE_DATE,
+                TB_INFO.BOARD_TITLE,
+                TB_INFO.BOARD_CONTENT,
+                TB_INFO.BOARD_COUNT,
                 NVL(BOARD_LIKE, 0) BOARD_LIKE,
+                ATT_PATH,
+                CHANGE_NAME,
                 SUM_COUNT
-		FROM
+          FROM
 				(
 				SELECT
 						BOARD_NO,
@@ -346,7 +349,7 @@
 				LEFT JOIN
 						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
 				LEFT JOIN
-						TB_MEMBER USING(MEMBER_NO)
+						TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
 				LEFT JOIN
 						(
 						SELECT 
@@ -378,37 +381,117 @@
 				ORDER BY 
 						BOARD_NO
 				)
+          JOIN
+                TB_INFO USING (BOARD_NO)
+          LEFT
+          JOIN
+                TB_BOARD_ANIMAL USING (BOARD_NO)
+          LEFT
+          JOIN
+                TB_ATTACHMENT USING(BOARD_NO)
+          LEFT
+          JOIN
+                TB_ANIMAL ON (TB_BOARD_ANIMAL.ANIMAL_CODE = TB_ANIMAL.ANIMAL_CODE)
+          JOIN
+                TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
 		WHERE 
-				BOARD_STATUS = 'Y'
-		AND
-				RN = 1
-   		AND 
-   				MEMBER_NO = #{memberNo}
-    	AND 
-    			ANIMAL_NAME = #{animalName}		
-		<choose>
-			<when test="animalName == '강아지'">
-				AND ANIMAL_CODE = 'A1'
-			</when>
-			<when test="animalName == '고양이'">
-				AND ANIMAL_CODE = 'A2'
-			</when>
-			<when test="animalName == '토끼'">
-				AND ANIMAL_CODE = 'A3'
-			</when>
-			<when test="animalName == '물고기'">
-				AND ANIMAL_CODE = 'A4'
-			</when>
-			<when test="animalName == '새'">
-				AND ANIMAL_CODE = 'A5'
-			</when>
-			<when test="animalName == '햄스터'">
-				AND ANIMAL_CODE = 'A6'
-			</when>
-			<otherwise>
+				TB_INFO.BOARD_STATUS = 'Y'
+          AND
+                RN = 1
+	</select>
+	
+	<select id="selectCategory" parameterType="hashmap" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO,
+                BOARD_WRITER,
+                TB_ANIMAL.ANIMAL_NAME,
+                TB_INFO.CREATE_DATE,
+                TB_INFO.BOARD_TITLE,
+                TB_INFO.BOARD_CONTENT,
+                TB_INFO.BOARD_COUNT,
+                NVL(BOARD_LIKE, 0) BOARD_LIKE,
+                ATT_PATH,
+                CHANGE_NAME,
+                SUM_COUNT
+          FROM
+				(
+				SELECT
+						BOARD_NO,
+						BOARD_TITLE,
+						BOARD_CONTENT,
+                        BOARD_COUNT,
+						TB_MEMBER.NICKNAME BOARD_WRITER,
+						BO_CATEGORY_NAME,
+						BO_CATEGORY_CODE CATEGORY_CODE,
+						ANIMAL_CODE,
+						ANIMAL_NAME,
+						TB_INFO.CREATE_DATE CREATE_DATE,
+						NVL(LIKE_COUNT, 0) BOARD_LIKE,
+						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+						BOARD_STATUS,
+						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS RN
+				FROM
+						TB_INFO
+				LEFT JOIN
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				LEFT JOIN
+						TB_ANIMAL USING(ANIMAL_CODE)
+				LEFT JOIN
+						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+				LEFT JOIN
+						TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								COUNT(*) LIKE_COUNT, 
+								BOARD_NO 
+						FROM 
+								TB_LIKE 
+						GROUP BY 
+								BOARD_NO
+						) USING (BOARD_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								BOARD_NO,
+                                COUNT(REPLY_NO) REPLY_COUNT,
+                                COUNT(COMMENT_NO) COMMENT_COUNT
+						FROM 
+								TB_INFO 
+						LEFT JOIN
+								TB_REPLY USING(BOARD_NO)
+                        LEFT JOIN
+                                TB_COMMENT USING(REPLY_NO)
+                        GROUP BY
+                                BOARD_NO
+						) USING (BOARD_NO)				
 				
-			</otherwise>
-		</choose>
+				LEFT JOIN 
+						TB_ATTACHMENT USING(BOARD_NO)
+				ORDER BY 
+						BOARD_NO
+				)
+          JOIN
+                TB_INFO USING (BOARD_NO)
+          LEFT
+          JOIN
+                TB_BOARD_ANIMAL USING (BOARD_NO)
+          LEFT
+          JOIN
+                TB_ATTACHMENT USING(BOARD_NO)
+          LEFT
+          JOIN
+                TB_ANIMAL ON (TB_BOARD_ANIMAL.ANIMAL_CODE = TB_ANIMAL.ANIMAL_CODE)
+          JOIN
+                TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
+		WHERE 
+				TB_INFO.BOARD_STATUS = 'Y'
+          AND
+                RN = 1
+   		  AND 
+   				MEMBER_NO = #{memberNo}
+   		  AND 
+   		  		AND TB_ANIMAL.ANIMAL_NAME = #{animalName}
 	</select>
 	
 	

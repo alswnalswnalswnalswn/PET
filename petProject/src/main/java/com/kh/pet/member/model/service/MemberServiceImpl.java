@@ -113,6 +113,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public List<Info> selectAllBoard() {
+		return memberRepository.selectAllBoard(sqlSession);
+	}
+	
+	@Override
 	public List<Info> selectCategory(HashMap<String, Object> map) {
 		return memberRepository.selectCategory(sqlSession, map);
 	}
