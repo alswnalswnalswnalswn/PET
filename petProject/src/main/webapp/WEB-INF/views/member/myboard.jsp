@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,25 +144,44 @@
 	span:hover{
 		font-size: 16px;
 	}
-	#needgongan{
+	#needgongan1{
 		width : 1200px;
 		height: 100px;
 	}
 	#boardoutput{
-		width :1200px;
+		width :900px;
 		height: auto;
 		margin : auto;
-		border: 1px solid black;
-		border-radius: 10px;
-		z-index: -1;
 	}
 	#myboard{
-		width : 1000px;
-		height: 200px;
-		border: 1px solid black;
+		width : 900px;
+		height: 150px;
+		border: 1px solid rgb(214, 214, 214);
 		margin : auto;
+		border-radius: 10px;
 	}
-	
+	#thumbnail{
+		width :150px;
+		height: 150px;
+	}
+	#thumbnail img{
+		width :99%;
+		height: 99%;
+		border : 1px solid rgb(214, 214, 214);
+	}
+	#gomain{
+		width: 900px;
+		height: 120px;
+		margin : auto;
+		position : relative;
+	}
+	#mainbtn{
+		width: 140px;
+		height: 50px;
+		position : absolute;
+		right: 0;
+		transform: translate(0, 10%);
+	}
 </style>
 </head>
 <body>
@@ -205,9 +225,8 @@
 			<div id="line"></div>
 		</div>
 	</div>
-	<div id="needgongan"></div>
+	<div id="needgongan1"></div>
 		<div id="boardoutput">
-		<div id="myboard">
 		<c:choose>
 			<c:when test="${ empty boardList }">
 				<table>
@@ -217,15 +236,29 @@
 				</table>
 			</c:when>
 			<c:otherwise>
-				<c:forEach var="r" items="${ boardList }">
-					<div id="thumbnail"><img src="${bl.attPath }${bl.changeName}" alt=""></div>
+				<c:forEach var="b" items="${ boardList }">
+				<div id="myboard">
+					<div id="thumbnail">
+					<c:choose>
+						<c:when test="${ b.changeName eq null }">
+							<img src="${sessionScope.path}/resources/img/profile.png" alt="">
+						</c:when>
+						<c:otherwise>
+							<img src="${sessionScope.path}/${b.attPath }${b.changeName}" alt="">
+						</c:otherwise>
+					</c:choose>
+					</div>
+				</div>
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
-		</div>
+	</div>
+	<div id="gomain">
+		<a href=""><button id="mainbtn">메인으로</button></a>
 	</div>
 	
-		<script>
+	${bl.attPath }${bl.changeName}
+	<script>
 		$('.category').click(function(){
 			var categoryValue = $(this).text().trim().substring(2);
 			console.log(categoryValue);
