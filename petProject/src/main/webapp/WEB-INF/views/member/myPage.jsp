@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<title>Insert title here</title>
+<title>마이페이지</title>
 <style>
     #myoutput{
         width: 1200px;
@@ -69,7 +69,7 @@
         width: 130px;
         height: 130px;
     }
-    #profile_img > img{
+    #profile_img img{
         width: 120px;
         height:110px;
         padding-left: 5px;
@@ -298,10 +298,15 @@
         <div id="myback">
             <div id="myheader">
                 <div id="myname">
-                    <div id="profile">
-                        <input type="file" name="profile" id="my_profile">
-                        <div id="profile_img"><img src="${sessionScope.path}/resources/img/${ loginUser.profile }" alt="기본프로필사진"></div>
-                    </div>
+                    <div id="profile"  >
+                    <form id="uploadForm" method="post" enctype="multpart/form-data">
+                        <input type="file" name="profile" id="my_profile" multiple="true">
+                        <div id="profile_img">
+                       		<img src="${sessionScope.path}/resources/img/${ loginUser.profile }" alt="프로필사진">
+                        </div>
+                        <input type="hidden" name="memberNo" value="${loginUser.memberNo }">
+                   </form>
+                   </div>
                     <div id="name">
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;${ loginUser.nickname }</span><span id="nim"><small>&nbsp;님</small></span>
                     </div>  
@@ -325,7 +330,7 @@
                 </div>
                 <div id="content2">
                     <div id="content"><a href="" data-toggle="modal" data-target="#myInfo"><img src="${sessionScope.path}/resources/img/selectmyinfo.png" alt=""><br>내 정보 조회</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/board.png" alt=""><br>내가 쓴 게시글</a></div>
+                    <div id="content"><a href="${sessionScope.path }/member/myboard"><img src="${sessionScope.path}/resources/img/board.png" alt=""><br>내가 쓴 게시글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/comment.png" alt=""><br>내가 쓴 댓글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/like2.png" alt=""><br>내 좋아요</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/heart.png" alt=""><br>내가 찜한 상품</a></div>
@@ -347,22 +352,31 @@
             });
         });
         
-        function updateProfile(){
-        	$.ajax({
-        		url : 'upProfile',
-        		data : {
-        			profile : $('#my_profile').val(),
-        			memberNo : '${loginUser.memberNo}'
-        		},
-        		success : function(result){
-        			console.log(result);
-        		}, 
-        		error : function(result){
-        			console.log('실패~');
-        		}
-        	})
-        }
-        
+        $(document).ready(function() {
+            $('#my_profile').on('change', function() {
+            	var form = $('#uploadForm')[0];
+            	var formData = new FormData(form);
+            	console.log(form);
+                $.ajax({
+                    url: 'upProfile',
+                    type : 'POST',
+                    data : formData,
+       			    processData:false,
+       			    contentType:false,
+       			    cache:false,
+                    success: function(response) {
+                        alert('프로필 사진이 성공적으로 업로드되었습니다.');
+                        var fileName = $('#my_profile')[0].files[0].name;
+                        var newImgUrl = "${sessionScope.path}/resources/img/${sessionScope.profile}";
+                        $('#profile_img img').attr('src', newImgUrl);
+                        location.reload();
+                    },
+                    error: function(response) {
+                        alert('프로필 사진 업로드에 실패했습니다.');
+                    }
+                });
+            });
+        });
     </script>
     
     <div class="modal fade" id="myInfo">

@@ -21,7 +21,7 @@ public class Comment {
 	private String commentContent;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
-	private String connentStatus;
+	private String commentStatus;
 	
 	
 

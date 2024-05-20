@@ -4,17 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -26,10 +25,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.service.KakaoService;
 import com.kh.pet.member.model.service.MemberService;
 import com.kh.pet.member.model.vo.CertVO;
@@ -99,26 +100,6 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	public String saveFile(MultipartFile upfile, HttpSession session) {
-		
-		String originName = upfile.getOriginalFilename();
-		
-		String ext = originName.substring(originName.lastIndexOf("."));
-		
-		int ranNum = (int)Math.random() * 90000 + 10000;
-		
-		String changeName = "profile" + ranNum + ext;
-		System.out.println(changeName);
-		String savePath = session.getServletContext().getRealPath("/resources/reviewImage/");
-		
-			try {
-				upfile.transferTo(new File(savePath + changeName));
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
-			}		
-		return changeName;
-	}
-	
 	
 	@ResponseBody
 	@GetMapping("update")
@@ -177,18 +158,7 @@ public class MemberController {
 	@ResponseBody
 	@GetMapping("emailCheck.do")
 	public String emailCheck(String email, HttpServletRequest request) throws MessagingException {
-		/*
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setSubject("축축");
-		message.setText("인증번호를 입력하세요~~");
-		String to = "rjsgml922@naver.com";
-		message.setTo(to);
-		
-		sender.send(message);
-		return "common/header";
-		 */
 		String remoteAddr = request.getRemoteAddr();
-		// System.out.println(remoteAddr);
 		
 		Random r = new Random();
 		int i = r.nextInt(10000);
@@ -302,20 +272,93 @@ public class MemberController {
 		return "member/myPage";
 	}
 	
-	@RequestMapping("upProfile")
-	public String upProfile(HttpServletRequest request, Member member, MultipartFile upfile, HttpSession session) {
-		System.out.println(member.getProfile());
+	
+	public String saveFile(MultipartFile file, HttpSession session) {
+		String originName = file.getOriginalFilename();
 		
-		if(!upfile.getOriginalFilename().equals("")) {
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		int ranNum = (int)(Math.random() * 90000) + 10000;
+		
+		String changeName = "profile" + ranNum + ext;
+		
+		String savePath = session.getServletContext().getRealPath("/resources/img/");
+		
+			try {
+				file.transferTo(new File(savePath + changeName));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}		
+		return changeName;
+	}
+
+	@ResponseBody
+	@PostMapping("upProfile")
+	public ModelAndView upProfile(MultipartHttpServletRequest request, HttpSession session, ModelAndView mv) {
+		
+		Member member = (Member)session.getAttribute("loginUser");
+		member.getMemberNo();
+		int memberNo = member.getMemberNo();
+		
+		MultipartFile file = request.getFile("profile");
+        if (!file.isEmpty()) {
+        	member.setOriginName(file.getOriginalFilename());
+        	member.setChangeName(saveFile(file, session));
+        	member.setProfile(member.getChangeName());
+        }
+		if(memberService.upProfile(member) > 0) {
 			
+			session.setAttribute("profile", member.getProfile());
+			mv.setViewName("redirect:/");
+		} else {
+			session.setAttribute("alertMsg", "프로필 수정에 실패하였습니다. 다시 시도 해주세요");
+			mv.setViewName("redirect:/");
+		}
+		
+		return mv;
+		/*
+		if(!upfile.getOriginalFilename().equals("")) {
+			// 첨부파일이 존재했다 => 업로드 + Board객체에 originName + changeName
 			member.setOriginName(upfile.getOriginalFilename());
 			member.setChangeName(saveFile(upfile, session));
-			member.setProfile(member.getChangeName());
-			
 		}
-		memberService.update(member);
+		System.out.println(member);
 		
-		return member.getProfile();
+		if(memberService.upProfile(member) > 0) {
+			Member loginUser = memberService.selectUpMember(member.getMemberNo());
+			session.setAttribute("loginUser", loginUser);
+			mv.setViewName("redirect:/");
+		} else {
+			session.setAttribute("alertMsg", "프로필 수정에 실패하였습니다. 다시 시도 해주세요");
+			mv.setViewName("redirect:/");
+		}
+		
+		return mv;
+		*/
+		
+	}
+	
+	@RequestMapping("myboard")
+	public String myboard() {
+		return "member/myboard";
+	}
+	@PostMapping("selectCategory")
+	public ModelAndView selectCategory(String animalName, int memberNo, ModelAndView mv, HttpSession session) {
+	    
+		System.out.println(memberNo);
+		HashMap<String, Object> map = new HashMap<>();
+	    map.put("animalName", animalName);
+	    map.put("memberNo", memberNo);
+		List<Info> myBoard = memberService.selectCategory(map);
+		
+		if(myBoard != null) {
+			session.setAttribute("boardList", myBoard);
+			mv.setViewName("redirect:/");
+		} else {
+			session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
+			mv.setViewName("redirect:/");
+		}
+		return mv;
 	}
 	
 	

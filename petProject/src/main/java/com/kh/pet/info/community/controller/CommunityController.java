@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
@@ -54,10 +55,12 @@ public class CommunityController {
 		return listInfo;
 	}
 	
-	@ResponseBody
 	@RequestMapping("communityDetail")
-	public Info communityDetail(int boardNo) {
-		return communityService.communityDetail(boardNo);
+	public ModelAndView communityDetail(ModelAndView mv, int boardNo) {
+		
+		mv.addObject("info", communityService.communityDetail(boardNo)).setViewName("info/community/communityDetail");
+		
+		return mv;
 	}
 	
 	

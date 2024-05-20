@@ -1,7 +1,11 @@
 package com.kh.pet.member.model.service;
 
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 import com.kh.pet.member.model.vo.SocialMember;
@@ -37,6 +41,12 @@ public interface MemberService {
 	int update(Member member);
 
 	int pwdCheck(Member member);
+
+	int upProfile(Member member);
+
+	Member selectUpMember(int memberNo);
+
+	List<Info> selectCategory(HashMap<String, Object> map);
 
 
 }

@@ -4,6 +4,58 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberMapper">
 
+	<resultMap type="attachment" id="attachmentResultSet">
+		<result column="ATT_NO" property="attNo"/>
+		<result column="ATT_PATH" property="attPath"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="ATT_STATUS" property="attStaus"/>
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="ATT_LELVEL" property="attLevel"/>
+	</resultMap>
+	
+	<resultMap type="comment" id="commentResultSet">
+		<result column="COMMENT_NO" property="commentNo"/>
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="COMMENT_WRITER" property="commentWriter"/>
+		<result column="COMMENT_CONTENT" property="commentContent"/>
+		<result column="COMMENT_CREATE_DATE" property="createDate"/>
+		<result column="COMMENT_UPDATE_DATE" property="updateDate"/>
+		<result column="COMMENT_STATUS" property="commentStatus"/>
+	</resultMap>
+	
+	<resultMap type="reply" id="replyResultSet">
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="REPLY_WRITER" property="replyWriter"/>
+		<result column="REPLY_CONTENT" property="replyContent"/>
+		<result column="REPLY_CREATE_DATE" property="createDate"/>
+		<result column="REPLY_UPDATE_DATE" property="updateDate"/>
+		<result column="REPLY_STATUS" property="replyStatus"/>
+		<collection resultMap="commentResultSet" property="commentList" />
+	</resultMap>
+	
+	<resultMap type="info" id="infoResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="BOARD_WRITER" property="memberNo"/>
+		<result column="BO_CATEGORY_NAME" property="categoryCode"/>
+		<result column="UPDATE_DATE" property="updateDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		<result column="CATEGORY_CODE" property="categoryCode"/>
+		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="BOARD_LIKE" property="boardLike"/>
+		<result column="SUM_COUNT" property="sumCount"/>
+		
+		<collection resultMap="attachmentResultSet" property="attachmentList"/>
+		
+		<collection resultMap="replyResultSet" property="replyList"/>
+
+		<collection resultMap="animalResultSet" property="animalList"/>
+	</resultMap>
+
 	<resultMap type="animal" id="animalResultSet">
 		<result column="ANIMAL_NAME" property="animalName"/>
 		<result column="ANIMAL_CODE" property="animalCode"/>
@@ -147,6 +199,17 @@
 		   				
 	</update>
 	
+	<update id="upProfile" parameterType="member">
+		UPDATE
+				TB_MEMBER
+		   SET
+		   		MEMBER_PROFILE = #{profile}
+		 WHERE
+		        MEMBER_NO = #{memberNo}
+		   AND
+		   	 	MEMBER_STATUS = 'C'
+	</update>
+	
 	<select id="searchId" parameterType="member" resultType="string">
 		SELECT
 		        MEMBER_ID
@@ -193,6 +256,25 @@
 		 	   MEMBER_ID = #{memberId}
 	</select>
 	
+	<select id="selectUpMember" resultType="member" parameterType="_int">
+		SELECT
+		       MEMBER_NO,
+		       MEMBER_ID,
+		       MEMBER_PWD,
+		       MEMBER_NAME,
+		       EMAIL,
+		       NICKNAME,
+		       PHONE,
+		       MEMBER_STATUS,
+		       TO_CHAR(ENROLL_DATE , 'YYYY/MM/DD') AS ENROLL_DATE, 
+    		   TO_CHAR(MODIFY_DATE , 'YYYY/MM/DD') AS MODIFY_DATE,
+    		   MEMBER_PROFILE
+		  FROM
+		       TB_MEMBER
+		 WHERE 
+		 	   MEMBER_NO = #{memberNo}
+	</select>
+	
 	<insert id="insertAnimals" parameterType="animal">
 	    INSERT INTO TB_MEMBER_ANIMAL
 	    VALUES
@@ -227,7 +309,107 @@
 	</delete>
 	
 	
-	
+	<select id="selectCategory" parameterType="hashmap" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO,
+                BOARD_WRITER,
+                ANIMAL_NAME,
+                CREATE_DATE,
+                BOARD_TITLE,
+                BOARD_CONTENT,
+                BOARD_COUNT,
+                NVL(BOARD_LIKE, 0) BOARD_LIKE,
+                SUM_COUNT
+		FROM
+				(
+				SELECT
+						BOARD_NO,
+						BOARD_TITLE,
+						BOARD_CONTENT,
+                        BOARD_COUNT,
+						TB_MEMBER.NICKNAME BOARD_WRITER,
+						BO_CATEGORY_NAME,
+						BO_CATEGORY_CODE CATEGORY_CODE,
+						ANIMAL_CODE,
+						ANIMAL_NAME,
+						TB_INFO.CREATE_DATE CREATE_DATE,
+						NVL(LIKE_COUNT, 0) BOARD_LIKE,
+						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+						BOARD_STATUS,
+						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS RN
+				FROM
+						TB_INFO
+				LEFT JOIN
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				LEFT JOIN
+						TB_ANIMAL USING(ANIMAL_CODE)
+				LEFT JOIN
+						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+				LEFT JOIN
+						TB_MEMBER USING(MEMBER_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								COUNT(*) LIKE_COUNT, 
+								BOARD_NO 
+						FROM 
+								TB_LIKE 
+						GROUP BY 
+								BOARD_NO
+						) USING (BOARD_NO)
+				LEFT JOIN
+						(
+						SELECT 
+								BOARD_NO,
+                                COUNT(REPLY_NO) REPLY_COUNT,
+                                COUNT(COMMENT_NO) COMMENT_COUNT
+						FROM 
+								TB_INFO 
+						LEFT JOIN
+								TB_REPLY USING(BOARD_NO)
+                        LEFT JOIN
+                                TB_COMMENT USING(REPLY_NO)
+                        GROUP BY
+                                BOARD_NO
+						) USING (BOARD_NO)				
+				
+				LEFT JOIN 
+						TB_ATTACHMENT USING(BOARD_NO)
+				ORDER BY 
+						BOARD_NO
+				)
+		WHERE 
+				BOARD_STATUS = 'Y'
+		AND
+				RN = 1
+   		AND 
+   				MEMBER_NO = #{memberNo}
+    	AND 
+    			ANIMAL_NAME = #{animalName}		
+		<choose>
+			<when test="animalName == '강아지'">
+				AND ANIMAL_CODE = 'A1'
+			</when>
+			<when test="animalName == '고양이'">
+				AND ANIMAL_CODE = 'A2'
+			</when>
+			<when test="animalName == '토끼'">
+				AND ANIMAL_CODE = 'A3'
+			</when>
+			<when test="animalName == '물고기'">
+				AND ANIMAL_CODE = 'A4'
+			</when>
+			<when test="animalName == '새'">
+				AND ANIMAL_CODE = 'A5'
+			</when>
+			<when test="animalName == '햄스터'">
+				AND ANIMAL_CODE = 'A6'
+			</when>
+			<otherwise>
+				
+			</otherwise>
+		</choose>
+	</select>
 	
 	
 	

@@ -4,10 +4,63 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="communityMapper">
 
+	<resultMap type="animal" id="animalResultSet">
+		<result column="ANIMAL_CODE" property="animalCode" />
+		<result column="ANIMAL_NAME" property="animalName" />
+	</resultMap>
+	
+	
+	<resultMap type="attachment" id="attachmentResultSet">
+		<result column="ATT_NO" property="attNo"/>
+		<result column="ATT_PATH" property="attPath"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="ATT_STATUS" property="attStaus"/>
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="ATT_LELVEL" property="attLevel"/>
+	</resultMap>
+	
+	<resultMap type="comment" id="commentResultSet">
+		<result column="COMMENT_NO" property="commentNo"/>
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="COMMENT_WRITER" property="commentWriter"/>
+		<result column="COMMENT_CONTENT" property="commentContent"/>
+		<result column="COMMENT_CREATE_DATE" property="createDate"/>
+		<result column="COMMENT_UPDATE_DATE" property="updateDate"/>
+		<result column="COMMENT_STATUS" property="commentStatus"/>
+	</resultMap>
+	
+	<resultMap type="reply" id="replyResultSet">
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="REPLY_WRITER" property="replyWriter"/>
+		<result column="REPLY_CONTENT" property="replyContent"/>
+		<result column="REPLY_CREATE_DATE" property="createDate"/>
+		<result column="REPLY_UPDATE_DATE" property="updateDate"/>
+		<result column="REPLY_STATUS" property="replyStatus"/>
+		<collection resultMap="commentResultSet" property="commentList" />
+	</resultMap>
+	
 	<resultMap type="info" id="infoResultSet">
 		<result column="BOARD_NO" property="boardNo"/>
 		<result column="BOARD_TITLE" property="boardTitle"/>
 		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="BOARD_WRITER" property="memberNo"/>
+		<result column="BO_CATEGORY_NAME" property="categoryCode"/>
+		<result column="UPDATE_DATE" property="updateDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		<result column="CATEGORY_CODE" property="categoryCode"/>
+		
+		<result column="BOARD_LIKE" property="boardLike"/>
+		
+		<result column="SUM_COUNT" property="sumCount"/>
+		
+		<collection resultMap="attachmentResultSet" property="attachmentList"/>
+		
+		<collection resultMap="replyResultSet" property="replyList"/>
+
+		<collection resultMap="animalResultSet" property="animalList"/>
 	</resultMap>
 
 
@@ -147,30 +200,32 @@
 	
 	<select id="selectCommunityList" parameterType="hashmap" resultMap="infoResultSet">
 		SELECT 
-				COUNT(*) 
+				BOARD_NO,
+                BOARD_WRITER,
+                ANIMAL_NAME,
+                CREATE_DATE,
+                BOARD_TITLE,
+                BOARD_CONTENT,
+                BOARD_COUNT,
+                NVL(BOARD_LIKE, 0) BOARD_LIKE,
+                SUM_COUNT
 		FROM
 				(
 				SELECT
 						BOARD_NO,
 						BOARD_TITLE,
 						BOARD_CONTENT,
+                        BOARD_COUNT,
 						TB_MEMBER.NICKNAME BOARD_WRITER,
 						BO_CATEGORY_NAME,
 						BO_CATEGORY_CODE CATEGORY_CODE,
 						ANIMAL_CODE,
 						ANIMAL_NAME,
-						TB_INFO.CREATE_DATE BOARD_CREATE_DATE,
-						LIKE_COUNT,
-						REPLY_COUNT + COMMENT_COUNT REPLY_SUM,
-						REPLY_WRITER,
-						REPLY_CONTENT,
-						REPLY_CREATE_DATE,
-						COMMENT_WRITER,
-						COMMENT_CONTENT,
-						COMMENT_CREATE_DATE,
-						ATT_NO,
+						TB_INFO.CREATE_DATE CREATE_DATE,
+						NVL(LIKE_COUNT, 0) BOARD_LIKE,
+						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
 						BOARD_STATUS,
-						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS rn
+						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS RN
 				FROM
 						TB_INFO
 				LEFT JOIN
@@ -194,53 +249,25 @@
 				LEFT JOIN
 						(
 						SELECT 
-								REPLY_NO, 
-								NICKNAME REPLY_WRITER, 
-								REPLY_CONTENT, 
-								CREATE_DATE REPLY_CREATE_DATE, 
-								REPLY_STATUS, 
-								BOARD_NO 
+								BOARD_NO,
+                                COUNT(REPLY_NO) REPLY_COUNT,
+                                COUNT(COMMENT_NO) COMMENT_COUNT
 						FROM 
-								TB_REPLY 
+								TB_INFO 
 						LEFT JOIN
-								TB_MEMBER USING(MEMBER_NO)
-						) USING (BOARD_NO)
-				LEFT JOIN
-						(
-						SELECT COUNT(*) REPLY_COUNT, BOARD_NO FROM TB_REPLY GROUP BY BOARD_NO) USING(BOARD_NO)
-				LEFT JOIN
-						(
-						SELECT 
-								COMMENT_NO, 
-								NICKNAME COMMENT_WRITER, 
-								COMMENT_CONTENT,
-								TB_COMMENT.CREATE_DATE COMMENT_CREATE_DATE, 
-								BOARD_NO
-						FROM 	
-								TB_COMMENT 
-						LEFT JOIN 
-								TB_MEMBER USING(MEMBER_NO) 
-						LEFT JOIN 
-								TB_REPLY USING(REPLY_NO)
-						) USING (BOARD_NO)
-				LEFT JOIN 
-						(
-						SELECT 
-								COUNT(*) COMMENT_COUNT, 
-								REPLY_NO 
-						FROM 
-								TB_COMMENT 
-						GROUP BY 
-								REPLY_NO
-						) USING(REPLY_NO)
+								TB_REPLY USING(BOARD_NO)
+                        LEFT JOIN
+                                TB_COMMENT USING(REPLY_NO)
+                        GROUP BY
+                                BOARD_NO
+						) USING (BOARD_NO)				
+				
 				LEFT JOIN 
 						TB_ATTACHMENT USING(BOARD_NO)
 				ORDER BY 
 						BOARD_NO
 				)
 		WHERE 
-				rn = 1
-		AND
 				BOARD_STATUS = 'Y'
 		<choose>
 			<when test="animal == 'A1'">
@@ -276,8 +303,8 @@
 				AND CATEGORY_CODE IN ('I1', 'I2')
 			</otherwise>
 		</choose>
-		
-		
+		ORDER BY 
+				BOARD_NO DESC
 	</select>
 	
 	<select id="communityDetail" parameterType="_int" resultMap="infoResultSet">

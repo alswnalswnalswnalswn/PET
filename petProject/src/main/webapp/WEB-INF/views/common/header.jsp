@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<title>Document</title>
+<title>냥이랑 멍이랑</title>
 <style>
     div {
         box-sizing: border-box;
@@ -53,7 +53,7 @@
         width: 380px;
         height: 50px;
         border-radius: 10px;
-        border: 1px solid rgb(179, 179, 179);
+        border: 1px solid rgb(235, 235, 235);
         margin: 0;
         padding: 0;
         outline : none;
@@ -534,7 +534,7 @@
             <ul id="navi">
                 <li><a href="community">커뮤니티</a></li>
                 <li><a href="#">지식</a></li>
-                <li><a href="#">쇼핑</a></li>
+                <li><a href="${sessionScope.path}/shop">쇼핑</a></li>
                 <li><a href="${sessionScope.path}/info/date">데이트</a></li>
                 <li><a href="hospital">동물병원</a></li>
                 <li><a href="#">공지사항</a></li>
@@ -1020,8 +1020,105 @@
 	 });
 	 
 	 
-	 
-	 
+		/* 아이디 */
+		
+		$('input[name=memberId]').blur(function(){
+			const idReg =  /^[A-Za-z0-9]{4,12}$/;
+			const idVal = $('input[name=memId]').val();
+
+			if(!idReg.test(idVal)){
+				$('input[name=memberId]').val('');
+				$('input[name=memberId]').css('border-color','orangered');
+			}
+			else{
+				$('input[name=memberId]').css('border-color', 'rgb(230, 230, 230)');
+			}
+		});
+
+		/* 비밀번호 */
+		$('input[name=memberPwd]').blur(function(){
+			const pwdReg =  /^[A-Za-z0-9]{4,15}$/;
+			const pwdVal = $('input[name=memberPwd]').val();
+
+			if(!pwdReg.test(pwdVal)){
+				$('input[name=memberPwd]').val('');
+				$('input[name=memberPwd]').css('border-color','orangered');
+			}
+			else{
+				$('input[name=memberPwd]').css('border-color','rgb(230, 230, 230)');
+			}
+		});
+
+		/* 비밀번호 확인 */
+			$('#memberPwd2').blur(function(){
+				const pwdReg2 = /^[A-Za-z0-9]{4,15}$/;
+				const pwdVal2 = $('#memberPwd2').val();
+
+				if(!pwdReg2.test(pwdVal2)){
+					$('#memberPwd2').val('');
+					$('#memberPwd2').css('border-color','orangered');
+				}
+				else{
+					$('#memberPwd2').css('border-color','rgb(230, 230, 230)');
+				}
+			});
+
+		/* 이름 */
+		$('input[name=memberName]').blur(function(){
+				const memNameReg = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]{2,15}$/;
+				const memNameVal = $('input[name=memberName]').val();
+
+				if(!memNameReg.test(memNameVal)){
+					$('input[name=memberName]').val('');
+					$('input[name=memberName]').css('border-color','orangered');
+				}
+				else{
+					$('input[name=memberName]').css('border-color','rgb(230, 230, 230)');
+				}
+			});
+
+		/* 닉네임 */
+		$('input[name=nickname]').blur(function(){
+				const nicknameReg = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{2,15}$/;
+				const nicknameVal = $('input[name=nickname]').val();
+
+				if(!nicknameReg.test(nicknameVal)){
+					$('input[name=nickname]').val('');
+					$('input[name=nickname]').css('border-color','orangered');
+				}
+				else{
+					$('input[name=nickname]').css('border-color','rgb(230, 230, 230)');
+				}
+			});
+
+		/* 전화번호 */
+		$('input[name=phone]').blur(function(){
+			const phoneReg = /^01([0|1|])-?([0-9]{4})-?([0-9]{4})$/;
+			const phoneVal = $('input[name=phone]').val();
+
+			if(!phoneReg.test(phoneVal)){
+				$('input[name=phone]').val('');
+				$('input[name=phone]').css('border-color','orangered');
+			}
+			else{
+				$('input[name=phone]').css('border-color','rgb(230, 230, 230)');
+			}
+		});
+
+		/* 이메일 */
+		$('input[name=email]').blur(function(){
+			const emailReg = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+			const emailVal = $('input[name=email]').val();
+
+			if(!emailReg.test(emailVal)){
+				$('input[name=email]').val('');
+				$('input[name=email]').css('border-color','orangered');
+			}
+			else{
+				$('input[name=email]').css('border-color','rgb(230, 230, 230)');
+			}
+		});
+
 	 
 	</script>
  
