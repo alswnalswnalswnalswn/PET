@@ -42,6 +42,8 @@ public class ProductsController {
 		
 		List<Product> productList = productService.selectAll(list);
 		
+		System.out.println(productList);
+		
 		for(Product product : productList) {
 			product.setPageInfo(pi);
 		}

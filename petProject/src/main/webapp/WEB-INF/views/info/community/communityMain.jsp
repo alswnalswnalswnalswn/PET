@@ -31,20 +31,20 @@
 		
 		<div class="selectCategory">
 			<div class="board_category">
-					<button type="button" class="btn btn-light" id="I0">전체</button>
-					<button type="button" class="btn btn-light" id="I1">자유</button>
-					<button type="button" class="btn btn-light" id="I2">질문</button>
+				<button type="button" class="btn btn-light" id="I0">전체</button>
+				<button type="button" class="btn btn-light" id="I1">자유</button>
+				<button type="button" class="btn btn-light" id="I2">질문</button>
 			</div>
 			
 			<br clear="both">
 			
 			<div class="anmal_category">
-				<img class='img_dog' src='${path}/resources/img/animaldog.png'>
-				<img class='img_cat' src='${path}/resources/img/animalcat.png'>
-				<img class='img_rab' src='${path}/resources/img/animalrab.png'>
-				<img class='img_fish' src='${path}/resources/img/animalfish.png'>
-				<img class='img_bird' src='${path}/resources/img/animalbird.png'>
-				<img class='img_ham' src='${path}/resources/img/animalham.png'>
+				<img class='categoryImg ' src='${path}/resources/img/animaldog.png'>
+				<img class='categoryImg cat' src='${path}/resources/img/animalcat.png'>
+				<img class='categoryImg rab' src='${path}/resources/img/animalrab.png'>
+				<img class='categoryImg fish' src='${path}/resources/img/animalfish.png'>
+				<img class='categoryImg bird' src='${path}/resources/img/animalbird.png'>
+				<img class='categoryImg ham' src='${path}/resources/img/animalham.png'>
 			</div>
 		</div>
 		
@@ -71,8 +71,7 @@
 			selectCommunityList(animal, category, page);
 			
 			$('.btnDiv > button').click(() => {
-				page = page + 1;
-				selectCommunityList(animal, category, page);
+				selectCommunityList(animal, category, ++page);
 			});
 			
 		});
@@ -106,22 +105,9 @@
 					page : page
 				},
 				success : result => {
-					// console.log(result);
-					let num = page * 10;
+					console.log(result);
 					
-					var uniqueBoardNos = new Set();
-					var filteredData = [];
-					
-					for(let i = 0; i < num; i++){
-						 if (!uniqueBoardNos.has(result[i].boardNo)) {
-				                uniqueBoardNos.add(result[i].boardNo);
-				                filteredData.push(result[i]);
-				            }
-					}
-					
-					console.log(filteredData);
-					
-					for(let i in filteredData){
+					for(let i in result){
 						
 						var animalListStr = '';
 						var animalListResult = result[i].animalList;

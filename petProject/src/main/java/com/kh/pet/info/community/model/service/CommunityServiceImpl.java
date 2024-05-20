@@ -26,14 +26,20 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<Info> selectCommunityList(HashMap<String, String> commMap) {
-		return communityRepository.selectCommunityList(sqlSession, commMap);
+	public List<Info> selectAllList(HashMap<String, String> commMap, RowBounds rowBounds) {
+		return communityRepository.selectAllList(sqlSession, commMap, rowBounds);
+	}
+
+	@Override
+	public List<Info> selectCommunityList(List<Info> list) {
+		return communityRepository.selectCommunityList(sqlSession, list);
 	}
 
 	@Override
 	public List<Info> communityDetail(int boardNo) {
 		return communityRepository.communityDetail(sqlSession, boardNo);
 	}
+
 
 
 	
