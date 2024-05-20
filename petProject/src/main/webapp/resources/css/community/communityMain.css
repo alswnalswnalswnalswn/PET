@@ -1,26 +1,56 @@
 .wrap{
 	width : 1200px;
-	height : 3000px;
+	height : 100%;
 	margin : auto;
-	border : 1px solid red;
 }
 
-.ajaxWrap {
+.search_form {
+	width : 30%;
+	height : 200px;
+	float : left;
+}
+.blank_div {
+	width : 15%;
+	height : 200px;
+	float : left;
+}
+
+
+.selectCategory {
+	width : 55%;
+	height : 200px;
+	float : left;
+}
+
+.board_category {
+	padding : 0px;
+	padding-right : 155px;
+	margin : 0px;
+	float : right;
+}
+
+.animal_category {
+	width : 100%;
+	hieght : 100%;
+	border : 1px solid blue;
+}
+
+.anmal_category > img {
+	width: 90px;
+	height: 70px;
+	margin : auto;
+}
+
+.communityList {
 	width : 1100px;
 	height : 100px;
-	border-top : 1px solid green;
-	border-bottom : 1px solid green;
-	margin-top : 5px;
-	margin-bottom : 5px;
+	margin-top : 8px;
+	margin-bottom : 8px;
 }
 
-.ajaxWrap > div:hover {
+.communityList > div:hover {
 	cursor: pointer;
-    background-color: rgb(255, 0, 0);
-}
-
-.ajaxDetail {
-	display : none;
+	border : 1px solid black;
 }
 
 .content_wrap {
@@ -30,7 +60,7 @@
 	
 }
 
-.left_header {
+.thumbnailImg {
 	width : 20%;
 	height : 100px;
 	text-align : center;
@@ -71,7 +101,7 @@
 }
 
 .btnDiv > button {
-	align : center;
+	text-align : center;
 }
 
 .content_writer {
@@ -85,7 +115,6 @@
 	float : left;
 	text-align : center;
 }
-
 
 
 

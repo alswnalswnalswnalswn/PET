@@ -11,94 +11,72 @@
 <body>
 	<jsp:include page="../../common/header.jsp" />
 	
+	<c:set value="${ sessionScope.path }" var="path" />
+	
 	<div class="wrap">
+	
+		<div class="community_header">
+			<div class="search_form">
+				<select>
+					<option name="searchAll">전체</option>
+					<option name="title">제목</option>
+					<option name="content">내용</option>
+				</select>
+				<input type="text" class="form-control" placeholder="검색어를 입력해주세요">
+				<button class="btn btn-primary" type="button">검색</button>
+			</div>
+		</div>
+			
+		<div class="blank_div"></div>
 		
-		<div>
-		
-			<div>
-				<div class="input-group mt-3 mb-3">
-					<div class="input-group-prepend">
-						<button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">검색 설정</button>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">전체</a> 
-							<a class="dropdown-item" href="#">글 제목</a> 
-							<a class="dropdown-item" href="#">글 내용</a>
-						</div>
-					</div>
-					<input type="text" class="form-control">
-					<button class="btn btn-primary" type="button">검색</button>
-				</div>
+		<div class="selectCategory">
+			<div class="board_category">
+					<button type="button" class="btn btn-light" id="I0">전체</button>
+					<button type="button" class="btn btn-light" id="I1">자유</button>
+					<button type="button" class="btn btn-light" id="I2">질문</button>
 			</div>
 			
-			<div>
-				<div class="btn-group">
-					<div class="btn-group">
-						<button id="selectCategory" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="categoryAll">게시판 선택</button>
-						<div class="dropdown-menu">
-							<button class="dropdown-item category" onclick="searchCategory(this);" value="categoryAll">전체</button> 
-							<button class="dropdown-item category" onclick="searchCategory(this);" value="I1">자유게시판</button> 
-							<button class="dropdown-item category" onclick="searchCategory(this);" value="I2">질문게시판</button>
-						</div>
-					</div>
-					<div class="btn-group">
-						<button id="selectAnimal" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="animalAll">동물 선택</button>
-						<div class="dropdown-menu">
-							<button class="dropdown-item" onclick="searchAnimal(this);" value="animalAll">전체</button> 
-							<button class="dropdown-item" onclick="searchAnimal(this);" value="A1">강아지</button> 
-							<button class="dropdown-item" onclick="searchAnimal(this);" value="A2">고양이</button>
-							<button class="dropdown-item" onclick="searchAnimal(this);" value="A3">토끼</button>
-							<button class="dropdown-item" onclick="searchAnimal(this);" value="A4">물고기</button>
-							<button class="dropdown-item" onclick="searchAnimal(this);" value="A5">새</button>
-							<button class="dropdown-item" onclick="searchAnimal(this);" value="A6">햄스터</button>
-						</div>
-					</div>
-				</div>
+			<br clear="both">
+			
+			<div class="anmal_category">
+				<img class='img_dog' src='${path}/resources/img/animaldog.png'>
+				<img class='img_cat' src='${path}/resources/img/animalcat.png'>
+				<img class='img_rab' src='${path}/resources/img/animalrab.png'>
+				<img class='img_fish' src='${path}/resources/img/animalfish.png'>
+				<img class='img_bird' src='${path}/resources/img/animalbird.png'>
+				<img class='img_ham' src='${path}/resources/img/animalham.png'>
 			</div>
 		</div>
 		
-		<div class="content_wrap">
-				
-		</div>
+		<br clear="both">
+		
+		<div class="content_wrap"></div>
 		
 		<div class="btnDiv">
-			
+			<button>더 보기</button>
 		</div>
-
-
 	</div>
 	
 	<script>
 	
 		// 초기 변수 선언
-		var $selectCategory = $('#selectCategory'),
-		$selectAnimal = $('#selectAnimal'),	
-		categoryVal, animalVal, categoryText, animalText, resultStr = '',
-		page = 1;
-		
-		
+		let animal='A0',
+		category = 'I0', 
+		page = 1,
+		text = '',
+		resultStr = '',
+		animalListStr = '';
 		
 		$(() => {
-			ajaxTest('A0', 'I0', 1);
+			selectCommunityList(animal, category, page);
+			
+			$('.btnDiv > button').click(() => {
+				page = page + 1;
+				selectCommunityList(animal, category, page);
+			});
+			
 		});
 		
-		function searchCategory(result){
-			
-			categoryVal = $(result).val();
-			categoryText = $(result).text();
-			
-			$selectCategory.text(categoryText);
-			ajaxTest(animalVal, categoryVal, 1);
-		}
-		
-		function searchAnimal(result){
-			
-			animalVal = $(result).val();
-			animalText = $(result).text();
-			
-			$selectAnimal.text(animalText);
-			ajaxTest(animalVal, categoryVal, 1);
-		}
-				
 		function dateFormat(date) {
 	        let month = date.getMonth() + 1;
 	        let day = date.getDate();
@@ -114,7 +92,12 @@
 	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 		}
 				
-		function ajaxTest(animal, category, page){
+		function selectCommunityList(animal, category, page){
+			
+			console.log(animal);
+			console.log(category);
+			console.log(page);
+			
 			$.ajax({
 				url : 'selectCommunityList',
 				data : {
@@ -124,11 +107,23 @@
 				},
 				success : result => {
 					// console.log(result);
+					let num = page * 10;
 					
-					for(let i in result){
+					var uniqueBoardNos = new Set();
+					var filteredData = [];
+					
+					for(let i = 0; i < num; i++){
+						 if (!uniqueBoardNos.has(result[i].boardNo)) {
+				                uniqueBoardNos.add(result[i].boardNo);
+				                filteredData.push(result[i]);
+				            }
+					}
+					
+					console.log(filteredData);
+					
+					for(let i in filteredData){
 						
 						var animalListStr = '';
-						
 						var animalListResult = result[i].animalList;
 						
 						for(let i in animalListResult){
@@ -136,117 +131,49 @@
 										  + animalListResult[i].animalName
 										  + '</div>'
 						}
+						
 						animalListStr += '<br clear="both">';
 						
-						resultStr += '<div class= "ajaxWrap">'
-									+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png">'
+						resultStr += '<div class="communityList">'
+										+ '<div class="thumbnailImg"><img src="'
+										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
+										+ '"></div>'
+										+ '<input type="hidden" value="' + result[i].boardNo + '">'
+										+ '<div class= "center_content">'
+											+ '<div class="content_writer">' + result[i].memberNo + '</div>'
+											+ animalListStr
+											+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
+											+ '<div class="content_text">' + result[i].boardContent + '</div>'
+											+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
+										+ '</div>'
+										+ '<div class="content_reaction">'
+											+ '<div class="cr_detail"><img src="resources/img/like.png"><div>좋아요 : ' + result[i].boardLike + '</div></div>'
+											+ '<div class="cr_detail"><img src="resources/img/reply.png"><div>댓글 : ' + result[i].sumCount + '</div></div>'
+											+ '<div class="cr_detail"><img src="resources/img/searchform.png"><div>조회수 : ' + result[i].boardCount + '</div></div>'
+										+ '</div>'
 									+ '</div>'
-									+ '<input type="hidden" value="' + result[i].boardNo + '">'
-									+ '<div class= "center_content">'
-									+ '<div class="content_writer">' + result[i].memberNo + '</div>'
-									+ animalListStr
-									+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
-									+ '<div class="content_text">' + result[i].boardContent + '</div>'
-									+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
-									+ '</div>'
-									+ '<div class="content_reaction">'
-									+ '<div class="cr_detail"><img src="resources/img/like.png"><div>좋아요 : ' + result[i].boardLike + '</div></div>'
-									+ '<div class="cr_detail"><img src="resources/img/reply.png"><div>댓글 : ' + result[i].sumCount + '</div></div>'
-									+ '<div class="cr_detail"><img src="resources/img/searchform.png"><div>조회수 : ' + result[i].boardCount + '</div></div>'
-									+ '</div>'
-									+ '</div>'
-									+ '<div class="ajaxDetail"></div>'
 					};
 					
 					$('.content_wrap').html(resultStr);
 					
-					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-						$('.btnDiv').html('<button id="showMoreBtn" onclick="showMore();">더 보기</button>');
-					}
-					else{
-						$('.btnDiv').html('');
-					}
-
-					$('.ajaxWrap').click(function() {
+					$('.communityList').click(function() {
 						
-						
-						var $ajaxDetail = $(this).next('.ajaxDetail'),
-						boardNo = $(this).find('input[type="hidden"]').val();
+						var $communityDetail = $(this).next('.communityDetail');
+						var boardNo = $(this).find('input[type="hidden"]').val();
 						
 						console.log(boardNo);
-						// location.href = 'communityDetail?boardNo=' + boardNo;
-							
+						//location.href = 'communityDetail?boardNo=' + boardNo;
 					});
-				}
-			});
-		}
-		
-		function showMore(animal, category, page){
-			
-			$.ajax({
-				url : 'selectCommunityList',
-				data : {
-					page : page+1,
-					animal : animal,
-					category : category
-				},
-				success : result => {
-					// console.log(result);
-					
-					for(let i in result){
-						
-						var animalListStr = '';
-						
-						var animalListResult = result[i].animalList;
-						
-						for(let i in animalListResult){
-							animalListStr += '<div class="animalAndCategory">' 
-										  + animalListResult[i].animalName
-										  + '</div>'
-						}
-						animalListStr += '<br clear="both">';
-						
-						resultStr += '<div class= "ajaxWrap">'
-									+ '<div class="left_header"><img width="100%" height="100%" src="resources/img/heart.png">'
-									+ '</div>'
-									+ '<input type="hidden" value="' + result[i].boardNo + '">'
-									+ '<div class= "center_content">'
-									+ '<div class="content_writer">' + result[i].memberNo + '</div>'
-									+ animalListStr
-									+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
-									+ '<div class="content_text">' + result[i].boardContent + '</div>'
-									+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
-									+ '</div>'
-									+ '<div class="content_reaction">'
-									+ '<div class="cr_detail"><img src="resources/img/like.png"><div>좋아요 : ' + result[i].boardLike + '</div></div>'
-									+ '<div class="cr_detail"><img src="resources/img/reply.png"><div>댓글 : ' + result[i].sumCount + '</div></div>'
-									+ '<div class="cr_detail"><img src="resources/img/searchform.png"><div>조회수 : ' + result[i].boardCount + '</div></div>'
-									+ '</div>'
-									+ '</div>'
-									+ '<div class="ajaxDetail"></div>'
-					};
-					
-					$('.content_wrap').append(resultStr);
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-						$('.btnDiv').html('<button id="showMoreBtn" onclick="showMore();">더 보기</button>');
+						$('.btnDiv').css('display', 'block');
 					}
 					else{
-						$('.btnDiv').html('');
+						$('.btnDiv').css('display', 'none');
 					}
-					
-					$('.ajaxWrap').click(function() {
-
-						var $ajaxDetail = $(this).next('.ajaxDetail'),
-						boardNo = $(this).find('input[type="hidden"]').val();
-						//location.href = 'communityDetail?boardNo=' + boardNo;
-						
-					});
-						
 				}
 			});
 		}
-		
 		
 	</script>
 	

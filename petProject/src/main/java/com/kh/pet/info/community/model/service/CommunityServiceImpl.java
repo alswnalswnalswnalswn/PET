@@ -26,8 +26,8 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<Info> selectCommunityList(HashMap<String, String> commMap, RowBounds rowBounds) {
-		return communityRepository.selectCommunityList(sqlSession, commMap, rowBounds);
+	public List<Info> selectCommunityList(HashMap<String, String> commMap) {
+		return communityRepository.selectCommunityList(sqlSession, commMap);
 	}
 
 	@Override
@@ -36,4 +36,25 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
