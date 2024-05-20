@@ -30,7 +30,7 @@ public class ProductController {
 		
 		map.put("category", category);
 		map.put("animal", animal);
-		
+
 		PageInfo pi = Pagination.getPageInfo(productService.selectListCount(map), page, 15, 10);
 
 		RowBounds rowBounds = new RowBounds(

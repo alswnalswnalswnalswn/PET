@@ -10,6 +10,15 @@
 		<result column="PRODUCT_AMOUNT" property="productAmount"/>
 	</resultMap>
 
+	<resultMap type="attachment" id="attachmentResultSet">
+		<result column="ATT_NO" property="attNo"/>
+		<result column="ATT_PATH" property="attPath"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="ATT_STATUS" property="attStaus"/>
+		<result column="ATT_LELVEL" property="attLevel"/>
+	</resultMap>
+	
 	<resultMap type="product" id="productResultSet">
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_NAME" property="productName"/>
@@ -20,42 +29,49 @@
 		<result column="PR_CATEGORY_NAME" property="prCategoryName"/>
 		
 		<collection resultMap="productOptionResultSet" property="optionList"/>
+		<collection resultMap="attachmentResultSet" property="attachment"/>
+		
 	</resultMap>
+	
+
 	
 	<select id="selectListCount" parameterType="hashmap" resultType="_int">
 		SELECT
 			   COUNT(*)
 		  FROM
 		  	   TB_PRODUCT
-		  LEFT
+	<choose>
+		<when test="animal == 'A0'">
+			
+			<choose>
+				<when test="category == 'P0'">
+				
+				</when>
+				<otherwise>
+		WHERE
+			  PR_CATEGORY_CODE = ${category}
+				</otherwise>
+			</choose>
+		</when>
+		<otherwise>
 		  JOIN
                TB_PRODUCT_ANIMAL USING(PRODUCT_NO)
-		<choose>
-			<when test="category == 'P0'">
-				<choose>
-					<when test="animal == 'A0'">
-						
-					</when>
-					<otherwise>
-		  WHERE 
-			    ANIMAL_CODE = #{animal}
-					</otherwise>  		
-				</choose>
-			</when>
-			<otherwise>
-		  WHERE
-				PR_CATEGORY_CODE = #{category}
-				  
-				<choose>
-					<when test="animal == 'A0'">
-					</when>
-					<otherwise>
-		    AND
-		  	    ANIMAL_CODE = #{animal}
-					</otherwise>  		
-				</choose>
-			</otherwise>
-		</choose>
+         WHERE
+         	   ANIMAL_CODE = #{animal}
+         	<choose>
+         		<when test="category == 'P0'">
+           
+         		</when>
+         		<otherwise>
+           AND
+           	   PR_CATEGORY_CODE = #{category}
+         		</otherwise>
+         	</choose>
+		</otherwise>
+	</choose>
+		  	   
+		  
+		
 		
 	</select>
 	
@@ -66,33 +82,49 @@
 		       PRICE,
 		       PRODUCT_DATE,
 		       
-		       PR_CATEGORY_NAME
+		       PR_CATEGORY_NAME,
+               
+               ANIMAL_NAME,
+               ATT_PATH,
+               CHANGE_NAME
 		  FROM
 		       TB_PRODUCT
 		  JOIN
 		       TB_PRODUCT_CATEGORY USING(PR_CATEGORY_CODE)
-		  LEFT
 		  JOIN
+               TB_PRO_ATTACH USING(PRODUCT_NO)
+          JOIN
                TB_PRODUCT_ANIMAL USING(PRODUCT_NO)
-		 <choose>
-			<when test="category == 'P1'">
-	     WHERE
-		 	   PR_CATEGORY_CODE = 'P1'
-			</when>
+          JOIN
+               TB_ANIMAL USING(ANIMAL_CODE)
+         WHERE
+	<choose>
+		<when test="animal == 'A0'">
 			
-			<when test="category == 'P2'">
-	     WHERE
-		 	   PR_CATEGORY_CODE = 'P2'
-			</when>
-			<otherwise>
-			
-			</otherwise>
-		</choose>
-		
-		<choose>
-			<when test="animal"></when>
-		
-		</choose>
+			<choose>
+				<when test="category == 'P0'">
+				</when>
+				<otherwise>
+			   PR_CATEGORY_CODE = ${category}
+		   AND
+				</otherwise>
+			</choose>
+		</when>
+		<otherwise>
+         	   ANIMAL_CODE = #{animal}
+           AND
+         	<choose>
+         		<when test="category == 'P0'">
+           
+         		</when>
+         		<otherwise>
+           	   PR_CATEGORY_CODE = #{category}
+           AND
+         		</otherwise>
+         	</choose>
+		</otherwise>
+	</choose>
+		   	   ATT_LEVEL = 1
 	</select>
 	
 	

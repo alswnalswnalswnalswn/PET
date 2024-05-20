@@ -4,6 +4,7 @@ package com.kh.pet.shop.model.vo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.common.model.vo.PageInfo;
 
 import lombok.Getter;
@@ -29,4 +30,5 @@ public class Product {
 	
 	private PageInfo pageInfo;
 	
+	private Attachment attachment;
 }

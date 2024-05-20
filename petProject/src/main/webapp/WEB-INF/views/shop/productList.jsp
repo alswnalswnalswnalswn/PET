@@ -198,10 +198,10 @@
 						text+='<div class="custom-col-5" >' +
 								'<div class="card">' +
 									'<div class="card-body">' +
-										'<img class="product_img" src="">' +
+										'<img class="product_img" src="${sessionScope.path }' + item.attachment.attPath + item.attachment.changeName + '">' +
 					    				'<p class="card-text">' + item.productName + '</p>' +
 					    				'<div class="card_price">' + item.price + '원</div>' +
-					    				'<div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart.png" /></div>' +
+					    				'<div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart2.png" /></div>' +
 									'</div>' +
 								'</div>' +
 							  '</div>';
