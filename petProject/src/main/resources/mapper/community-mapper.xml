@@ -114,7 +114,8 @@
 		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
 		        BOARD_STATUS,
 		        CATEGORY_CODE,
-		        ANIMAL_NAME
+		        ATT_PATH,
+		        CHANGE_NAME
 		FROM
 		        TB_INFO
 		LEFT JOIN
@@ -147,7 +148,9 @@
 		                TB_COMMENT USING(REPLY_NO)
 		        GROUP BY
 		                BOARD_NO
-		        ) USING (BOARD_NO)		
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        TB_ATTACHMENT USING(BOARD_NO)
 		<choose>
 			<when test="animal == 'A0'">
 				<choose>
@@ -160,7 +163,7 @@
 				</choose>
 			</when>
 			<otherwise>
-				JOIN 
+				LEFT JOIN 
 						TB_BOARD_ANIMAL USING(BOARD_NO)
 				WHERE
 						ANIMAL_CODE = #{animal}
@@ -203,7 +206,7 @@
                 COMMENT_WRITER,
                 COMMENT_CONTENT,
                 COMMENT_CREATE_DATE,
-                COMMENT_STATUS
+                COMMENT_STATUS,
                 
                 
 		FROM

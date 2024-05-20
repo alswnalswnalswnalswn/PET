@@ -29,28 +29,20 @@ public class CommunityController {
 	
 	@ResponseBody
 	@RequestMapping("selectCommunityList")
-	public List<Info> selectCommunityList(@RequestParam(value="page", defaultValue="1") int page, 
-										  @RequestParam(value="animal", defaultValue="A0")String animal, 
-										  @RequestParam(value="category", defaultValue="I0")String category){
+	public List<Info> selectCommunityList(String animal, String category, int page){
 		
 		HashMap<String, String> commMap = new HashMap();
 		commMap.put("animal", animal);
 		commMap.put("category", category);
 		
 		PageInfo pi = Pagination.getPageInfo(communityService.selectListCount(commMap), page, 10, 10);
-		RowBounds rowBounds = new RowBounds(
-				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
-				pi.getBoardLimit()
-				);
-		List<Info> listInfo = communityService.selectCommunityList(commMap, rowBounds);
+		
+		
+		List<Info> listInfo = communityService.selectCommunityList(commMap);
 		
 		for(Info i : listInfo) {
 			i.setPageInfo(pi);
 		}
-		
-		
-		
-		
 		
 		return listInfo;
 	}
