@@ -29,6 +29,7 @@
 		<result column="PR_CATEGORY_NAME" property="prCategoryName"/>
 		
 		<collection resultMap="productOptionResultSet" property="optionList"/>
+		
 		<collection resultMap="attachmentResultSet" property="attachment"/>
 		
 	</resultMap>
@@ -49,7 +50,7 @@
 				</when>
 				<otherwise>
 		WHERE
-			  PR_CATEGORY_CODE = ${category}
+			  PR_CATEGORY_CODE = #{category}
 				</otherwise>
 			</choose>
 		</when>
@@ -75,7 +76,7 @@
 		
 	</select>
 	
-	<select id="selectAll" parameterType="hashmap" resultMap="productResultSet">
+	<select id="selectAll" parameterType="java.util.List" resultMap="productResultSet">
 		SELECT
 		       PRODUCT_NO,
 		       PRODUCT_NAME,
@@ -98,35 +99,99 @@
           JOIN
                TB_ANIMAL USING(ANIMAL_CODE)
          WHERE
+         	   ATT_LEVEL = 1
+           AND
+           	   PRODUCT_NO IN
+			   <foreach collection="list" item="item" open="(" separator="," close=")">
+			    #{item.productNo}
+			   </foreach>
+		  ORDER
+		     BY
+		     	PRODUCT_NO DESC
+		   	   
+	</select>
+	<select id="selectOne" parameterType="_int" resultMap="productResultSet">
+		SELECT
+		        PRODUCT_NO,
+		        PRODUCT_NAME,
+		        PRICE,
+		        PRODUCT_DATE,
+		        UPDATE_DATE,
+		        PRODUCT_DETAIL,
+		        PR_CATEGORY_CODE,
+		        PRODUCT_AMOUNT,
+		        COLOR_NAME,
+		        SIZE_NAME,
+		        
+		        ATT_PATH,
+		        CHANGE_NAME,
+		        ATT_LEVEL,
+		        ATT_STATUS,
+		        
+		        ANIMAL_NAME
+
+		  FROM
+		        TB_PRODUCT
+		  LEFT
+		  JOIN
+		        TB_PRODUCT_OPTION USING(PRODUCT_NO)
+		  LEFT
+		  JOIN
+		        TB_PRODUCT_COLOR USING(COLOR_CODE)
+		  LEFT
+		  JOIN
+		        TB_PRODUCT_SIZE USING(SIZE_CODE)
+		  JOIN
+		        TB_PRODUCT_CATEGORY USING(PR_CATEGORY_CODE)
+		  LEFT
+		  JOIN
+		        TB_PRO_ATTACH USING(PRODUCT_NO)
+		  LEFT
+		  JOIN
+		        TB_PRODUCT_ANIMAL USING(PRODUCT_NO)
+		  JOIN
+		        TB_ANIMAL USING(ANIMAL_CODE)
+		 WHERE
+		        PRODUCT_NO = #{productNo}
+	</select>
+	
+	<select id="selectCount" parameterType="hashmap" resultMap="productResultSet">
+		SELECT
+			   PRODUCT_NO
+		  FROM
+		  	   TB_PRODUCT
 	<choose>
 		<when test="animal == 'A0'">
 			
 			<choose>
 				<when test="category == 'P0'">
+				
 				</when>
 				<otherwise>
-			   PR_CATEGORY_CODE = ${category}
-		   AND
+		WHERE
+			  PR_CATEGORY_CODE = #{category}
 				</otherwise>
 			</choose>
 		</when>
 		<otherwise>
+		  JOIN
+               TB_PRODUCT_ANIMAL USING(PRODUCT_NO)
+         WHERE
          	   ANIMAL_CODE = #{animal}
-           AND
          	<choose>
          		<when test="category == 'P0'">
            
          		</when>
          		<otherwise>
-           	   PR_CATEGORY_CODE = #{category}
            AND
+           	   PR_CATEGORY_CODE = #{category}
          		</otherwise>
          	</choose>
 		</otherwise>
 	</choose>
-		   	   ATT_LEVEL = 1
+	ORDER
+	   BY
+	   	  PRODUCT_NO DESC
 	</select>
-	
-	
 	
 </mapper>
