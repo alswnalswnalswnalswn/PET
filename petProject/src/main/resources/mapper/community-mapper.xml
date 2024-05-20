@@ -20,6 +20,16 @@
 		<result column="ATT_LELVEL" property="attLevel"/>
 	</resultMap>
 	
+	<resultMap type="reply" id="replyResultSet">
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="REPLY_WRITER" property="replyWriter"/>
+		<result column="REPLY_CONTENT" property="replyContent"/>
+		<result column="REPLY_CREATE_DATE" property="createDate"/>
+		<result column="REPLY_UPDATE_DATE" property="updateDate"/>
+		<result column="REPLY_STATUS" property="replyStatus"/>
+		<collection resultMap="commentResultSet" property="commentList" />
+	</resultMap>
+
 	<resultMap type="comment" id="commentResultSet">
 		<result column="COMMENT_NO" property="commentNo"/>
 		<result column="REPLY_NO" property="replyNo"/>
@@ -30,15 +40,6 @@
 		<result column="COMMENT_STATUS" property="commentStatus"/>
 	</resultMap>
 	
-	<resultMap type="reply" id="replyResultSet">
-		<result column="REPLY_NO" property="replyNo"/>
-		<result column="REPLY_WRITER" property="replyWriter"/>
-		<result column="REPLY_CONTENT" property="replyContent"/>
-		<result column="REPLY_CREATE_DATE" property="createDate"/>
-		<result column="REPLY_UPDATE_DATE" property="updateDate"/>
-		<result column="REPLY_STATUS" property="replyStatus"/>
-		<collection resultMap="commentResultSet" property="commentList" />
-	</resultMap>
 	
 	<resultMap type="info" id="infoResultSet">
 		<result column="BOARD_NO" property="boardNo"/>
@@ -68,6 +69,144 @@
 		SELECT 
 				COUNT(*) 
 		FROM
+				TB_INFO
+		
+		<choose>
+			<when test="animal == 'A0'">
+				<choose>
+					<when test="category == 'I0'">
+						WHERE CATEGORY_CODE IN ('I1', 'I2')	
+					</when>
+					<otherwise>
+						WHERE CATEGORY_CODE = #{category}	
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				JOIN 
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				WHERE
+						ANIMAL_CODE = #{animal}
+				<choose>
+					<when test="category == 'I0'">
+						AND CATEGORY_CODE IN ('I1', 'I2')	
+					</when>
+					<otherwise>
+						AND CATEGORY_CODE = #{category}	
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+		AND
+				BOARD_STATUS = 'Y'
+	</select>
+	
+	<select id="selectCommunityList" parameterType="hashmap" resultMap="infoResultSet">
+		SELECT
+		        BOARD_NO,
+		        NICKNAME BOARD_WRITER,
+		        ANIMAL_NAME,
+		        CREATE_DATE,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        BOARD_COUNT,
+		        NVL(BOARD_LIKE, 0) BOARD_LIKE,
+		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+		        BOARD_STATUS,
+		        CATEGORY_CODE,
+		        ANIMAL_NAME
+		FROM
+		        TB_INFO
+		LEFT JOIN
+		        TB_BOARD_ANIMAL USING(BOARD_NO)
+		LEFT JOIN
+		        TB_ANIMAL USING(ANIMAL_CODE)
+		LEFT JOIN
+		        TB_MEMBER USING(MEMBER_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                COUNT(*) BOARD_LIKE, 
+		                BOARD_NO 
+		        FROM 
+		                TB_LIKE 
+		        GROUP BY 
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                BOARD_NO,
+		                COUNT(REPLY_NO) REPLY_COUNT,
+		                COUNT(COMMENT_NO) COMMENT_COUNT
+		        FROM 
+		                TB_INFO 
+		        LEFT JOIN
+		                TB_REPLY USING(BOARD_NO)
+		        LEFT JOIN
+		                TB_COMMENT USING(REPLY_NO)
+		        GROUP BY
+		                BOARD_NO
+		        ) USING (BOARD_NO)		
+		<choose>
+			<when test="animal == 'A0'">
+				<choose>
+					<when test="category == 'I0'">
+						WHERE CATEGORY_CODE IN ('I1', 'I2')	
+					</when>
+					<otherwise>
+						WHERE CATEGORY_CODE = #{category}	
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				JOIN 
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				WHERE
+						ANIMAL_CODE = #{animal}
+				<choose>
+					<when test="category == 'I0'">
+						AND CATEGORY_CODE IN ('I1', 'I2')	
+					</when>
+					<otherwise>
+						AND CATEGORY_CODE = #{category}	
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+		AND
+				BOARD_STATUS = 'Y'
+		ORDER BY 
+				BOARD_NO DESC
+	</select>
+	
+	<select id="communityDetail" parameterType="_int" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO,
+                BOARD_TITLE,
+                BOARD_WRITER,
+                CREATE_DATE,
+                BOARD_CONTENT,
+                BOARD_COUNT,
+                BOARD_LIKE,
+                SUM_COUNT,
+                
+                ATT_NO,
+                ATT_PATH,
+                ATT_STATUS,
+                
+                REPLY_NO,
+                REPLY_WRITER,
+                REPLY_CONTENT,
+                
+                COMMENT_NO,
+                COMMENT_WRITER,
+                COMMENT_CONTENT,
+                COMMENT_CREATE_DATE,
+                COMMENT_STATUS
+                
+                
+		FROM
 				(
 				SELECT
 						BOARD_NO,
@@ -78,9 +217,9 @@
 						BO_CATEGORY_CODE CATEGORY_CODE,
 						ANIMAL_CODE,
 						ANIMAL_NAME,
-						TB_INFO.CREATE_DATE BOARD_CREATE_DATE,
-						LIKE_COUNT,
-						REPLY_COUNT + COMMENT_COUNT REPLY_SUM,
+						TB_INFO.CREATE_DATE CREATE_DATE,
+						NVL(BOARD_LIKE, 0) BOARD_LIKE,
+						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
 						REPLY_WRITER,
 						REPLY_CONTENT,
 						REPLY_CREATE_DATE,
@@ -89,6 +228,12 @@
 						COMMENT_CREATE_DATE,
 						ATT_NO,
 						BOARD_STATUS,
+                        COMMENT_STATUS,
+                        COMMENT_NO,
+                        REPLY_NO,
+                        ATT_STATUS,
+                        BOARD_COUNT,
+                        ATT_PATH,
 						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS rn
 				FROM
 						TB_INFO
@@ -103,7 +248,7 @@
 				LEFT JOIN
 						(
 						SELECT 
-								COUNT(*) LIKE_COUNT, 
+								COUNT(*) BOARD_LIKE, 
 								BOARD_NO 
 						FROM 
 								TB_LIKE 
@@ -134,7 +279,8 @@
 								NICKNAME COMMENT_WRITER, 
 								COMMENT_CONTENT,
 								TB_COMMENT.CREATE_DATE COMMENT_CREATE_DATE, 
-								BOARD_NO
+								BOARD_NO,
+                                COMMENT_STATUS
 						FROM 	
 								TB_COMMENT 
 						LEFT JOIN 
@@ -154,171 +300,11 @@
 						) USING(REPLY_NO)
 				LEFT JOIN 
 						TB_ATTACHMENT USING(BOARD_NO)
-				ORDER BY 
-						BOARD_NO
+				
 				)
 		WHERE 
-				rn = 1
-		AND
-				BOARD_STATUS = 'Y'
-		<choose>
-			<when test="animal == 'A1'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A2'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A3'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A4'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A5'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A6'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<otherwise>
-				
-			</otherwise>
-		</choose>
-		<choose>
-			<when test="category == 'I1'">
-				AND CATEGORY_CODE = #{category}
-			</when>
-			<when test="category == 'I2'">
-				AND CATEGORY_CODE = #{category}
-			</when>
-			<otherwise>
-				AND CATEGORY_CODE IN ('I1', 'I2')
-			</otherwise>
-		</choose>
-				
+				BOARD_NO = #{boardNo}
 	</select>
-	
-	<select id="selectCommunityList" parameterType="hashmap" resultMap="infoResultSet">
-		SELECT 
-				BOARD_NO,
-                BOARD_WRITER,
-                ANIMAL_NAME,
-                CREATE_DATE,
-                BOARD_TITLE,
-                BOARD_CONTENT,
-                BOARD_COUNT,
-                NVL(BOARD_LIKE, 0) BOARD_LIKE,
-                SUM_COUNT
-		FROM
-				(
-				SELECT
-						BOARD_NO,
-						BOARD_TITLE,
-						BOARD_CONTENT,
-                        BOARD_COUNT,
-						TB_MEMBER.NICKNAME BOARD_WRITER,
-						BO_CATEGORY_NAME,
-						BO_CATEGORY_CODE CATEGORY_CODE,
-						ANIMAL_CODE,
-						ANIMAL_NAME,
-						TB_INFO.CREATE_DATE CREATE_DATE,
-						NVL(LIKE_COUNT, 0) BOARD_LIKE,
-						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
-						BOARD_STATUS,
-						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS RN
-				FROM
-						TB_INFO
-				LEFT JOIN
-						TB_BOARD_ANIMAL USING(BOARD_NO)
-				LEFT JOIN
-						TB_ANIMAL USING(ANIMAL_CODE)
-				LEFT JOIN
-						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
-				LEFT JOIN
-						TB_MEMBER USING(MEMBER_NO)
-				LEFT JOIN
-						(
-						SELECT 
-								COUNT(*) LIKE_COUNT, 
-								BOARD_NO 
-						FROM 
-								TB_LIKE 
-						GROUP BY 
-								BOARD_NO
-						) USING (BOARD_NO)
-				LEFT JOIN
-						(
-						SELECT 
-								BOARD_NO,
-                                COUNT(REPLY_NO) REPLY_COUNT,
-                                COUNT(COMMENT_NO) COMMENT_COUNT
-						FROM 
-								TB_INFO 
-						LEFT JOIN
-								TB_REPLY USING(BOARD_NO)
-                        LEFT JOIN
-                                TB_COMMENT USING(REPLY_NO)
-                        GROUP BY
-                                BOARD_NO
-						) USING (BOARD_NO)				
-				
-				LEFT JOIN 
-						TB_ATTACHMENT USING(BOARD_NO)
-				ORDER BY 
-						BOARD_NO
-				)
-		WHERE 
-				BOARD_STATUS = 'Y'
-		<choose>
-			<when test="animal == 'A1'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A2'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A3'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A4'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A5'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<when test="animal == 'A6'">
-				AND ANIMAL_CODE = #{animal}
-			</when>
-			<otherwise>
-				
-			</otherwise>
-		</choose>
-		<choose>
-			<when test="category == 'I1'">
-				AND CATEGORY_CODE = #{category}
-			</when>
-			<when test="category == 'I2'">
-				AND CATEGORY_CODE = #{category}
-			</when>
-			<otherwise>
-				AND CATEGORY_CODE IN ('I1', 'I2')
-			</otherwise>
-		</choose>
-		ORDER BY 
-				BOARD_NO DESC
-	</select>
-	
-	<select id="communityDetail" parameterType="_int" resultMap="infoResultSet">
-		SELECT
-   				BOARD_NO,
-				BOARD_TITLE,
-				BOARD_CONTENT,
-				CATEGORY_CODE
-    	FROM 
-    			TB_INFO
-    	WHERE 
-    			BOARD_NO = #{boardNo}
-	</select>
-	
 	
 	
 	
