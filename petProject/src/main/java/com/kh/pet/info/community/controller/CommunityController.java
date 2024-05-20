@@ -58,7 +58,7 @@ public class CommunityController {
 	@RequestMapping("communityDetail")
 	public ModelAndView communityDetail(ModelAndView mv, int boardNo) {
 		
-		mv.addObject("info", communityService.communityDetail(boardNo)).setViewName("info/community/communityDetail");
+		mv.addObject("community", communityService.communityDetail(boardNo)).setViewName("info/community/communityDetail");
 		
 		return mv;
 	}

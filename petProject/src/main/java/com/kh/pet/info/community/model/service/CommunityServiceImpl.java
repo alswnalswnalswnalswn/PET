@@ -31,7 +31,7 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public Info communityDetail(int boardNo) {
+	public List<Info> communityDetail(int boardNo) {
 		return communityRepository.communityDetail(sqlSession, boardNo);
 	}
 
