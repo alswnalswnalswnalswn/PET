@@ -319,19 +319,15 @@
       	  <if test="animal != 'A0'">
 		  JOIN 
 				TB_BOARD_ANIMAL USING(BOARD_NO)
-		</if>
+		 </if>
 		  WHERE
 		        BOARD_STATUS = 'Y'
-			AND
-				MEMBER_NO = #{memberNo}
-		<if test="animal != 'A0'">
+		 <if test="animal != 'A0'">
 			AND
 				ANIMAL_CODE = #{animal}
-		</if>
-		<if test="category != 'I0'">
+		 </if>
 			AND
-				CATEGORY_CODE = #{category}		
-		</if>
+				CATEGORY_CODE = 'I3'
 		ORDER BY
 				BOARD_NO DESC
 	</select>

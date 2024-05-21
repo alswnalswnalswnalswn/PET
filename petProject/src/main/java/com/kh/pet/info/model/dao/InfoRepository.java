@@ -20,7 +20,7 @@ public class InfoRepository {
 		return sqlSession.selectList("infoMapper.selectInfo", map, rowBounds);
 	}
 
-	public List<Info> selectInfoList(SqlSessionTemplate sqlSession, List<Info> list) {
+	public List<Info> selectInfoList(List<Info> list, SqlSessionTemplate sqlSession) {
 		return sqlSession.selectList("infoMapper.selectInfoList", list);
 	}
 

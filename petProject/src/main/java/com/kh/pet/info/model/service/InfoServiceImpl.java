@@ -25,10 +25,6 @@ public class InfoServiceImpl implements InfoService {
 		return infoRepository.selectListCount(sqlSession);
 	}
 
-	public List<Info> selectInfoList(HashMap<String, Object> map) {
-		return infoRepository.selectInfoList(map, sqlSession);
-	}
-
 	@Override
 	public List<Info> selectInfo(HashMap<String, Object> map, RowBounds rowBounds) {
 		return infoRepository.selectInfo(sqlSession, map, rowBounds);
@@ -36,7 +32,7 @@ public class InfoServiceImpl implements InfoService {
 
 	@Override
 	public List<Info> selectInfoList(List<Info> list) {
-		return infoRepository.selectInfoList(list, sqlSession);;
+		return infoRepository.selectInfoList(list, sqlSession);
 	}
 
 	
