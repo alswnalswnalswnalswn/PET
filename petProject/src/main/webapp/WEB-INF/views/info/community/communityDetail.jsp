@@ -267,9 +267,10 @@
 		height: 51px;
 	}
 	#replybtn{
-		font-size: 13px;
 		width: 80px;
 		height: 30px;
+		right: 0;
+	    font-size: 13px;
 	    border-radius: 10px;
 	    background-color: rgb(94, 87, 59);
 	    color:white;

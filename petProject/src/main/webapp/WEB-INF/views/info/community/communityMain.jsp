@@ -8,7 +8,7 @@
 <title>커뮤니티</title>
 <link rel="stylesheet" href="resources/css/community/communityMain.css" />
 <style>
-	div{
+div{
 		box-sizing : border-box;
 	}
 	#submenubar{
@@ -62,9 +62,82 @@
 	#search > div{
 		float: left;
 	}
-	#needgongan{
-		width : 1200px;
-		height: 100px;
+	#selectctg{
+		width : 40%;
+		height: 100%;
+		float: left;
+		position: relative;
+	}
+	#select{
+		width : 220px;
+	 	justify-content: space-between;
+		height: 200px;
+		position: absolute;
+		right: 0;
+        flex-direction: column;
+        top : 30%;
+	}
+	#styleboardform, #styleaniform{
+		width: 110px;
+		height : 100%;
+		float: left;
+	}
+	#selectstyle, #selectani{
+		width : 110px;
+		height : 30px;
+	    display: flex;	
+    	justify-content: center;
+	}
+	#styleboard, #styleani{
+		width : 90px;
+		height : 30px;
+		font-size: 15px;
+		font-weight: bold;
+		background-color: rgb(248, 243, 221);
+		color: rgba(122, 88, 33, 0.92);
+		text-align : center;
+		line-height: 30px;
+	    border-top-left-radius: 10px;
+	    border-top-right-radius: 10px; 
+	    cursor: pointer;
+	    float: left;
+   		margin-right: 10px;
+   	}
+	#styleboard:hover, #styleani:hover{
+		font-size: 16px;
+	}
+	#line{
+		width : 300px;
+		margin-left: 180px;
+		margin-top : 15%;
+		border: 1px solid rgba(190, 190, 190, 0.2);
+	}
+	#boardinfo{
+		width : 90%;
+		height: 30%;
+		background-color: rgba(190, 190, 190, 0.2);
+	    border-radius: 10px;
+        margin-top : 10px;
+	}
+	#aniinfo{
+		width : 90%;
+		height: 75%;
+		background-color: rgba(190, 190, 190, 0.2);
+	    border-radius: 10px;
+	    margin-top : 10px;
+	}
+	span{
+		text-align: center;
+		cursor: pointer;
+		font-size: 15px;
+	}
+	span:hover{
+		font-size: 16px;
+	}
+	#needgongan1{
+		width : 800px;
+		height: 80px;
+		margin :auto;
 	}
 	#boardoutput{
 		width :900px;
@@ -212,60 +285,51 @@
 	
 	<c:set value="${ sessionScope.path }" var="path" />
 	
-	<div class="wrap">
-	
-		<div class="community_header">
-			<div class="searchCategory">
-				<div id="searchForm">
-					<div id="search">
-						<div id="searchcon">
-							<input type="text" name="searchContent" id="searchContent"/>
-						</div>
-						<div id="searchImg">
-							<img src="${sessionScope.path}/resources/img/common/searchform.png" alt="" id="searchimg">
-						</div>
+	<div id="submenubar">
+		<div id="searchForm">
+			<div id="search">
+				<div id="searchcon">
+					<input type="text" name="searchContent" id="searchContent"/>
+				</div>
+				<div id="searchImg">
+					<img src="${sessionScope.path}/resources/img/common/searchform.png" alt="" id="searchimg">
+				</div>
+			</div>
+		</div>
+		<div id="selectctg">
+			<div id="select">
+				<div id="styleboardform">
+					<div id="selectstyle" class="boardCategory">
+						<span id="styleboard">글 성격</span>
+					</div>
+					<div id="boardinfo">
+						<span id="freecon"># 자유</span><br>
+						<span id="quescon"># 질문</span><br>
+					</div>
+				</div>
+				<div id="styleaniform">
+					<div id="selectani" class="aniCategory">	
+						<span id="styleani">반려 동물</span>
+					</div>
+					<div id="aniinfo">
+						<span class="category" id="dogcon"># 강아지</span><br>
+						<span class="category" id="catcon"># 고양이</span><br>
+						<span class="category" id="rabcon"># 토끼</span><br>
+						<span class="category" id="fishcon"># 물고기</span><br>
+						<span class="category" id="birdcon"># 새</span><br>
+						<span class="category" id="hamcon"># 햄스터</span><br>
 					</div>
 				</div>
 			</div>
+			<div id="line"></div>
 		</div>
-			
-		<div class="selectCategory">
-			
-			<div class="animal_category">
-				<button type="button" class="dropdown-toggle" data-toggle="dropdown">반려동물</button>
-				<div class="dropdown-menu">
-					<a class="dropdown-item" href="#"># 강아지</a> 
-					<a class="dropdown-item" href="#"># 고양이</a> 
-					<a class="dropdown-item" href="#"># 토끼</a> 
-					<a class="dropdown-item" href="#"># 물고기</a> 
-					<a class="dropdown-item" href="#"># 새</a> 
-					<a class="dropdown-item" href="#"># 햄스터</a> 
-				</div>
-			</div>
-			
-			<div class="board_category">
-				<button type="button" class="dropdown-toggle" data-toggle="dropdown">글 성격</button>
-				<div class="dropdown-menu">
-					<a class="dropdown-item" href="#"># 전체</a> 
-					<a class="dropdown-item" href="#"># 자유</a> 
-					<a class="dropdown-item" href="#"># 질문</a> 
-				</div>
-			</div>	
-			
-		</div>
-		
-		<br clear="both">
-		<div id="needgongan"></div>
+	</div>
+	<div id="needgongan1"></div>
 		<div class="content_wrap" id="boardoutput"></div>
 			
-	</div>
 	<div id="gomain">
-		<div class="btnDiv">
-			<button>더 보기</button>
-		</div>
-		<a href="${sessionScope.path }/"><button id="mainbtn">메인으로</button></a>
-	</div>
-		 
+		<div class="btnDiv"><button>더 보기</button></div>
+		<a href=""><button id="mainbtn">메인으로</button></a>
 	</div>
 	<script>
 	
@@ -395,26 +459,6 @@
 											+ '</div>'
 											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
 											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
-						resultStr += '<div class="communityList">'
-						
-										
-										+ '<div class="thumbnailImg"><img src="'
-										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
-										+ '"></div>'
-										
-										
-										+ '<input type="hidden" value="' + result[i].boardNo + '">'
-										+ '<div class= "center_content">'
-											+ '<div class="content_writer">' + result[i].memberNo + '</div>'
-											+ animalListStr
-											+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
-											+ '<div class="content_text">' + result[i].boardContent + '</div>'
-											+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
-										+ '</div>'
-										+ '<div class="content_reaction">'
-											+ '<div class="cr_detail"><div><img src="resources/img/common/like.png"></div><div>' + result[i].boardLike + '</div></div>'
-											+ '<div class="cr_detail"><div><img src="resources/img/common/reply.png"></div><div>' + result[i].sumCount + '</div></div>'
-											+ '<div class="cr_detail"><div>조회수</div><div>' + result[i].boardCount + '</div></div>'
 										+ '</div>'
 											+ '<div class="content_reaction" id="boardLike">'
 												+ '<div id="likeinfo"><button id="detailbtn">&nbsp;&nbsp;&nbsp;˚&nbsp;˚&nbsp;˚</button></div>'
@@ -452,6 +496,7 @@
 		}
 		
 	</script>
+	
 	
 	<jsp:include page="../../common/footer.jsp" />
 </body>
