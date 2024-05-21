@@ -15,48 +15,52 @@
 	
 	<div class="wrap">
 	
-		<div class="community_header">
-			<div class="searchCategory">
-				<select>
-					<option name="searchAll">전체</option>
-					<option name="title">제목</option>
-					<option name="content">내용</option>
-				</select>
-				<input type="text" class="form-control" placeholder="검색어를 입력해주세요">
-				<button class="btn btn-primary" type="button">검색</button>
+		<div class="communitySearch">
+			<div class="searchContent">
+				<input type="text" name="searchContent">
+			</div>
+			<div class="searchImg">
+				<img src="/pet/resources/img/common/searchform.png" alt="검색버튼 사진">
 			</div>
 		</div>
 			
-		<div class="blank_div"></div>
-		
 		<div class="selectCategory">
-			<div class="board_category">
-				<button type="button" class="btn btn-light" value="I0">전체</button>
-				<button type="button" class="btn btn-light" value="I1">자유</button>
-				<button type="button" class="btn btn-light" value="I2">질문</button>
-			</div>
-			
-			<br clear="both">
 			
 			<div class="animal_category">
-				<img class='categoryImg' data-value='A1' src='${path}/resources/img/common/animaldog.png'>
-				<img class='categoryImg' data-value='A2' src='${path}/resources/img/common/animalcat.png'>
-				<img class='categoryImg' data-value='A3' src='${path}/resources/img/common/animalrab.png'>
-				<img class='categoryImg' data-value='A4' src='${path}/resources/img/common/animalfish.png'>
-				<img class='categoryImg' data-value='A5' src='${path}/resources/img/common/animalbird.png'>
-				<img class='categoryImg' data-value='A6' src='${path}/resources/img/common/animalham.png'>
+				<button type="button" class="dropdown-toggle" data-toggle="dropdown">반려동물</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#"># 강아지</a> 
+					<a class="dropdown-item" href="#"># 고양이</a> 
+					<a class="dropdown-item" href="#"># 토끼</a> 
+					<a class="dropdown-item" href="#"># 물고기</a> 
+					<a class="dropdown-item" href="#"># 새</a> 
+					<a class="dropdown-item" href="#"># 햄스터</a> 
+				</div>
 			</div>
+			
+			<div class="board_category">
+				<button type="button" class="dropdown-toggle" data-toggle="dropdown">글 성격</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#"># 전체</a> 
+					<a class="dropdown-item" href="#"># 자유</a> 
+					<a class="dropdown-item" href="#"># 질문</a> 
+				</div>
+			</div>	
+			
 		</div>
 		
-		<br clear="both">
+		<!-- 
+		<div class="content_wrap">
 		
-		<div class="content_wrap"></div>
+		</div>
 		
 		<div class="btnDiv">
 			<button>더 보기</button>
 		</div>
+		 -->
+		 
 	</div>
-	
+	<%--
 	<script>
 	
 		// 초기 변수 선언
@@ -173,9 +177,13 @@
 						animalListStr += '<br clear="both">';
 						
 						resultStr += '<div class="communityList">'
+						
+										
 										+ '<div class="thumbnailImg"><img src="'
 										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
 										+ '"></div>'
+										
+										
 										+ '<input type="hidden" value="' + result[i].boardNo + '">'
 										+ '<div class= "center_content">'
 											+ '<div class="content_writer">' + result[i].memberNo + '</div>'
@@ -185,8 +193,8 @@
 											+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
 										+ '</div>'
 										+ '<div class="content_reaction">'
-											+ '<div class="cr_detail"><div><img src="resources/img/like.png"></div><div>' + result[i].boardLike + '</div></div>'
-											+ '<div class="cr_detail"><div><img src="resources/img/reply.png"></div><div>' + result[i].sumCount + '</div></div>'
+											+ '<div class="cr_detail"><div><img src="resources/img/common/like.png"></div><div>' + result[i].boardLike + '</div></div>'
+											+ '<div class="cr_detail"><div><img src="resources/img/common/reply.png"></div><div>' + result[i].sumCount + '</div></div>'
 											+ '<div class="cr_detail"><div>조회수</div><div>' + result[i].boardCount + '</div></div>'
 										+ '</div>'
 									+ '</div>'
@@ -214,7 +222,7 @@
 		}
 		
 	</script>
-	
+	 --%>
 	
 	<jsp:include page="../../common/footer.jsp" />
 </body>
