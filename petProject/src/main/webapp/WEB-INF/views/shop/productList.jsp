@@ -117,12 +117,12 @@
 			<div class="header_category">
 				<div class="anmal_category">
 					<ul class="nav nav-tabs nav-justified">
-						<li class="nav-item" id="A1"><img class="img_dog" src="${sessionScope.path }/resources/img/animaldog.png"></li>
-						<li class="nav-item" id="A2"><img class="img_cat" src="${sessionScope.path }/resources/img/animalcat.png"></li>
-						<li class="nav-item" id="A3"><img class="img_rab" src="${sessionScope.path }/resources/img/animalrab.png"></li>
-						<li class="nav-item" id="A4"><img class="img_fish" src="${sessionScope.path }/resources/img/animalfish.png"></li>
-						<li class="nav-item" id="A5"><img class="img_bird" src="${sessionScope.path }/resources/img/animalbird.png"></li>
-						<li class="nav-item" id="A6"><img class="img_ham" src="${sessionScope.path }/resources/img/animalham.png"></li>
+						<li class="nav-item" id="A1"><img class="img_dog" src="${sessionScope.path }/resources/img/common/animaldog.png"></li>
+						<li class="nav-item" id="A2"><img class="img_cat" src="${sessionScope.path }/resources/img/common/animalcat.png"></li>
+						<li class="nav-item" id="A3"><img class="img_rab" src="${sessionScope.path }/resources/img/common/animalrab.png"></li>
+						<li class="nav-item" id="A4"><img class="img_fish" src="${sessionScope.path }/resources/img/common/animalfish.png"></li>
+						<li class="nav-item" id="A5"><img class="img_bird" src="${sessionScope.path }/resources/img/common/animalbird.png"></li>
+						<li class="nav-item" id="A6"><img class="img_ham" src="${sessionScope.path }/resources/img/common/animalham.png"></li>
 					</ul>
 				</div>
 				<div class="use_category">
@@ -141,7 +141,7 @@
 			<div class="row" id="productList">
 
 		    </div>
-			<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/refresh.png"></img></div>
+			<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
 		</div>
 	
 	
@@ -217,7 +217,7 @@
 											'<img class="product_img" src="${sessionScope.path }' + item.attachment.attPath + item.attachment.changeName + '">' +
 						    				'<p class="card-text">' + item.productName + '</p>' +
 						    				'<div class="card_price">' + item.price + '원</div>' +
-						    				'<div class="card_btn"><img src="${sessionScope.path}/resources/img/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/heart2.png" /></div>' +
+						    				'<div class="card_btn"><img src="${sessionScope.path}/resources/img/common/cart2.png" />&ensp;<img src="${sessionScope.path}/resources/img/common/heart2.png" /></div>' +
 										'</div>' +
 									'</div>' +
 								  '</div>';

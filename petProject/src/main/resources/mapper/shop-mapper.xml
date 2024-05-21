@@ -4,10 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shopMapper">
 	<resultMap type="productOption" id="productOptionResultSet">
-		<result column="COLOR_NAME" property="colorName"/>
-		<result column="SIZE_NAME" property="sizeName"/>
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_AMOUNT" property="productAmount"/>
+		<collection resultMap="productColorResultSet" property="colorList"/>
+		<collection resultMap="productSizeResultSet" property="sizeList"/>
 	</resultMap>
 
 	<resultMap type="attachment" id="attachmentResultSet">
@@ -19,6 +19,16 @@
 		<result column="ATT_LELVEL" property="attLevel"/>
 	</resultMap>
 	
+	<resultMap type="productColor" id="productColorResultSet">
+		<result column="COLOR_CODE" property="colorCode"/>
+		<result column="COLOR_NAME" property="colorName"/>
+	</resultMap>
+	
+	<resultMap type="productSize" id="productSizeResultSet">
+		<result column="SIZE_CODE" property="sizeCode"/>
+		<result column="SIZE_NAME" property="sizeName"/>
+	</resultMap>
+	
 	<resultMap type="product" id="productResultSet">
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_NAME" property="productName"/>
@@ -28,7 +38,6 @@
 		<result column="PRODUCT_DETAIL" property="productDetail"/>
 		<result column="PR_CATEGORY_NAME" property="prCategoryName"/>
 		
-		<collection resultMap="productOptionResultSet" property="optionList"/>
 		
 		<collection resultMap="attachmentResultSet" property="attachment"/>
 		
@@ -119,9 +128,6 @@
 		        UPDATE_DATE,
 		        PRODUCT_DETAIL,
 		        PR_CATEGORY_CODE,
-		        PRODUCT_AMOUNT,
-		        COLOR_NAME,
-		        SIZE_NAME,
 		        
 		        ATT_PATH,
 		        CHANGE_NAME,
@@ -132,15 +138,6 @@
 
 		  FROM
 		        TB_PRODUCT
-		  LEFT
-		  JOIN
-		        TB_PRODUCT_OPTION USING(PRODUCT_NO)
-		  LEFT
-		  JOIN
-		        TB_PRODUCT_COLOR USING(COLOR_CODE)
-		  LEFT
-		  JOIN
-		        TB_PRODUCT_SIZE USING(SIZE_CODE)
 		  JOIN
 		        TB_PRODUCT_CATEGORY USING(PR_CATEGORY_CODE)
 		  LEFT
