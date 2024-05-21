@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.kh.pet.shop.model.dao.ProductRepository;
 import com.kh.pet.shop.model.vo.Product;
+import com.kh.pet.shop.model.vo.ProductColor;
+import com.kh.pet.shop.model.vo.ProductOption;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -38,6 +40,16 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> selectAll(List<Product> list) {
 		return productRepository.selectAll(sqlSession,list);
+	}
+
+	@Override
+	public List<ProductColor> selectColor(int productNo) {
+		return productRepository.selectColor(sqlSession,productNo);
+	}
+
+	@Override
+	public List<ProductOption> selectSize(HashMap<String, String> map) {
+		return productRepository.selectSize(sqlSession,map);
 	}
 	
 	

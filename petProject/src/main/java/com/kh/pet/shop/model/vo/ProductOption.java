@@ -17,7 +17,5 @@ public class ProductOption {
 	
 	private int productNo;
 	private int productAmount;
-	private List<ProductColor> colorList;
-	
-	private List<ProductSize> sizeList;
+	private String sizeName;
 }

@@ -219,6 +219,7 @@ div{
 		margin-top : 5px;
 		font-weight: bold;
 		margin-right: 5px;
+		float : left;
 	}	
 	#boardCreate{
 		width : 80px;
@@ -278,6 +279,7 @@ div{
 	#myani{
 		background-color: rgba(242, 189, 108, 0.82);
 	}
+	
 </style>
 </head>
 <body>

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<!-- saved from url=(0035)http://localhost:7777/pet/product/7 -->
+<!-- saved from url=(0036)http://localhost:7777/pet/product/37 -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Insert title here</title>
 	<style>
+		*{
+			border:none;
+		}
 		#warp{
 			width:1200px;
 			height:auto;
@@ -12,7 +15,7 @@
 		.product-area{
 			width:850px;
 			height:auto;
-			border: 1px solid rgb(94,94,94);
+			border: 1px solid rgb(204, 204, 204);
 			margin:auto
 		}
 		.product-header{
@@ -20,14 +23,134 @@
 			height:420px;
 		}
 		.product-header > div{
-			float:left;
+			float: left;
+			width:50%;
 			height:100%;
 		}
-		.img_area{
-			width:60%;
+		.product-img{
+			padding:30px 20px 30px 30px;
+		}
+		.product-img img{
+			width:100%;
 			height:100%;
+		}
+		.product-content{
+			padding:30px 30px 30px 20px;
+		}
+		.product-price-btn{
+			margin-bottom: 15px;
+			height: 30px;
+			width:70%;
 		}
 		
+		.product-price{
+			float: left;
+			color:rgb(211, 84, 0);
+	    	font-weight:bold;
+	    	font-size:18px;
+		}
+		.product-btn{
+			float: right;
+			
+		}
+		.product-title{
+			font-weight: bold;
+			font-size: 20px;
+			height:60px;
+			margin-bottom:45px;
+		}
+		.product-btn img{
+			width:25px;
+			height:25px;
+		}
+		
+		.product-color, .product-size{
+			width:70%;
+			padding: 7px 0;
+			height: 50px;
+		}
+		
+		.product-count{
+			margin: 15px 0;
+			width: 30%;
+			display:flex;
+			justify-content: space-between;
+		}
+		.product-count button {
+			position:relative;
+            width: 30px; 
+            height: 30px;
+            border-radius: 5px;
+            background: rgba(223, 179, 104, 0.92); 
+        }
+		.product-count input{
+			width: 30px;
+			text-align: center;
+			border: 1px solid rgb(204, 204, 204);
+			border-radius: 5px;
+		}
+		.product-payment{
+			width: 70%;
+		}
+		.product-payment button{
+			width:100%;
+			height:40px;
+			background: rgb(94, 87, 59);
+			color: white;
+			font-weight: bold;
+			border:none;
+			border-radius: 5px;
+			
+		}
+		.dropdown>button{
+			width:100%;
+			text-align: left;
+			position: relative;
+		}
+		.dropdown>button::after{
+			position: absolute;
+			top:50%;
+			right:5%;
+			transform: translateY(-50%);
+		}
+		.minus-img{
+			position:absolute;
+			width: 45%;
+			height: 45%;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.plus-img{
+			position:absolute;
+			width: 50%;
+			height: 50%;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.product-detail{
+			width:100%;
+			height:40px;
+			font-size:12px;
+		}
+		.product-body{
+			width:100%;
+			height:200px;
+			padding: 0 30px 30px 30px;
+		}
+		.product-detail{
+			width:100%;
+			height: 100%;
+			border: 1px solid rgb(204, 204, 204);
+			padding: 15px;
+			text-align: center;
+			font-weight: 600;
+		}
+		.dropdown-item > div{
+			width: 50%;
+			float:left;
+		}
 	</style>
 
 </head>
@@ -483,7 +606,7 @@
          
             <div id="logo"><img src="./Insert title here_files/logo.png" alt="로고" width="150px" height="100px" onclick="location.href=&#39;/pet&#39;"></div>
             <div id="search_form">
-                <form action="http://localhost:7777/pet/product/7#">
+                <form action="http://localhost:7777/pet/product/37#">
                     <input type="text" name="query" id="in_text" placeholder="  검색어를 입력하세요">
                     <img src="./Insert title here_files/searchform.png" alt="" id="search_img">
                 </form>
@@ -492,10 +615,10 @@
             	<div id="loginMenu">
             		<ul class="nav flex-column" id="loginForm">
             			<li class="nav-item">
-            				<a class="nav-link" style="padding:.2rem .5rem;" href="http://localhost:7777/pet/product/7#" data-toggle="modal" data-target="#mylogin">로그인</a>
+            				<a class="nav-link" style="padding:.2rem .5rem;" href="http://localhost:7777/pet/product/37#" data-toggle="modal" data-target="#mylogin">로그인</a>
             			</li>
             			<li class="nav-item">
-            				<a class="nav-link" style="padding:.2rem .5rem;" href="http://localhost:7777/pet/product/7#" data-toggle="modal" data-target="#myjoin">회원가입</a>
+            				<a class="nav-link" style="padding:.2rem .5rem;" href="http://localhost:7777/pet/product/37#" data-toggle="modal" data-target="#myjoin">회원가입</a>
             			</li>
             		</ul>
             	</div>
@@ -506,7 +629,7 @@
             		
     				
    						<li class="nav-item">
-    						<a class="nav-link" href="http://localhost:7777/pet/product/7#" id="login_btn"><img src="./Insert title here_files/login.png" alt=""></a>
+    						<a class="nav-link" href="http://localhost:7777/pet/product/37#" id="login_btn"><img src="./Insert title here_files/login.png" alt=""></a>
     					</li>
     				
     				
@@ -549,11 +672,11 @@
         <div id="navigator">
             <ul id="navi">
                 <li><a href="http://localhost:7777/pet/product/community">커뮤니티</a></li>
-                <li><a href="http://localhost:7777/pet/product/7#">지식</a></li>
+                <li><a href="http://localhost:7777/pet/product/37#">지식</a></li>
                 <li><a href="http://localhost:7777/pet/shop">쇼핑</a></li>
                 <li><a href="http://localhost:7777/pet/info/date">데이트</a></li>
                 <li><a href="http://localhost:7777/pet/product/hospital">동물병원</a></li>
-                <li><a href="http://localhost:7777/pet/product/7#">공지사항</a></li>
+                <li><a href="http://localhost:7777/pet/product/37#">공지사항</a></li>
             </ul>
         </div>
     </div>
@@ -578,9 +701,9 @@
 							<input type="password" name="memberPwd" placeholder="비밀번호를 입력해주세요">
 							</div>
 						<div class="select_btn">
-							<a href="http://localhost:7777/pet/product/7" id="searchId" data-toggle="modal" data-target="#searchMyId" class="close" data-dismiss="modal">아이디 찾기</a>
+							<a href="http://localhost:7777/pet/product/37" id="searchId" data-toggle="modal" data-target="#searchMyId" class="close" data-dismiss="modal">아이디 찾기</a>
 							<span id="btn_search">/</span>
-							<a href="http://localhost:7777/pet/product/7" id="searchPwd" data-toggle="modal" data-target="#searchMyPwd" class="close" data-dismiss="modal">비밀번호 찾기</a>
+							<a href="http://localhost:7777/pet/product/37" id="searchPwd" data-toggle="modal" data-target="#searchMyPwd" class="close" data-dismiss="modal">비밀번호 찾기</a>
 						</div>
 						<div class="input_btn">
 							<button type="submit" id="login-btn" class="btn">로그인</button>
@@ -1150,13 +1273,134 @@
 
 
 	<div id="wrap">
+		
+		
 		<div class="product-area">
 			<div class="product-header">
-				<div class="img-area"><img></div>
-				<div></div>
+				<div class="product-img">
+					<img src="./Insert title here_files/product7.jpg">
+				</div>
+				<div class="product-content">
+					<div class="product-title">원바디하네스 안정성 2중잠금 편안한 원터치하네스 2color</div>
+					
+					<div class="product-price-btn">
+						<div class="product-price">27500원</div>
+						<div class="product-btn"><img src="./Insert title here_files/cart2.png"> <img src="./Insert title here_files/heart2.png"></div>
+					</div>
+					<div class="product-color">
+						<div class="dropdown">
+						  <button id="option-color" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false">블랙</button>
+						  <div id="selectColor" class="dropdown-menu dropdown-menu-right" style=""><a class="dropdown-item">블랙</a><a class="dropdown-item">화이트</a></div>
+						</div>
+					</div>
+					<div class="product-size">
+						<div class="dropdown show">
+						  <button id="option-size" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="true"></button>
+						  <div id="selectSize" class="dropdown-menu dropdown-menu-right show" style="position: absolute; transform: translate3d(102px, 21px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-end"><a class="dropdown-item"><div class="size_name">XS</div><div class="product_amount"> 수량 : 10</div></a><a class="dropdown-item"><div class="size_name">S</div><div class="product_amount"> 수량 : 10</div></a><a class="dropdown-item"><div class="size_name">SM</div><div class="product_amount"> 수량 : 10</div></a></div>
+						</div>
+					</div>
+					<div class="product-count">
+						<button id="minus-btn" type="button"><img class="minus-img" src="./Insert title here_files/minus.png"></button><input class="input-count" type="text" value="0"><button type="button" id="plus-btn"><img class="plus-img" src="./Insert title here_files/plus.png"></button>
+					</div>
+					<div class="product-payment">
+						<button>바로 구매</button>
+					</div>
+				</div>
 			</div>
+			<div class="product-body">
+				<div class="product-detail">원바디하네스 안정성 2중잠금 편안한 원터치하네스 2color<br><br>
+        2중잠금 방식으로 안전하게 원바디 디자인으로 편안하고 빠른 하네스<br><br>
+        색상 : 레드, 카키<br><br>
+        사이즈 : S, M, L, XL</div>
+			</div>
+			
+			
 		</div>
 	</div>
+	<script>
+		$(()=>{
+			let num = 0;
+			let maxNum = 0;
+			color();
+
+
+			$('.product-color').on('click','.dropdown-item', e =>{
+				$('#option-color').text($(e.target).text());
+				size($(e.target).text());
+				
+				
+			});
+			$('.product-size').on('click','.dropdown-item', e =>{
+				$('#option-size').text($(e.target).siblings('.size_name').text());
+				maxNum = $(e.target).siblings('.product_amount').text();
+				console.log(maxNum);
+			});
+			
+			$('#minus-btn').click(() => {
+				if(num == 0){
+					alert('잘못됩입력입니다.');
+				}
+				else{
+				num = num - 1;
+				$('.input-count').val(num);
+				}
+			});
+			
+			$('#plus-btn').click(() => {
+				if(maxNum == num){
+					alert('잘못됩입력입니다.');
+				}
+				else{
+					num = num + 1;
+					$('.input-count').val(num);
+				}
+				
+			});
+			
+			function size(color){
+				$.ajax({
+					url : 'size/' + '37/' + color,
+					success : result => {
+						let text = '';
+						result.forEach(item => {
+							text += '<a class="dropdown-item"><div class="size_name">'+ item.sizeName +'</div><div class="product_amount"> 수량 : ' + item.productAmount + '</div></a>'
+						});
+						$('#selectSize').html(text);
+					}
+				});
+			}
+			
+			function Clickplus(){
+				num = num + 1;
+				$('.input-count').val(num);
+			}
+			
+			function Clickminus() {
+				num = num - 1;
+				$('.input-count').val(num);
+			}
+			
+			function color() {
+				$.ajax({
+					url : 'color/' + '37',
+					success : result => {
+						let text = '';
+						result.forEach(item => {
+							text += '<a class="dropdown-item">' + item.colorName + '</a>'
+						}); 
+						
+						$('#selectColor').html(text);
+						
+					}
+				});
+			}
+
+		});
+		
+		
+	
+	</script>
+	
 	
 
 
@@ -1202,13 +1446,13 @@
         <div id="footer-btn-area">
             <ul class="nav nav-pills nav-justified">
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:7777/pet/product/7#">이용약관</a>
+                    <a class="nav-link" href="http://localhost:7777/pet/product/37#">이용약관</a>
                 </li>
                 <li class="nav-item" style="border-left: 2px solid rgb(230, 230, 230);border-right: 2px solid rgb(230, 230, 230);">
-                    <a class="nav-link" href="http://localhost:7777/pet/product/7#">개인정보처리방침</a>
+                    <a class="nav-link" href="http://localhost:7777/pet/product/37#">개인정보처리방침</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:7777/pet/product/7#">공지사항</a>
+                    <a class="nav-link" href="http://localhost:7777/pet/product/37#">공지사항</a>
                 </li>
             </ul>
         </div>
