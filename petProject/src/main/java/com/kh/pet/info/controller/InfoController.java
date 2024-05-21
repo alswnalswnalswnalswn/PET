@@ -23,6 +23,11 @@ public class InfoController {
 		}
 		return mv;
 	}
+	
+	@RequestMapping("petInfo")
+	public String selectPetInfo() {
+		return "info/petInfo/petInfoAll";
+	}
 
 	
 }

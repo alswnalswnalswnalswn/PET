@@ -290,7 +290,7 @@
 		width : 750px;
 		height : 90px;
 		margin: auto;
-		position: relative;
+		
 	}
 	#ndia{
 		width: 100%;
@@ -313,10 +313,10 @@
 		width :10%;
 		height: 30px;	
 		right: 0;
-		position: absolute;
 	}
 	#btncom img{
 		width :20px;
+		
 	}
 	#inscom{
 		
