@@ -49,7 +49,6 @@ public class CommunityController {
 		for(Info i : listInfo) {
 			i.setPageInfo(pi);
 		}
-		
 		return listInfo;
 	}
 	

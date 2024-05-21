@@ -47,8 +47,6 @@
 		<result column="CATEGORY_CODE" property="categoryCode"/>
 		<result column="MEMBER_NO" property="memberNo"/>
 		<result column="BOARD_LIKE" property="boardLike"/>
-		<result column="ATT_PATH" property="attPath"/>
-		<result column="CHANGE_NAME" property="changeName"/>
 		<result column="SUM_COUNT" property="sumCount"/>
 		<result column="LIKECHECK" property="likeCheck" />
 		
@@ -311,116 +309,100 @@
 		delete TB_CERT where who = #{who} and code = #{secret}
 	</delete>
 	
-	<select id="selectAllBoard" parameterType="_int" resultMap="infoResultSet">
+	
+	
+	<select id="selectBoard" parameterType="hashMap" resultMap="infoResultSet">
 		SELECT 
-				BOARD_NO,
-          		BOARD_WRITER,
-				TB_ANIMAL.ANIMAL_NAME,
-				TB_INFO.CREATE_DATE,
-				TB_INFO.BOARD_TITLE,
-				TB_INFO.BOARD_CONTENT,
-				TB_INFO.BOARD_COUNT,
-				NVL(BOARD_LIKE, 0) BOARD_LIKE,
-				ATT_PATH,
-				CHANGE_NAME,
-				SUM_COUNT,
-				LIKECHECK,
-				ROWNUM
-      	  FROM (
-			   SELECT
-						BOARD_NO,
-						BOARD_TITLE,
-						BOARD_CONTENT,
-                        BOARD_COUNT,
-						TB_MEMBER.NICKNAME BOARD_WRITER,
-						BO_CATEGORY_NAME,
-						BO_CATEGORY_CODE CATEGORY_CODE,
-						ANIMAL_CODE,
-						ANIMAL_NAME,
-						TB_INFO.CREATE_DATE CREATE_DATE,
-						NVL(LIKE_COUNT, 0) BOARD_LIKE,
-						REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
-						BOARD_STATUS,
-						ROW_NUMBER() OVER(PARTITION BY BOARD_NO ORDER BY CATEGORY_CODE DESC ) AS RN
-				FROM
-						TB_INFO
-				LEFT JOIN
-						TB_BOARD_ANIMAL USING(BOARD_NO)
-				LEFT JOIN
-						TB_ANIMAL USING(ANIMAL_CODE)
-				LEFT JOIN
-						TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
-				LEFT JOIN
-						TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
-				LEFT JOIN
-						(
-						SELECT 
-								COUNT(*) LIKE_COUNT, 
-								BOARD_NO 
-						FROM 
-								TB_LIKE 
-						GROUP BY 
-								BOARD_NO
-						) USING (BOARD_NO)
-				LEFT JOIN
-						(
-						SELECT 
-								BOARD_NO,
-		                              COUNT(REPLY_NO) REPLY_COUNT,
-		                              COUNT(COMMENT_NO) COMMENT_COUNT
-						FROM 
-								TB_INFO 
-						LEFT JOIN
-								TB_REPLY USING(BOARD_NO)
-                        LEFT JOIN
-                                TB_COMMENT USING(REPLY_NO)
-                        GROUP BY
-                                BOARD_NO
-						) USING (BOARD_NO)				
-		
-				LEFT JOIN 
-						TB_ATTACHMENT USING(BOARD_NO)
-				ORDER BY 
-						BOARD_NO
-				)
-		        JOIN
-		              TB_INFO USING (BOARD_NO)
-		        LEFT
-		        JOIN
-		              TB_BOARD_ANIMAL USING (BOARD_NO)
-		        LEFT
-		        JOIN
-		              TB_ATTACHMENT USING(BOARD_NO)
-		        LEFT
-		        JOIN
-		              TB_ANIMAL ON (TB_BOARD_ANIMAL.ANIMAL_CODE = TB_ANIMAL.ANIMAL_CODE)
-		        JOIN
-		              TB_MEMBER ON (TB_INFO.MEMBER_NO = TB_MEMBER.MEMBER_NO)
-		        LEFT
-		        JOIN
-		        	(
-		      SELECT
-				       BOARD_NO,
-				       COUNT(*) LIKECHECK
-				  FROM
-				       TB_LIKE
-				 WHERE
-				       MEMBER_NO = #{memberNo}
-				 GROUP
-				    BY
-				       BOARD_NO) USING (BOARD_NO)
-		 WHERE 
-				TB_INFO.BOARD_STATUS = 'Y'
-           AND
-                RN = 1
-           AND
-           		ATT_LEVEL = 1     
-           AND
-                TB_INFO.CATEGORY_CODE != 'I4'
-		   AND
-  				TB_INFO.MEMBER_NO = #{memberNo}     
-  		   AND ROWNUM BETWEEN 1 AND 10
+				BOARD_NO
+      	  FROM 
+      	  		TB_INFO
+		<if test="animal != 'A0'">
+		  JOIN 
+				TB_BOARD_ANIMAL USING(BOARD_NO)
+		</if>
+		  WHERE
+		        BOARD_STATUS = 'Y'
+			AND
+				MEMBER_NO = #{memberNo}
+		<if test="animal != 'A0'">
+			AND
+					ANIMAL_CODE = #{animal}
+		</if>
+		<if test="category != 'I0'">
+			AND
+					CATEGORY_CODE = #{category}	
+		</if>
+		ORDER BY
+				BOARD_NO DESC
 	</select>
+	
+	<select id="selectMyBoard" parameterType="java.util.List" resultMap="infoResultSet">
+		SELECT
+		        BOARD_NO,
+                MEMBER_NO,
+		        NICKNAME BOARD_WRITER,
+		        ANIMAL_NAME,
+		        CREATE_DATE,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        BOARD_COUNT,
+		        BOARD_LIKE,
+		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+		        BOARD_STATUS,
+		        CATEGORY_CODE,
+		        ATT_PATH,
+		        CHANGE_NAME
+		FROM
+		        TB_INFO
+		LEFT JOIN
+		        TB_BOARD_ANIMAL USING(BOARD_NO)
+		LEFT JOIN
+		        TB_ANIMAL USING(ANIMAL_CODE)
+		LEFT JOIN
+		        TB_MEMBER USING(MEMBER_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                COUNT(*) BOARD_LIKE, 
+		                BOARD_NO 
+		        FROM 
+		                TB_LIKE 
+		        GROUP BY 
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                BOARD_NO,
+		                COUNT(REPLY_NO) REPLY_COUNT,
+		                COUNT(COMMENT_NO) COMMENT_COUNT
+		        FROM 
+		                TB_INFO 
+		        LEFT JOIN
+		                TB_REPLY USING(BOARD_NO)
+		        LEFT JOIN
+		                TB_COMMENT USING(REPLY_NO)
+		        GROUP BY
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        TB_ATTACHMENT USING(BOARD_NO)
+		WHERE
+				BOARD_STATUS = 'Y'
+			AND
+				BOARD_NO IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item.boardNo}
+	  	</foreach>
+	  	    
+		ORDER BY 
+				BOARD_NO DESC
+	</select>
+	
+	
+	
+	
+	<!-- 여기서부터 지워도 되는건지 확인 부탁 -->
 	
 	<select id="selectBoardDetail" parameterType="_int" resultMap="infoResultSet">
 		SELECT 
@@ -519,7 +501,6 @@
 				    BY
 				       BOARD_NO) USING (BOARD_NO)
 		 WHERE 
-		 <!-- 
 				TB_INFO.BOARD_STATUS = 'Y'
            AND
            		ATT_LEVEL = 1     
@@ -527,7 +508,6 @@
                 TB_INFO.CATEGORY_CODE != 'I4'
 		   AND  -->
   				BOARD_NO = #{boardNo} 
-  		  <!-- AND ROWNUM BETWEEN 1 AND 10 --> 
 	
 	</select>
 	
@@ -622,12 +602,24 @@
    		  AND 
    				MEMBER_NO = #{memberNo}
    		  AND 
-   		  AND 
    		  		TB_ANIMAL.ANIMAL_NAME = #{animalName}
 	</select>
 	
+	<!-- 여기서부터 지워도 되는건지 확인 부탁 -->
 	
 	
+	
+	
+	<select id="selectListCount" parameterType="_int" resultType="_int">
+		SELECT 	
+				COUNT(*) 
+		  FROM
+				TB_INFO
+		 WHERE
+		 		MEMBER_NO = #{memberNo}				
+		   AND
+				BOARD_STATUS = 'Y'
+	</select>
 	
 	
 	

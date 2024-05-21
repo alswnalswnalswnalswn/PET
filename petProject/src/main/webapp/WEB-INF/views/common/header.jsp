@@ -477,7 +477,7 @@
             		<c:choose>
             		<c:when test='${ loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
     					<li class="nav-item">
-    						<a class="nav-link" href="${sessionScope.path}/member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/logout.png" alt=""></a>
+    						<a class="nav-link" href="${sessionScope.path}/member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/common/logout.png" alt=""></a>
     					</li>
     				</c:when>
     				<c:otherwise>
@@ -532,8 +532,8 @@
        	</script>
         <div id="navigator">
             <ul id="navi">
-                <li><a href="community">커뮤니티</a></li>
-                <li><a href="#">지식</a></li>
+                <li><a href="${sessionScope.path}/community">커뮤니티</a></li>
+                <li><a href="${sessionScope.path}/info/petInfo">지식</a></li>
                 <li><a href="${sessionScope.path}/shop">쇼핑</a></li>
                 <li><a href="${sessionScope.path}/info/date">데이트</a></li>
                 <li><a href="hospital">동물병원</a></li>

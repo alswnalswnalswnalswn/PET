@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -15,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -31,6 +30,8 @@ import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.common.model.vo.PageInfo;
+import com.kh.pet.common.template.Pagination;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.service.KakaoService;
 import com.kh.pet.member.model.service.MemberService;
@@ -339,44 +340,48 @@ public class MemberController {
 		
 	}
 	
-	@RequestMapping("myboard")
-	public String myboard() {
-		return "member/myboard";
-	}
-	@RequestMapping("selectAllBoard")
-	public ModelAndView selectAllBoard(ModelAndView mv, HttpSession session) {
-		Member loginUser = (Member)session.getAttribute("loginUser");
-		int memberNo = loginUser.getMemberNo();
-		List<Info> boardList = memberService.selectAllBoard(memberNo);
-		
-		if(boardList != null) {
-			session.setAttribute("boardList", boardList);
-			mv.setViewName("member/myboard");
-		} else {
-			session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
-			mv.setViewName("member/myboard");
-		}
-		return mv;
+	@RequestMapping("myBoard")
+	public String myboardForwarding() {
+		return "member/myboard2";
 	}
 	
-	@PostMapping("selectCategory")
-	public ModelAndView selectCategory(String animalName, int memberNo, ModelAndView mv, HttpSession session) {
+	@ResponseBody
+	@RequestMapping("selectMyBoard")
+	public List<Info> selectMyBoard(String animal, String category, int page, int memberNo) {
+		
+		HashMap<Object, Object> map = new HashMap();
+		map.put("animal", animal);
+		map.put("category", category);
+		map.put("memberNo", memberNo);
+		
+		PageInfo pi = Pagination.getPageInfo(memberService.selectListCount(memberNo), page, 10, 10);
+		
+		RowBounds rowBounds = new RowBounds(
+				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
+				pi.getBoardLimit()
+				);
 	    
-		System.out.println(memberNo);
-		HashMap<String, Object> map = new HashMap<>();
-	    map.put("animalName", animalName);
-	    map.put("memberNo", memberNo);
-		List<Info> myBoard = memberService.selectCategory(map);
-		System.out.println(myBoard);
-		if(myBoard != null) {
-			session.setAttribute("boardList", myBoard);
-			mv.setViewName("redirect:/");
-		} else {
-			session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
-			mv.setViewName("redirect:/");
+		List<Info> list = memberService.selectBoard(map, rowBounds);
+		
+		List<Info> myBoardList = memberService.selectMyBoard(list);
+		
+		for(Info i : myBoardList){
+			i.setPageInfo(pi);
 		}
-		return mv;
+		
+		return myBoardList;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping("selectBoardDetail")
 	public ModelAndView selectBoardDetail(int boardNo, ModelAndView mv, HttpSession session) {

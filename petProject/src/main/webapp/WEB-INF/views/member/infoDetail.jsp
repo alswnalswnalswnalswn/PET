@@ -145,28 +145,28 @@
 		font-size: 16px;
 	}
 	#needgongan1{
-		width : 1000px;
+		width : 800px;
 		height: 100px;
 	}
 	#infooutput{
-		width :1000px;
+		width :800px;
 		margin : auto;
 		border:1px solid rgba(173, 173, 173);
 	}
 	#infoheader{
-		width :1000px;
+		width :800px;
 		margin :auto;
-		height: 150px;
+		height: 120px;
 		display :flex;
 	}
 	#infoheader1{
-		width : 150px;
+		width : 120px;
 		height : 100%;
 		border-radius : 60%;
 		border:4px solid black;
 	}
 	#infoheader2{
-		width : 200px;
+		width : 180px;
 		height : 40%;	
 		margin-top : 8%;
 		padding-left : 3%;
@@ -182,36 +182,36 @@
 		font-size: 25px
 	}
 	#infoheader1 > img{
-		width : 140px;
-		height : 90%;
-		margin-left : 5px;
+		width : 110px;
+		height : 85%;
+		margin-left : 2px;
 	}
 	#infonickName{
 		font-size: 30px;
 		font-weight : bold;
 	}
 	#myimg{
-		width: 800px;
-		height : 800px;
+		width: 600px;
+		height : 600px;
 		margin : auto;
 	}
 	#myimg img{
-		width: 800px;
-		height : 798px;
+		width: 600px;
+		height : 550px;
 		margin : auto;
 		border: 1px solid rgba(173, 173, 173);
 	}
 	#myinfoContent{
-		width :1000px;
+		width :600px;
 		text-align : center;
-		padding-bottom : 50px;
+		padding-bottom : 70px;
 	}
 	#needgongan4{
-		width : 1000px;
+		width : 800px;
 		height: 150px;
 	}
 	#boardti{
-		width : 900px;
+		width : 700px;
 		height: 150px;
 		margin : auto;
 		font-size: 25px;
@@ -219,7 +219,7 @@
 		line-height: 100px;
 	}
 	#boardLike2{
-		width : 1000px;
+		width : 800px;
 		height: 100px;
 		display :flex;
 		margin: auto;
@@ -230,15 +230,15 @@
 	}
 	#likeboard2 >span{
 		line-height: 50px;
-		font-size: 27px;
+		font-size: 20px;
 		margin-top :200px;
 	}
 	#seeboard2>span{
-		font-size: 25px;	
+		font-size: 20px;	
 		line-height: 70px;
 	}
 	#replyboard2>span{
-		font-size: 25px;	
+		font-size: 20px;	
 		line-height: 50px;
 	}
 	#likeboard2>img{
@@ -246,8 +246,80 @@
 	#replyboard2>img{
 	}
 	#boardLike2 > div > img{
-		width : 40px;
-		height: 40px;
+		width : 30px;
+		height: 30px;
+	}
+	#golist{
+		width: 140px;
+		height: 120px;
+		margin : auto;
+		position : relative;
+		padding-left: 500px;
+	}
+	#listbtn{
+		width: 140px;
+		height: 50px;
+		position : absolute;
+		right: 0;
+		transform: translate(0, 10%);
+	    font-size: 15px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+	    bolder: 0;
+	    cursor :pointer;
+	}
+	#listbtn:hover{
+		font-size: 16px;
+		width: 141px;
+		height: 51px;
+	}
+	#myrep{
+		width: 800px;	
+		height: auto;
+		margin: auto;
+	}
+	#myrep>div{
+		border:1px solid black;
+	}
+	#myrep>div>div{
+		border:1px solid black;
+	}
+	#myreply{
+		width : 750px;
+		height : 90px;
+		margin: auto;
+		
+	}
+	#ndia{
+		width: 100%;
+		height: 30px;
+		display:flex;
+	}
+	#nickna{
+		width :80%;
+		height: 100%;
+	}
+	#daterep{
+		width :20%;
+		height: 100%;	
+	}
+	#repcon{
+		width :100%;
+		height: 30px;	
+	}
+	#btncom{
+		width :10%;
+		height: 30px;	
+		right: 0;
+	}
+	#btncom img{
+		width :20px;
+		
+	}
+	#inscom{
+		
 	}
 </style>
 </head>
@@ -326,9 +398,20 @@
 		</c:choose>
 		<div id="seeboard2"><span>조회(${info.boardCount })</span></div>
 		<div id="replyboard2"><img src="${sessionScope.path }/resources/img/common/reply.png"><span>(${info.sumCount })</span></div>
+		<div id="golist">
+			<a href=""><button id="listbtn">메인으로</button></a>
+		</div>
 	</div>
-	
-	
+	<div id="myrep">
+		<div id="myreply">
+			<div id="ndia">
+				<div id="nickna"></div><div id="daterep"></div>
+			</div>
+			<div id="repcon"></div>
+			<div id="btncom">댓글<img src="${sessionScope.path }/resources/img/common/replyarrow.png"></div>
+			<div id="inscom" style="display:none;"></div>
+		</div>
+	</div>
 	
 	
 	

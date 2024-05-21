@@ -5,10 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>커뮤니티</title>
-<link rel="stylesheet" href="resources/css/community/communityMain.css" />
+<title>내 게시글 조회</title>
+
 <style>
-div{
+	div{
 		box-sizing : border-box;
 	}
 	#submenubar{
@@ -496,21 +496,6 @@ div{
 				}
 			});
 		}
-		
-	    $(document).ready(function(){
-	        $('.boardCategory').click(function(){
-	            $('#boardinfo').toggle();
-	        });
-	        $('.aniCategory').click(function(){
-	            $('#aniinfo').toggle();
-	        });
-	    });
-	    
-	    $(document).ready(function(){
-	    	$('#btncom').click(function(){
-	    		$('#inscom').toggle();
-	    	})
-	    })
 		
 	</script>
 	

@@ -289,7 +289,7 @@
 					<input type="text" name="searchContent" id="searchContent"/>
 				</div>
 				<div id="searchImg">
-					<img src="${sessionScope.path}/resources/img/searchform.png" alt="" id="searchimg">
+					<img src="${sessionScope.path}/resources/img/common/searchform.png" alt="" id="searchimg">
 				</div>
 			</div>
 		</div>
@@ -305,16 +305,16 @@
 				</div>
 				<div id="sksnrl2">	
 					<div id="boardinfo">
-						<span id="freecon"># 자유</span><br>
-						<span id="quescon"># 질문</span><br>
+						<span id="freecon" class="category"># 자유</span><br>
+						<span id="quescon" class="category"># 질문</span><br>
 					</div>
 					<div id="aniinfo">
-						<span class="category" id="dogcon"># 강아지</span><br>
-						<span class="category" id="catcon"># 고양이</span><br>
-						<span class="category" id="rabcon"># 토끼</span><br>
-						<span class="category" id="fishcon"># 물고기</span><br>
-						<span class="category" id="birdcon"># 새</span><br>
-						<span class="category" id="hamcon"># 햄스터</span><br>
+						<span class="animalName" id="dogcon"># 강아지</span><br>
+						<span class="animalName" id="catcon"># 고양이</span><br>
+						<span class="animalName" id="rabcon"># 토끼</span><br>
+						<span class="animalName" id="fishcon"># 물고기</span><br>
+						<span class="animalName" id="birdcon"># 새</span><br>
+						<span class="animalName" id="hamcon"># 햄스터</span><br>
 					</div>
 				</div>
 			</div>
@@ -323,109 +323,39 @@
 	</div>
 	<div id="needgongan1"></div>
 		<div id="boardoutput">
-		<c:choose>
-			<c:when test="${ empty boardList }">
-				<table>
-					<tr>
-						<th style="font-size:20px;" colspan="5">작성한 게시물이 없습니다.</th>
-					</tr>
-				</table>
-			</c:when>
-			<c:otherwise>
-				<c:forEach var="b" items="${ boardList }">
-					<script>
-					    let createDate = dateFormat('${b.createDate}');
-					    console.log(createDate);
-					</script>
-				
-					<div id="myboard" class="myboard" data-board-no="${b.boardNo}">
+						<div id="myboard" class="myboard" data-board-no="1">
 						<div id="thumbnail">
-						<c:choose>
-							<c:when test="${ b.changeName eq null }">
-								<img src="${sessionScope.path}/resources/img/profile.png" alt="">
-							</c:when>
-							<c:otherwise>
-								<img src="${sessionScope.path}/${b.attPath }${b.changeName}" alt="">
-							</c:otherwise>
-						</c:choose>
+								<img src="${sessionScope.path}/resources/img/common/profile.png" alt="">
 						</div>
 						<div id="boardlist">
 							<div id="boardheader">
-								<div id="boardme">&nbsp;&nbsp;&nbsp;${b.memberNo }</div>
+								<div id="boardme">&nbsp;&nbsp;&nbsp;1</div>
 								<div id="myboardAni"><span class="category" id="myani"></span></div>
-								<div id="boardCreate">&nbsp;&nbsp;&nbsp;${b.createDate }</div>
+								<div id="boardCreate">&nbsp;&nbsp;&nbsp;2</div>
 							</div>	
-							<div id="boardtitle">&nbsp;&nbsp;&nbsp;${b.boardTitle }</div>
-							<div id="boardcontent">&nbsp;&nbsp;&nbsp;${b.boardContent }</div>
+							<div id="boardtitle">&nbsp;&nbsp;&nbsp;3</div>
+							<div id="boardcontent">&nbsp;&nbsp;&nbsp;4</div>
 							<script>
 							</script>
 						</div>
 						<div id="boardLike">
 							<div id="likeinfo"><button id="detailbtn">˚&nbsp;˚&nbsp;˚</button></div>
-							<c:choose>
-								<c:when test="${ b.likeCheck != 1 }">
-									<div id="likeboard"><img src="${sessionScope.path }/resources/img/common/like.png">(${b.boardLike })</div>
-								</c:when>
-								<c:otherwise>
-									<div id="likeboard"><img src="${sessionScope.path }/resources/img/common/like2.png">(${b.boardLike })</div>
-								</c:otherwise>
-							</c:choose>
-							<div id="seeboard"><span>조회</span>(${b.boardCount })</div>
-							<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">(${b.sumCount })</div>
+									<div id="likeboard"><img src="${sessionScope.path }/resources/img/common/like2.png">(1)</div>
+							<div id="seeboard"><span>조회</span>(1)</div>
+							<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">(1)</div>
 						</div>
 					</div>
-				</c:forEach>
-			</c:otherwise>
-		</c:choose>
 	</div>
 	<div id="gomain">
 		<a href=""><button id="mainbtn">메인으로</button></a>
 	</div>
-	
-	<script>
-		$('.category').click(function(){
-			var categoryValue = $(this).text().trim().substring(2);
-			console.log(categoryValue);
-			$.ajax({
-				url : 'selectCategory',
-				type: 'POST',
-				data : {
-						animalName: categoryValue,
-						memberNo : '${loginUser.memberNo}'
-						},
-				success: function(result){
-				     console.log('AJAX 요청이 성공적으로 완료되었습니다.');
-				},
-				error: function(result){
-				    console.error('AJAX 요청 중 오류가 발생하였습니다: ' + result);
-				}
-			});
-		});
+	<div class="myboard_body">
+		<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
+	</div>
 		
-		$('.myboard').click(function(){
-			const boardNo = $(this).data('board-no');
-			console.log(boardNo);
-			location.href= 'selectBoardDetail?boardNo=' + boardNo;
-		})
-	</script>
-	<script>
-		function dateFormat(date) {
-	        let month = date.getMonth() + 1;
-	        let day = date.getDate();
-	        let hour = date.getHours();
-	        let minute = date.getMinutes();
-	        let second = date.getSeconds();
+		
+		
 	
-	        month = month >= 10 ? month : '0' + month;
-	        day = day >= 10 ? day : '0' + day;
-	        hour = hour >= 10 ? hour : '0' + hour;
-	        minute = minute >= 10 ? minute : '0' + minute;
-	        second = second >= 10 ? second : '0' + second;
-	
-	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-	    	        
-		}
-	</script>
 	
 	<jsp:include page="../common/footer.jsp"/>
 	
