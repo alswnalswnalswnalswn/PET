@@ -357,8 +357,6 @@
 							</div>	
 							<div id="boardtitle">&nbsp;&nbsp;&nbsp;${b.boardTitle }</div>
 							<div id="boardcontent">&nbsp;&nbsp;&nbsp;${b.boardContent }</div>
-							<script>
-							</script>
 						</div>
 						<div id="boardLike">
 							<div id="likeinfo"><button id="detailbtn">˚&nbsp;˚&nbsp;˚</button></div>

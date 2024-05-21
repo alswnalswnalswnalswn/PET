@@ -6,7 +6,206 @@
 <head>
 <meta charset="UTF-8">
 <title>커뮤니티</title>
-	<link rel="stylesheet" href="resources/css/community/communityMain.css" />
+<link rel="stylesheet" href="resources/css/community/communityMain.css" />
+<style>
+	div{
+		box-sizing : border-box;
+	}
+	#submenubar{
+		width : 1200px;
+		height: 150px;
+		margin : auto;
+	}
+	#submenubar > searchForm{
+		float : left;
+	}
+	
+	#searchForm{
+		width : 50%;
+		height : 100%;
+		position: relative;
+		float: left;
+	}
+	
+	#search{
+		width : 300px;
+		height : 40%;
+		position : absolute;
+		left: 30px;
+		top : 50px;
+	}
+	#searchcon{
+		width : 200px;
+		height : 100%;
+		border-bottom : 1px solid rgb(235, 235, 235);
+	}
+	#searchContent{
+		outline : none;
+		margin-top: 25px;
+		margin-left: 5px;
+		border : 0;
+	}
+	#searchImg{
+		width : 30px;
+		height: 60%;
+		padding-top : 25px;
+	}
+	#searchimg{
+		width : 30px;
+		height: 30px;
+		cursor: pointer;
+	}
+	#searchimg:hover{
+		width : 31px;
+		height: 31px;
+	}
+	#search > div{
+		float: left;
+	}
+	#needgongan{
+		width : 1200px;
+		height: 100px;
+	}
+	#boardoutput{
+		width :900px;
+		height: auto;
+		margin : auto;
+	}
+	#myboard{
+		width : 900px;
+		height: 150px;
+		border: 1px solid rgb(214, 214, 214);
+		margin : auto;
+		border-radius: 10px;
+		display: flex;
+		position : relative;
+		cursor :pointer;
+	}
+	#myboard:hover{
+    	box-shadow : 1px 1px 1px;
+	}
+	#thumbnail{
+		width :150px;
+		height: 150px;
+	}
+	#boardlist{
+		width :670px;
+		height: 150px;
+		margin-left :5px;
+	}
+	#thumbnail img{
+		width :99%;
+		height: 99%;
+		border : 1px solid rgb(214, 214, 214);
+	}
+	#gomain{
+		width: 900px;
+		height: 120px;
+		margin : auto;
+		position : relative;
+	}
+	#mainbtn{
+		width: 140px;
+		height: 50px;
+		position : absolute;
+		right: 0;
+		transform: translate(0, 10%);
+	    font-size: 15px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+	    bolder: 0;
+	    cursor :pointer;
+	}
+	#mainbtn:hover{
+		font-size: 16px;
+		width: 141px;
+		height: 51px;
+	}
+	#boardheader{
+		width :670px;
+		height: 25%;
+		display: flex;
+	}
+	#boardme{
+		width :100px;
+		height: 100%;
+		font-size : 20px;
+		font-weight :bold;
+	}
+	#myboardAni{
+		width : 470px;
+		height: 100%;
+	}
+	.animalAndCategory{
+		width :60px;
+		height: 25px;
+		background-color: rgb(255, 239, 175);	
+		line-height: 30px;
+		margin-top : 5px;
+		font-weight: bold;
+		margin-right: 5px;
+	}	
+	#boardCreate{
+		width : 80px;
+		height: 100%;
+	}
+	#boardtitle{
+		width :670px;
+		height: 25%;
+	}
+	#boardcontent{
+		width :670px;
+		height: 50%;
+	}
+	#boardLike{
+		width :70px;
+		height :100%;	
+		position :absolute;
+		right: 0;	
+	}
+	#likeinfo{
+		width : 100%;
+		height: 25%;
+	}
+	#likeboard{
+		width : 100%;
+		height: 25%;
+	}
+	#seeboard{
+		width : 100%;
+		height: 25%;
+		line-height: 30px;
+	}
+	#replyboard{
+		width : 100%;
+		height: 25%;
+	}
+	#boardoutput >a{
+	    text-decoration: none;
+	    color: black; 
+	}
+	#detailbtn{
+		border: 0;
+		background-color: white;
+		color : black;
+		width :30px;
+		height: 20px;
+		margin-left: 10px;
+	}
+	#likeboard>img{
+		width : 35px;
+		height: 35px;
+	}
+	#replyboard>img{
+		width : 35px;
+		height: 35px;
+	}
+	#myani{
+		background-color: rgba(242, 189, 108, 0.82);
+	}
+</style>
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
@@ -17,13 +216,16 @@
 	
 		<div class="community_header">
 			<div class="searchCategory">
-				<select>
-					<option name="searchAll">전체</option>
-					<option name="title">제목</option>
-					<option name="content">내용</option>
-				</select>
-				<input type="text" class="form-control" placeholder="검색어를 입력해주세요">
-				<button class="btn btn-primary" type="button">검색</button>
+				<div id="searchForm">
+					<div id="search">
+						<div id="searchcon">
+							<input type="text" name="searchContent" id="searchContent"/>
+						</div>
+						<div id="searchImg">
+							<img src="${sessionScope.path}/resources/img/common/searchform.png" alt="" id="searchimg">
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 			
@@ -49,14 +251,16 @@
 		</div>
 		
 		<br clear="both">
-		
-		<div class="content_wrap"></div>
-		
+		<div id="needgongan"></div>
+		<div class="content_wrap" id="boardoutput"></div>
+			
+	</div>
+	<div id="gomain">
 		<div class="btnDiv">
 			<button>더 보기</button>
 		</div>
+		<a href="${sessionScope.path }/"><button id="mainbtn">메인으로</button></a>
 	</div>
-	
 	<script>
 	
 		// 초기 변수 선언
@@ -172,29 +376,37 @@
 						
 						animalListStr += '<br clear="both">';
 						
-						resultStr += '<div class="communityList">'
-										+ '<div class="thumbnailImg"><img src="'
+						resultStr += '<div id="myboard" class="communityList">'
+										+ '<div class="thumbnailImg" id="thumbnail"><img src="'
 										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
 										+ '"></div>'
+										+ '<div class="center_content" id="boardlist">'
 										+ '<input type="hidden" value="' + result[i].boardNo + '">'
-										+ '<div class= "center_content">'
-											+ '<div class="content_writer">' + result[i].memberNo + '</div>'
-											+ animalListStr
-											+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
-											+ '<div class="content_text">' + result[i].boardContent + '</div>'
-											+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
+											+ '<div id="boardheader">'
+												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
+												+ '<div id="myboardAni"><span class="category" id="myani">' + animalListStr + '</span></div>'
+												+ '<div class="create_date" id="boardCreate">' + result[i].boardCreateDate + '</div>'
+											+ '</div>'
+											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
+											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
 										+ '</div>'
-										+ '<div class="content_reaction">'
-											+ '<div class="cr_detail"><div><img src="resources/img/like.png"></div><div>' + result[i].boardLike + '</div></div>'
-											+ '<div class="cr_detail"><div><img src="resources/img/reply.png"></div><div>' + result[i].sumCount + '</div></div>'
-											+ '<div class="cr_detail"><div>조회수</div><div>' + result[i].boardCount + '</div></div>'
-										+ '</div>'
+											+ '<div class="content_reaction" id="boardLike">'
+												+ '<div id="likeinfo"><button id="detailbtn">&nbsp;&nbsp;&nbsp;˚&nbsp;˚&nbsp;˚</button></div>'
+												+ '<div id="likeboard"><img id="like_board" src="${sessionScope.path }/resources/img/common/like.png">&nbsp;&nbsp;(' + result[i].boardLike + ')</div>'
+												+ '<div id="seeboard"><span>조회</span>&nbsp;&nbsp;&nbsp;(' + result[i].sumCount + ')</div>'
+												+ '<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">&nbsp;&nbsp;(' + result[i].boardCount + ')</div>'
+											+ '</div>'
 									+ '</div>'
 					};
 					
+					$('#like_board').click(function(){
+						 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
+	                        $('#like_board img').attr('src', likeNuroom);
+					})
+					
 					$('.content_wrap').html(resultStr);
 					
-					$('.communityList').click(function() {
+					$('.center_content').click(function() {
 						
 						var $communityDetail = $(this).next('.communityDetail');
 						var boardNo = $(this).find('input[type="hidden"]').val();
