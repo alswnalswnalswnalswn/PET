@@ -229,25 +229,29 @@
 			</div>
 		</div>
 			
-		<div class="blank_div"></div>
-		
 		<div class="selectCategory">
-			<div class="board_category">
-				<button type="button" class="btn btn-light" value="I0">전체</button>
-				<button type="button" class="btn btn-light" value="I1">자유</button>
-				<button type="button" class="btn btn-light" value="I2">질문</button>
-			</div>
-			
-			<br clear="both">
 			
 			<div class="animal_category">
-				<img class='categoryImg' data-value='A1' src='${path}/resources/img/common/animaldog.png'>
-				<img class='categoryImg' data-value='A2' src='${path}/resources/img/common/animalcat.png'>
-				<img class='categoryImg' data-value='A3' src='${path}/resources/img/common/animalrab.png'>
-				<img class='categoryImg' data-value='A4' src='${path}/resources/img/common/animalfish.png'>
-				<img class='categoryImg' data-value='A5' src='${path}/resources/img/common/animalbird.png'>
-				<img class='categoryImg' data-value='A6' src='${path}/resources/img/common/animalham.png'>
+				<button type="button" class="dropdown-toggle" data-toggle="dropdown">반려동물</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#"># 강아지</a> 
+					<a class="dropdown-item" href="#"># 고양이</a> 
+					<a class="dropdown-item" href="#"># 토끼</a> 
+					<a class="dropdown-item" href="#"># 물고기</a> 
+					<a class="dropdown-item" href="#"># 새</a> 
+					<a class="dropdown-item" href="#"># 햄스터</a> 
+				</div>
 			</div>
+			
+			<div class="board_category">
+				<button type="button" class="dropdown-toggle" data-toggle="dropdown">글 성격</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#"># 전체</a> 
+					<a class="dropdown-item" href="#"># 자유</a> 
+					<a class="dropdown-item" href="#"># 질문</a> 
+				</div>
+			</div>	
+			
 		</div>
 		
 		<br clear="both">
@@ -260,6 +264,8 @@
 			<button>더 보기</button>
 		</div>
 		<a href="${sessionScope.path }/"><button id="mainbtn">메인으로</button></a>
+	</div>
+		 
 	</div>
 	<script>
 	
@@ -389,6 +395,26 @@
 											+ '</div>'
 											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
 											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
+						resultStr += '<div class="communityList">'
+						
+										
+										+ '<div class="thumbnailImg"><img src="'
+										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
+										+ '"></div>'
+										
+										
+										+ '<input type="hidden" value="' + result[i].boardNo + '">'
+										+ '<div class= "center_content">'
+											+ '<div class="content_writer">' + result[i].memberNo + '</div>'
+											+ animalListStr
+											+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
+											+ '<div class="content_text">' + result[i].boardContent + '</div>'
+											+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
+										+ '</div>'
+										+ '<div class="content_reaction">'
+											+ '<div class="cr_detail"><div><img src="resources/img/common/like.png"></div><div>' + result[i].boardLike + '</div></div>'
+											+ '<div class="cr_detail"><div><img src="resources/img/common/reply.png"></div><div>' + result[i].sumCount + '</div></div>'
+											+ '<div class="cr_detail"><div>조회수</div><div>' + result[i].boardCount + '</div></div>'
 										+ '</div>'
 											+ '<div class="content_reaction" id="boardLike">'
 												+ '<div id="likeinfo"><button id="detailbtn">&nbsp;&nbsp;&nbsp;˚&nbsp;˚&nbsp;˚</button></div>'
@@ -426,7 +452,6 @@
 		}
 		
 	</script>
-	
 	
 	<jsp:include page="../../common/footer.jsp" />
 </body>
