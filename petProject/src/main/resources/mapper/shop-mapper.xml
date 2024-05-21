@@ -6,8 +6,7 @@
 	<resultMap type="productOption" id="productOptionResultSet">
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_AMOUNT" property="productAmount"/>
-		<collection resultMap="productColorResultSet" property="colorList"/>
-		<collection resultMap="productSizeResultSet" property="sizeList"/>
+		<result column="SIZE_NAME" property="sizeName"/>
 	</resultMap>
 
 	<resultMap type="attachment" id="attachmentResultSet">
@@ -191,4 +190,41 @@
 	   	  PRODUCT_NO DESC
 	</select>
 	
+	<select id="selectColor" parameterType="_int" resultMap="productColorResultSet">
+		SELECT *
+
+		FROM(
+				SELECT
+		       			COLOR_CODE,
+		       			COLOR_NAME,
+		       			ROW_NUMBER() OVER(PARTITION BY COLOR_CODE ORDER BY COLOR_CODE) RN
+		  		  FROM
+		       			TB_PRODUCT_OPTION
+		  		  JOIN
+		       			TB_PRODUCT_COLOR USING(COLOR_CODE)	
+		  		  JOIN
+		       			TB_PRODUCT_SIZE USING(SIZE_CODE)
+		 		 WHERE
+		       			PRODUCT_NO = #{productNo})
+		WHERE RN = 1
+	
+	</select>
+	
+	<select id="selectSize" parameterType="hashmap" resultMap="productOptionResultSet">
+		SELECT
+		       SIZE_CODE,
+		       SIZE_NAME,
+		       PRODUCT_AMOUNT
+		  FROM
+		       TB_PRODUCT_OPTION
+		  JOIN
+		       TB_PRODUCT_SIZE USING(SIZE_CODE)
+		  JOIN
+		       TB_PRODUCT_COLOR USING(COLOR_CODE)
+		 WHERE
+		       COLOR_NAME = #{colorName}
+		   AND
+		       PRODUCT_NO = TO_NUMBER(#{productNo})
+	
+	</select>
 </mapper>
