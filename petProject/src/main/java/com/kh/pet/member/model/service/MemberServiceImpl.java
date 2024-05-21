@@ -129,9 +129,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Info> selectAllBoard(HashMap<Object, Object> map) {
-		return memberRepository.selectAllBoard(sqlSession, map);
+	public List<Info> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds) {
+		return memberRepository.selectBoard(sqlSession, map, rowBounds);
 	}
+
+	@Override
+	public List<Info> selectMyBoard(List<Info> list) {
+		return memberRepository.selectMyBoard(sqlSession, list);
+	}
+
 
 
 }
