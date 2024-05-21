@@ -62,215 +62,104 @@ div{
 	#search > div{
 		float: left;
 	}
-	#selectctg{
-		width : 40%;
-		height: 100%;
-		float: left;
-		position: relative;
-	}
-	#select{
-		width : 220px;
-	 	justify-content: space-between;
-		height: 200px;
-		position: absolute;
-		right: 0;
-        flex-direction: column;
-        top : 30%;
-	}
-	#styleboardform, #styleaniform{
-		width: 110px;
-		height : 100%;
-		float: left;
-	}
-	#selectstyle, #selectani{
-		width : 110px;
-		height : 30px;
-	    display: flex;	
-    	justify-content: center;
-	}
-	#styleboard, #styleani{
-		width : 90px;
-		height : 30px;
-		font-size: 15px;
-		font-weight: bold;
-		background-color: rgb(248, 243, 221);
-		color: rgba(122, 88, 33, 0.92);
-		text-align : center;
-		line-height: 30px;
-	    border-top-left-radius: 10px;
-	    border-top-right-radius: 10px; 
-	    cursor: pointer;
-	    float: left;
-   		margin-right: 10px;
-   	}
-	#styleboard:hover, #styleani:hover{
-		font-size: 16px;
-	}
-	#line{
-		width : 300px;
-		margin-left: 180px;
-		margin-top : 15%;
-		border: 1px solid rgba(190, 190, 190, 0.2);
-	}
-	#boardinfo{
-		width : 90%;
-		height: 30%;
-		background-color: rgba(190, 190, 190, 0.2);
-	    border-radius: 10px;
-        margin-top : 10px;
-	}
-	#aniinfo{
-		width : 90%;
-		height: 75%;
-		background-color: rgba(190, 190, 190, 0.2);
-	    border-radius: 10px;
-	    margin-top : 10px;
-	}
-	span{
-		text-align: center;
-		cursor: pointer;
-		font-size: 15px;
-	}
-	span:hover{
-		font-size: 16px;
-	}
-	#needgongan1{
-		width : 800px;
-		height: 80px;
-		margin :auto;
-	}
-	#boardoutput{
-		width :900px;
-		height: auto;
-		margin : auto;
-	}
-	#myboard{
-		width : 900px;
-		height: 150px;
-		border: 1px solid rgb(214, 214, 214);
-		margin : auto;
-		border-radius: 10px;
-		display: flex;
-		position : relative;
-		cursor :pointer;
-	}
-	#myboard:hover{
-    	box-shadow : 1px 1px 1px;
-	}
-	#thumbnail{
-		width :150px;
-		height: 150px;
-	}
-	#boardlist{
-		width :670px;
-		height: 150px;
-		margin-left :5px;
-	}
-	#thumbnail img{
-		width :99%;
-		height: 99%;
-		border : 1px solid rgb(214, 214, 214);
-	}
-	#gomain{
-		width: 900px;
-		height: 120px;
-		margin : auto;
-		position : relative;
-	}
-	#mainbtn{
-		width: 140px;
-		height: 50px;
-		position : absolute;
-		right: 0;
-		transform: translate(0, 10%);
-	    font-size: 15px;
-	    border-radius: 10px;
-	    background-color: rgb(94, 87, 59);
-	    color:white;
-	    font-weight: bold;
-	    bolder: 0;
-	    cursor :pointer;
-	}
-	#mainbtn:hover{
-		font-size: 16px;
-		width: 141px;
-		height: 51px;
-	}
-	#boardheader{
-		width :670px;
-		height: 25%;
-		display: flex;
-	}
-	#boardme{
-		width :100px;
-		height: 100%;
-		font-size : 20px;
-		font-weight :bold;
-	}
-	#myboardAni{
-		width : 470px;
-		height: 100%;
-	}
-	.animalAndCategory{
-		width :60px;
-		height: 25px;
-		background-color: rgb(255, 239, 175);	
-		line-height: 30px;
-		margin-top : 5px;
-		font-weight: bold;
-		margin-right: 5px;
-	}	
-	#boardCreate{
-		width : 80px;
-		height: 100%;
-	}
-	#boardtitle{
-		width :670px;
-		height: 25%;
-	}
-	#boardcontent{
-		width :670px;
-		height: 50%;
-	}
-	#boardLike{
-		width :70px;
-		height :100%;	
-		position :absolute;
-		right: 0;	
-	}
-	#likeinfo{
-		width : 100%;
-		height: 25%;
-	}
-	#likeboard{
-		width : 100%;
-		height: 25%;
-	}
-	#seeboard{
-		width : 100%;
-		height: 25%;
-		line-height: 30px;
-	}
-	#replyboard{
-		width : 100%;
-		height: 25%;
-	}
-	#boardoutput >a{
-	    text-decoration: none;
-	    color: black; 
-	}
-	#detailbtn{
-		border: 0;
-		background-color: white;
-		color : black;
-		width :30px;
-		height: 20px;
-		margin-left: 10px;
-	}
-	#likeboard>img{
-		width : 35px;
-		height: 35px;
-	}
+<style>
+		div{
+			box-sizing: border-box;
+		}
+		#wrap{
+			width: 1200px;
+			height: auto;
+			margin: auto;
+		}
+		.shop_header{
+			width: 1200px;
+			height: 200px;
+			display: flex;
+			justify-content: space-between;
+		}
+		.shop_body{
+			height: auto;	
+		}
+		.header_search{
+			height: 100%;
+			width: 350px;
+			padding: 65px 70px 65px 30px;
+		}
+		.header_category{
+			height: 100%;
+			width:600px;
+		}
+		.anmal_category{
+			height: 60%;
+			padding-top: 40px;
+		}
+		.use_category{
+			height: 40%;
+		}
+		.nav-item > img{
+			width: 90px;
+			height: 70px;
+		}
+		.use_category > div{
+			margin-top:10px;
+			float: right;
+		}
+		.custom-col-5 {
+	      flex: 0 0 20%;
+	      max-width: 20%;
+	    }
+	    #productList{
+	    	width: 1200px;
+	    	margin: auto;
+	    }
+	    .card{
+	    	margin:10px;
+	    	cursor: pointer;
+	    }
+	    .anmal_category ul{
+	    	border:none;
+	    }
+	    .product_img{
+	    	width: 100%;
+	    	height: 190px;
+	    }
+	    .card-text{
+	   		padding-top: 5px;
+	    	padding-left: 5px;
+	    	height: 50px;
+	    	font-size: 12px;
+	    	font-weight: bold;
+	    	margin-bottom: 10px;
+	    }
+	    .card_btn{
+	    	text-align: right;
+	    }
+	    .card_btn img{
+	    	weight:30px;
+	    	height:30px;
+	    }
+	    .card_price{
+	    	padding : 0 5px;
+	    	color:rgb(211, 84, 0);
+	    	font-weight:bold
+	    }
+	    .card_btn{
+	    	padding : 0 5px;
+	    }
+	    .nav li> img:hover{
+	    	width: 95px;
+			height: 75px;
+	       cursor: pointer;
+	    }
+	    .refresh_btn{
+	    	margin: auto;
+	    	text-align: center;
+	    }
+	    .refresh_btn > img{
+	    	width: 45px;
+	    	height: 45px;
+	    	margin-top: 40px;
+	    }
 	#replyboard>img{
 		width : 35px;
 		height: 35px;
@@ -296,32 +185,36 @@ div{
 				</div>
 			</div>
 		</div>
-		<div id="selectctg">
-			<div id="select">
-				<div id="styleboardform">
-					<div id="selectstyle" class="boardCategory">
-						<span id="styleboard">글 성격</span>
-					</div>
-					<div id="boardinfo">
-						<span id="freecon"># 자유</span><br>
-						<span id="quescon"># 질문</span><br>
-					</div>
+		<div class="shop_header">
+			<div class="header_search">
+			</div>
+			<div class="header_category">
+				<div class="anmal_category">
+					<ul class="nav nav-tabs nav-justified">
+						<li class="nav-item" id="A1"><img class="img_dog" src="${sessionScope.path }/resources/img/common/animaldog.png"></li>
+						<li class="nav-item" id="A2"><img class="img_cat" src="${sessionScope.path }/resources/img/common/animalcat.png"></li>
+						<li class="nav-item" id="A3"><img class="img_rab" src="${sessionScope.path }/resources/img/common/animalrab.png"></li>
+						<li class="nav-item" id="A4"><img class="img_fish" src="${sessionScope.path }/resources/img/common/animalfish.png"></li>
+						<li class="nav-item" id="A5"><img class="img_bird" src="${sessionScope.path }/resources/img/common/animalbird.png"></li>
+						<li class="nav-item" id="A6"><img class="img_ham" src="${sessionScope.path }/resources/img/common/animalham.png"></li>
+					</ul>
 				</div>
-				<div id="styleaniform">
-					<div id="selectani" class="aniCategory">	
-						<span id="styleani">반려 동물</span>
-					</div>
-					<div id="aniinfo">
-						<span class="category" id="dogcon"># 강아지</span><br>
-						<span class="category" id="catcon"># 고양이</span><br>
-						<span class="category" id="rabcon"># 토끼</span><br>
-						<span class="category" id="fishcon"># 물고기</span><br>
-						<span class="category" id="birdcon"># 새</span><br>
-						<span class="category" id="hamcon"># 햄스터</span><br>
+				<div class="use_category">
+					<div>
+						<select id="product_category">
+							<option value="P0">전체</option>
+							<option value="P1">생필품</option>
+							<option value="P2">식품</option>
+						</select>
 					</div>
 				</div>
 			</div>
-			<div id="line"></div>
+		</div>
+		<div class="shop_body">
+			<div class="row" id="productList">
+
+		    </div>
+			<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
 		</div>
 	</div>
 	<div id="needgongan1"></div>
@@ -335,7 +228,7 @@ div{
 	
 		// 초기 변수 선언
 		let animal='A0',
-		category = 'I0', 
+		category = 'I2', 
 		page = 1,
 		text = '',
 		resultStr = '',
@@ -343,10 +236,10 @@ div{
 		
 		$(() => {
 			
-			selectCommunityList(animal, category, page);
+			selectInfoList(animal, category, page);
 			
 			$('.btnDiv > button').click(() => {
-				selectCommunityList(animal, category, ++page);
+				selectInfoList(animal, category, ++page);
 			});
 			
 			
@@ -371,7 +264,7 @@ div{
 				 
 				resultStr = '';
 				page = 1;
-				selectCommunityList(animal, category, page);
+				selectInfoList(animal, category, page);
 		    });
 			 
 			 
@@ -397,7 +290,7 @@ div{
 				 
 				 resultStr = '';
 				 page = 1;
-				 selectCommunityList(animal, category, page);
+				 selectInfoList(animal, category, page);
 			 });
 			
 		});
@@ -417,14 +310,14 @@ div{
 	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 		}
 				
-		function selectCommunityList(animal, category, page){
+		function selectInfoList(animal, category, page){
 			
 			console.log(animal);
 			console.log(category);
 			console.log(page);
 			
 			$.ajax({
-				url : 'selectCommunityList',
+				url : 'selectInfoList',
 				data : {
 					animal : animal,
 					category : category,
@@ -478,11 +371,11 @@ div{
 					
 					$('.center_content').click(function() {
 						
-						var $communityDetail = $(this).next('.communityDetail');
+						var $infoDetail = $(this).next('.communityDetail');
 						var boardNo = $(this).find('input[type="hidden"]').val();
 						
 						console.log(boardNo);
-						location.href = 'communityDetail?boardNo=' + boardNo;
+						location.href = 'infoDetail?boardNo=' + boardNo;
 					});
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
@@ -494,21 +387,6 @@ div{
 				}
 			});
 		}
-		
-	    $(document).ready(function(){
-	        $('.boardCategory').click(function(){
-	            $('#boardinfo').toggle();
-	        });
-	        $('.aniCategory').click(function(){
-	            $('#aniinfo').toggle();
-	        });
-	    });
-	    
-	    $(document).ready(function(){
-	    	$('#btncom').click(function(){
-	    		$('#inscom').toggle();
-	    	})
-	    })
 		
 	</script>
 	

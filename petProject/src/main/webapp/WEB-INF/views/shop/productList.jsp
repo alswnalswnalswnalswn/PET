@@ -143,8 +143,6 @@
 		    </div>
 			<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
 		</div>
-	
-	
 	</div>
 	<script>
 		
