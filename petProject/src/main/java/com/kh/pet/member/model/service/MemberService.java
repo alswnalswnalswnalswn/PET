@@ -48,7 +48,11 @@ public interface MemberService {
 
 	Member selectUpMember(int memberNo);
 
-	List<Info> selectAllBoard(HashMap<Object, Object> map);
+	List<Info> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds);
+	
+	List<Info> selectMyBoard(List<Info> list);
+	
+	
 	
 	List<Info> selectCategory(HashMap<String, Object> map);
 

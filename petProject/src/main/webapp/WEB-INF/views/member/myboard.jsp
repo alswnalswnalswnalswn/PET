@@ -323,58 +323,28 @@
 	</div>
 	<div id="needgongan1"></div>
 		<div id="boardoutput">
-		<c:choose>
-			<c:when test="${ empty boardList }">
-				<table>
-					<tr>
-						<th style="font-size:20px;" colspan="5">작성한 게시물이 없습니다.</th>
-					</tr>
-				</table>
-			</c:when>
-			<c:otherwise>
-				<c:forEach var="b" items="${ boardList }">
-					<script>
-					    let createDate = dateFormat('${b.createDate}');
-					    console.log(createDate);
-					</script>
-				
-					<div id="myboard" class="myboard" data-board-no="${b.boardNo}">
+						<div id="myboard" class="myboard" data-board-no="1">
 						<div id="thumbnail">
-						<c:choose>
-							<c:when test="${ b.changeName eq null }">
 								<img src="${sessionScope.path}/resources/img/common/profile.png" alt="">
-							</c:when>
-							<c:otherwise>
-								<img src="${sessionScope.path}/${b.attPath }${b.changeName}" alt="">
-							</c:otherwise>
-						</c:choose>
 						</div>
 						<div id="boardlist">
 							<div id="boardheader">
-								<div id="boardme">&nbsp;&nbsp;&nbsp;${b.memberNo }</div>
+								<div id="boardme">&nbsp;&nbsp;&nbsp;1</div>
 								<div id="myboardAni"><span class="category" id="myani"></span></div>
-								<div id="boardCreate">&nbsp;&nbsp;&nbsp;${b.createDate }</div>
+								<div id="boardCreate">&nbsp;&nbsp;&nbsp;2</div>
 							</div>	
-							<div id="boardtitle">&nbsp;&nbsp;&nbsp;${b.boardTitle }</div>
-							<div id="boardcontent">&nbsp;&nbsp;&nbsp;${b.boardContent }</div>
+							<div id="boardtitle">&nbsp;&nbsp;&nbsp;3</div>
+							<div id="boardcontent">&nbsp;&nbsp;&nbsp;4</div>
+							<script>
+							</script>
 						</div>
 						<div id="boardLike">
 							<div id="likeinfo"><button id="detailbtn">˚&nbsp;˚&nbsp;˚</button></div>
-							<c:choose>
-								<c:when test="${ b.likeCheck != 1 }">
-									<div id="likeboard"><img src="${sessionScope.path }/resources/img/common/like.png">(${b.boardLike })</div>
-								</c:when>
-								<c:otherwise>
-									<div id="likeboard"><img src="${sessionScope.path }/resources/img/common/like2.png">(${b.boardLike })</div>
-								</c:otherwise>
-							</c:choose>
-							<div id="seeboard"><span>조회</span>(${b.boardCount })</div>
-							<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">(${b.sumCount })</div>
+									<div id="likeboard"><img src="${sessionScope.path }/resources/img/common/like2.png">(1)</div>
+							<div id="seeboard"><span>조회</span>(1)</div>
+							<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">(1)</div>
 						</div>
 					</div>
-				</c:forEach>
-			</c:otherwise>
-		</c:choose>
 	</div>
 	<div id="gomain">
 		<a href=""><button id="mainbtn">메인으로</button></a>
@@ -385,161 +355,7 @@
 		
 		
 		
-	<script>
 	
-	let animal='A0',
-	category = 'I0', 
-	page = 1,
-	text = '',
-	resultStr = '',
-	animalListStr = '';
-	
-	$(() => {
-		
-		$('.animalName').click(function(){
-			 
-			$(this).css('font-size', '17px');
-			
-			if ($(this).hasClass('selected')) {
-		        $(this).css('border', 'none');
-		        $(this).removeClass('selected');
-		        animal = 'A0';
-		    } else {
-		        $(this).css('border', '2px solid red');
-		        $(this).addClass('selected');
-		        $('.animalName').not(this).css('border', 'none').removeClass('selected');
-		        
-		        animal= $(this).data('value');
-		    }
-			 
-			resultStr = '';
-			page = 1;
-			selectAllBoard(animal, category, page);
-	    });
-		 
-		 
-		$('.category').click(function(){
-			 
-			$(this).css('font-size', '17px');
-			$('.category').not(this).css('border', 'none');
-			
-			if ($(this).hasClass('selected')) {
- 
-		      $(this).css('border', 'none');
-		      $(this).removeClass('selected');
-		      category = 'I0';
-		    } else {
-		      $(this).css('border', '2px solid red');
-		      $(this).addClass('selected');
-		      $('.board_category > button').not(this).css('border', 'none').removeClass('selected');
-		       
-		      category= $(this).val();
-		    }
-			 
-			 resultStr = '';
-			 page = 1;
-			 selectCommunityList(animal, category, page);
-		 });
-		
-		
-		selectAllBoard(animal, category, page);
-		
-		$('.btnDiv > button').click(() => {
-			selectCommunityList(animal, category, ++page);
-		});
-	
-		$('.category').click(function(){
-			var categoryValue = $(this).text().trim().substring(2);
-			console.log(categoryValue);
-			function selectAllBoard(animalName, category, page){
-				
-				console.log(animalName);
-				console.log(category);
-				console.log(page);
-				
-				$.ajax({
-					url : 'selectCommunityList',
-					data : {
-						animal : animal,
-						category : category,
-						page : page
-					},
-					success : result => {
-						console.log(result);
-						
-						for(let i in result){
-							
-							var animalListStr = '';
-							var animalListResult = result[i].animalList;
-							
-							for(let i in animalListResult){
-								animalListStr += '<div class="animalAndCategory">' 
-											  + animalListResult[i].animalName
-											  + '</div>'
-							}
-							
-							animalListStr += '<br clear="both">';
-							
-							resultStr += '<div class="communityList">'
-											+ '<div class="thumbnailImg"><img src="'
-											+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
-											+ '"></div>'
-											+ '<input type="hidden" value="' + result[i].boardNo + '">'
-											+ '<div class= "center_content">'
-												+ '<div class="content_writer">' + result[i].memberNo + '</div>'
-												+ animalListStr
-												+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
-												+ '<div class="content_text">' + result[i].boardContent + '</div>'
-												+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
-											+ '</div>'
-											+ '<div class="content_reaction">'
-												+ '<div class="cr_detail"><div><img src="resources/img/like.png"></div><div>' + result[i].boardLike + '</div></div>'
-												+ '<div class="cr_detail"><div><img src="resources/img/reply.png"></div><div>' + result[i].sumCount + '</div></div>'
-												+ '<div class="cr_detail"><div>조회수</div><div>' + result[i].boardCount + '</div></div>'
-											+ '</div>'
-										+ '</div>'
-						};
-						
-						$('.content_wrap').html(resultStr);
-						
-						$('.communityList').click(function() {
-							
-							var $communityDetail = $(this).next('.communityDetail');
-							var boardNo = $(this).find('input[type="hidden"]').val();
-							
-							console.log(boardNo);
-							location.href = 'communityDetail?boardNo=' + boardNo;
-						});
-						
-						if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-							$('.btnDiv').css('display', 'block');
-						}
-						else{
-							$('.btnDiv').css('display', 'none');
-						}
-					}
-				});
-			});
-		});
-	</script>
-	<script>
-		function dateFormat(date) {
-	        let month = date.getMonth() + 1;
-	        let day = date.getDate();
-	        let hour = date.getHours();
-	        let minute = date.getMinutes();
-	        let second = date.getSeconds();
-	
-	        month = month >= 10 ? month : '0' + month;
-	        day = day >= 10 ? day : '0' + day;
-	        hour = hour >= 10 ? hour : '0' + hour;
-	        minute = minute >= 10 ? minute : '0' + minute;
-	        second = second >= 10 ? second : '0' + second;
-	
-	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-	    	        
-		}
-	</script>
 	
 	<jsp:include page="../common/footer.jsp"/>
 	

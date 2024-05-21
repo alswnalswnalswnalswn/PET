@@ -329,8 +329,8 @@
                     <div>배송완료</div>
                 </div>
                 <div id="content2">
-                    <div id="content"><a href="" data-toggle="modal" data-target="#myInfo"><img src="${sessionScope.path}/resources/img/selectmyinfo.png" alt=""><br>내 정보 조회</a></div>
-                    <div id="content"><a href="${sessionScope.path }/member/selectAllBoard"><img src="${sessionScope.path}/resources/img/board.png" alt=""><br>내가 쓴 게시글</a></div>
+                    <div id="content"><a href="" data-toggle="modal" data-target="#myInfo"><img src="${sessionScope.path}/resources/img/common/selectmyinfo.png" alt=""><br>내 정보 조회</a></div>
+                    <div id="content"><a href="myBoard"><img src="${sessionScope.path}/resources/img/common/board.png" alt=""><br>내가 쓴 게시글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/comment.png" alt=""><br>내가 쓴 댓글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/like2.png" alt=""><br>내 좋아요</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/heart.png" alt=""><br>내가 찜한 상품</a></div>

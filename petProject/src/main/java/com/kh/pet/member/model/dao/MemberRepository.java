@@ -3,7 +3,6 @@ package com.kh.pet.member.model.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -91,9 +90,17 @@ public class MemberRepository {
 		return sqlSession.selectList("memberMapper.selectCategory", map);
 	}
 
-	public List<Info> selectAllBoard(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
-		return sqlSession.selectList("memberMapper.selectAllBoard", map);
+	public List<Info> selectBoard(SqlSessionTemplate sqlSession, HashMap<Object, Object> map, RowBounds rowBounds) {
+		return sqlSession.selectList("memberMapper.selectBoard", map, rowBounds);
 	}
+	
+	public List<Info> selectMyBoard(SqlSessionTemplate sqlSession, List<Info> list) {
+		return sqlSession.selectList("memberMapper.selectMyBoard", list);
+	}
+	
+	
+	
+	
 
 	public Info selectBoardDetail(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.selectOne("memberMapper.selectBoardDetail", boardNo);
