@@ -317,10 +317,10 @@
             </div>
             <div id="mycontent">
                 <div id="content1">
-                    <li class="circle"><img src="${sessionScope.path}/resources/img/deposit.png" alt="입금완료" width="140px" height="140px"></li>
-                    <li class="circle"><img id="shipment" src="${sessionScope.path}/resources/img/shipment.png" alt="상품발송" width="110px" height="110px"></li>
-                    <li class="circle"><img id="truck" src="${sessionScope.path}/resources/img/truck.png" alt="배송중" width="110px" height="110px"></li>
-                    <li class="circle"><img id="transit" src="${sessionScope.path}/resources/img/transit.png" alt="배송완료" width="130px" height="130px"></li>
+                    <li class="circle"><img src="${sessionScope.path}/resources/img/common/deposit.png" alt="입금완료" width="140px" height="140px"></li>
+                    <li class="circle"><img id="shipment" src="${sessionScope.path}/resources/img/common/shipment.png" alt="상품발송" width="110px" height="110px"></li>
+                    <li class="circle"><img id="truck" src="${sessionScope.path}/resources/img/common/truck.png" alt="배송중" width="110px" height="110px"></li>
+                    <li class="circle"><img id="transit" src="${sessionScope.path}/resources/img/common/transit.png" alt="배송완료" width="130px" height="130px"></li>
                 </div>
                 <div id="down">
                     <div>입금완료</div>
@@ -331,13 +331,13 @@
                 <div id="content2">
                     <div id="content"><a href="" data-toggle="modal" data-target="#myInfo"><img src="${sessionScope.path}/resources/img/selectmyinfo.png" alt=""><br>내 정보 조회</a></div>
                     <div id="content"><a href="${sessionScope.path }/member/selectAllBoard"><img src="${sessionScope.path}/resources/img/board.png" alt=""><br>내가 쓴 게시글</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/comment.png" alt=""><br>내가 쓴 댓글</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/like2.png" alt=""><br>내 좋아요</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/heart.png" alt=""><br>내가 찜한 상품</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/mycart.png" alt=""><br>내 장바구니</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/coupon.png" alt=""><br>내 쿠폰</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/shopping.png" alt=""><br>내 결제 내역</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/reser.png" alt=""><br>내 예약 내역</a></div>
+                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/comment.png" alt=""><br>내가 쓴 댓글</a></div>
+                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/like2.png" alt=""><br>내 좋아요</a></div>
+                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/heart.png" alt=""><br>내가 찜한 상품</a></div>
+                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/mycart.png" alt=""><br>내 장바구니</a></div>
+                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/coupon.png" alt=""><br>내 쿠폰</a></div>
+                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/shopping.png" alt=""><br>내 결제 내역</a></div>
+                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/reser.png" alt=""><br>내 예약 내역</a></div>
                 </div>
                 <div id="main"><button type="button" id="main_btn" onclick="location.href='${sessionScope.path}'">메인화면</button></div>
             </div>
@@ -401,11 +401,11 @@
 					<div class="new" style="display:none;">
 						<input type="password" id="nowPwd" name="memberPwd" maxlength="16" required placeholder="현재 비밀번호를 입력하세요">
 						<div id="checkOriginPwd" class="danger" style="font-size:0.7em; display:none;"></div>
-						<img src="${sessionScope.path}/resources/img/check.png" class="checkOriginPwd" style="display:none;">
+						<img src="${sessionScope.path}/resources/img/common/check.png" class="checkOriginPwd" style="display:none;">
 						<input type="password" id="newPwd" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 입력하세요">
 						<input type="password" id="newPwdCheck" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 한번 더 입력하세요">
 						<div id="checkPwd" class="danger" style="font-size:0.7em; display:none;"></div>
-						<img src="${sessionScope.path}/resources/img/check.png" class="checkPwd" style="display:none;">
+						<img src="${sessionScope.path}/resources/img/common/check.png" class="checkPwd" style="display:none;">
 					</div>
 				</div>
 				<div class="input_form">

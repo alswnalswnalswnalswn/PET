@@ -6,11 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <title>상세보기</title>
+	<link rel="stylesheet" href="resources/css/community/communityDetail.css" />
 
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
-		1
+	
+	<div class="wrap">
+				
+	
+	
+	
+	</div>
+
 	<jsp:include page="../../common/footer.jsp" />
 </body>
 </html>

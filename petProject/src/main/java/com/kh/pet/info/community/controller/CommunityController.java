@@ -37,8 +37,14 @@ public class CommunityController {
 		
 		PageInfo pi = Pagination.getPageInfo(communityService.selectListCount(commMap), page, 10, 10);
 		
+		RowBounds rowBounds = new RowBounds(
+				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
+				pi.getBoardLimit()
+				);
 		
-		List<Info> listInfo = communityService.selectCommunityList(commMap);
+		List<Info> list = communityService.selectAllList(commMap, rowBounds);
+		
+		List<Info> listInfo = communityService.selectCommunityList(list);
 		
 		for(Info i : listInfo) {
 			i.setPageInfo(pi);
@@ -49,9 +55,7 @@ public class CommunityController {
 	
 	@RequestMapping("communityDetail")
 	public ModelAndView communityDetail(ModelAndView mv, int boardNo) {
-		
-		mv.addObject("community", communityService.communityDetail(boardNo)).setViewName("info/community/communityDetail");
-		
+		mv.addObject("info", communityService.communityDetail(boardNo)).setViewName("info/community/communityDetail");
 		return mv;
 	}
 	

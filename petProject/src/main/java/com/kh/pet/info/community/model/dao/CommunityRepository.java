@@ -16,8 +16,12 @@ public class CommunityRepository {
 		return sqlSession.selectOne("communityMapper.selectListCount", commMap);
 	}
 	
-	public List<Info> selectCommunityList(SqlSessionTemplate sqlSession, HashMap<String, String> commMap){
-		return sqlSession.selectList("communityMapper.selectCommunityList", commMap);
+	public List<Info> selectAllList(SqlSessionTemplate sqlSession, HashMap<String, String> commMap, RowBounds rowBounds){
+		return sqlSession.selectList("communityMapper.selectAllList", commMap, rowBounds);
+	}
+	
+	public List<Info> selectCommunityList(SqlSessionTemplate sqlSession, List<Info> list){
+		return sqlSession.selectList("communityMapper.selectCommunityList", list);
 	}
 	
 	public List<Info> communityDetail(SqlSessionTemplate sqlSession, int boardNo) {
