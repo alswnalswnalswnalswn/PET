@@ -311,7 +311,7 @@
 		delete TB_CERT where who = #{who} and code = #{secret}
 	</delete>
 	
-	<select id="selectAllBoard" parameterType="_int" resultMap="infoResultSet">
+	<select id="selectAllBoard" parameterType="hashMap" resultMap="infoResultSet">
 		SELECT 
 				BOARD_NO,
           		BOARD_WRITER,
@@ -519,7 +519,6 @@
 				    BY
 				       BOARD_NO) USING (BOARD_NO)
 		 WHERE 
-		 <!-- 
 				TB_INFO.BOARD_STATUS = 'Y'
            AND
            		ATT_LEVEL = 1     
@@ -527,7 +526,6 @@
                 TB_INFO.CATEGORY_CODE != 'I4'
 		   AND  -->
   				BOARD_NO = #{boardNo} 
-  		  <!-- AND ROWNUM BETWEEN 1 AND 10 --> 
 	
 	</select>
 	
@@ -622,12 +620,20 @@
    		  AND 
    				MEMBER_NO = #{memberNo}
    		  AND 
-   		  AND 
    		  		TB_ANIMAL.ANIMAL_NAME = #{animalName}
 	</select>
 	
 	
-	
+	<select id="selectListCount" parameterType="_int" resultType="_int">
+		SELECT 	
+				COUNT(*) 
+		  FROM
+				TB_INFO
+		 WHERE
+		 		MEMBER_NO = #{memberNo}				
+		   AND
+				BOARD_STATUS = 'Y'
+	</select>
 	
 	
 	

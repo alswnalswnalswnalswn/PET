@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -31,6 +32,8 @@ import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.common.model.vo.PageInfo;
+import com.kh.pet.common.template.Pagination;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.service.KakaoService;
 import com.kh.pet.member.model.service.MemberService;
@@ -347,7 +350,18 @@ public class MemberController {
 	public ModelAndView selectAllBoard(ModelAndView mv, HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int memberNo = loginUser.getMemberNo();
-		List<Info> boardList = memberService.selectAllBoard(memberNo);
+		int page = 1;
+		
+		PageInfo pi = Pagination.getPageInfo(memberService.selectListCount(memberNo), page, 10, 10);
+		
+		RowBounds rowBounds = new RowBounds(
+				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
+				pi.getBoardLimit()
+				);
+		HashMap<Object, Object> map = new HashMap<>();
+	    map.put("rowBounds", rowBounds);
+	    map.put("memberNo", memberNo);
+		List<Info> boardList = memberService.selectAllBoard(map);
 		
 		if(boardList != null) {
 			session.setAttribute("boardList", boardList);

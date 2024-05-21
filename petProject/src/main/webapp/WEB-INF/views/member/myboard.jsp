@@ -289,7 +289,7 @@
 					<input type="text" name="searchContent" id="searchContent"/>
 				</div>
 				<div id="searchImg">
-					<img src="${sessionScope.path}/resources/img/searchform.png" alt="" id="searchimg">
+					<img src="${sessionScope.path}/resources/img/common/searchform.png" alt="" id="searchimg">
 				</div>
 			</div>
 		</div>
@@ -305,16 +305,16 @@
 				</div>
 				<div id="sksnrl2">	
 					<div id="boardinfo">
-						<span id="freecon"># 자유</span><br>
-						<span id="quescon"># 질문</span><br>
+						<span id="freecon" class="category"># 자유</span><br>
+						<span id="quescon" class="category"># 질문</span><br>
 					</div>
 					<div id="aniinfo">
-						<span class="category" id="dogcon"># 강아지</span><br>
-						<span class="category" id="catcon"># 고양이</span><br>
-						<span class="category" id="rabcon"># 토끼</span><br>
-						<span class="category" id="fishcon"># 물고기</span><br>
-						<span class="category" id="birdcon"># 새</span><br>
-						<span class="category" id="hamcon"># 햄스터</span><br>
+						<span class="animalName" id="dogcon"># 강아지</span><br>
+						<span class="animalName" id="catcon"># 고양이</span><br>
+						<span class="animalName" id="rabcon"># 토끼</span><br>
+						<span class="animalName" id="fishcon"># 물고기</span><br>
+						<span class="animalName" id="birdcon"># 새</span><br>
+						<span class="animalName" id="hamcon"># 햄스터</span><br>
 					</div>
 				</div>
 			</div>
@@ -342,7 +342,7 @@
 						<div id="thumbnail">
 						<c:choose>
 							<c:when test="${ b.changeName eq null }">
-								<img src="${sessionScope.path}/resources/img/profile.png" alt="">
+								<img src="${sessionScope.path}/resources/img/common/profile.png" alt="">
 							</c:when>
 							<c:otherwise>
 								<img src="${sessionScope.path}/${b.attPath }${b.changeName}" alt="">
@@ -381,32 +381,148 @@
 	<div id="gomain">
 		<a href=""><button id="mainbtn">메인으로</button></a>
 	</div>
-	
+	<div class="myboard_body">
+		<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
+	</div>
+		
+		
+		
 	<script>
+	
+	let animal='A0',
+	category = 'I0', 
+	page = 1,
+	text = '',
+	resultStr = '',
+	animalListStr = '';
+	
+	$(() => {
+		
+		$('.animalName').click(function(){
+			 
+			$(this).css('font-size', '17px');
+			
+			if ($(this).hasClass('selected')) {
+		        $(this).css('border', 'none');
+		        $(this).removeClass('selected');
+		        animal = 'A0';
+		    } else {
+		        $(this).css('border', '2px solid red');
+		        $(this).addClass('selected');
+		        $('.animalName').not(this).css('border', 'none').removeClass('selected');
+		        
+		        animal= $(this).data('value');
+		    }
+			 
+			resultStr = '';
+			page = 1;
+			selectAllBoard(animal, category, page);
+	    });
+		 
+		 
+		$('.category').click(function(){
+			 
+			$(this).css('font-size', '17px');
+			$('.category').not(this).css('border', 'none');
+			
+			if ($(this).hasClass('selected')) {
+ 
+		      $(this).css('border', 'none');
+		      $(this).removeClass('selected');
+		      category = 'I0';
+		    } else {
+		      $(this).css('border', '2px solid red');
+		      $(this).addClass('selected');
+		      $('.board_category > button').not(this).css('border', 'none').removeClass('selected');
+		       
+		      category= $(this).val();
+		    }
+			 
+			 resultStr = '';
+			 page = 1;
+			 selectCommunityList(animal, category, page);
+		 });
+		
+		
+		selectAllBoard(animal, category, page);
+		
+		$('.btnDiv > button').click(() => {
+			selectCommunityList(animal, category, ++page);
+		});
+	
 		$('.category').click(function(){
 			var categoryValue = $(this).text().trim().substring(2);
 			console.log(categoryValue);
-			$.ajax({
-				url : 'selectCategory',
-				type: 'POST',
-				data : {
-						animalName: categoryValue,
-						memberNo : '${loginUser.memberNo}'
-						},
-				success: function(result){
-				     console.log('AJAX 요청이 성공적으로 완료되었습니다.');
-				},
-				error: function(result){
-				    console.error('AJAX 요청 중 오류가 발생하였습니다: ' + result);
-				}
+			function selectAllBoard(animalName, category, page){
+				
+				console.log(animalName);
+				console.log(category);
+				console.log(page);
+				
+				$.ajax({
+					url : 'selectCommunityList',
+					data : {
+						animal : animal,
+						category : category,
+						page : page
+					},
+					success : result => {
+						console.log(result);
+						
+						for(let i in result){
+							
+							var animalListStr = '';
+							var animalListResult = result[i].animalList;
+							
+							for(let i in animalListResult){
+								animalListStr += '<div class="animalAndCategory">' 
+											  + animalListResult[i].animalName
+											  + '</div>'
+							}
+							
+							animalListStr += '<br clear="both">';
+							
+							resultStr += '<div class="communityList">'
+											+ '<div class="thumbnailImg"><img src="'
+											+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
+											+ '"></div>'
+											+ '<input type="hidden" value="' + result[i].boardNo + '">'
+											+ '<div class= "center_content">'
+												+ '<div class="content_writer">' + result[i].memberNo + '</div>'
+												+ animalListStr
+												+ '<div class="board_Title">' + result[i].boardTitle + '</div>'
+												+ '<div class="content_text">' + result[i].boardContent + '</div>'
+												+ '<div class="create_date">' + result[i].boardCreateDate + '</div>'
+											+ '</div>'
+											+ '<div class="content_reaction">'
+												+ '<div class="cr_detail"><div><img src="resources/img/like.png"></div><div>' + result[i].boardLike + '</div></div>'
+												+ '<div class="cr_detail"><div><img src="resources/img/reply.png"></div><div>' + result[i].sumCount + '</div></div>'
+												+ '<div class="cr_detail"><div>조회수</div><div>' + result[i].boardCount + '</div></div>'
+											+ '</div>'
+										+ '</div>'
+						};
+						
+						$('.content_wrap').html(resultStr);
+						
+						$('.communityList').click(function() {
+							
+							var $communityDetail = $(this).next('.communityDetail');
+							var boardNo = $(this).find('input[type="hidden"]').val();
+							
+							console.log(boardNo);
+							location.href = 'communityDetail?boardNo=' + boardNo;
+						});
+						
+						if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
+							$('.btnDiv').css('display', 'block');
+						}
+						else{
+							$('.btnDiv').css('display', 'none');
+						}
+					}
+				});
 			});
 		});
-		
-		$('.myboard').click(function(){
-			const boardNo = $(this).data('board-no');
-			console.log(boardNo);
-			location.href= 'selectBoardDetail?boardNo=' + boardNo;
-		})
 	</script>
 	<script>
 		function dateFormat(date) {

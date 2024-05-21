@@ -4,6 +4,8 @@ package com.kh.pet.member.model.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
+
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.vo.CertVO;
@@ -46,11 +48,13 @@ public interface MemberService {
 
 	Member selectUpMember(int memberNo);
 
-	List<Info> selectAllBoard(int memberNo);
+	List<Info> selectAllBoard(HashMap<Object, Object> map);
 	
 	List<Info> selectCategory(HashMap<String, Object> map);
 
 	Info selectBoardDetail(int boardNo);
+
+	int selectListCount(int memberNo);
 
 
 }

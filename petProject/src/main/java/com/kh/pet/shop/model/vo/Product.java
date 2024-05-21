@@ -26,9 +26,9 @@ public class Product {
 	
 	private String prCategoryName;
 	
-	private List<ProductOption> optionList;
 	
 	private PageInfo pageInfo;
 	
 	private Attachment attachment;
+	private List<ProductOption> optionList;
 }

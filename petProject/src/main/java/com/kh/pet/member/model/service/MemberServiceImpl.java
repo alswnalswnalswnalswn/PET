@@ -3,6 +3,7 @@ package com.kh.pet.member.model.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,12 +112,12 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectUpMember(int memberNo) {
 		return memberRepository.selectUpMember(sqlSession, memberNo);
 	}
-
-	@Override
-	public List<Info> selectAllBoard(int memberNo) {
-		return memberRepository.selectAllBoard(sqlSession, memberNo);
-	}
 	
+	@Override
+	public int selectListCount(int memberNo) {
+		return memberRepository.selectListCount(sqlSession, memberNo);
+	}
+
 	@Override
 	public List<Info> selectCategory(HashMap<String, Object> map) {
 		return memberRepository.selectCategory(sqlSession, map);
@@ -125,6 +126,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Info selectBoardDetail(int boardNo) {
 		return memberRepository.selectBoardDetail(sqlSession, boardNo);
+	}
+
+	@Override
+	public List<Info> selectAllBoard(HashMap<Object, Object> map) {
+		return memberRepository.selectAllBoard(sqlSession, map);
 	}
 
 

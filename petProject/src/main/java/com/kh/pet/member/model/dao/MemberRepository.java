@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -90,12 +91,16 @@ public class MemberRepository {
 		return sqlSession.selectList("memberMapper.selectCategory", map);
 	}
 
-	public List<Info> selectAllBoard(SqlSessionTemplate sqlSession, int memberNo) {
-		return sqlSession.selectList("memberMapper.selectAllBoard", memberNo);
+	public List<Info> selectAllBoard(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
+		return sqlSession.selectList("memberMapper.selectAllBoard", map);
 	}
 
 	public Info selectBoardDetail(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.selectOne("memberMapper.selectBoardDetail", boardNo);
+	}
+
+	public int selectListCount(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectOne("memberMapper.selectListCount", memberNo);
 	}
 
 }
