@@ -8,8 +8,33 @@
 <title>커뮤니티</title>
 <link rel="stylesheet" href="resources/css/community/communityMain.css" />
 <style>
-div{
+	div{
 		box-sizing : border-box;
+	}
+	#gomain{
+		width: 900px;
+		height: 120px;
+		margin : auto;
+		position : relative;
+	}	
+	#mainbtn{
+		width: 140px;
+		height: 50px;
+		position : absolute;
+		right: 0;
+		transform: translate(0, 10%);
+	    font-size: 15px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+	    bolder: 0;
+	    cursor :pointer;
+	}
+	#mainbtn:hover{
+		font-size: 16px;
+		width: 141px;
+		height: 51px;
 	}
 	#submenubar{
 		width : 1200px;
@@ -21,12 +46,11 @@ div{
 	}
 	
 	#searchForm{
-		width : 50%;
+		width :40%;
 		height : 100%;
 		position: relative;
 		float: left;
 	}
-	
 	#search{
 		width : 300px;
 		height : 40%;
@@ -62,104 +86,38 @@ div{
 	#search > div{
 		float: left;
 	}
-<style>
-		div{
-			box-sizing: border-box;
-		}
-		#wrap{
-			width: 1200px;
-			height: auto;
-			margin: auto;
-		}
-		.shop_header{
-			width: 1200px;
-			height: 200px;
-			display: flex;
-			justify-content: space-between;
-		}
-		.shop_body{
-			height: auto;	
-		}
-		.header_search{
-			height: 100%;
-			width: 350px;
-			padding: 65px 70px 65px 30px;
-		}
-		.header_category{
-			height: 100%;
-			width:600px;
-		}
-		.anmal_category{
-			height: 60%;
-			padding-top: 40px;
-		}
-		.use_category{
-			height: 40%;
-		}
-		.nav-item > img{
-			width: 90px;
-			height: 70px;
-		}
-		.use_category > div{
-			margin-top:10px;
-			float: right;
-		}
-		.custom-col-5 {
-	      flex: 0 0 20%;
-	      max-width: 20%;
-	    }
-	    #productList{
-	    	width: 1200px;
-	    	margin: auto;
-	    }
-	    .card{
-	    	margin:10px;
-	    	cursor: pointer;
-	    }
-	    .anmal_category ul{
-	    	border:none;
-	    }
-	    .product_img{
-	    	width: 100%;
-	    	height: 190px;
-	    }
-	    .card-text{
-	   		padding-top: 5px;
-	    	padding-left: 5px;
-	    	height: 50px;
-	    	font-size: 12px;
-	    	font-weight: bold;
-	    	margin-bottom: 10px;
-	    }
-	    .card_btn{
-	    	text-align: right;
-	    }
-	    .card_btn img{
-	    	weight:30px;
-	    	height:30px;
-	    }
-	    .card_price{
-	    	padding : 0 5px;
-	    	color:rgb(211, 84, 0);
-	    	font-weight:bold
-	    }
-	    .card_btn{
-	    	padding : 0 5px;
-	    }
-	    .nav li> img:hover{
-	    	width: 95px;
-			height: 75px;
-	       cursor: pointer;
-	    }
-	    .refresh_btn{
-	    	margin: auto;
-	    	text-align: center;
-	    }
-	    .refresh_btn > img{
-	    	width: 45px;
-	    	height: 45px;
-	    	margin-top: 40px;
-	    }
+	.info_body{
+		height: auto;	
+	}
+	.anmal_category{
+		height: 60%;
+		padding-top: 40px;
+	}
+	.nav-item > img{
+		width: 90px;
+		height: 70px;
+	}
+    #infoList{
+    	width: 1200px;
+    	margin: auto;
+    }
+    .anmal_category ul{
+    	border:none;
+    }
+    .nav li> img:hover{
+    	width: 95px;
+		height: 75px;
+       cursor: pointer;
+    }
+    .refresh_btn{
+    	margin: auto;
+    	text-align: center;
+    }
+    .refresh_btn > img{
+    	width: 45px;
+    	height: 45px;
+    	margin-top: 40px;
+    }
 	#replyboard>img{
 		width : 35px;
 		height: 35px;
@@ -199,29 +157,20 @@ div{
 						<li class="nav-item" id="A6"><img class="img_ham" src="${sessionScope.path }/resources/img/common/animalham.png"></li>
 					</ul>
 				</div>
-				<div class="use_category">
-					<div>
-						<select id="product_category">
-							<option value="P0">전체</option>
-							<option value="P1">생필품</option>
-							<option value="P2">식품</option>
-						</select>
-					</div>
-				</div>
 			</div>
 		</div>
-		<div class="shop_body">
-			<div class="row" id="productList">
+		<div class="info_body">
+			<div class="row" id="infoList">
 
 		    </div>
-			<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
+			
 		</div>
 	</div>
 	<div id="needgongan1"></div>
-		<div class="content_wrap" id="boardoutput"></div>
+		<div class="content_wrap" id="infooutput"></div>
 			
 	<div id="gomain">
-		<div class="btnDiv"><button>더 보기</button></div>
+		<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
 		<a href=""><button id="mainbtn">메인으로</button></a>
 	</div>
 	<script>

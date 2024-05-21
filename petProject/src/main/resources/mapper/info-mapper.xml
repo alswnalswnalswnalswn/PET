@@ -44,14 +44,17 @@
 		<result column="BO_CATEGORY_NAME" property="categoryCode"/>
 		<result column="UPDATE_DATE" property="updateDate"/>
 		<result column="BOARD_STATUS" property="boardStatus"/>
-		
+		<result column="CATEGORY_CODE" property="categoryCode"/>
+		<result column="MEMBER_NO" property="memberNo"/>
 		<result column="BOARD_LIKE" property="boardLike"/>
-		
 		<result column="SUM_COUNT" property="sumCount"/>
+		<result column="LIKECHECK" property="likeCheck" />
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
 		
 		<collection resultMap="replyResultSet" property="replyList"/>
+
+		<collection resultMap="animalResultSet" property="animalList"/>
 	</resultMap>
 	
 	<select id="likeCheck" parameterType="hashmap" resultType="_int">
@@ -251,4 +254,53 @@
 	   	   AND
 	   	   	   BOARD_NO = #{boardNo}
 	</delete>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT 	
+				COUNT(*) 
+		  FROM
+				TB_INFO
+		 WHERE
+		 		CATEGORY_CODE = 'I3'
+		   AND
+				BOARD_STATUS = 'Y'
+	</select>
+	
+	<select id="selectInfo" parameterType="hashMap" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO
+      	  FROM 
+      	  <if test="animal != 'A0'">
+		  JOIN 
+				TB_BOARD_ANIMAL USING(BOARD_NO)
+		  </if>
+		  WHERE
+		        BOARD_STATUS = 'Y'
+		  <if test="animal != 'A0'">
+			AND
+				ANIMAL_CODE = #{animal}
+		  </if>
+			AND
+				CATEGORY_CODE = 'I4'
+		ORDER BY
+				BOARD_NO DESC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

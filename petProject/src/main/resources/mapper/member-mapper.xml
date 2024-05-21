@@ -316,7 +316,7 @@
 				BOARD_NO
       	  FROM 
       	  		TB_INFO
-		<if test="animal != 'A0'">
+      	  <if test="animal != 'A0'">
 		  JOIN 
 				TB_BOARD_ANIMAL USING(BOARD_NO)
 		</if>
@@ -326,11 +326,11 @@
 				MEMBER_NO = #{memberNo}
 		<if test="animal != 'A0'">
 			AND
-					ANIMAL_CODE = #{animal}
+				ANIMAL_CODE = #{animal}
 		</if>
 		<if test="category != 'I0'">
 			AND
-					CATEGORY_CODE = #{category}	
+				CATEGORY_CODE = #{category}		
 		</if>
 		ORDER BY
 				BOARD_NO DESC

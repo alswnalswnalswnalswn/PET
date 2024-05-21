@@ -6,105 +6,105 @@
 <head>
 <meta charset="UTF-8">
 <title>쇼핑 메인페이지</title>
-	<style>
-		div{
-			box-sizing: border-box;
-		}
-		#wrap{
-			width: 1200px;
-			height: auto;
-			margin: auto;
-		}
-		.shop_header{
-			width: 1200px;
-			height: 200px;
-			display: flex;
-			justify-content: space-between;
-		}
-		.shop_body{
-			height: auto;	
-		}
-		.header_search{
-			height: 100%;
-			width: 350px;
-			padding: 65px 70px 65px 30px;
-		}
-		.header_category{
-			height: 100%;
-			width:600px;
-		}
-		.anmal_category{
-			height: 60%;
-			padding-top: 40px;
-		}
-		.use_category{
-			height: 40%;
-		}
-		.nav-item > img{
-			width: 90px;
-			height: 70px;
-		}
-		.use_category > div{
-			margin-top:10px;
-			float: right;
-		}
-		.custom-col-5 {
-	      flex: 0 0 20%;
-	      max-width: 20%;
-	    }
-	    #productList{
-	    	width: 1200px;
-	    	margin: auto;
-	    }
-	    .card{
-	    	margin:10px;
-	    	cursor: pointer;
-	    }
-	    .anmal_category ul{
-	    	border:none;
-	    }
-	    .product_img{
-	    	width: 100%;
-	    	height: 190px;
-	    }
-	    .card-text{
-	   		padding-top: 5px;
-	    	padding-left: 5px;
-	    	height: 50px;
-	    	font-size: 12px;
-	    	font-weight: bold;
-	    	margin-bottom: 10px;
-	    }
-	    .card_btn{
-	    	text-align: right;
-	    }
-	    .card_btn img{
-	    	weight:30px;
-	    	height:30px;
-	    }
-	    .card_price{
-	    	padding : 0 5px;
-	    	color:rgb(211, 84, 0);
-	    	font-weight:bold
-	    }
-	    .card_btn{
-	    	padding : 0 5px;
-	    }
-	    .nav li> img:hover{
-	    	width: 95px;
-			height: 75px;
-	       cursor: pointer;
-	    }
-	    .refresh_btn{
-	    	margin: auto;
-	    	text-align: center;
-	    }
-	    .refresh_btn > img{
-	    	width: 45px;
-	    	height: 45px;
-	    	margin-top: 40px;
-	    }
-	</style>
+<style>
+	div{
+		box-sizing: border-box;
+	}
+	#wrap{
+		width: 1200px;
+		height: auto;
+		margin: auto;
+	}
+	.shop_header{
+		width: 1200px;
+		height: 200px;
+		display: flex;
+		justify-content: space-between;
+	}
+	.shop_body{
+		height: auto;	
+	}
+	.header_search{
+		height: 100%;
+		width: 350px;
+		padding: 65px 70px 65px 30px;
+	}
+	.header_category{
+		height: 100%;
+		width:600px;
+	}
+	.anmal_category{
+		height: 60%;
+		padding-top: 40px;
+	}
+	.use_category{
+		height: 40%;
+	}
+	.nav-item > img{
+		width: 90px;
+		height: 70px;
+	}
+	.use_category > div{
+		margin-top:10px;
+		float: right;
+	}
+	.custom-col-5 {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+    #productList{
+    	width: 1200px;
+    	margin: auto;
+    }
+    .card{
+    	margin:10px;
+    	cursor: pointer;
+    }
+    .anmal_category ul{
+    	border:none;
+    }
+    .product_img{
+    	width: 100%;
+    	height: 190px;
+    }
+    .card-text{
+   		padding-top: 5px;
+    	padding-left: 5px;
+    	height: 50px;
+    	font-size: 12px;
+    	font-weight: bold;
+    	margin-bottom: 10px;
+    }
+    .card_btn{
+    	text-align: right;
+    }
+    .card_btn img{
+    	weight:30px;
+    	height:30px;
+    }
+    .card_price{
+    	padding : 0 5px;
+    	color:rgb(211, 84, 0);
+    	font-weight:bold
+    }
+    .card_btn{
+    	padding : 0 5px;
+    }
+    .nav li> img:hover{
+    	width: 95px;
+		height: 75px;
+       cursor: pointer;
+    }
+    .refresh_btn{
+    	margin: auto;
+    	text-align: center;
+    }
+    .refresh_btn > img{
+    	width: 45px;
+    	height: 45px;
+    	margin-top: 40px;
+    }
+</style>
 	
 </head>
 <body>
