@@ -53,4 +53,6 @@ public class ProductController {
 		
 		return productService.selectSize(map);
 	}
+	
+
 }

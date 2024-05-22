@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class ProductColor {
+	
 	private int colorCode;
 	private String colorName;
 }
