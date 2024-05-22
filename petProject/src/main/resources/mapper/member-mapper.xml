@@ -334,8 +334,10 @@
 				BOARD_NO 
 		  FROM
 				TB_INFO
+		<if test="animal != 'A0'">
 		LEFT JOIN
 				TB_BOARD_ANIMAL USING(BOARD_NO)
+		</if>
 		WHERE
 		 		MEMBER_NO = #{memberNo}
 		 AND
