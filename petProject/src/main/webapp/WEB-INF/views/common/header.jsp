@@ -575,7 +575,7 @@
 							<div id="line2"></div>
 						</div>
 						<div class="input_btn">
-							<a id="kakao-login-btn"><img src="${sessionScope.path}/resources/img/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
+							<a id="kakao-login-btn"><img src="${sessionScope.path}/resources/img/common/kakao_login.png" alt="카카오 로그인" id="kakaologin"></a>
 						</div>
 					</form>
 				</div>

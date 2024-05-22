@@ -44,5 +44,4 @@ public class Info {
 	private List<Animal> animalList;
 
 	
-	
 }

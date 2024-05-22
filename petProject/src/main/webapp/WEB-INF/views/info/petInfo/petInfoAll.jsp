@@ -8,8 +8,33 @@
 <title>커뮤니티</title>
 <link rel="stylesheet" href="resources/css/community/communityMain.css" />
 <style>
-div{
+	div{
 		box-sizing : border-box;
+	}
+	#gomain{
+		width: 900px;
+		height: 120px;
+		margin : auto;
+		position : relative;
+	}	
+	#mainbtn{
+		width: 140px;
+		height: 50px;
+		position : absolute;
+		right: 0;
+		transform: translate(0, 10%);
+	    font-size: 15px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+	    bolder: 0;
+	    cursor :pointer;
+	}
+	#mainbtn:hover{
+		font-size: 16px;
+		width: 141px;
+		height: 51px;
 	}
 	#submenubar{
 		width : 1200px;
@@ -21,12 +46,11 @@ div{
 	}
 	
 	#searchForm{
-		width : 50%;
+		width :40%;
 		height : 100%;
 		position: relative;
 		float: left;
 	}
-	
 	#search{
 		width : 300px;
 		height : 40%;
@@ -62,118 +86,125 @@ div{
 	#search > div{
 		float: left;
 	}
-<style>
-		div{
-			box-sizing: border-box;
-		}
-		#wrap{
-			width: 1200px;
-			height: auto;
-			margin: auto;
-		}
-		.shop_header{
-			width: 1200px;
-			height: 200px;
-			display: flex;
-			justify-content: space-between;
-		}
-		.shop_body{
-			height: auto;	
-		}
-		.header_search{
-			height: 100%;
-			width: 350px;
-			padding: 65px 70px 65px 30px;
-		}
-		.header_category{
-			height: 100%;
-			width:600px;
-		}
-		.anmal_category{
-			height: 60%;
-			padding-top: 40px;
-		}
-		.use_category{
-			height: 40%;
-		}
-		.nav-item > img{
-			width: 90px;
-			height: 70px;
-		}
-		.use_category > div{
-			margin-top:10px;
-			float: right;
-		}
-		.custom-col-5 {
-	      flex: 0 0 20%;
-	      max-width: 20%;
-	    }
-	    #productList{
-	    	width: 1200px;
-	    	margin: auto;
-	    }
-	    .card{
-	    	margin:10px;
-	    	cursor: pointer;
-	    }
-	    .anmal_category ul{
-	    	border:none;
-	    }
-	    .product_img{
-	    	width: 100%;
-	    	height: 190px;
-	    }
-	    .card-text{
-	   		padding-top: 5px;
-	    	padding-left: 5px;
-	    	height: 50px;
-	    	font-size: 12px;
-	    	font-weight: bold;
-	    	margin-bottom: 10px;
-	    }
-	    .card_btn{
-	    	text-align: right;
-	    }
-	    .card_btn img{
-	    	weight:30px;
-	    	height:30px;
-	    }
-	    .card_price{
-	    	padding : 0 5px;
-	    	color:rgb(211, 84, 0);
-	    	font-weight:bold
-	    }
-	    .card_btn{
-	    	padding : 0 5px;
-	    }
-	    .nav li> img:hover{
-	    	width: 95px;
-			height: 75px;
-	       cursor: pointer;
-	    }
-	    .refresh_btn{
-	    	margin: auto;
-	    	text-align: center;
-	    }
-	    .refresh_btn > img{
-	    	width: 45px;
-	    	height: 45px;
-	    	margin-top: 40px;
-	    }
-	#replyboard>img{
-		width : 35px;
-		height: 35px;
+	.info_body{
+		height: auto;	
 	}
-	#myani{
-		background-color: rgba(242, 189, 108, 0.82);
+	.anmal_category{
+		height: 60%;
+		padding-top: 40px;
 	}
+	.nav-item > img{
+		width: 90px;
+		height: 70px;
+	}
+
+    .anmal_category ul{
+    	border:none;
+    }
+    .nav li> img:hover{
+    	width: 95px;
+		height: 75px;
+       cursor: pointer;
+    }
+    .refresh_btn{
+    	margin: auto;
+    	text-align: center;
+    }
+    .refresh_btn > img{
+    	width: 45px;
+    	height: 45px;
+    	margin-top: 40px;
+    }
+	#needgongan1{
+		width : 800px;
+		height: 50px;
+	}
+	.info_body{
+		width : 1200px;
+		border: 1px solid black;
+		margin : auto;
+	}
+    #infoList> div{
+   		border: 1px solid black;
+    }
+    #infoList> div>div{
+   		border: 1px solid black;
+    }
+    #infoList{
+    	width :250px;
+    	height: 350px;
+    	border: 1px solid black;
+    	border-radius: 10px;
+    }
+    #infoList:hover{
+    	box-shadow : 0 15px 20px rgb(168, 167, 167);
+    }
+    #thumbnailinfo{
+    	width : 100%;
+    	height: 250px;
+    }
+    #thumbnailinfo > img{
+    	width : 95%;
+    	height: 95%;
+    	margin : 2.5% 0 0 2.5%;
+    	border: 1px solid rgb(233, 231, 231);
+    	border-radius: 20px;
+    }
+    #info-list{
+    	width : 100%;
+    	height : 100px;
+    }
+    #infoContent{
+    	width : 100%;
+    	height : 50%;
+    	font-size: 15px;
+    	font-weight: bold;
+    }
+    #info_info{
+   		width : 100%;
+    	height : 50%;
+    	display:flex;
+    }
+    #infoDate{
+    	width :40%;
+    	height: 100%;
+    	font-size: 14px;
+    	padding-top : 15px;
+    }
+    #needgong{
+    	width :30%;
+    	height: 100%;
+   	}
+    #infoLike{
+    	width :30%;
+    	height: 100%;
+    	display:flex;
+    }
+    #info_like, #info_rep{
+    	width : 100%;
+    	height: 100%;
+    	float: right;
+    	padding-top :10px;
+    }
+    #info_like>img, #info_rep>img{
+    	width : 70%;
+    	height: 70%;
+    	cursor: pointer;
+    }
+    #info_like>img:hover{
+    	width : 71%;
+    	height: 73%;
+    }
+    #info_rep>img:hover{
+    	width : 72%;
+    	height: 73%;
+    }
 </style>
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
 	
 	<c:set value="${ sessionScope.path }" var="path" />
-	
 	<div id="submenubar">
 		<div id="searchForm">
 			<div id="search">
@@ -199,29 +230,28 @@ div{
 						<li class="nav-item" id="A6"><img class="img_ham" src="${sessionScope.path }/resources/img/common/animalham.png"></li>
 					</ul>
 				</div>
-				<div class="use_category">
-					<div>
-						<select id="product_category">
-							<option value="P0">전체</option>
-							<option value="P1">생필품</option>
-							<option value="P2">식품</option>
-						</select>
-					</div>
-				</div>
 			</div>
-		</div>
-		<div class="shop_body">
-			<div class="row" id="productList">
-
-		    </div>
-			<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
 		</div>
 	</div>
 	<div id="needgongan1"></div>
-		<div class="content_wrap" id="boardoutput"></div>
-			
+	<div class="info_body">
+		<div id="infoList" class="info_wrap">
+			<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/resources/img/profile/profile.png"></div>
+			<div class="center_content" id="info-list">
+				<div id="infoContent">강아지에게 음식줄 때 피해야 할 것들</div>
+				<div id="info_info">
+					<div id="infoDate">2024-05-22</div>
+					<div id="needgong"></div>
+					<div id="infoLike">
+						<div id="info_like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>
+						<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>
+					</div>
+				</div>
+			</div>
+	    </div>
+	</div>
 	<div id="gomain">
-		<div class="btnDiv"><button>더 보기</button></div>
+		<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
 		<a href=""><button id="mainbtn">메인으로</button></a>
 	</div>
 	<script>
@@ -339,27 +369,8 @@ div{
 						
 						animalListStr += '<br clear="both">';
 						
-						resultStr += '<div id="myboard" class="communityList">'
-										+ '<div class="thumbnailImg" id="thumbnail"><img src="'
-										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
-										+ '"></div>'
-										+ '<div class="center_content" id="boardlist">'
-										+ '<input type="hidden" value="' + result[i].boardNo + '">'
-											+ '<div id="boardheader">'
-												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
-												+ '<div id="myboardAni"><span class="category" id="myani">' + animalListStr + '</span></div>'
-												+ '<div class="create_date" id="boardCreate">' + result[i].boardCreateDate + '</div>'
-											+ '</div>'
-											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
-											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
-										+ '</div>'
-											+ '<div class="content_reaction" id="boardLike">'
-												+ '<div id="likeinfo"><button id="detailbtn">&nbsp;&nbsp;&nbsp;˚&nbsp;˚&nbsp;˚</button></div>'
-												+ '<div id="likeboard"><img id="like_board" src="${sessionScope.path }/resources/img/common/like.png">&nbsp;&nbsp;(' + result[i].boardLike + ')</div>'
-												+ '<div id="seeboard"><span>조회</span>&nbsp;&nbsp;&nbsp;(' + result[i].sumCount + ')</div>'
-												+ '<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">&nbsp;&nbsp;(' + result[i].boardCount + ')</div>'
-											+ '</div>'
-									+ '</div>'
+						resultStr += 
+									
 					};
 					
 					$('#like_board').click(function(){
@@ -367,8 +378,9 @@ div{
 	                        $('#like_board img').attr('src', likeNuroom);
 					})
 					
-					$('.content_wrap').html(resultStr);
+					$('.info_wrap').html(resultStr);
 					
+					<!--
 					$('.center_content').click(function() {
 						
 						var $infoDetail = $(this).next('.communityDetail');
@@ -377,7 +389,7 @@ div{
 						console.log(boardNo);
 						location.href = 'infoDetail?boardNo=' + boardNo;
 					});
-					
+					-->
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
 						$('.btnDiv').css('display', 'block');
 					}

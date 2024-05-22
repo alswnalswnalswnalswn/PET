@@ -3,8 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="infoMapper">
-	
-	
+	<resultMap type="animal" id="animalResultSet">
+		<result column="ANIMAL_NAME" property="animalName"/>
+		<result column="ANIMAL_CODE" property="animalCode"/>
+	    <result column="MEMBER_NO" property="memberNo"/>
+	</resultMap>
 	
 	<resultMap type="attachment" id="attachmentResultSet">
 		<result column="ATT_NO" property="attNo"/>
@@ -44,14 +47,17 @@
 		<result column="BO_CATEGORY_NAME" property="categoryCode"/>
 		<result column="UPDATE_DATE" property="updateDate"/>
 		<result column="BOARD_STATUS" property="boardStatus"/>
-		
+		<result column="CATEGORY_CODE" property="categoryCode"/>
+		<result column="MEMBER_NO" property="memberNo"/>
 		<result column="BOARD_LIKE" property="boardLike"/>
-		
 		<result column="SUM_COUNT" property="sumCount"/>
+		<result column="LIKECHECK" property="likeCheck" />
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
 		
 		<collection resultMap="replyResultSet" property="replyList"/>
+
+		<collection resultMap="animalResultSet" property="animalList"/>
 	</resultMap>
 	
 	<select id="likeCheck" parameterType="hashmap" resultType="_int">
@@ -251,4 +257,116 @@
 	   	   AND
 	   	   	   BOARD_NO = #{boardNo}
 	</delete>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT 	
+				COUNT(*) 
+		  FROM
+				TB_INFO
+		 WHERE
+		 		CATEGORY_CODE = 'I3'
+		   AND
+				BOARD_STATUS = 'Y'
+	</select>
+	
+	<select id="selectInfo" parameterType="hashMap" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO
+      	  FROM 
+      	  		TB_INFO
+      	  <if test="animal != 'A0'">
+		  JOIN 
+				TB_BOARD_ANIMAL USING(BOARD_NO)
+		  </if>
+		  WHERE
+		        BOARD_STATUS = 'Y'
+		  <if test="animal != 'A0'">
+			AND
+				ANIMAL_CODE = #{animal}
+		  </if>
+			AND
+				CATEGORY_CODE = 'I3'
+		ORDER BY
+				BOARD_NO DESC
+	</select>
+	
+	<select id="selectInfoList" parameterType="java.util.List" resultMap="infoResultSet">
+		SELECT
+		        BOARD_NO,
+                MEMBER_NO,
+		        NICKNAME BOARD_WRITER,
+		        ANIMAL_NAME,
+		        CREATE_DATE,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        BOARD_COUNT,
+		        BOARD_LIKE,
+		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+		        BOARD_STATUS,
+		        CATEGORY_CODE,
+		        ATT_PATH,
+		        CHANGE_NAME
+		FROM
+		        TB_INFO
+		LEFT JOIN
+		        TB_BOARD_ANIMAL USING(BOARD_NO)
+		LEFT JOIN
+		        TB_ANIMAL USING(ANIMAL_CODE)
+		LEFT JOIN
+		        TB_MEMBER USING(MEMBER_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                COUNT(*) BOARD_LIKE, 
+		                BOARD_NO 
+		        FROM 
+		                TB_LIKE 
+		        GROUP BY 
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                BOARD_NO,
+		                COUNT(REPLY_NO) REPLY_COUNT,
+		                COUNT(COMMENT_NO) COMMENT_COUNT
+		        FROM 
+		                TB_INFO 
+		        LEFT JOIN
+		                TB_REPLY USING(BOARD_NO)
+		        LEFT JOIN
+		                TB_COMMENT USING(REPLY_NO)
+		        GROUP BY
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        TB_ATTACHMENT USING(BOARD_NO)
+		WHERE
+				BOARD_STATUS = 'Y'
+			AND
+				BOARD_NO IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item.boardNo}
+	  	</foreach>
+	  		AND
+	  			CATEGORY_CODE = 'I3'
+		ORDER BY 
+				BOARD_NO DESC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

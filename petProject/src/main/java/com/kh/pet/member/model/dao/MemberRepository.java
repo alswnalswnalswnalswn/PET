@@ -106,8 +106,8 @@ public class MemberRepository {
 		return sqlSession.selectOne("memberMapper.selectBoardDetail", boardNo);
 	}
 
-	public int selectListCount(SqlSessionTemplate sqlSession, int memberNo) {
-		return sqlSession.selectOne("memberMapper.selectListCount", memberNo);
+	public int selectListCount(SqlSessionTemplate sqlSession, HashMap<Object, Object> map) {
+		return sqlSession.selectOne("memberMapper.selectListCount", map);
 	}
 
 }
