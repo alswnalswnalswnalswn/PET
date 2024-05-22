@@ -36,9 +36,16 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<Info> communityDetail(int boardNo) {
-		return communityRepository.communityDetail(sqlSession, boardNo);
+	public int updateBoardCount(int boardNo) {
+		return communityRepository.updateBoardCount(sqlSession, boardNo);
 	}
+
+	@Override
+	public int likeCheck(HashMap<String, Integer> map) {
+		return communityRepository.likeCheck(sqlSession, map);
+	};
+	
+
 
 
 

@@ -24,8 +24,12 @@ public class CommunityRepository {
 		return sqlSession.selectList("communityMapper.selectCommunityList", list);
 	}
 	
-	public List<Info> communityDetail(SqlSessionTemplate sqlSession, int boardNo) {
-		return sqlSession.selectList("communityMapper.communityDetail", boardNo);
+	public int updateBoardCount(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("communityMapper.updateBoardCount", boardNo);
 	}
-
+	
+	public int likeCheck(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.selectOne("communityMapper.likeCheck", map);
+	}
+	
 }

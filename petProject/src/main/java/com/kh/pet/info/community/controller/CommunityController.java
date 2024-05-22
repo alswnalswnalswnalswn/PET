@@ -1,13 +1,14 @@
 package com.kh.pet.info.community.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,13 +23,13 @@ public class CommunityController {
 	@Autowired
 	private CommunityServiceImpl communityService;
 	
-	@RequestMapping("community")
+	@GetMapping("community")
 	public String communityForwarding() {
 		return "info/community/communityMain";
 	}
 	
 	@ResponseBody
-	@RequestMapping("selectCommunityList")
+	@GetMapping("selectCommunityList")
 	public List<Info> selectCommunityList(String animal, String category, int page){
 		
 		HashMap<String, String> commMap = new HashMap();
@@ -52,13 +53,32 @@ public class CommunityController {
 		return listInfo;
 	}
 	
-	@RequestMapping("communityDetail")
+	@ResponseBody
+	@GetMapping("communityDetail")
 	public ModelAndView communityDetail(ModelAndView mv, int boardNo) {
-		mv.addObject("info", communityService.communityDetail(boardNo)).setViewName("info/community/communityDetail");
+		
+		if(communityService.updateBoardCount(boardNo) > 0) {
+			
+			List<Info> list = new ArrayList();
+			Info info = new Info();
+			info.setBoardNo(boardNo);
+			list.add(info);
+			
+			mv.addObject("infoList", communityService.selectCommunityList(list)).setViewName("info/community/communityDetail");
+		};
+		
 		return mv;
 	}
 	
-	
+	@GetMapping("likeCheck")
+	public int likeCheck(int boardNo, int memberNo) {
+
+		HashMap<String, Integer> map = new HashMap();
+		map.put("boardNo", boardNo);
+		map.put("memberNo", memberNo);
+		
+		return communityService.likeCheck(map);
+	}
 	
 	
 	

@@ -71,7 +71,7 @@
 			
 	<div id="gomain">
 		<div class="btnDiv"><button>더 보기</button></div>
-		<a href=""><button id="mainbtn">메인으로</button></a>
+		<a href="selectCommunityList"><button id="mainbtn">메인으로</button></a>
 	</div>
 	
 	
@@ -118,12 +118,15 @@
 			});
 			
 			$('.boardCategory').click(function(){
-			     $('#boardinfo').toggle();
+				$('#aniinfo').css('display', 'none');
+			    $('#boardinfo').toggle();
 			});
 			
 			$('.aniCategory').click(function(){
+				$('#boardinfo').css('display', 'none');
 			    $('#aniinfo').toggle();
 			});
+			
 			$('#btncom').click(function(){
 				$('#inscom').toggle();
 			});
