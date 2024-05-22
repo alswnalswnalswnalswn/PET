@@ -66,6 +66,8 @@
 		<div class="btnDiv"><button>더 보기</button></div>
 		<a href=""><button id="mainbtn">메인으로</button></a>
 	</div>
+	
+	
 	<script>
 	
 		// 초기 변수 선언
@@ -109,6 +111,7 @@
 			$('.boardCategory').click(function(){
 			     $('#boardinfo').toggle();
 			});
+			
 			$('.aniCategory').click(function(){
 			    $('#aniinfo').toggle();
 			});
@@ -120,58 +123,6 @@
 				selectCommunityList(animal, category, ++page);
 			});
 			
-			$('.animal_category .categoryImg').click(function(){
-				 
-				$(this).css('border', '2px solid red');
-				$('.animal_category .categoryImg').not(this).css('border', 'none');
-				
-				if ($(this).hasClass('selected')) {
-			        $(this).css('border', 'none');
-			        $(this).removeClass('selected');
-			        animal = 'A0';
-			    } else {
-			        $(this).css('border', '2px solid red');
-			        $(this).addClass('selected');
-			        // 나머지 이미지들의 border 제거
-			        $('.anmal_category .categoryImg').not(this).css('border', 'none').removeClass('selected');
-			        
-			        // 선택된 동물 값 가져오기
-			        animal= $(this).data('value');
-			    }
-				 
-				resultStr = '';
-				page = 1;
-				selectCommunityList(animal, category, page);
-		    });
-			 
-			 
-			$('.board_category > button').click(function(){
-				 
-				$(this).css('border', '2px solid red');
-				$('.board_category > button').not(this).css('border', 'none');
-				
-				if ($(this).hasClass('selected')) {
-	 
-			      $(this).css('border', 'none');
-			      $(this).removeClass('selected');
-			      category = 'I0';
-			    } else {
-			      $(this).css('border', '2px solid red');
-			      $(this).addClass('selected');
-			      // 나머지 이미지들의 border 제거
-			      $('.board_category > button').not(this).css('border', 'none').removeClass('selected');
-			       
-			      // 선택된 동물 값 가져오기
-			      category= $(this).val();
-			    }
-				 
-				 resultStr = '';
-				 page = 1;
-				 selectCommunityList(animal, category, page);
-			 });
-			
-		});
-		
 		function dateFormat(date) {
 	        let month = date.getMonth() + 1;
 	        let day = date.getDate();
@@ -262,14 +213,7 @@
 				}
 			});
 		}
-		
-	    $(document).ready(function(){
-	      
-	    });
-	    
-	    $(document).ready(function(){
-	    	
-	    })
+		});
 		
 	</script>
 	

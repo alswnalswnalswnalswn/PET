@@ -58,7 +58,7 @@ public interface MemberService {
 
 	Info selectBoardDetail(int boardNo);
 
-	int selectListCount(int memberNo);
+	int selectListCount(HashMap<Object, Object> map);
 
 
 }

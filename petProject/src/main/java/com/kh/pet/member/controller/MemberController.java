@@ -354,7 +354,7 @@ public class MemberController {
 		map.put("category", category);
 		map.put("memberNo", memberNo);
 		
-		PageInfo pi = Pagination.getPageInfo(memberService.selectListCount(memberNo), page, 10, 10);
+		PageInfo pi = Pagination.getPageInfo(memberService.selectListCount(map), page, 10, 10);
 		
 		RowBounds rowBounds = new RowBounds(
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),

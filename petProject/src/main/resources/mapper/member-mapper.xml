@@ -309,25 +309,44 @@
 		delete TB_CERT where who = #{who} and code = #{secret}
 	</delete>
 	
-	
+	<select id="selectListCount" parameterType="hashmap" resultType="_int">
+		SELECT 	
+				COUNT(*) 
+		  FROM
+				TB_INFO
+		LEFT JOIN
+				TB_BOARD_ANIMAL USING(BOARD_NO)
+		WHERE
+		 		MEMBER_NO = #{memberNo}
+		 AND
+				BOARD_STATUS = 'Y'
+		<if test="animal != 'A0'">
+			AND ANIMAL_CODE = #{animal}
+		</if>
+		
+		<if test="category != 'I0'">
+			AND CATEGORY_CODE = #{category}
+		</if>
+	</select>
 	
 	<select id="selectBoard" parameterType="hashMap" resultMap="infoResultSet">
-		SELECT 
-				BOARD_NO
-      	  FROM 
-      	  		TB_INFO
-      	  <if test="animal != 'A0'">
-		  JOIN 
+		SELECT 	
+				BOARD_NO 
+		  FROM
+				TB_INFO
+		LEFT JOIN
 				TB_BOARD_ANIMAL USING(BOARD_NO)
-		 </if>
-		  WHERE
-		        BOARD_STATUS = 'Y'
-		 <if test="animal != 'A0'">
-			AND
-				ANIMAL_CODE = #{animal}
-		 </if>
-			AND
-				CATEGORY_CODE = 'I3'
+		WHERE
+		 		MEMBER_NO = #{memberNo}
+		 AND
+				BOARD_STATUS = 'Y'
+		<if test="animal != 'A0'">
+			AND ANIMAL_CODE = #{animal}
+		</if>
+		
+		<if test="category != 'I0'">
+			AND CATEGORY_CODE = #{category}
+		</if>
 		ORDER BY
 				BOARD_NO DESC
 	</select>
@@ -335,14 +354,13 @@
 	<select id="selectMyBoard" parameterType="java.util.List" resultMap="infoResultSet">
 		SELECT
 		        BOARD_NO,
-                MEMBER_NO,
 		        NICKNAME BOARD_WRITER,
 		        ANIMAL_NAME,
 		        CREATE_DATE,
 		        BOARD_TITLE,
 		        BOARD_CONTENT,
 		        BOARD_COUNT,
-		        BOARD_LIKE,
+		        NVL(BOARD_LIKE, 0) BOARD_LIKE,
 		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
 		        BOARD_STATUS,
 		        CATEGORY_CODE,
@@ -385,12 +403,11 @@
 		        TB_ATTACHMENT USING(BOARD_NO)
 		WHERE
 				BOARD_STATUS = 'Y'
-			AND
+		AND
 				BOARD_NO IN
-		<foreach collection="list" item="item" open="(" separator="," close=")">
-			#{item.boardNo}
-	  	</foreach>
-	  	    
+				<foreach collection="list" item="item" open="(" separator="," close=")">
+			   		#{item.boardNo}
+			  	</foreach>
 		ORDER BY 
 				BOARD_NO DESC
 	</select>
@@ -603,19 +620,6 @@
 	
 	<!-- 여기서부터 지워도 되는건지 확인 부탁 -->
 	
-	
-	
-	
-	<select id="selectListCount" parameterType="_int" resultType="_int">
-		SELECT 	
-				COUNT(*) 
-		  FROM
-				TB_INFO
-		 WHERE
-		 		MEMBER_NO = #{memberNo}				
-		   AND
-				BOARD_STATUS = 'Y'
-	</select>
 	
 	
 	

@@ -114,8 +114,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public int selectListCount(int memberNo) {
-		return memberRepository.selectListCount(sqlSession, memberNo);
+	public int selectListCount(HashMap<Object, Object> map) {
+		return memberRepository.selectListCount(sqlSession, map);
 	}
 
 	@Override
