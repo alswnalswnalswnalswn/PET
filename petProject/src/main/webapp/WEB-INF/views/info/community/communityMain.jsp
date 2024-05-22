@@ -88,6 +88,7 @@
 				category = categoryInfo;
 				
 				resultStr = '';
+				page = 1;
 				selectCommunityList(animal, category, page);
 				
 				$('#styleboard').text($(this).text().replace(/[# ]/g, ''));
@@ -101,6 +102,7 @@
 				animal = animalInfo;
 				
 				resultStr = '';
+				page = 1;
 				selectCommunityList(animal, category, page);
 				
 				$('#styleani').text($(this).text().replace(/[# ]/g, ''));
@@ -152,7 +154,7 @@
 					page : page
 				},
 				success : result => {
-					
+					console.log(result);
 					for(let i in result){
 						
 						var animalListStr = '';

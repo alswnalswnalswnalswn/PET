@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -362,7 +363,6 @@ public class MemberController {
 				);
 	    
 		List<Info> list = memberService.selectBoard(map, rowBounds);
-		
 		List<Info> myBoardList = memberService.selectMyBoard(list);
 		
 		for(Info i : myBoardList){
