@@ -48,8 +48,14 @@
         float: left;
     }
     #profile{
-        width: 150px;
+        width: 130px;
         height: 130px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid #000; 
     }
     #name{
         width: 500px;
@@ -63,16 +69,13 @@
         height: 130px;
     }
     #profile_img{
-        border-radius: 60%;
-        cursor: pointer;
-        border: 3px solid black;
-        width: 130px;
-        height: 130px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;  
     }
     #profile_img img{
         width: 120px;
         height:110px;
-        padding-left: 5px;
     }
     #update_info{
         float: right;
@@ -302,7 +305,7 @@
                     <form id="uploadForm" method="post" enctype="multpart/form-data">
                         <input type="file" name="profile" id="my_profile" multiple="true">
                         <div id="profile_img">
-                       		<img src="${sessionScope.path}/resources/img/${ loginUser.profile }" alt="프로필사진">
+                       		<img src="${sessionScope.path}/resources/img/profile/${ loginUser.profile }" alt="프로필사진">
                         </div>
                         <input type="hidden" name="memberNo" value="${loginUser.memberNo }">
                    </form>

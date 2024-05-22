@@ -151,10 +151,14 @@
 		display :flex;
 	}
 	#infoheader1{
-		width : 120px;
-		height : 100%;
-		border-radius : 60%;
-		border:4px solid black;
+        width: 170px;
+        height: 130px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid #000; 
 	}
 	#infoheader2{
 		width : 180px;
@@ -172,10 +176,22 @@
 		padding-left : 15%;
 		font-size: 25px
 	}
+    #name{
+        width: 500px;
+        height: 130px;
+        line-height: 180px;
+        font-size: 23px;
+        font-weight: 700;
+    }
+    #update{
+        width: 140px;
+        height: 130px;
+    }
+	
 	#infoheader1 > img{
-		width : 110px;
-		height : 85%;
-		margin-left : 2px;
+        object-fit: cover;  
+        width: 120px;
+        height:110px;
 	}
 	#infonickName{
 		font-size: 30px;
@@ -383,7 +399,7 @@
 	<div id="needgongan1"></div>
 	<div id="infooutput">
 		<div id="infoheader">
-			<div id="infoheader1"><img src="${sessionScope.path }/resources/img/common/${loginUser.profile}"></div>
+			<div id="infoheader1"><img src="${sessionScope.path }/resources/img/profile/${loginUser.profile}"></div>
 			<div id="infoheader2"><span id="infonickName"></span>님</div>
 			<div id="infoheader3">
 				

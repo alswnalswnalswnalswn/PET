@@ -115,13 +115,6 @@
     	height: 45px;
     	margin-top: 40px;
     }
-	#replyboard>img{
-		width : 35px;
-		height: 35px;
-	}
-	#myani{
-		background-color: rgba(242, 189, 108, 0.82);
-	}
 	#needgongan1{
 		width : 800px;
 		height: 50px;
@@ -131,19 +124,80 @@
 		border: 1px solid black;
 		margin : auto;
 	}
-    #infoList{
-    	width :300px;
-    	height: 300px;
-    	border: 1px solid black;
-    }
     #infoList> div{
    		border: 1px solid black;
     }
-    #myinfo{
-    	
+    #infoList> div>div{
+   		border: 1px solid black;
     }
-    #thumbnailifno{
-    	
+    #infoList{
+    	width :250px;
+    	height: 350px;
+    	border: 1px solid black;
+    	border-radius: 10px;
+    }
+    #infoList:hover{
+    	box-shadow : 0 15px 20px rgb(168, 167, 167);
+    }
+    #thumbnailinfo{
+    	width : 100%;
+    	height: 250px;
+    }
+    #thumbnailinfo > img{
+    	width : 95%;
+    	height: 95%;
+    	margin : 2.5% 0 0 2.5%;
+    	border: 1px solid rgb(233, 231, 231);
+    	border-radius: 20px;
+    }
+    #info-list{
+    	width : 100%;
+    	height : 100px;
+    }
+    #infoContent{
+    	width : 100%;
+    	height : 50%;
+    	font-size: 15px;
+    	font-weight: bold;
+    }
+    #info_info{
+   		width : 100%;
+    	height : 50%;
+    	display:flex;
+    }
+    #infoDate{
+    	width :40%;
+    	height: 100%;
+    	font-size: 14px;
+    	padding-top : 15px;
+    }
+    #needgong{
+    	width :30%;
+    	height: 100%;
+   	}
+    #infoLike{
+    	width :30%;
+    	height: 100%;
+    	display:flex;
+    }
+    #info_like, #info_rep{
+    	width : 100%;
+    	height: 100%;
+    	float: right;
+    	padding-top :10px;
+    }
+    #info_like>img, #info_rep>img{
+    	width : 70%;
+    	height: 70%;
+    	cursor: pointer;
+    }
+    #info_like>img:hover{
+    	width : 71%;
+    	height: 73%;
+    }
+    #info_rep>img:hover{
+    	width : 72%;
+    	height: 73%;
     }
 </style>
 </head>
@@ -181,8 +235,19 @@
 	</div>
 	<div id="needgongan1"></div>
 	<div class="info_body">
-		<div class="row" id="infoList" class="info_wrap">
-			
+		<div id="infoList" class="info_wrap">
+			<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/resources/img/profile/profile.png"></div>
+			<div class="center_content" id="info-list">
+				<div id="infoContent">강아지에게 음식줄 때 피해야 할 것들</div>
+				<div id="info_info">
+					<div id="infoDate">2024-05-22</div>
+					<div id="needgong"></div>
+					<div id="infoLike">
+						<div id="info_like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>
+						<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>
+					</div>
+				</div>
+			</div>
 	    </div>
 	</div>
 	<div id="gomain">
@@ -304,27 +369,8 @@
 						
 						animalListStr += '<br clear="both">';
 						
-						resultStr += '<div id="myinfo" class="infoList">'
-										+ '<div class="thumbnailImg" id="thumbnailifno"><img src="'
-										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
-										+ '"></div>'
-										+ '<div class="center_content" id="infolist">'
-										+ '<input type="hidden" value="' + result[i].boardNo + '">'
-											+ '<div id="boardheader">'
-												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
-												+ '<div id="myboardAni"><span class="category" id="myani">' + animalListStr + '</span></div>'
-												+ '<div class="create_date" id="boardCreate">' + result[i].boardCreateDate + '</div>'
-											+ '</div>'
-											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
-											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
-										+ '</div>'
-											+ '<div class="content_reaction" id="boardLike">'
-												+ '<div id="likeinfo"><button id="detailbtn">&nbsp;&nbsp;&nbsp;˚&nbsp;˚&nbsp;˚</button></div>'
-												+ '<div id="likeboard"><img id="like_board" src="${sessionScope.path }/resources/img/common/like.png">&nbsp;&nbsp;(' + result[i].boardLike + ')</div>'
-												+ '<div id="seeboard"><span>조회</span>&nbsp;&nbsp;&nbsp;(' + result[i].sumCount + ')</div>'
-												+ '<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">&nbsp;&nbsp;(' + result[i].boardCount + ')</div>'
-											+ '</div>'
-									+ '</div>'
+						resultStr += 
+									
 					};
 					
 					$('#like_board').click(function(){
