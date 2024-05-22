@@ -6,7 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>커뮤니티</title>
-	<link rel="stylesheet" href="resources/css/community/communityMain.css" />
+<link rel="stylesheet" href="resources/css/community/communityMain.css" />
+<style>
+	#needgongan{
+		width :1200px;
+		height: 50px;
+		margin :auto;
+	}
+</style>
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
