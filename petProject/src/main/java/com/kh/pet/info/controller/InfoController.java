@@ -66,4 +66,9 @@ public class InfoController {
 		}
 		return infoList;
 	}
+	
+	
+	
+	
+	
 }

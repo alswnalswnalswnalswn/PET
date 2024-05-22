@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>커뮤니티</title>
-	<link rel="stylesheet" href="resources/css/community/communityMain.css" />
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
@@ -59,7 +58,7 @@
 		
 	</div>
 	
-	<div id="needgongan1"></div>
+	<div id="needgongan"></div>
 		<div class="content_wrap" id="boardoutput"></div>
 			
 	<div id="gomain">
