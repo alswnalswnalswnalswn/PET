@@ -14,8 +14,10 @@ import lombok.ToString;
 @NoArgsConstructor
 public class ProductOption {
 
-	
+	private int optionNo;
 	private int productNo;
 	private int productAmount;
-	private String sizeName;
+	private int sizeCode;
+	private String sizeName;;
+	
 }

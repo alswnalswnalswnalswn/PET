@@ -22,8 +22,10 @@
 			margin:auto
 		}
 		.product-header{
+			display: flex;
+			flex-wrap: wrap;
 			width:100%;
-			height:420px;
+			height: auto;
 		}
 		.product-header > div{
 			float: left;
@@ -75,9 +77,8 @@
 		
 		.product-count{
 			margin: 15px 0;
-			width: 30%;
-			display:flex;
-			justify-content: space-between;
+			width: 100%;
+			
 		}
 		.product-count button {
 			position:relative;
@@ -157,6 +158,33 @@
 			width: 50%;
 			float:left;
 		}
+		.option_btn_wrap{
+			width: 100%;
+			display:flex;
+			justify-content: space-between;
+			align-items: flex-end;
+		}
+		.option_title{
+			border-bottom: 1px dashed rgb(204,204,204);
+			padding-bottom: 15px;
+			display:flex;
+			justify-content: space-between;
+		}
+		.product-count > div{
+			border: 1px solid rgb(204, 204, 204);
+			padding: 15px 10px;
+			margin-bottom:10px;
+		}
+		.option_btn{
+			width: 30%;
+			height: 45px;
+			padding-top: 15px;
+			display:flex;
+			justify-content: space-between;
+		}
+		.sum_price{
+			margin-bottom: 5px;
+		}
 	</style>
 
 </head>
@@ -184,9 +212,6 @@
 						  </button>
 						  <div id="selectColor" class="dropdown-menu dropdown-menu-right">
 						  
-						    <a class="dropdown-item">블랙</a>
-					
-						    <a class="dropdown-item">화이트</a>
 						  </div>
 						</div>
 					</div>
@@ -201,7 +226,7 @@
 						</div>
 					</div>
 					<div class="product-count">
-						<button id="minus-btn" type="button"><img class="minus-img" src="${ sessionScope.path }/resources/img/common/minus.png"/></button><input class="input-count" type="text" value="0"/><button type="button" id="plus-btn"><img class="plus-img" src="${ sessionScope.path }/resources/img/common/plus.png"/></button>
+						
 					</div>
 					<div class="product-payment">
 						<button type="button">바로 구매</button>
@@ -219,20 +244,56 @@
 		$(()=>{
 			let num = 0;
 			let maxNum = 0;
-			let numCheck = null;
+			let optionNo = 0;
+			let productList = '';
+			let productObject = {};
+			let colorName = '';
+			let sizeName = '';
+			let idNum = 0;
 			color();
 
 			$('.product-color').on('click','.dropdown-item', e =>{
-				$('#option-color').text($(e.target).text());
-				size($(e.target).text());
+				colorName = $(e.target).text();
+				$('#option-color').text(colorName);
+				
+				size(colorName);
+			});
+			
 			$('.product-payment > button').click(() => {
-				
+				if(num == 0){
+					alert('1개이상의 값을 입력해주세요');
+				}
+				else{
+					location.href='order/' + optionNo + '/' + num;
+				}
 			});
-				
-			});
+			
 			$('.product-size').on('click','.dropdown-item', e =>{
 				$('#option-size').text($(e.target).closest('.dropdown-item').find('.size_name').text());
+				sizeName = $(e.target).closest('.dropdown-item').find('.size_name').text();
 				maxNum = $(e.target).closest('.dropdown-item').find('.product_amount').text().substr(5);
+				productList += '<div>' +
+									'<div class="option_title"><div>${product.productName} '+ colorName + ' ' + sizeName+'</div><div class="option-cansle">X</div></div>' +
+									'<div class="option_btn_wrap">' +
+										'<div class="option_btn">' +
+											'<button id="minus-btn" type="button">' +
+												'<img class="minus-img" src="${ sessionScope.path }/resources/img/common/minus.png"/>' +
+											'</button>' +
+											'<input class="input-count" type="text" value="0"/>' +
+											'<button type="button" id="plus-btn">' +
+												'<img class="plus-img" src="${ sessionScope.path }/resources/img/common/plus.png"/>' +
+											'</button>' +
+										'</div>' +
+										'<div class="sum_price">13000원' +
+										'</div>' +
+									'</div>' +
+								'</div>';
+								
+				productObject = {
+						id : idNum,
+						productList : productList
+				};
+				$('.product-count').html(productObject.productList);
 			});
 			
 			$('#minus-btn').click(() => {
@@ -260,12 +321,22 @@
 				$.ajax({
 					url : 'size/' + '${product.productNo}/' + color,
 					success : result => {
-						
-						let text = '';
-						result.forEach(item => {
-							text += '<div class="dropdown-item"><div class="size_name">'+ item.sizeName +'</div><div class="product_amount"> 수량 : ' + item.productAmount + '</div></div>'
-						});
-						$('#selectSize').html(text);
+						console.log(result);
+						if(result[0].sizeName == '없음'){
+							$('#option-size').text('수량 : ' + result[0].productAmount).attr('disabled','true');
+							maxNum = result[0].productAmount;
+							optionNo = result[0].optionNo;
+							console.log(optionNo);
+						}
+						else{
+							let text = '';
+							result.forEach(item => {
+								text += '<div class="dropdown-item"><div class="size_name">'+ item.sizeName +'</div><div class="product_amount"> 수량 : ' + item.productAmount + '</div></div>'
+							});
+							optionNo = result[0].optionNo;
+							console.log(optionNo);
+							$('#selectSize').html(text);
+						}
 						
 					}
 				});
@@ -278,7 +349,9 @@
 					success : result => {
 						let text = '';
 						if(result[0].colorCode == 0){
-							color = colorName;	
+							let color = result[0].colorName;
+							$('#option-color').text(color).attr('disabled','true');
+							size(color);
 						}
 						else{
 						

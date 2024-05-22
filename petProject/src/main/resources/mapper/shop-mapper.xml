@@ -4,8 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shopMapper">
 	<resultMap type="productOption" id="productOptionResultSet">
+		<result column="OPTION_NO" property="optionNo"/>
 		<result column="PRODUCT_NO" property="productNo"/>
 		<result column="PRODUCT_AMOUNT" property="productAmount"/>
+		<result column="SIZE_CODE" property="sizeCode"/>
 		<result column="SIZE_NAME" property="sizeName"/>
 	</resultMap>
 
@@ -212,6 +214,7 @@
 	
 	<select id="selectSize" parameterType="hashmap" resultMap="productOptionResultSet">
 		SELECT
+			   OPTION_NO,
 		       SIZE_CODE,
 		       SIZE_NAME,
 		       PRODUCT_AMOUNT
