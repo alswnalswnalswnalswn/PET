@@ -343,7 +343,7 @@ public class MemberController {
 	
 	@RequestMapping("myBoard")
 	public String myboardForwarding() {
-		return "member/myboard2";
+		return "member/myboard";
 	}
 	
 	@ResponseBody
