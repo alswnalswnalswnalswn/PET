@@ -219,8 +219,8 @@
 		$(()=>{
 			let num = 0;
 			let maxNum = 0;
+			let numCheck = null;
 			color();
-
 
 			$('.product-color').on('click','.dropdown-item', e =>{
 				$('#option-color').text($(e.target).text());
@@ -266,6 +266,7 @@
 							text += '<div class="dropdown-item"><div class="size_name">'+ item.sizeName +'</div><div class="product_amount"> 수량 : ' + item.productAmount + '</div></div>'
 						});
 						$('#selectSize').html(text);
+						
 					}
 				});
 			}
@@ -276,17 +277,18 @@
 					url : 'color/' + '${product.productNo}',
 					success : result => {
 						let text = '';
-						console.log(result);
-						if(result.leng	th == 0){
-							$('.dropdown').html('');
-							
+						if(result[0].colorCode == 0){
+							color = colorName;	
 						}
 						else{
-							result.forEach(item => {
-								text += '<a class="dropdown-item">' + item.colorName + '</a>'
-							}); 
-							
-							$('#selectColor').html(text);
+						
+						
+						result.forEach(item => {
+							text += '<a class="dropdown-item">' + item.colorName + '</a>'
+						}); 
+						
+						$('#selectColor').html(text);
+						
 						}
 						
 						
