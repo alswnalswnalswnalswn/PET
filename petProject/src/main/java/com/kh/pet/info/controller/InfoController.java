@@ -1,5 +1,6 @@
 package com.kh.pet.info.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,10 +60,13 @@ public class InfoController {
 		
 		List<Info> list = infoService.selectInfo(map, rowBounds);
 		
-		List<Info> infoList = infoService.selectInfoList(list);
-		
-		for(Info i : infoList) {
-			i.setPageInfo(pi);
+		List<Info> infoList = new ArrayList();
+		if(list != null) {
+				infoList = infoService.selectInfoList(list);
+			
+			for(Info i : infoList) {
+				i.setPageInfo(pi);
+			}
 		}
 		return infoList;
 	}

@@ -343,13 +343,17 @@
 		        TB_ATTACHMENT USING(BOARD_NO)
 		WHERE
 				BOARD_STATUS = 'Y'
+	  		AND
+	  			CATEGORY_CODE = 'I3'
+			<!-- 
+			<if test="#{list.length < 1} ">
 			AND
 				BOARD_NO IN
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			#{item.boardNo}
 	  	</foreach>
-	  		AND
-	  			CATEGORY_CODE = 'I3'
+			</if>
+			 -->
 		ORDER BY 
 				BOARD_NO DESC
 	</select>
