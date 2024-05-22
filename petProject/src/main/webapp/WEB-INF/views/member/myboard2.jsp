@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="resources/css/community/communityMain.css" />
 </head>
 <body>
-	<jsp:include page="../../common/header.jsp" />
+	<jsp:include page="../common/header.jsp" />
 	
 	<c:set value="${ sessionScope.path }" var="path" />
 	
@@ -274,6 +274,6 @@
 	</script>
 	
 	
-	<jsp:include page="../../common/footer.jsp" />
+	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>

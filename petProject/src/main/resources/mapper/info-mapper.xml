@@ -3,8 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="infoMapper">
-	
-	
+	<resultMap type="animal" id="animalResultSet">
+		<result column="ANIMAL_NAME" property="animalName"/>
+		<result column="ANIMAL_CODE" property="animalCode"/>
+	    <result column="MEMBER_NO" property="memberNo"/>
+	</resultMap>
 	
 	<resultMap type="attachment" id="attachmentResultSet">
 		<result column="ATT_NO" property="attNo"/>
@@ -270,6 +273,7 @@
 		SELECT 
 				BOARD_NO
       	  FROM 
+      	  		TB_INFO
       	  <if test="animal != 'A0'">
 		  JOIN 
 				TB_BOARD_ANIMAL USING(BOARD_NO)

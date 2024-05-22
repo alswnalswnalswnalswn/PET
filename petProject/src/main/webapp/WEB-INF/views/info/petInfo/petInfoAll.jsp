@@ -97,10 +97,7 @@
 		width: 90px;
 		height: 70px;
 	}
-    #infoList{
-    	width: 1200px;
-    	margin: auto;
-    }
+
     .anmal_category ul{
     	border:none;
     }
@@ -125,13 +122,35 @@
 	#myani{
 		background-color: rgba(242, 189, 108, 0.82);
 	}
+	#needgongan1{
+		width : 800px;
+		height: 50px;
+	}
+	.info_body{
+		width : 1200px;
+		border: 1px solid black;
+		margin : auto;
+	}
+    #infoList{
+    	width :300px;
+    	height: 300px;
+    	border: 1px solid black;
+    }
+    #infoList> div{
+   		border: 1px solid black;
+    }
+    #myinfo{
+    	
+    }
+    #thumbnailifno{
+    	
+    }
 </style>
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
 	
 	<c:set value="${ sessionScope.path }" var="path" />
-	
 	<div id="submenubar">
 		<div id="searchForm">
 			<div id="search">
@@ -159,16 +178,13 @@
 				</div>
 			</div>
 		</div>
-		<div class="info_body">
-			<div class="row" id="infoList">
-
-		    </div>
-			
-		</div>
 	</div>
 	<div id="needgongan1"></div>
-		<div class="content_wrap" id="infooutput"></div>
+	<div class="info_body">
+		<div class="row" id="infoList" class="info_wrap">
 			
+	    </div>
+	</div>
 	<div id="gomain">
 		<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
 		<a href=""><button id="mainbtn">메인으로</button></a>
@@ -288,11 +304,11 @@
 						
 						animalListStr += '<br clear="both">';
 						
-						resultStr += '<div id="myboard" class="communityList">'
-										+ '<div class="thumbnailImg" id="thumbnail"><img src="'
+						resultStr += '<div id="myinfo" class="infoList">'
+										+ '<div class="thumbnailImg" id="thumbnailifno"><img src="'
 										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
 										+ '"></div>'
-										+ '<div class="center_content" id="boardlist">'
+										+ '<div class="center_content" id="infolist">'
 										+ '<input type="hidden" value="' + result[i].boardNo + '">'
 											+ '<div id="boardheader">'
 												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
@@ -316,8 +332,9 @@
 	                        $('#like_board img').attr('src', likeNuroom);
 					})
 					
-					$('.content_wrap').html(resultStr);
+					$('.info_wrap').html(resultStr);
 					
+					<!--
 					$('.center_content').click(function() {
 						
 						var $infoDetail = $(this).next('.communityDetail');
@@ -326,7 +343,7 @@
 						console.log(boardNo);
 						location.href = 'infoDetail?boardNo=' + boardNo;
 					});
-					
+					-->
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
 						$('.btnDiv').css('display', 'block');
 					}
