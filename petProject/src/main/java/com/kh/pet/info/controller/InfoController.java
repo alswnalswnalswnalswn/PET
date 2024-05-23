@@ -84,8 +84,8 @@ public class InfoController {
 			
 			for(Info i : infoList) {
 				i.setPageInfo(pi);
+			 */
 		}
-		*/
 		return infoList;
 	}
 	
