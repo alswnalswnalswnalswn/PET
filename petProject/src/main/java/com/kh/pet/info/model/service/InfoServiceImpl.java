@@ -3,38 +3,35 @@ package com.kh.pet.info.model.service;
 import java.util.HashMap;
 import java.util.List;
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.pet.common.model.vo.Attachment;
-import com.kh.pet.info.model.dao.InfoRepository;
+import com.kh.pet.info.model.dao.InfoMapper;
 import com.kh.pet.info.model.vo.Info;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class InfoServiceImpl implements InfoService {
 
-	@Autowired
-	private InfoRepository infoRepository;
+	private final InfoMapper infoMapper;
 	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
-
 	@Override
 	public int selectListCount() {
-		return infoRepository.selectListCount(sqlSession);
+		return infoMapper.selectListCount();
 	}
 
 	public Info selectInfoByBoardNo(Integer boardNo) {
-		return infoRepository.selectInfoByBoardNo(sqlSession, boardNo);
+		return infoMapper.selectInfoByBoardNo(boardNo);
 	}
 
 	public List<Integer> selectBoardNoList(HashMap<String, Object> map) {
-		return infoRepository.selectBoardNoList(sqlSession, map);
+		return infoMapper.selectBoardNoList(map);
 	}
 
 	public List<Attachment> selectAttNoListByBoardNo(Integer boardNo) {
-		return infoRepository.selectAttNoListByBoardNo(sqlSession, boardNo);
+		return infoMapper.selectAttNoListByBoardNo(boardNo);
 	}
 
 

@@ -30,7 +30,7 @@ public interface MemberService {
 
 	int insertAnimals(Animal animal);
 
-	boolean validate(CertVO certVo);
+	int validate(CertVO certVo);
 
 	String searchId(Member member);
 
@@ -49,8 +49,6 @@ public interface MemberService {
 	List<Info> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds);
 	
 	List<Info> selectMyBoard(List<Info> list);
-	
-	
 	
 	List<Info> selectCategory(HashMap<String, Object> map);
 

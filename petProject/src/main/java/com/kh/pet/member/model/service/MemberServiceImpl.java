@@ -13,16 +13,14 @@ import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.dao.MemberMapper;
 import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
-import com.kh.pet.member.model.vo.SocialMember;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-	@Autowired
-	private MemberMapper memberMapper;
-	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
+	private final MemberMapper memberMapper;
 	
 	@Override
 	public Member login(Member member) {
@@ -64,10 +62,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean validate(CertVO certVo) {
-		boolean result =  memberMapper.validate(certVo);
-		
-		if(result != false) {
+	public int validate(CertVO certVo) {
+		int result =  memberMapper.validate(certVo);
+		System.out.println(result);
+		if(result > 0) {
 			memberMapper.deleteCert(certVo);
 		}
 		return result;
