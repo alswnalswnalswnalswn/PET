@@ -8,48 +8,48 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.pet.shop.model.dao.ProductRepository;
+import com.kh.pet.shop.model.dao.ProductMapper;
 import com.kh.pet.shop.model.vo.Product;
 import com.kh.pet.shop.model.vo.ProductColor;
 import com.kh.pet.shop.model.vo.ProductOption;
 
-@Service
-public class ProductServiceImpl implements ProductService {
-	@Autowired
-	private ProductRepository productRepository;
-	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
+import lombok.RequiredArgsConstructor;
 
+@Service
+@RequiredArgsConstructor
+public class ProductServiceImpl implements ProductService {
+
+	private final ProductMapper productMapper;
+	
 	@Override
 	public int selectListCount(HashMap<String, String> map) {
 		
-		return productRepository.selectListCount(sqlSession,map);
+		return productMapper.selectListCount(map);
 	}
 
 	@Override
 	public Product selectOne(int productNo) {
-		return productRepository.selectOne(sqlSession,productNo);
+		return productMapper.selectOne(productNo);
 	}
 
 	@Override
 	public List<Product> selectCount(HashMap<String, String> map, RowBounds rowBounds) {
-		return productRepository.selectCount(sqlSession,map,rowBounds);
+		return productMapper.selectCount(map,rowBounds);
 	}
 
 	@Override
 	public List<Product> selectAll(List<Product> list) {
-		return productRepository.selectAll(sqlSession,list);
+		return productMapper.selectAll(list);
 	}
 
 	@Override
 	public List<ProductColor> selectColor(int productNo) {
-		return productRepository.selectColor(sqlSession,productNo);
+		return productMapper.selectColor(productNo);
 	}
 
 	@Override
 	public List<ProductOption> selectSize(HashMap<String, String> map) {
-		return productRepository.selectSize(sqlSession,map);
+		return productMapper.selectSize(map);
 	}
 	
 	

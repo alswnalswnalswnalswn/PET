@@ -3,25 +3,27 @@ package com.kh.pet.shop.controller;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.shop.model.service.ProductService;
 import com.kh.pet.shop.model.vo.ProductColor;
 import com.kh.pet.shop.model.vo.ProductOption;
 
-@Controller
+import lombok.RequiredArgsConstructor;
+
+@RestController
 @RequestMapping("product")
+@RequiredArgsConstructor
 public class ProductController {
 
 	
-	@Autowired
-	ProductService productService;
+
+	private final ProductService productService;
 	
 	@GetMapping("/{productNo}")
 	public ModelAndView selectOne(@PathVariable int productNo,ModelAndView mv){
@@ -33,7 +35,6 @@ public class ProductController {
 		return mv;
 	}
 	
-	@ResponseBody
 	@GetMapping("color/{productNo}")
 	public List<ProductColor> selectColor(@PathVariable int productNo){
 		

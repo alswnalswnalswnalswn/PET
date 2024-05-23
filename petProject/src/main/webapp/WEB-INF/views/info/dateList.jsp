@@ -554,13 +554,13 @@
 						             	result.boardContent +
 						                '<div class="menu_like">&ensp;';
 						                if(result.likeCheck == 0){
-						                	text += '<img class="like_btn" src="${sessionScope.path }/resources/img/like.png"> ';
+						                	text += '<img class="like_btn" src="${sessionScope.path }/resources/img/common/like.png"> ';
 						                }
 						                else{
-						                	text += '<img class="like_btn_cansle" src="${sessionScope.path }/resources/img/like2.png"> ';
+						                	text += '<img class="like_btn_cansle" src="${sessionScope.path }/resources/img/common/like2.png"> ';
 						                }
 						                
-						                text += result.boardLike + '&emsp;<img src="${sessionScope.path }/resources/img/reply.png"> ' + result.sumCount + '</div>' +
+						                text += result.boardLike + '&emsp;<img src="${sessionScope.path }/resources/img/common/reply.png"> ' + result.sumCount + '</div>' +
 						            '</div>' +
 						        '</div>' +
 			
