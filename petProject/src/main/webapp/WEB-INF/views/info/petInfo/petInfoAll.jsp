@@ -142,6 +142,10 @@
     #thumbnailinfo{
     	width : 100%;
     	height: 250px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     #thumbnailinfo > img{
     	width : 95%;
@@ -149,6 +153,7 @@
     	margin : 2.5% 0 0 2.5%;
     	border: 1px solid rgb(233, 231, 231);
     	border-radius: 20px;
+    	object-fit: cover;  
     }
     #info-list{
     	width : 100%;
@@ -288,55 +293,76 @@
 					page : page
 				},
 				success : result => {
-					console.log(result);
+					//console.log(result);
+					//console.log(result[0].attachmentList[0].attPath + result[0].attachmentList[0].changeName);
 					
-					resultStr += '<div class="col-sm-3">'
-							   		+ '<div id="infoList" class="info_wrap">'
-										+ '<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/' + result[i].attPath + '/' + result[i].changeName + '"></div>'
-										+ '<div class="center_content" id="info-list">'
-											+ '<input type="hidden" value="' + result[i].boardNo + '" />'
-											+ '<div id="infoTitle">' + result[i].boardTitle + '</div>'
-											+ '<div id="info_info">'
-												+ '<div id="infoDate">' + result[i].createDate + '</div>'
-												+ '<div id="infoLike">'
-													+ '<div id="info_like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>'
-													+ '<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>'
+					for(let i in result){
+						resultStr += '<div class="col-sm-3">'
+								   		+ '<div id="infoList" class="info_wrap">'
+											+ '<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/' + result[i].attachmentList[0].attPath + result[i].attachmentList[0].changeName + '"></div>'
+											+ '<div class="center_content" id="info-list">'
+												+ '<input type="hidden" value="' + result[i].boardNo + '" />'
+												+ '<div id="infoTitle">' + result[i].boardTitle + '</div>'
+												+ '<div id="info_info">'
+													+ '<div id="infoDate">' + result[i].createDate + '</div>'
+													+ '<div id="infoLike">'
+														+ '<div id="info_like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>'
+														+ '<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>'
+													+ '</div>'
 												+ '</div>'
 											+ '</div>'
 										+ '</div>'
 									+ '</div>'
-								+ '</div>'
+					}
+					console.log(resultStr);
+					$('#info_like').click(function(){
+						 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
+	                        $('#info_like img').attr('src', likeNuroom);
+					});
+					$('.row').html(resultStr);
+					
+					<!--
+					$('.center_content').click(function() {
+						
+						var $infoDetail = $(this).next('.infoDetail');
+						var boardNo = $(this).find('input[type="hidden"]').val();
+						
+						console.log(boardNo);
+						location.href = 'infoDetail?boardNo=' + boardNo;s
+					});
+					-->
+					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
+						$('.refresh_btn').css('display', 'block');
+					}
+					else{
+						$('.refresh_btn').css('display', 'none');
+					}
+	
 					},
 					error : result => {
-						
-						console.log('실패');
+					
+					console.log('실패');
 					}
 				});		
-				$('#info_like').click(function(){
-					 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
-                        $('#info_like img').attr('src', likeNuroom);
-				});
-				
-				$('.row').html(resultStr);
-				
-				<!--
-				$('.center_content').click(function() {
-					
-					var $infoDetail = $(this).next('.infoDetail');
-					var boardNo = $(this).find('input[type="hidden"]').val();
-					
-					console.log(boardNo);
-					location.href = 'infoDetail?boardNo=' + boardNo;s
-				});
-				-->
-				if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-					$('.refresh_btn').css('display', 'block');
-				}
-				else{
-					$('.refresh_btn').css('display', 'none');
-				}
-
 			};
+			
+			
+			function dateFormat(date) {
+		        let month = date.getMonth() + 1;
+		        let day = date.getDate();
+		        let hour = date.getHours();
+		        let minute = date.getMinutes();
+		        let second = date.getSeconds();
+
+		        month = month >= 10 ? month : '0' + month;
+		        day = day >= 10 ? day : '0' + day;
+		        hour = hour >= 10 ? hour : '0' + hour;
+		        minute = minute >= 10 ? minute : '0' + minute;
+		        second = second >= 10 ? second : '0' + second;
+
+		        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+	        	        
+			}
 		
 	</script>
 	

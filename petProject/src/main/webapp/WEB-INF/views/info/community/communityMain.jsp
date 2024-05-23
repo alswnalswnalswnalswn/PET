@@ -6,12 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>커뮤니티</title>
-<link rel="stylesheet" href="resources/css/community/communityMain.css" />
+	<link rel="stylesheet" href="resources/css/community/communityMain.css" />
 
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
-	
 	<c:set value="${ sessionScope.path }" var="path" />
 	
 	<div id="submenubar">
@@ -64,8 +63,9 @@
 		<div class="content_wrap" id="boardoutput"></div>
 			
 	<div id="gomain">
-		<div class="btnDiv"><button>더 보기</button></div>
-		<a href="selectCommunityList"><button id="mainbtn">메인으로</button></a>
+		<button id="showMore" class="mainbtn">더 보기</button>
+		<button class="mainbtn">메인으로</button>
+		<button onclick="location.href='insertCommunity'" class="mainbtn">글쓰기</button>
 	</div>
 	
 	
@@ -79,71 +79,6 @@
 		resultStr = '',
 		animalListStr = '';
 		
-		$(() => {
-			
-			selectCommunityList(animal, category, page);
-			
-			$('.category_info').click(function(){
-				
-				var categoryInfo = $(this).attr("value");
-				category = categoryInfo;
-				
-				resultStr = '';
-				page = 1;
-				selectCommunityList(animal, category, page);
-				
-				$('#styleboard').text($(this).text().replace(/[# ]/g, ''));
-				$('#boardinfo').css('display', 'none');
-				
-			});
-			
-			$('.animal_info').click(function(){
-				
-				var animalInfo = $(this).attr("value");
-				animal = animalInfo;
-				
-				resultStr = '';
-				page = 1;
-				selectCommunityList(animal, category, page);
-				
-				$('#styleani').text($(this).text().replace(/[# ]/g, ''));
-				$('#aniinfo').css('display', 'none');
-				
-			});
-			
-			$('.boardCategory').click(function(){
-				$('#aniinfo').css('display', 'none');
-			    $('#boardinfo').toggle();
-			});
-			
-			$('.aniCategory').click(function(){
-				$('#boardinfo').css('display', 'none');
-			    $('#aniinfo').toggle();
-			});
-			
-			$('#btncom').click(function(){
-				$('#inscom').toggle();
-			});
-			
-			$('.btnDiv > button').click(() => {
-				selectCommunityList(animal, category, ++page);
-			});
-			
-		function dateFormat(date) {
-	        let month = date.getMonth() + 1;
-	        let day = date.getDate();
-	        let hour = date.getHours();
-	        let minute = date.getMinutes();
-	        let second = date.getSeconds();
-	        month = month >= 10 ? month : '0' + month;
-	        day = day >= 10 ? day : '0' + day;
-	        hour = hour >= 10 ? hour : '0' + hour;
-	        minute = minute >= 10 ? minute : '0' + minute;
-	        second = second >= 10 ? second : '0' + second;
-	        
-	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-		}
-				
 		function selectCommunityList(animal, category, page){
 			
 			console.log(animal);
@@ -151,7 +86,7 @@
 			console.log(page);
 			
 			$.ajax({
-				url : 'selectCommunityList',
+				url : 'communities',
 				data : {
 					animal : animal,
 					category : category,
@@ -207,7 +142,7 @@
 						var $communityDetail = $(this).next('.communityDetail');
 						var boardNo = $(this).find('input[type="hidden"]').val();
 						
-						location.href = 'communityDetail?boardNo=' + boardNo;
+						location.href = 'communities/' + boardNo;
 					});
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
@@ -219,7 +154,76 @@
 				}
 			});
 		}
+		
+		
+		$(() => {
+			
+			selectCommunityList(animal, category, page);
+			
+			$('.category_info').click(function(){
+				
+				var categoryInfo = $(this).attr("value");
+				category = categoryInfo;
+				
+				resultStr = '';
+				page = 1;
+				selectCommunityList(animal, category, page);
+				
+				$('#styleboard').text($(this).text().replace(/[# ]/g, ''));
+				$('#boardinfo').css('display', 'none');
+				
+			});
+			
+			$('.animal_info').click(function(){
+				
+				var animalInfo = $(this).attr("value");
+				animal = animalInfo;
+				
+				resultStr = '';
+				page = 1;
+				selectCommunityList(animal, category, page);
+				
+				$('#styleani').text($(this).text().replace(/[# ]/g, ''));
+				$('#aniinfo').css('display', 'none');
+				
+			});
+			
+			$('.boardCategory').click(function(){
+				$('#aniinfo').css('display', 'none');
+			    $('#boardinfo').toggle();
+			});
+			
+			$('.aniCategory').click(function(){
+				$('#boardinfo').css('display', 'none');
+			    $('#aniinfo').toggle();
+			});
+			
+			$('#btncom').click(function(){
+				$('#inscom').toggle();
+			});
+			
+			$('#showMore').click(() => {
+				selectCommunityList(animal, category, ++page);
+			});
 		});
+		
+		function dateFormat(date) {
+	        let month = date.getMonth() + 1;
+	        let day = date.getDate();
+	        let hour = date.getHours();
+	        let minute = date.getMinutes();
+	        let second = date.getSeconds();
+	        month = month >= 10 ? month : '0' + month;
+	        day = day >= 10 ? day : '0' + day;
+	        hour = hour >= 10 ? hour : '0' + hour;
+	        minute = minute >= 10 ? minute : '0' + minute;
+	        second = second >= 10 ? second : '0' + second;
+	        
+	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+		}
+				
+		
+	
 		
 	</script>
 	

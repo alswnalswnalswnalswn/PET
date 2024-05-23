@@ -192,7 +192,7 @@ public class MemberController {
 		
 		CertVO certVo = CertVO.builder().who(request.getRemoteAddr()).secret(code).build();
 		
-		boolean result = memberService.validate(certVo);
+		int result = memberService.validate(certVo);
 		
 		return "result : " + result;
 	}
@@ -285,7 +285,7 @@ public class MemberController {
 		
 		String changeName = "profile" + ranNum + ext;
 		
-		String savePath = session.getServletContext().getRealPath("/resources/img/");
+		String savePath = session.getServletContext().getRealPath("/resources/img/profile/");
 		
 			try {
 				file.transferTo(new File(savePath + changeName));
@@ -421,8 +421,6 @@ public class MemberController {
 		String accessToken = kakaoService.getToken(code);
 		
 		SocialMember sm = kakaoService.getUserInfo(accessToken);
-		
-		memberService.selectMember(sm);
 		
 		session.setAttribute("socialLogin", sm);
 		

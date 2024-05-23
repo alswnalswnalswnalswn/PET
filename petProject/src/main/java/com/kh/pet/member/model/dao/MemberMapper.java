@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
-import org.mybatis.spring.SqlSessionTemplate;
-
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.vo.CertVO;
@@ -31,7 +29,7 @@ public interface MemberMapper {
 	 
 	 void insertCode(CertVO certVo);
 	 
-	 boolean validate(CertVO certVo);
+	 int validate(CertVO certVo);
 	 
 	 void deleteCert(CertVO certVo);
 
