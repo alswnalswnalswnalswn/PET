@@ -432,6 +432,9 @@
   		  AND
 	  			CATEGORY_CODE = 'I3'
 	      AND 	BOARD_NO = #{boardNo}
+   	 	ORDER 
+     	   BY 
+	     		BOARD_NO DESC  
 	</select>
 	
 	<select id="selectAttNoListByBoardNo" parameterType="_int" resultMap="attachmentResultSet">

@@ -255,6 +255,19 @@
 	</div>
 	<script>
 	
+	function dateFormat(date) {
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+
+        month = month >= 10 ? month : '0' + month;
+        day = day >= 10 ? day : '0' + day;
+
+        return date.getFullYear() + '-' + month + '-' + day;
+    	        
+	}
+	
+	
+	
 		// 초기 변수 선언
 		let animal='A0',
 		page = 1,
@@ -293,10 +306,12 @@
 					page : page
 				},
 				success : result => {
-					//console.log(result);
+					console.log(result);
 					//console.log(result[0].attachmentList[0].attPath + result[0].attachmentList[0].changeName);
-					
 					for(let i in result){
+						
+						let createDate = result[i].createDate.date;
+						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 						resultStr += '<div class="col-sm-3">'
 								   		+ '<div id="infoList" class="info_wrap">'
 											+ '<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/' + result[i].attachmentList[0].attPath + result[i].attachmentList[0].changeName + '"></div>'
@@ -304,7 +319,7 @@
 												+ '<input type="hidden" value="' + result[i].boardNo + '" />'
 												+ '<div id="infoTitle">' + result[i].boardTitle + '</div>'
 												+ '<div id="info_info">'
-													+ '<div id="infoDate">' + result[i].createDate + '</div>'
+													+ '<div id="infoDate">' + dateFormat(fullDate) + '</div>'
 													+ '<div id="infoLike">'
 														+ '<div id="info_like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>'
 														+ '<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>'
@@ -314,10 +329,9 @@
 										+ '</div>'
 									+ '</div>'
 					}
-					console.log(resultStr);
-					$('#info_like').click(function(){
+					$(document).on('click', '#info_like', function() {
 						 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
-	                        $('#info_like img').attr('src', likeNuroom);
+	                        $(this).find('img').attr('src', likeNuroom);
 					});
 					$('.row').html(resultStr);
 					
@@ -347,22 +361,6 @@
 			};
 			
 			
-			function dateFormat(date) {
-		        let month = date.getMonth() + 1;
-		        let day = date.getDate();
-		        let hour = date.getHours();
-		        let minute = date.getMinutes();
-		        let second = date.getSeconds();
-
-		        month = month >= 10 ? month : '0' + month;
-		        day = day >= 10 ? day : '0' + day;
-		        hour = hour >= 10 ? hour : '0' + hour;
-		        minute = minute >= 10 ? minute : '0' + minute;
-		        second = second >= 10 ? second : '0' + second;
-
-		        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-	        	        
-			}
 		
 	</script>
 	

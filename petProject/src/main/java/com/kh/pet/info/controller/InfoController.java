@@ -69,11 +69,11 @@ public class InfoController {
 		        // 각 Info 객체에 해당하는 attNo 리스트를 가져와서 설정
 		        List<Attachment> attNoList = infoService.selectAttNoListByBoardNo(boardNo);
 		        info.setAttachmentList(attNoList);
-		        
 		        // PageInfo 설정
 		        info.setPageInfo(pi);
 		        
 		        // 최종 리스트에 추가
+		        System.out.println(info.getCreateDate());
 		        infoList.add(info);
 		    }
 		}
