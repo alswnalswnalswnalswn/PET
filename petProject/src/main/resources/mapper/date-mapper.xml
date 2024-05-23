@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.pet.date.model.dao.DateMapper">
+	<resultMap type="animal" id="animalResultSet">
+		<result column="ANIMAL_NAME" property="animalName"/>
+		<result column="ANIMAL_CODE" property="animalCode"/>
+	    <result column="MEMBER_NO" property="memberNo"/>
+	</resultMap>
+	
+	<resultMap type="attachment" id="attachmentResultSet">
+		<result column="ATT_NO" property="attNo"/>
+		<result column="ATT_PATH" property="attPath"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="ATT_STATUS" property="attStaus"/>
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="ATT_LELVEL" property="attLevel"/>
+	</resultMap>
+	<resultMap type="comment" id="commentResultSet">
+		<result column="COMMENT_NO" property="commentNo"/>
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="COMMENT_WRITER" property="commentWriter"/>
+		<result column="COMMENT_CONTENT" property="commentContent"/>
+		<result column="COMMENT_CREATE_DATE" property="createDate"/>
+		<result column="COMMENT_UPDATE_DATE" property="updateDate"/>
+		<result column="COMMENT_STATUS" property="commentStatus"/>
+	</resultMap>
+	<resultMap type="reply" id="replyResultSet">
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="REPLY_WRITER" property="replyWriter"/>
+		<result column="REPLY_CONTENT" property="replyContent"/>
+		<result column="REPLY_CREATE_DATE" property="createDate"/>
+		<result column="REPLY_UPDATE_DATE" property="updateDate"/>
+		<result column="REPLY_STATUS" property="replyStatus"/>
+		<collection resultMap="commentResultSet" property="commentList" />
+	</resultMap>
+	
+	<resultMap type="info" id="infoResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="BOARD_COUNT" property="boardCount"/>
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="BOARD_WRITER" property="memberNo"/>
+		<result column="BO_CATEGORY_NAME" property="categoryCode"/>
+		<result column="UPDATE_DATE" property="updateDate"/>
+		<result column="BOARD_STATUS" property="boardStatus"/>
+		<result column="CATEGORY_CODE" property="categoryCode"/>
+		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="BOARD_LIKE" property="boardLike"/>
+		<result column="SUM_COUNT" property="sumCount"/>
+		<result column="LIKECHECK" property="likeCheck" />
+		
+		<collection resultMap="attachmentResultSet" property="attachmentList"/>
+		
+		<collection resultMap="replyResultSet" property="replyList"/>
+
+		<collection resultMap="animalResultSet" property="animalList"/>
+	</resultMap>
+	
+	<select id="likeCheck" parameterType="hashmap" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_LIKE
+		 WHERE
+		 	   MEMBER_NO = #{loginUser}
+		   AND
+		   	   BOARD_NO = (SELECT
+							      BOARD_NO
+							 FROM
+							      TB_INFO
+							 JOIN
+							      TB_BOARD_BRIDGE USING(BOARD_NO)
+							WHERE
+							      PLACE_NO = #{placeNo})	
+	</select>
+	
+	
+	<update id="updateCount" parameterType="_int">
+		UPDATE
+		       TB_INFO
+		   SET
+		       BOARD_COUNT = BOARD_COUNT +1
+		 WHERE
+		       BOARD_NO = (SELECT
+							       BOARD_NO
+							  FROM
+							       TB_INFO
+							  JOIN
+							       TB_BOARD_BRIDGE USING(BOARD_NO)
+							 WHERE
+							       PLACE_NO = #{placeNo})
+	</update>
+	<select id="selectDate" parameterType="_int" resultMap="infoResultSet">
+		SELECT
+		       BOARD_NO,
+		       BOARD_TITLE,
+		       BOARD_CONTENT,
+		       BOARD_COUNT,
+		       TB_INFO.CREATE_DATE CREATE_DATE,
+		       BO_CATEGORY_NAME,
+		       TB_INFO.UPDATE_DATE UPDATE_DATE,
+		       BOARD_STATUS,
+		       BOARD_LIKE,
+               TB_MEMBER.NICKNAME BOARD_WRITER,
+               
+               REP_COUNT+COMMENT_COUNT SUM_COUNT,
+               
+		       ATT_NO,
+		       ATT_PATH,
+		       ORIGIN_NAME,
+		       CHANGE_NAME,
+		       ATT_STATUS,
+		       ATT_LEVEL,
+               
+               REPLY_NO,
+               REPLY.REPLY_CONTENT REPLY_CONTENT,
+               REPLY_WRITER,
+               REPLY.CREATE_DATE REPLY_CREATE_DATE,
+               REPLY.UPDATE_DATE REPLY_UPDATE_DATE,
+               REPLY_STATUS,
+               
+               COMMENT_NO,
+               COMMENT_CONTENT,
+               COMM.CREATE_DATE COMMENT_CREATE_DATE,
+               COMM.UPDATE_DATE COMMENT_UPDATE_DATE,
+               COMMENT_STATUS,
+               COMMENT_WRITER
+		  FROM
+		       TB_INFO
+		  JOIN
+		       TB_BOARD_CATEGORY ON(BO_CATEGORY_CODE = CATEGORY_CODE)
+          JOIN
+               TB_MEMBER ON(TB_MEMBER.MEMBER_NO =TB_INFO.MEMBER_NO)
+		  LEFT
+		  JOIN
+		       (SELECT
+				       BOARD_NO,
+				       COUNT(*) BOARD_LIKE
+				  FROM
+				       TB_LIKE
+				 GROUP
+				    BY
+				       BOARD_NO
+				) USING(BOARD_NO)
+		  LEFT
+		  JOIN
+		       TB_ATTACHMENT USING(BOARD_NO)
+		  JOIN
+		       TB_BOARD_BRIDGE USING(BOARD_NO)
+          LEFT
+          JOIN
+               TB_REPLY REPLY USING(BOARD_NO)
+          LEFT
+          JOIN
+               (SELECT
+                       REPLY_NO,
+                       NICKNAME REPLY_WRITER
+                  FROM
+                       TB_REPLY
+                  JOIN
+                       TB_MEMBER USING(MEMBER_NO)
+                ) USING (REPLY_NO)
+          LEFT
+          JOIN
+               (SELECT
+                       REPLY_NO,
+                       COMMENT_NO,
+                       COMMENT_CONTENT,
+                       CREATE_DATE,
+                       UPDATE_DATE,
+                       COMMENT_STATUS,
+                       NICKNAME COMMENT_WRITER
+                  FROM
+                       TB_COMMENT
+                  JOIN
+                       TB_MEMBER USING(MEMBER_NO)
+               ) COMM USING (REPLY_NO)
+         JOIN
+               (SELECT
+                       BOARD_NO,
+                       COUNT(REPLY_NO) REP_COUNT,
+                       COUNT(COMMENT_NO) COMMENT_COUNT
+                  FROM
+                       TB_INFO
+                  LEFT
+                  JOIN
+                       TB_REPLY USING(BOARD_NO)
+                  LEFT
+                  JOIN
+                      TB_COMMENT USING(REPLY_NO)      
+                GROUP
+                   BY BOARD_NO
+                   ) USING (BOARD_NO)
+		 WHERE
+		       BOARD_STATUS = 'Y'
+		   AND
+		       PLACE_NO = ${placeNo}
+         ORDER
+            BY
+               REPLY.CREATE_DATE,COMM.CREATE_DATE
+	</select>
+	
+	<insert id="inserReply" parameterType="reply">
+		INSERT
+		  INTO
+		      TB_REPLY
+		VALUES(SEQ_REPNO.NEXTVAL,#{memberNo},#{boardNo},#{replyContent},DEFAULT,DEFAULT,DEFAULT)
+	
+	</insert>
+	
+	<insert id="insertComment" parameterType="comment">
+		INSERT
+		  INTO
+		      TB_COMMENT
+		VALUES(SEQ_COMNO.NEXTVAL,#{replyNo},#{memberNo},#{commentContent},DEFAULT,DEFAULT,DEFAULT)
+	
+	</insert>
+	
+	<update id="updateRepCom" parameterType="hashmap">
+		UPDATE
+			  <choose>
+			  <when test="type == 'reply'">
+			   TB_REPLY
+		   SET
+		   	   REPLY_CONTENT = #{content},
+		   	   UPDATE_DATE = SYSDATE
+		 WHERE
+		 	   REPLY_NO = TO_NUMBER(#{number})
+			  </when>
+			  <otherwise>
+			   TB_COMMENT
+		   SET
+		   	   COMMENT_CONTENT = #{content},
+		   	   UPDATE_DATE = SYSDATE
+		 WHERE
+		 	   COMMENT_NO = TO_NUMBER(#{number})
+			  </otherwise>
+			  </choose>  	   
+	</update>
+	
+	<insert id="insertLike" parameterType="hashmap">
+		INSERT
+		  INTO
+		  	   TB_LIKE
+		VALUES(#{memberNo},#{boardNo})
+	</insert>
+	
+	<delete id="deleteLike" parameterType="hashmap">
+		DELETE
+			   TB_LIKE
+	   	 WHERE
+	   	 	   MEMBER_NO = #{memberNo}
+	   	   AND
+	   	   	   BOARD_NO = #{boardNo}
+	</delete>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT 	
+				COUNT(*) 
+		  FROM
+				TB_INFO
+		 WHERE
+		 		CATEGORY_CODE = 'I3'
+		   AND
+				BOARD_STATUS = 'Y'
+	</select>
+	
+	<select id="selectInfo" parameterType="hashMap" resultMap="infoResultSet">
+		SELECT 
+				BOARD_NO
+      	  FROM 
+      	  		TB_INFO
+		  WHERE
+		        BOARD_STATUS = 'Y'
+			AND
+				CATEGORY_CODE = 'I3'
+		ORDER BY
+				BOARD_NO DESC
+	</select>
+	
+	<select id="selectInfoList" parameterType="java.util.List" resultMap="infoResultSet">
+		SELECT
+		        BOARD_NO,
+                MEMBER_NO,
+		        NICKNAME BOARD_WRITER,
+		        ANIMAL_NAME,
+		        CREATE_DATE,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        BOARD_COUNT,
+		        BOARD_LIKE,
+		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+		        BOARD_STATUS,
+		        CATEGORY_CODE,
+		        ATT_PATH,
+		        CHANGE_NAME
+		FROM
+		        TB_INFO
+		LEFT JOIN
+		        TB_BOARD_ANIMAL USING(BOARD_NO)
+		LEFT JOIN
+		        TB_ANIMAL USING(ANIMAL_CODE)
+		LEFT JOIN
+		        TB_MEMBER USING(MEMBER_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                COUNT(*) BOARD_LIKE, 
+		                BOARD_NO 
+		        FROM 
+		                TB_LIKE 
+		        GROUP BY 
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                BOARD_NO,
+		                COUNT(REPLY_NO) REPLY_COUNT,
+		                COUNT(COMMENT_NO) COMMENT_COUNT
+		        FROM 
+		                TB_INFO 
+		        LEFT JOIN
+		                TB_REPLY USING(BOARD_NO)
+		        LEFT JOIN
+		                TB_COMMENT USING(REPLY_NO)
+		        GROUP BY
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        TB_ATTACHMENT USING(BOARD_NO)
+		WHERE
+				BOARD_STATUS = 'Y'
+	  		AND
+	  			CATEGORY_CODE = 'I3'
+			AND
+				BOARD_NO IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item.attNo}
+	  	</foreach>
+		ORDER BY 
+				BOARD_NO DESC
+	</select>
+	
+	
+	<select id="selectBoardNoList" parameterType="hashMap" resultType="_int">
+	    SELECT 
+	    		BOARD_NO
+	      FROM 
+	      		TB_INFO
+	    <if test="animal != 'A0'">		
+          JOIN
+                Tb_BOARD_ANIMAL USING (BOARD_NO)
+		</if> 	      		
+		 WHERE
+	       		BOARD_STATUS = 'Y'
+	       AND
+	       		CATEGORY_CODE = 'I3'
+	    <if test="animal != 'A0'">		
+	       AND 
+	     		ANIMAL_CODE = #{animal}
+		</if>  	     		
+	     ORDER 
+	     	BY 
+	     		BOARD_NO DESC
+	</select>
+	
+	<select id="selectInfoByBoardNo" parameterType="_int" resultMap="infoResultSet">
+		SELECT
+		        BOARD_NO,
+                MEMBER_NO,
+		        NICKNAME BOARD_WRITER,
+		        ANIMAL_NAME,
+		        CREATE_DATE,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        BOARD_COUNT,
+		        BOARD_LIKE,
+		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+		        BOARD_STATUS,
+		        CATEGORY_CODE,
+		        ATT_PATH,
+		        CHANGE_NAME
+		FROM
+		        TB_INFO
+		LEFT JOIN
+		        TB_BOARD_ANIMAL USING(BOARD_NO)
+		LEFT JOIN
+		        TB_ANIMAL USING(ANIMAL_CODE)
+		LEFT JOIN
+		        TB_MEMBER USING(MEMBER_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                COUNT(*) BOARD_LIKE, 
+		                BOARD_NO 
+		        FROM 
+		                TB_LIKE 
+		        GROUP BY 
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                BOARD_NO,
+		                COUNT(REPLY_NO) REPLY_COUNT,
+		                COUNT(COMMENT_NO) COMMENT_COUNT
+		        FROM 
+		                TB_INFO 
+		        LEFT JOIN
+		                TB_REPLY USING(BOARD_NO)
+		        LEFT JOIN
+		                TB_COMMENT USING(REPLY_NO)
+		        GROUP BY
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        TB_ATTACHMENT USING(BOARD_NO)
+		WHERE
+				BOARD_STATUS = 'Y'
+  		  AND
+	  			CATEGORY_CODE = 'I3'
+	      AND 	BOARD_NO = #{boardNo}
+	</select>
+	
+	<select id="selectAttNoListByBoardNo" parameterType="_int" resultType="int">
+	    SELECT ATT_NO
+	    FROM TB_ATTACHMENT
+	    WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
