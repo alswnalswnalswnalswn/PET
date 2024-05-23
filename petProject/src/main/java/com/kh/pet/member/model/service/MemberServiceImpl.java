@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.dao.MemberMapper;
-import com.kh.pet.member.model.dao.memberMapper;
 import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
 import com.kh.pet.member.model.vo.SocialMember;
@@ -27,111 +26,111 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public Member login(Member member) {
-		return memberMapper.login(sqlSession, member);
+		return memberMapper.login(member);
 	}
 
 	@Override
 	public int join(Member member) {
-		return memberMapper.join(sqlSession, member);
+		return memberMapper.join(member);
 	}
 	@Override
 	public int insertAnimals(Animal animal) {
-		return memberMapper.insertAnimals(sqlSession, animal);
+		return memberMapper.insertAnimals(animal);
 	}
 
 	@Override
 	public int idCheck(String checkId) {
-		return memberMapper.idCheck(sqlSession, checkId);
+		return memberMapper.idCheck(checkId);
 	}
 
 	@Override
 	public int checkNick(String nickname) {
-		return memberMapper.checkNick(sqlSession, nickname);
+		return memberMapper.checkNick(nickname);
 	}
 
 	@Override
 	public int checkPhone(String phone) {
-		return memberMapper.checkPhone(sqlSession, phone);
+		return memberMapper.checkPhone(phone);
 	}
 
 	@Override
 	public int checkEmail(String email) {
-		return memberMapper.checkEmail(sqlSession, email);
+		return memberMapper.checkEmail(email);
 	}
 
 	@Override
 	public void sendMail(CertVO certVo) {
-		memberMapper.insertCode(sqlSession, certVo);
+		memberMapper.insertCode(certVo);
 	}
 
 	@Override
 	public boolean validate(CertVO certVo) {
-		boolean result =  memberMapper.validate(sqlSession, certVo);
+		boolean result =  memberMapper.validate(certVo);
 		
 		if(result != false) {
-			memberMapper.deleteCert(sqlSession, certVo);
+			memberMapper.deleteCert(certVo);
 		}
 		return result;
 	}
 
 	@Override
 	public String searchId(Member member) {
-		return memberMapper.searchId(sqlSession, member);
+		return memberMapper.searchId(member);
 	}
 
 	@Override
 	public int searchPwd(Member member) {
-		return memberMapper.searchPwd(sqlSession, member);
+		return memberMapper.searchPwd(member);
 	}
 
 	@Override
 	public int updatePwd(Member member) {
-		return memberMapper.updatePwd(sqlSession, member);
+		return memberMapper.updatePwd(member);
 	}
 
 	@Override
 	public int update(Member member) {
-		return memberMapper.update(sqlSession, member);
+		return memberMapper.update(member);
 	}
 
 	@Override
 	public int pwdCheck(Member member) {
-		return memberMapper.pwdCheck(sqlSession, member);
+		return memberMapper.pwdCheck(member);
 	}
 
 	@Override
 	public int upProfile(Member member) {
-		return memberMapper.upProfile(sqlSession, member);
+		return memberMapper.upProfile(member);
 	}
 
 	@Override
 	public Member selectUpMember(int memberNo) {
-		return memberMapper.selectUpMember(sqlSession, memberNo);
+		return memberMapper.selectUpMember(memberNo);
 	}
 	
 	@Override
 	public int selectListCount(HashMap<Object, Object> map) {
-		return memberMapper.selectListCount(sqlSession, map);
+		return memberMapper.selectListCount(map);
 	}
 
 	@Override
 	public List<Info> selectCategory(HashMap<String, Object> map) {
-		return memberMapper.selectCategory(sqlSession, map);
+		return memberMapper.selectCategory(map);
 	}
 
 	@Override
 	public Info selectBoardDetail(int boardNo) {
-		return memberMapper.selectBoardDetail(sqlSession, boardNo);
+		return memberMapper.selectBoardDetail(boardNo);
 	}
 
 	@Override
 	public List<Info> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds) {
-		return memberMapper.selectBoard(sqlSession, map, rowBounds);
+		return memberMapper.selectBoard(map, rowBounds);
 	}
 
 	@Override
 	public List<Info> selectMyBoard(List<Info> list) {
-		return memberMapper.selectMyBoard(sqlSession, list);
+		return memberMapper.selectMyBoard(list);
 	}
 
 
