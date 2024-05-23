@@ -7,20 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.pet.place.model.service.PlaceService;
 import com.kh.pet.place.model.vo.Place;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequestMapping("places")
+@RequiredArgsConstructor
 public class PlaceController {
 	
-	@Autowired
-	private PlaceService placeService;
+	private final PlaceService placeService;
 	
 
-	@GetMapping("places/{categoryCode}/{neLat}/{neLng}/{swLat}/{swLng}")
+	@GetMapping("{categoryCode}/{neLat}/{neLng}/{swLat}/{swLng}")
 	public List<Place> searchPlace(@PathVariable("categoryCode")String categoryCode, 
 			@PathVariable("neLat") String neLat, 
 			@PathVariable("neLng") String neLng, 

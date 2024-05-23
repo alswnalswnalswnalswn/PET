@@ -20,7 +20,7 @@ public class PlaceRepository{
 	}
 
 	public Place selectPlace(SqlSessionTemplate sqlSession, int placeNo) {
-		return sqlSession.selectPlace("placeMapper.selectPlace");
+		return sqlSession.selectOne("placeMapper.selectPlace");
 	}
 	
 	

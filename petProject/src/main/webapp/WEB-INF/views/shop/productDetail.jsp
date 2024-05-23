@@ -245,11 +245,11 @@
 			let num = 0;
 			let maxNum = 0;
 			let optionNo = 0;
-			let productList = '';
-			let productObject = {};
 			let colorName = '';
 			let sizeName = '';
+			let productListArray = [];
 			let idNum = 0;
+			let count = 0;
 			color();
 
 			$('.product-color').on('click','.dropdown-item', e =>{
@@ -272,15 +272,15 @@
 				$('#option-size').text($(e.target).closest('.dropdown-item').find('.size_name').text());
 				sizeName = $(e.target).closest('.dropdown-item').find('.size_name').text();
 				maxNum = $(e.target).closest('.dropdown-item').find('.product_amount').text().substr(5);
-				productList += '<div>' +
-									'<div class="option_title"><div>${product.productName} '+ colorName + ' ' + sizeName+'</div><div class="option-cansle">X</div></div>' +
+				let productList = '<div>' +
+									'<div class="option_title"><div>${product.productName} '+ colorName + ' ' + sizeName+'</div><div id="cansle_' + idNum +'" class="option-cansle">X</div></div>' +
 									'<div class="option_btn_wrap">' +
 										'<div class="option_btn">' +
-											'<button id="minus-btn" type="button">' +
+											'<button class="minus-btn" type="button">' +
 												'<img class="minus-img" src="${ sessionScope.path }/resources/img/common/minus.png"/>' +
 											'</button>' +
 											'<input class="input-count" type="text" value="0"/>' +
-											'<button type="button" id="plus-btn">' +
+											'<button type="button" class="plus-btn">' +
 												'<img class="plus-img" src="${ sessionScope.path }/resources/img/common/plus.png"/>' +
 											'</button>' +
 										'</div>' +
@@ -288,31 +288,56 @@
 										'</div>' +
 									'</div>' +
 								'</div>';
-								
-				productObject = {
+				
+				let productObject = {
 						id : idNum,
 						productList : productList
 				};
-				$('.product-count').html(productObject.productList);
+				productListArray.push(productObject);
+			    idNum++;
+			    console.log(productListArray);
+			    let text = '';
+			    productListArray.forEach(item => {
+			    	text += item.productList;
+			    });
+			    $('.product-count').html(text);
+			    
+				
 			});
-			
-			$('#minus-btn').click(() => {
-				if(num == 0){
+			$('.product-count').on('click','.option-cansle', e => {
+				$(e.target).parent().parent().remove();
+				
+				count = $(e.target).attr('id').substr(7);
+				productListArray = productListArray.filter(filterByID)
+				
+			});
+			function filterByID(item) {
+				  if (item.id != count) {
+				    return true;
+				  }
+				  return false;
+				}
+			$('.product-count').on('click','.minus-btn',e => {
+				
+				let inputCount = $(e.currentTarget).siblings('.input-count').val();
+				if(inputCount == 0){
 					alert('잘못됩입력입니다.');
 				}
 				else{
-				num = num - 1;
-				$('.input-count').val(num);
+					inputCount = Number(inputCount) - 1;
+					$(e.currentTarget).siblings('.input-count').val(inputCount);
 				}
 			});
 			
-			$('#plus-btn').click(() => {
-				if(maxNum == num){
+			$('.product-count').on('click','.plus-btn',e => {
+				let inputCount = $(e.currentTarget).siblings('.input-count').val();
+
+				if(maxNum == Number(inputCount)){
 					alert('잘못됩입력입니다.');
 				}
 				else{
-					num = num + 1;
-					$('.input-count').val(num);
+					inputCount = Number(inputCount) + 1;
+					$(e.currentTarget).siblings('.input-count').val(inputCount);
 				}
 				
 			});
@@ -321,12 +346,10 @@
 				$.ajax({
 					url : 'size/' + '${product.productNo}/' + color,
 					success : result => {
-						console.log(result);
 						if(result[0].sizeName == '없음'){
 							$('#option-size').text('수량 : ' + result[0].productAmount).attr('disabled','true');
 							maxNum = result[0].productAmount;
 							optionNo = result[0].optionNo;
-							console.log(optionNo);
 						}
 						else{
 							let text = '';
