@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.info.model.vo.Info;
 
 @Repository
@@ -15,13 +16,17 @@ public class InfoRepository {
 	public int selectListCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("infoMapper.selectListCount");
 	}
-	
-	public List<Info> selectInfo(SqlSessionTemplate sqlSession, HashMap<String, Object> map, RowBounds rowBounds) {
-		return sqlSession.selectList("infoMapper.selectInfo", map, rowBounds);
+
+	public Info selectInfoByBoardNo(SqlSessionTemplate sqlSession, Integer boardNo) {
+		return null;
 	}
 
-	public List<Info> selectInfoList(List<Info> list, SqlSessionTemplate sqlSession) {
-		return sqlSession.selectList("infoMapper.selectInfoList", list);
+	public List<Integer> selectBoardNoList(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return null;
+	}
+
+	public List<Attachment> selectAttNoListByBoardNo(SqlSessionTemplate sqlSession, Integer boardNo) {
+		return null;
 	}
 
 }

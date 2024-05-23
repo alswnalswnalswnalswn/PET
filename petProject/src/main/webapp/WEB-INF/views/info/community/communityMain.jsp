@@ -7,13 +7,7 @@
 <meta charset="UTF-8">
 <title>커뮤니티</title>
 <link rel="stylesheet" href="resources/css/community/communityMain.css" />
-<style>
-	#needgongan{
-		width :1200px;
-		height: 50px;
-		margin :auto;
-	}
-</style>
+
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
@@ -71,7 +65,7 @@
 			
 	<div id="gomain">
 		<div class="btnDiv"><button>더 보기</button></div>
-		<a href=""><button id="mainbtn">메인으로</button></a>
+		<a href="selectCommunityList"><button id="mainbtn">메인으로</button></a>
 	</div>
 	
 	
@@ -118,12 +112,15 @@
 			});
 			
 			$('.boardCategory').click(function(){
-			     $('#boardinfo').toggle();
+				$('#aniinfo').css('display', 'none');
+			    $('#boardinfo').toggle();
 			});
 			
 			$('.aniCategory').click(function(){
+				$('#boardinfo').css('display', 'none');
 			    $('#aniinfo').toggle();
 			});
+			
 			$('#btncom').click(function(){
 				$('#inscom').toggle();
 			});

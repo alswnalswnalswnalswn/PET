@@ -5,8 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <title>커뮤니티</title>
-<link rel="stylesheet" href="resources/css/community/communityMain.css" />
 <style>
 	div{
 		box-sizing : border-box;
@@ -119,21 +123,17 @@
 		width : 800px;
 		height: 50px;
 	}
+	#w3sThk{
+		width: 1200px;
+	}
 	.info_body{
 		width : 1200px;
-		border: 1px solid black;
 		margin : auto;
 	}
-    #infoList> div{
-   		border: 1px solid black;
-    }
-    #infoList> div>div{
-   		border: 1px solid black;
-    }
     #infoList{
     	width :250px;
     	height: 350px;
-    	border: 1px solid black;
+    	border: 1px solid rgb(233, 231, 231);
     	border-radius: 10px;
     }
     #infoList:hover{
@@ -154,50 +154,55 @@
     	width : 100%;
     	height : 100px;
     }
-    #infoContent{
+    #infoTitle{
     	width : 100%;
     	height : 50%;
     	font-size: 15px;
     	font-weight: bold;
+    	text-align : center;
     }
     #info_info{
    		width : 100%;
     	height : 50%;
-    	display:flex;
     }
     #infoDate{
     	width :40%;
     	height: 100%;
     	font-size: 14px;
     	padding-top : 15px;
+    	float: left;
     }
     #needgong{
     	width :30%;
     	height: 100%;
    	}
     #infoLike{
-    	width :30%;
-    	height: 100%;
+    	width :60%;
+    	height: 30px;
     	display:flex;
     }
     #info_like, #info_rep{
-    	width : 100%;
-    	height: 100%;
+    	width : 30px;
+    	height: 30px;
     	float: right;
     	padding-top :10px;
     }
     #info_like>img, #info_rep>img{
-    	width : 70%;
-    	height: 70%;
+    	width : 30px;
+    	height: 30px;
     	cursor: pointer;
     }
     #info_like>img:hover{
-    	width : 71%;
-    	height: 73%;
+    	width :32px;
+    	height: 32px;
     }
     #info_rep>img:hover{
-    	width : 72%;
-    	height: 73%;
+    	width : 32px;
+    	height: 32px;
+    }
+    #oneline_info{
+    	width :100%;
+    	height : 350px;
     }
 </style>
 </head>
@@ -235,20 +240,9 @@
 	</div>
 	<div id="needgongan1"></div>
 	<div class="info_body">
-		<div id="infoList" class="info_wrap">
-			<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/resources/img/profile/profile.png"></div>
-			<div class="center_content" id="info-list">
-				<div id="infoContent">강아지에게 음식줄 때 피해야 할 것들</div>
-				<div id="info_info">
-					<div id="infoDate">2024-05-22</div>
-					<div id="needgong"></div>
-					<div id="infoLike">
-						<div id="info_like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>
-						<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>
-					</div>
-				</div>
-			</div>
-	    </div>
+		 <div id="w3sThk" class="row">
+		 
+		 </div>
 	</div>
 	<div id="gomain">
 		<div class="refresh_btn"><img src="${sessionScope.path }/resources/img/common/refresh.png"></img></div>
@@ -258,7 +252,6 @@
 	
 		// 초기 변수 선언
 		let animal='A0',
-		category = 'I2', 
 		page = 1,
 		text = '',
 		resultStr = '',
@@ -266,139 +259,84 @@
 		
 		$(() => {
 			
-			selectInfoList(animal, category, page);
+			selectInfoList(animal, page);
 			
-			$('.btnDiv > button').click(() => {
-				selectInfoList(animal, category, ++page);
+			$('.refresh_btn > img').click(() => {
+				selectInfoList(animal, ++page);
 			});
 			
-			
-			$('.animal_category .categoryImg').click(function(){
-				 
-				$(this).css('border', '2px solid red');
-				$('.animal_category .categoryImg').not(this).css('border', 'none');
+			$('.nav-item').click(function(){
 				
-				if ($(this).hasClass('selected')) {
-			        $(this).css('border', 'none');
-			        $(this).removeClass('selected');
-			        animal = 'A0';
-			    } else {
-			        $(this).css('border', '2px solid red');
-			        $(this).addClass('selected');
-			        // 나머지 이미지들의 border 제거
-			        $('.anmal_category .categoryImg').not(this).css('border', 'none').removeClass('selected');
-			        
-			        // 선택된 동물 값 가져오기
-			        animal= $(this).data('value');
-			    }
-				 
+				animal = $(this).attr('id');
+				console.log(animal);
 				resultStr = '';
 				page = 1;
-				selectInfoList(animal, category, page);
+				selectInfoList(animal, page);
 		    });
-			 
-			 
-			$('.board_category > button').click(function(){
-				 
-				$(this).css('border', '2px solid red');
-				$('.board_category > button').not(this).css('border', 'none');
-				
-				if ($(this).hasClass('selected')) {
-	 
-			      $(this).css('border', 'none');
-			      $(this).removeClass('selected');
-			      category = 'I0';
-			    } else {
-			      $(this).css('border', '2px solid red');
-			      $(this).addClass('selected');
-			      // 나머지 이미지들의 border 제거
-			      $('.board_category > button').not(this).css('border', 'none').removeClass('selected');
-			       
-			      // 선택된 동물 값 가져오기
-			      category= $(this).val();
-			    }
-				 
-				 resultStr = '';
-				 page = 1;
-				 selectInfoList(animal, category, page);
-			 });
 			
 		});
-		
-		function dateFormat(date) {
-	        let month = date.getMonth() + 1;
-	        let day = date.getDate();
-	        let hour = date.getHours();
-	        let minute = date.getMinutes();
-	        let second = date.getSeconds();
-	        month = month >= 10 ? month : '0' + month;
-	        day = day >= 10 ? day : '0' + day;
-	        hour = hour >= 10 ? hour : '0' + hour;
-	        minute = minute >= 10 ? minute : '0' + minute;
-	        second = second >= 10 ? second : '0' + second;
-	        
-	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-		}
 				
-		function selectInfoList(animal, category, page){
+		function selectInfoList(animal, page){
 			
 			console.log(animal);
-			console.log(category);
 			console.log(page);
-			
+
 			$.ajax({
 				url : 'selectInfoList',
 				data : {
 					animal : animal,
-					category : category,
 					page : page
 				},
 				success : result => {
 					console.log(result);
 					
-					for(let i in result){
+					resultStr += '<div class="col-sm-3">'
+							   		+ '<div id="infoList" class="info_wrap">'
+										+ '<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/' + result[i].attPath + '/' + result[i].changeName + '"></div>'
+										+ '<div class="center_content" id="info-list">'
+											+ '<input type="hidden" value="' + result[i].boardNo + '" />'
+											+ '<div id="infoTitle">' + result[i].boardTitle + '</div>'
+											+ '<div id="info_info">'
+												+ '<div id="infoDate">' + result[i].createDate + '</div>'
+												+ '<div id="infoLike">'
+													+ '<div id="info_like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>'
+													+ '<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>'
+												+ '</div>'
+											+ '</div>'
+										+ '</div>'
+									+ '</div>'
+								+ '</div>'
+					},
+					error : result => {
 						
-						var animalListStr = '';
-						var animalListResult = result[i].animalList;
-						
-						for(let i in animalListResult){
-							animalListStr += '<div class="animalAndCategory">' 
-										  + animalListResult[i].animalName
-										  + '</div>'
-						}
-						
-						animalListStr += '<br clear="both">';
-						
-						resultStr += 
-									
-					};
-					
-					$('#like_board').click(function(){
-						 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
-	                        $('#like_board img').attr('src', likeNuroom);
-					})
-					
-					$('.info_wrap').html(resultStr);
-					
-					<!--
-					$('.center_content').click(function() {
-						
-						var $infoDetail = $(this).next('.communityDetail');
-						var boardNo = $(this).find('input[type="hidden"]').val();
-						
-						console.log(boardNo);
-						location.href = 'infoDetail?boardNo=' + boardNo;
-					});
-					-->
-					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-						$('.btnDiv').css('display', 'block');
+						console.log('실패');
 					}
-					else{
-						$('.btnDiv').css('display', 'none');
-					}
+				});		
+				$('#info_like').click(function(){
+					 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
+                        $('#info_like img').attr('src', likeNuroom);
+				});
+				
+				$('.row').html(resultStr);
+				
+				<!--
+				$('.center_content').click(function() {
+					
+					var $infoDetail = $(this).next('.infoDetail');
+					var boardNo = $(this).find('input[type="hidden"]').val();
+					
+					console.log(boardNo);
+					location.href = 'infoDetail?boardNo=' + boardNo;s
+				});
+				-->
+				if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
+					$('.refresh_btn').css('display', 'block');
 				}
-			});
-		}
+				else{
+					$('.refresh_btn').css('display', 'none');
+				}
+
+			};
 		
 	</script>
 	

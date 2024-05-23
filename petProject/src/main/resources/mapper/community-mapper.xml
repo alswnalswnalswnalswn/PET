@@ -199,61 +199,25 @@
 				BOARD_NO DESC
 	</select>
 	
-	<select id="communityDetail" parameterType="_int" resultMap="infoResultSet">
-		SELECT
-		        BOARD_NO,
-		        NICKNAME BOARD_WRITER,
-		        ANIMAL_NAME,
-		        CREATE_DATE,
-		        BOARD_TITLE,
-		        BOARD_CONTENT,
-		        BOARD_COUNT,
-		        NVL(BOARD_LIKE, 0) BOARD_LIKE,
-		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
-		        BOARD_STATUS,
-		        CATEGORY_CODE,
-		        ATT_PATH,
-		        CHANGE_NAME
-		FROM
-		        TB_INFO
-		LEFT JOIN
-		        TB_BOARD_ANIMAL USING(BOARD_NO)
-		LEFT JOIN
-		        TB_ANIMAL USING(ANIMAL_CODE)
-		LEFT JOIN
-		        TB_MEMBER USING(MEMBER_NO)
-		LEFT JOIN
-		        (
-		        SELECT 
-		                COUNT(*) BOARD_LIKE, 
-		                BOARD_NO 
-		        FROM 
-		                TB_LIKE 
-		        GROUP BY 
-		                BOARD_NO
-		        ) USING (BOARD_NO)
-		LEFT JOIN
-		        (
-		        SELECT 
-		                BOARD_NO,
-		                COUNT(REPLY_NO) REPLY_COUNT,
-		                COUNT(COMMENT_NO) COMMENT_COUNT
-		        FROM 
-		                TB_INFO 
-		        LEFT JOIN
-		                TB_REPLY USING(BOARD_NO)
-		        LEFT JOIN
-		                TB_COMMENT USING(REPLY_NO)
-		        GROUP BY
-		                BOARD_NO
-		        ) USING (BOARD_NO)
-		LEFT JOIN
-		        TB_ATTACHMENT USING(BOARD_NO)
+	<update id="updateBoardCount" parameterType="_int">
+		UPDATE 
+				TB_INFO 
+		SET 
+				BOARD_COUNT = BOARD_COUNT + 1 
 		WHERE 
 				BOARD_NO = #{boardNo}
+	</update>
+	
+	<select id="likeCheck" parameterType="hashMap" resultType="_int">
+		SELECT 
+				COUNT(*)
+		FROM
+				TB_LIKE
+		WHERE
+				BOARD_NO = #{boardNo}
+		AND
+				MEMBER_NO = #{memberNo}
 	</select>
-	
-	
 	
 	
 	
