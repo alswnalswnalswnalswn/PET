@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
 import com.kh.pet.info.model.service.InfoServiceImpl;
@@ -48,7 +49,7 @@ public class InfoController {
 	public List<Info> selectInfoList(String animal, int page){
 		
 		PageInfo pi = Pagination.getPageInfo(infoService.selectListCount(), page, 10, 10);
-		
+		System.out.println(pi);
 		RowBounds rowBounds = new RowBounds(
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
@@ -59,15 +60,32 @@ public class InfoController {
 		map.put("rowBounds", rowBounds);
 		
 		List<Info> list = infoService.selectInfo(map, rowBounds);
+		System.out.println(list);
 		
+		System.out.println(pi);
 		List<Info> infoList = new ArrayList();
-		if(list != null) {
-				infoList = infoService.selectInfoList(list);
+		if (list != null && !list.isEmpty()) {
+			/*
+		}
+		    // 각 boardNo에 대해 Info 객체를 생성
+		    for (Info boardNo : list) {
+		        Info info = infoService.selectInfoList(boardNo);
+		        
+		        // 각 Info 객체에 해당하는 attNo 리스트를 가져와서 설정
+		        List<Attachment> attachmentList = infoService.selectAttNoListByBoardNo(boardNo);
+		        info.setAttachmentList(attachmentList);
+		        
+		        // PageInfo 설정
+		        info.setPageInfo(pi);
+		        
+		        // 최종 리스트에 추가
+		        infoList.add(info);
+		    }
 			
 			for(Info i : infoList) {
 				i.setPageInfo(pi);
-			}
 		}
+		*/
 		return infoList;
 	}
 	

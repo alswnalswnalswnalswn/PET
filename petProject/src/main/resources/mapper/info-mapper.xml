@@ -274,16 +274,8 @@
 				BOARD_NO
       	  FROM 
       	  		TB_INFO
-      	  <if test="animal != 'A0'">
-		  JOIN 
-				TB_BOARD_ANIMAL USING(BOARD_NO)
-		  </if>
 		  WHERE
 		        BOARD_STATUS = 'Y'
-		  <if test="animal != 'A0'">
-			AND
-				ANIMAL_CODE = #{animal}
-		  </if>
 			AND
 				CATEGORY_CODE = 'I3'
 		ORDER BY
@@ -345,15 +337,13 @@
 				BOARD_STATUS = 'Y'
 	  		AND
 	  			CATEGORY_CODE = 'I3'
-			<!-- 
 			<if test="#{list.length < 1} ">
 			AND
 				BOARD_NO IN
 		<foreach collection="list" item="item" open="(" separator="," close=")">
-			#{item.boardNo}
+			#{item.attNo}
 	  	</foreach>
 			</if>
-			 -->
 		ORDER BY 
 				BOARD_NO DESC
 	</select>
