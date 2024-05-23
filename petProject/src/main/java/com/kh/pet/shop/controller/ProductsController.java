@@ -15,12 +15,15 @@ import com.kh.pet.common.template.Pagination;
 import com.kh.pet.shop.model.service.ProductService;
 import com.kh.pet.shop.model.vo.Product;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("products")
+@RequiredArgsConstructor
 public class ProductsController {
 	
-	@Autowired
-	ProductService productService;
+
+	private final ProductService productService;
 	
 	@GetMapping("/{page}/{category}/{animal}")
 	public List<Product> selectAll(@PathVariable int page,

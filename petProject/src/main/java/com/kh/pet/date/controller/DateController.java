@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -23,16 +22,20 @@ import com.kh.pet.info.model.vo.Comment;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.info.model.vo.Reply;
 import com.kh.pet.member.model.vo.Member;
+import com.kh.pet.place.model.service.PlaceService;
+
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 
-@Controller
+@RestController
 @RequestMapping("info/date")
+@RequiredArgsConstructor
 public class DateController {
 
-	@Autowired
-	DateService dateService;
+
+	private final DateService dateService;
 	
-	@ResponseBody
 	@GetMapping("/{placeNo}")
 	public Info selectDate(@PathVariable("placeNo")int placeNo, HttpSession session) throws ParseException {
 	
@@ -57,17 +60,16 @@ public class DateController {
 		return dateInfo;
 	}
 	
-	@ResponseBody
 	@PostMapping("reply")
 	public String insertReply(Reply reply) {
 		return dateService.insertReply(reply) > 0 ? "Y" : "N";
 	}
-	@ResponseBody
+	
 	@PostMapping("comment")
 	public String insertComment(Comment comment) {
 		return dateService.insertComment(comment) > 0 ? "Y" : "N";
 	}
-	@ResponseBody
+	
 	@PostMapping
 	public String updateRepCom(@RequestParam("type") String type,@RequestParam("number") String number,@RequestParam("content") String content) {
 		
@@ -84,7 +86,8 @@ public class DateController {
 		
 		return dateService.updateRepCom(map) > 0 ? "Y" : "N";
 	}
-	@ResponseBody
+
+
 	@PostMapping("like")
 	public String insertLike(int boardNo,int memberNo) {
 		HashMap<String,Integer> map = new HashMap();
@@ -96,7 +99,8 @@ public class DateController {
 		return dateService.insertLike(map) > 0 ? "Y" : "N";
 	}
 	
-	@ResponseBody
+
+
 	@DeleteMapping("like")
 	public String deleteLike(@RequestBody String obj) {
 		

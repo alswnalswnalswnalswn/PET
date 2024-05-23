@@ -3,7 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.pet.member.model.dao.MemberMapper">
-
+	
+	<sql id="select">
+		SELECT
+		       MEMBER_NO,
+		       MEMBER_ID,
+		       MEMBER_PWD,
+		       MEMBER_NAME,
+		       EMAIL,
+		       NICKNAME,
+		       PHONE,
+		       MEMBER_STATUS,
+		       TO_CHAR(ENROLL_DATE , 'YYYY/MM/DD') AS ENROLL_DATE, 
+    		   TO_CHAR(MODIFY_DATE , 'YYYY/MM/DD') AS MODIFY_DATE,
+    		   MEMBER_PROFILE
+		  FROM
+		       TB_MEMBER    		   
+	</sql>
+	
 	<resultMap type="attachment" id="attachmentResultSet">
 		<result column="ATT_NO" property="attNo"/>
 		<result column="ATT_PATH" property="attPath"/>
@@ -142,20 +159,7 @@
 	</select>
 	
 	<select id="login" parameterType="member" resultMap="memberResultSet">
-		SELECT
-		       MEMBER_NO,
-		       MEMBER_ID,
-		       MEMBER_PWD,
-		       MEMBER_NAME,
-		       EMAIL,
-		       NICKNAME,
-		       PHONE,
-		       MEMBER_STATUS,
-		       TO_CHAR(ENROLL_DATE , 'YYYY/MM/DD') AS ENROLL_DATE, 
-    		   TO_CHAR(MODIFY_DATE , 'YYYY/MM/DD') AS MODIFY_DATE,
-    		   MEMBER_PROFILE
-		  FROM
-		       TB_MEMBER
+		<include refid="select" />
 		 WHERE
 		       MEMBER_ID = #{memberId}
 		   AND
@@ -226,7 +230,7 @@
 	
 	<select id="searchPwd" parameterType="member" resultType="_int" >
 		SELECT
-		        MEMBER_NO
+		        COALESCE(COUNT(*), 0) 
 		  FROM 
 		        TB_MEMBER
 		 WHERE
@@ -258,20 +262,7 @@
 	</select>
 	
 	<select id="selectUpMember" resultType="member" parameterType="_int">
-		SELECT
-		       MEMBER_NO,
-		       MEMBER_ID,
-		       MEMBER_PWD,
-		       MEMBER_NAME,
-		       EMAIL,
-		       NICKNAME,
-		       PHONE,
-		       MEMBER_STATUS,
-		       TO_CHAR(ENROLL_DATE , 'YYYY/MM/DD') AS ENROLL_DATE, 
-    		   TO_CHAR(MODIFY_DATE , 'YYYY/MM/DD') AS MODIFY_DATE,
-    		   MEMBER_PROFILE
-		  FROM
-		       TB_MEMBER
+		<include refid="select" />
 		 WHERE 
 		 	   MEMBER_NO = #{memberNo}
 	</select>
@@ -290,7 +281,7 @@
 		INSERT INTO TB_CERT VALUES (#{who}, #{secret}, SYSDATE)
 	</insert>
 	
-	<select id="validate" parameterType="com.kh.pet.member.model.vo.CertVO" resultType="com.kh.pet.member.model.vo.CertVO">
+	<select id="validate" parameterType="com.kh.pet.member.model.vo.CertVO" resultType="_int">
 		SELECT
 				WHO,
 				CODE,

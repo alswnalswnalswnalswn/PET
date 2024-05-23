@@ -3,11 +3,11 @@ package com.kh.pet.place.model.dao;
 import java.util.HashMap;
 import java.util.List;
 
-import org.mybatis.spring.annotation.MapperScan;
+import org.apache.ibatis.annotations.Mapper;
 
 import com.kh.pet.place.model.vo.Place;
 
-@MapperScan
+@Mapper
 public interface PlaceMapper {
 
 	List<Place> searchPlace(HashMap<String, String> map);

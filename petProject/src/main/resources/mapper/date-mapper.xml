@@ -2,34 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kh.pet.info.model.dao.InfoMapper">
-
-	<sql id="selectInfo">
-		SELECT
-		        BOARD_NO,
-                MEMBER_NO,
-		        NICKNAME BOARD_WRITER,
-		        ANIMAL_NAME,
-		        CREATE_DATE,
-		        BOARD_TITLE,
-		        BOARD_CONTENT,
-		        BOARD_COUNT,
-		        BOARD_LIKE,
-		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
-		        BOARD_STATUS,
-		        CATEGORY_CODE,
-		        ATT_PATH,
-		        CHANGE_NAME
-		FROM
-		        TB_INFO
-		LEFT JOIN
-		        TB_BOARD_ANIMAL USING(BOARD_NO)
-		LEFT JOIN
-		        TB_ANIMAL USING(ANIMAL_CODE)
-		LEFT JOIN
-		        TB_MEMBER USING(MEMBER_NO)
-    </sql>
-
+<mapper namespace="com.kh.pet.date.model.dao.DateMapper">
 	<resultMap type="animal" id="animalResultSet">
 		<result column="ANIMAL_NAME" property="animalName"/>
 		<result column="ANIMAL_CODE" property="animalCode"/>
@@ -310,7 +283,29 @@
 	</select>
 	
 	<select id="selectInfoList" parameterType="java.util.List" resultMap="infoResultSet">
-		<include refid="selectInfo" />
+		SELECT
+		        BOARD_NO,
+                MEMBER_NO,
+		        NICKNAME BOARD_WRITER,
+		        ANIMAL_NAME,
+		        CREATE_DATE,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        BOARD_COUNT,
+		        BOARD_LIKE,
+		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
+		        BOARD_STATUS,
+		        CATEGORY_CODE,
+		        ATT_PATH,
+		        CHANGE_NAME
+		FROM
+		        TB_INFO
+		LEFT JOIN
+		        TB_BOARD_ANIMAL USING(BOARD_NO)
+		LEFT JOIN
+		        TB_ANIMAL USING(ANIMAL_CODE)
+		LEFT JOIN
+		        TB_MEMBER USING(MEMBER_NO)
 		LEFT JOIN
 		        (
 		        SELECT 
@@ -427,23 +422,15 @@
 		        TB_ATTACHMENT USING(BOARD_NO)
 		WHERE
 				BOARD_STATUS = 'Y'
-		  AND
-		  		ATT_LEVEL = 1
   		  AND
 	  			CATEGORY_CODE = 'I3'
 	      AND 	BOARD_NO = #{boardNo}
 	</select>
 	
-	<select id="selectAttNoListByBoardNo" parameterType="_int" resultMap="attachmentResultSet">
-	    SELECT 
-		        ATT_PATH,
-		        CHANGE_NAME
-	      FROM 
-	      		TB_ATTACHMENT
-	     WHERE 
-	     		BOARD_NO = #{boardNo}
-	      AND
-	      		ATT_LEVEL = 1
+	<select id="selectAttNoListByBoardNo" parameterType="_int" resultType="int">
+	    SELECT ATT_NO
+	    FROM TB_ATTACHMENT
+	    WHERE BOARD_NO = #{boardNo}
 	</select>
 	
 	

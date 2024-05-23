@@ -902,7 +902,6 @@
     						$checkEmail.show().css('color', 'crimson').text('가입된 이메일입니다.');
     						$email.css('border', '1px solid crimson');
     						$joinBtn.attr('disabled', true);
-    						$email.val("");
     					} else{
     						$email.css('border', '1px solid lightgreen');
     						$checkE.show().css();
@@ -987,7 +986,6 @@
 		const $checkEmailon = $('#checkEmailon');
 		const $checkEmailimg = $('.checkEmailimg');
 		const $searchBtn = $('#search-btn');
-		$searchBtn.attr('disabled', true);
 		$myEmail.keyup(function(){
 			
 			if($myEmail.val().length > 10){
@@ -1003,7 +1001,6 @@
     					} else{
     						$checkEmailon.show().css('color', 'crimson').text('가입된 이메일이 아닙니다.');
     						$myEmail.css('border', '1px solid crimson');
-    						$searchBtn.attr('disabled', true);
     					}
     				},
     				error : function(){
@@ -1012,7 +1009,6 @@
     			});
 			} else {
 				$checkEmailon.hide();
-				$searchBtn.attr('disabled', true);
 			}
 		});
 		
@@ -1021,13 +1017,12 @@
 	 
 	 
 		/* 아이디 */
-		
+		<!--
 		$('input[name=memberId]').blur(function(){
 			const idReg =  /^[A-Za-z0-9]{4,12}$/;
 			const idVal = $('input[name=memId]').val();
 
 			if(!idReg.test(idVal)){
-				$('input[name=memberId]').val('');
 				$('input[name=memberId]').css('border-color','orangered');
 			}
 			else{
@@ -1041,7 +1036,6 @@
 			const pwdVal = $('input[name=memberPwd]').val();
 
 			if(!pwdReg.test(pwdVal)){
-				$('input[name=memberPwd]').val('');
 				$('input[name=memberPwd]').css('border-color','orangered');
 			}
 			else{
@@ -1055,7 +1049,6 @@
 				const pwdVal2 = $('#memberPwd2').val();
 
 				if(!pwdReg2.test(pwdVal2)){
-					$('#memberPwd2').val('');
 					$('#memberPwd2').css('border-color','orangered');
 				}
 				else{
@@ -1069,7 +1062,6 @@
 				const memNameVal = $('input[name=memberName]').val();
 
 				if(!memNameReg.test(memNameVal)){
-					$('input[name=memberName]').val('');
 					$('input[name=memberName]').css('border-color','orangered');
 				}
 				else{
@@ -1083,7 +1075,6 @@
 				const nicknameVal = $('input[name=nickname]').val();
 
 				if(!nicknameReg.test(nicknameVal)){
-					$('input[name=nickname]').val('');
 					$('input[name=nickname]').css('border-color','orangered');
 				}
 				else{
@@ -1097,7 +1088,6 @@
 			const phoneVal = $('input[name=phone]').val();
 
 			if(!phoneReg.test(phoneVal)){
-				$('input[name=phone]').val('');
 				$('input[name=phone]').css('border-color','orangered');
 			}
 			else{
@@ -1111,7 +1101,6 @@
 			const emailVal = $('input[name=email]').val();
 
 			if(!emailReg.test(emailVal)){
-				$('input[name=email]').val('');
 				$('input[name=email]').css('border-color','orangered');
 			}
 			else{
@@ -1119,7 +1108,7 @@
 			}
 		});
 
-	 
+	 -->
 	</script>
  
 
