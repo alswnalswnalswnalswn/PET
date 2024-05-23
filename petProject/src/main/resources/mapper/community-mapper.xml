@@ -2,13 +2,49 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="communityMapper">
+<mapper namespace="com.kh.pet.community.model.dao.CommunityMapper">
+	
+	<!-- SQL태그 ****************************************************************************************************** -->
+	
+	<sql id="searchInInfo">
+		FROM
+				TB_INFO
+		<choose>
+			<when test="animal == 'A0'">
+				<choose>
+					<when test="category == 'I0'">
+						WHERE CATEGORY_CODE IN ('I1', 'I2')	
+					</when>
+					<otherwise>
+						WHERE CATEGORY_CODE = #{category}	
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				JOIN 
+						TB_BOARD_ANIMAL USING(BOARD_NO)
+				WHERE
+						ANIMAL_CODE = #{animal}
+				<choose>
+					<when test="category == 'I0'">
+						AND CATEGORY_CODE IN ('I1', 'I2')	
+					</when>
+					<otherwise>
+						AND CATEGORY_CODE = #{category}	
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+		AND
+				BOARD_STATUS = 'Y'
+	</sql>
 
+	<!-- ResultMap ****************************************************************************************************** -->
+	
 	<resultMap type="animal" id="animalResultSet">
 		<result column="ANIMAL_CODE" property="animalCode" />
 		<result column="ANIMAL_NAME" property="animalName" />
 	</resultMap>
-	
 	
 	<resultMap type="attachment" id="attachmentResultSet">
 		<result column="ATT_NO" property="attNo"/>
@@ -52,90 +88,28 @@
 		<result column="UPDATE_DATE" property="updateDate"/>
 		<result column="BOARD_STATUS" property="boardStatus"/>
 		<result column="CATEGORY_CODE" property="categoryCode"/>
-		
 		<result column="BOARD_LIKE" property="boardLike"/>
-		
 		<result column="SUM_COUNT" property="sumCount"/>
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
-		
 		<collection resultMap="replyResultSet" property="replyList"/>
-
 		<collection resultMap="animalResultSet" property="animalList"/>
 	</resultMap>
-
+	
+	<!-- SQL 구문****************************************************************************************************** -->
 
 	<select id="selectListCount" parameterType="hashmap" resultType="_int">
 		SELECT 
 				COUNT(*) 
-		FROM
-				TB_INFO
-		<choose>
-			<when test="animal == 'A0'">
-				<choose>
-					<when test="category == 'I0'">
-						WHERE CATEGORY_CODE IN ('I1', 'I2')	
-					</when>
-					<otherwise>
-						WHERE CATEGORY_CODE = #{category}	
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				JOIN 
-						TB_BOARD_ANIMAL USING(BOARD_NO)
-				WHERE
-						ANIMAL_CODE = #{animal}
-				<choose>
-					<when test="category == 'I0'">
-						AND CATEGORY_CODE IN ('I1', 'I2')	
-					</when>
-					<otherwise>
-						AND CATEGORY_CODE = #{category}	
-					</otherwise>
-				</choose>
-			</otherwise>
-		</choose>
-		AND
-				BOARD_STATUS = 'Y'
+		<include refid="searchInInfo" />
 	</select>
 	
-	<select id="selectAllList" parameterType="hashMap" resultMap="infoResultSet">
+	<select id="selectForwardCount" parameterType="hashMap" resultMap="infoResultSet">
 		SELECT 
 				BOARD_NO
-		FROM
-				TB_INFO
-		<choose>
-			<when test="animal == 'A0'">
-				<choose>
-					<when test="category == 'I0'">
-						WHERE CATEGORY_CODE IN ('I1', 'I2')	
-					</when>
-					<otherwise>
-						WHERE CATEGORY_CODE = #{category}	
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				JOIN 
-						TB_BOARD_ANIMAL USING(BOARD_NO)
-				WHERE
-						ANIMAL_CODE = #{animal}
-				<choose>
-					<when test="category == 'I0'">
-						AND CATEGORY_CODE IN ('I1', 'I2')	
-					</when>
-					<otherwise>
-						AND CATEGORY_CODE = #{category}	
-					</otherwise>
-				</choose>
-			</otherwise>
-		</choose>
-		AND
-				BOARD_STATUS = 'Y'
+		<include refid="searchInInfo" />
 		ORDER BY
 				BOARD_NO DESC
-	
 	</select>
 	
 	<select id="selectCommunityList" parameterType="java.util.List" resultMap="infoResultSet">

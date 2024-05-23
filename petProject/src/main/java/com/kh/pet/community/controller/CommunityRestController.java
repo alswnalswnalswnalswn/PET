@@ -1,36 +1,37 @@
-package com.kh.pet.info.community.controller;
+package com.kh.pet.community.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
-import com.kh.pet.info.community.model.service.CommunityServiceImpl;
+import com.kh.pet.community.model.service.CommunityServiceImpl;
 import com.kh.pet.info.model.vo.Info;
 
-@Controller
-public class CommunityController {
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(value="/communities", produces="application/json; charset=UTF-8")
+public class CommunityRestController {
 	
-	@Autowired
-	private CommunityServiceImpl communityService;
+	private final CommunityServiceImpl communityService;
 	
-	@GetMapping("community")
-	public String communityForwarding() {
-		return "info/community/communityMain";
-	}
-	
-	@ResponseBody
-	@GetMapping("selectCommunityList")
-	public List<Info> selectCommunityList(String animal, String category, int page){
+	@GetMapping
+	public String selectCommunityList(@RequestParam("animal") String animal, 
+										  @RequestParam("category") String category, 
+										  @RequestParam("page") int page){
 		
 		HashMap<String, String> commMap = new HashMap();
 		commMap.put("animal", animal);
@@ -43,24 +44,23 @@ public class CommunityController {
 				pi.getBoardLimit()
 				);
 		
-		List<Info> list = communityService.selectAllList(commMap, rowBounds);
+		List<Info> list = communityService.selectForwardCount(commMap, rowBounds);
 		
 		List<Info> listInfo = communityService.selectCommunityList(list);
 		
 		for(Info i : listInfo) {
 			i.setPageInfo(pi);
 		}
-		return listInfo;
+		return new Gson().toJson(listInfo);
 	}
 	
-	@ResponseBody
-	@GetMapping("communityDetail")
-	public ModelAndView communityDetail(ModelAndView mv, int boardNo) {
-		
+	@GetMapping("/{id}")
+	public ModelAndView communityDetail(@PathVariable("id")int boardNo, ModelAndView mv) {
+
 		if(communityService.updateBoardCount(boardNo) > 0) {
-			
 			List<Info> list = new ArrayList();
 			Info info = new Info();
+			
 			info.setBoardNo(boardNo);
 			list.add(info);
 			
@@ -80,7 +80,11 @@ public class CommunityController {
 		return communityService.likeCheck(map);
 	}
 	
-	
+	@PostMapping("insert")
+	public ModelAndView insertCommunity(ModelAndView mv, Info info) {
+		mv.setViewName("redirect:/community");
+		return mv;
+	}
 	
 
 }

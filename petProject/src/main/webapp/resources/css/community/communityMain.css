@@ -199,12 +199,12 @@ span:hover {
 	height: 120px;
 	margin: auto;
 	position: relative;
+    display: -webkit-box;
 }
 
-#mainbtn {
+.mainbtn {
 	width: 140px;
 	height: 50px;
-	position: absolute;
 	right: 0;
 	transform: translate(0, 10%);
 	font-size: 15px;
@@ -214,9 +214,10 @@ span:hover {
 	font-weight: bold;
 	bolder: 0;
 	cursor: pointer;
+	float: left;
 }
 
-#mainbtn:hover {
+.mainbtn:hover {
 	font-size: 16px;
 	width: 141px;
 	height: 51px;
