@@ -17,6 +17,6 @@ public interface InfoMapper {
 	
 	List<Integer> selectBoardNoList(HashMap<String, Object> map);
 	
-	List<Attachment> selectAttNoListByBoardNo(Integer boardNo);
+	List<Attachment> selectAttNoListByBoardNo(int boardNo);
 
 }
