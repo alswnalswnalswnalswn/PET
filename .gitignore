@@ -26,3 +26,4 @@ replay_pid*
 /Servers
 */target/*
 config.properties
+petProject/src/main/webapp/WEB-INF/spring/root-context.xml
