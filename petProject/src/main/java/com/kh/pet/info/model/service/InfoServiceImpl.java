@@ -3,11 +3,11 @@ package com.kh.pet.info.model.service;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.info.model.dao.InfoRepository;
 import com.kh.pet.info.model.vo.Info;
 
@@ -25,15 +25,18 @@ public class InfoServiceImpl implements InfoService {
 		return infoRepository.selectListCount(sqlSession);
 	}
 
-	@Override
-	public List<Info> selectInfo(HashMap<String, Object> map, RowBounds rowBounds) {
-		return infoRepository.selectInfo(sqlSession, map, rowBounds);
+	public Info selectInfoByBoardNo(Integer boardNo) {
+		return infoRepository.selectInfoByBoardNo(sqlSession, boardNo);
 	}
 
-	@Override
-	public List<Info> selectInfoList(List<Info> list) {
-		return infoRepository.selectInfoList(list, sqlSession);
+	public List<Integer> selectBoardNoList(HashMap<String, Object> map) {
+		return infoRepository.selectBoardNoList(sqlSession, map);
 	}
+
+	public List<Attachment> selectAttNoListByBoardNo(Integer boardNo) {
+		return infoRepository.selectAttNoListByBoardNo(sqlSession, boardNo);
+	}
+
 
 	
 }

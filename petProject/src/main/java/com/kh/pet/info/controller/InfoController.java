@@ -59,21 +59,20 @@ public class InfoController {
 		map.put("animal", animal);
 		map.put("rowBounds", rowBounds);
 		
-		List<Info> list = infoService.selectInfo(map, rowBounds);
-		System.out.println(list);
-		
-		System.out.println(pi);
-		List<Info> infoList = new ArrayList();
-		if (list != null && !list.isEmpty()) {
-			/*
-		}
+		List<Integer> boardNoList = infoService.selectBoardNoList(map);
+		System.out.println(boardNoList);
+
+		// Info 리스트 초기화
+		List<Info> infoList = new ArrayList<>();
+		if (boardNoList != null && !boardNoList.isEmpty()) {
 		    // 각 boardNo에 대해 Info 객체를 생성
-		    for (Info boardNo : list) {
-		        Info info = infoService.selectInfoList(boardNo);
-		        
+		    for (Integer boardNo : boardNoList) {
+		        Info info = infoService.selectInfoByBoardNo(boardNo);
+		        System.out.println(info);
 		        // 각 Info 객체에 해당하는 attNo 리스트를 가져와서 설정
-		        List<Attachment> attachmentList = infoService.selectAttNoListByBoardNo(boardNo);
-		        info.setAttachmentList(attachmentList);
+		        List<Attachment> attNoList = infoService.selectAttNoListByBoardNo(boardNo);
+		        System.out.println(attNoList);
+		        info.setAttachmentList(attNoList);
 		        
 		        // PageInfo 설정
 		        info.setPageInfo(pi);
@@ -81,11 +80,12 @@ public class InfoController {
 		        // 최종 리스트에 추가
 		        infoList.add(info);
 		    }
+		}
+		System.out.println(infoList);
 			
 			for(Info i : infoList) {
 				i.setPageInfo(pi);
 		}
-		*/
 		return infoList;
 	}
 	

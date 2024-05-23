@@ -3,9 +3,6 @@ package com.kh.pet.member.model.vo;
 import java.util.Date;
 import java.util.List;
 
-import com.kh.pet.common.model.vo.Animal;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

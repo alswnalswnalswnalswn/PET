@@ -28,8 +28,6 @@ public interface MemberService {
 
 	void sendMail(CertVO certVo);
 
-	SocialMember selectMember(SocialMember sm);
-
 	int insertAnimals(Animal animal);
 
 	boolean validate(CertVO certVo);
