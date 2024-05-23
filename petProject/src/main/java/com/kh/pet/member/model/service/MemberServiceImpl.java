@@ -112,12 +112,13 @@ public class MemberServiceImpl implements MemberService {
 	public int selectListCount(HashMap<Object, Object> map) {
 		return memberMapper.selectListCount(map);
 	}
-
+/*
 	@Override
 	public List<Info> selectCategory(HashMap<String, Object> map) {
 		return memberMapper.selectCategory(map);
 	}
 
+*/
 	@Override
 	public Info selectBoardDetail(int boardNo) {
 		return memberMapper.selectBoardDetail(boardNo);
@@ -131,6 +132,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<Info> selectMyBoard(List<Info> list) {
 		return memberMapper.selectMyBoard(list);
+	}
+
+	@Override
+	public List<Info> selectCategory(HashMap<String, Object> map) {
+		return null;
 	}
 
 
