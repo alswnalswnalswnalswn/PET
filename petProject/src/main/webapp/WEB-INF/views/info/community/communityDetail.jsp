@@ -6,15 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>상세보기</title>
-	<link rel="stylesheet" href="resources/css/community/communityDetail.css" />
+	<link rel="stylesheet" href="../resources/css/community/communityDetail.css" />
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
 	<c:set value="${ sessionScope.path }" var="path" />
 	<c:set value="${ infoList[0] }" var="info" />
-
-
-
+	
 	<div id="infooutput">
 		<div id="infoheader">
 			<div id="infoheader1"><img src="" alt="작성자 프사"></div>
@@ -38,14 +36,8 @@
 	</div>
 	
 	<div id="boardLike2">
-		<c:choose>
-			<c:when test="">
-				<div id="likeboard2"><img src="${path }/resources/img/common/like.png"><span>(${info.boardLike})</span></div>
-			</c:when>
-			<c:otherwise>
-				<div id="likeboard2"><img src="${path }/resources/img/common/like2.png"><span>(${info.boardLike})</span></div>
-			</c:otherwise>
-		</c:choose>
+		<div id="likeboard2"><img src=""><span>(${info.boardLike})</span></div>
+		
 		<div id="seeboard2"><span>조회 (${info.boardCount})</span></div>
 		<div id="replyboard2"><img src="${path}/resources/img/common/reply.png"><span>(${info.sumCount})</span></div>
 		<div id="golist">
@@ -90,6 +82,12 @@
 				},
 				success : result => {
 					console.log(result);
+					if(result > 0){
+						$('#likeboard2 > img').attr('src', '${path}/resources/img/common/like2.png' )
+					}
+					else {
+						$('#likeboard2 > img').attr('src', '${path}/resources/img/common/like.png' )
+					}
 				}
 			});
 			

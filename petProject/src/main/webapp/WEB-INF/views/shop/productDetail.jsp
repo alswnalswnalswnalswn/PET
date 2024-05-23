@@ -185,6 +185,10 @@
 		.sum_price{
 			margin-bottom: 5px;
 		}
+		.sum_price input{
+			border:none;
+			width:100px;
+		}
 	</style>
 
 </head>
@@ -236,8 +240,7 @@
 			<div class="product-body">
 				<div class="product-detail">${ product.productDetail }</div>
 			</div>
-			
-			
+		
 		</div>
 	</div>
 	<script>
@@ -250,6 +253,7 @@
 			let productListArray = [];
 			let idNum = 0;
 			let count = 0;
+			let divIds = [];
 			color();
 
 			$('.product-color').on('click','.dropdown-item', e =>{
@@ -260,20 +264,36 @@
 			});
 			
 			$('.product-payment > button').click(() => {
-				if(num == 0){
-					alert('1개이상의 값을 입력해주세요');
-				}
-				else{
-					location.href='order/' + optionNo + '/' + num;
-				}
+				$('.product-count').children().each(function(){
+					let optionObj = {
+							optionNo : $(this).attr('id').substr(7),
+							productAmount : $(this).find('.input-count').val()
+					};
+					divIds.push(optionObj);
+					
+				});
+
+				$.ajax({
+					url : 'order',
+					type : 'POST',
+					contentType: 'application/json',
+				    dataType: 'json',
+					data : JSON.stringify(divIds),
+					success : result => {
+						console.log(result);
+						location.href = 'order/'
+					}
+				});
+				/*location.href = 'order/'+ divIds;*/
 			});
 			
 			$('.product-size').on('click','.dropdown-item', e =>{
 				$('#option-size').text($(e.target).closest('.dropdown-item').find('.size_name').text());
+				let optionNo = $(e.target).closest('.dropdown-item').attr('id');
 				sizeName = $(e.target).closest('.dropdown-item').find('.size_name').text();
 				maxNum = $(e.target).closest('.dropdown-item').find('.product_amount').text().substr(5);
-				let productList = '<div>' +
-									'<div class="option_title"><div>${product.productName} '+ colorName + ' ' + sizeName+'</div><div id="cansle_' + idNum +'" class="option-cansle">X</div></div>' +
+				let productList = '<div id="option_' + optionNo + '">' +
+									'<div class="option_title"><div class="option_tit">${product.productName} '+ colorName + ' ' + sizeName+'</div><div id="cansle_' + idNum +'" class="option-cansle">X</div></div>' +
 									'<div class="option_btn_wrap">' +
 										'<div class="option_btn">' +
 											'<button class="minus-btn" type="button">' +
@@ -284,11 +304,10 @@
 												'<img class="plus-img" src="${ sessionScope.path }/resources/img/common/plus.png"/>' +
 											'</button>' +
 										'</div>' +
-										'<div class="sum_price">13000원' +
+										'<div class="sum_price"><input value="0" disabled>' +
 										'</div>' +
 									'</div>' +
 								'</div>';
-				
 				let productObject = {
 						id : idNum,
 						productList : productList
@@ -318,26 +337,35 @@
 				  return false;
 				}
 			$('.product-count').on('click','.minus-btn',e => {
-				
-				let inputCount = $(e.currentTarget).siblings('.input-count').val();
+				let input = $(e.currentTarget).siblings('.input-count');
+				let inputCount = input.val();
 				if(inputCount == 0){
 					alert('잘못됩입력입니다.');
 				}
 				else{
 					inputCount = Number(inputCount) - 1;
-					$(e.currentTarget).siblings('.input-count').val(inputCount);
+					input.val(inputCount);
+					let sumPrice = ${product.price} * inputCount;
+					$(e.currentTarget).parent().next().children('input').val(sumPrice);
+					console.log($(e.currentTarget).parent().next().children().val());
+					
 				}
 			});
 			
 			$('.product-count').on('click','.plus-btn',e => {
-				let inputCount = $(e.currentTarget).siblings('.input-count').val();
+				let input = $(e.currentTarget).siblings('.input-count');
+				let inputCount = input.val();
 
 				if(maxNum == Number(inputCount)){
 					alert('잘못됩입력입니다.');
 				}
 				else{
 					inputCount = Number(inputCount) + 1;
-					$(e.currentTarget).siblings('.input-count').val(inputCount);
+					input.val(inputCount);
+					
+					let sumPrice = ${product.price} * inputCount;
+					$(e.currentTarget).parent().next().children('input').val(sumPrice);
+					console.log($(e.currentTarget).parent().next().children().val());
 				}
 				
 			});
@@ -354,10 +382,10 @@
 						else{
 							let text = '';
 							result.forEach(item => {
-								text += '<div class="dropdown-item"><div class="size_name">'+ item.sizeName +'</div><div class="product_amount"> 수량 : ' + item.productAmount + '</div></div>'
+								text += '<div id="' + item.optionNo + '" class="dropdown-item"><div class="size_name">'+ item.sizeName +'</div><div class="product_amount"> 수량 : ' + item.productAmount + '</div></div>'
+								
 							});
-							optionNo = result[0].optionNo;
-							console.log(optionNo);
+							
 							$('#selectSize').html(text);
 						}
 						
