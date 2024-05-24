@@ -1,8 +1,12 @@
 package com.kh.pet.community.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -27,6 +32,23 @@ import lombok.RequiredArgsConstructor;
 public class CommunityRestController {
 	
 	private final CommunityServiceImpl communityService;
+	
+	public String saveFile(MultipartFile file, HttpSession session) {
+		String originName = file.getOriginalFilename();
+		String ext = originName.substring(originName.lastIndexOf("."));
+		int ranNum = (int)(Math.random() * 90000) + 10000;
+		String changeName = "profile" + ranNum + ext;
+		String savePath = session.getServletContext().getRealPath("/resources/img/profile/");
+		
+		try {
+			file.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
+	}
+
 	
 	@GetMapping
 	public String selectCommunityList(@RequestParam("animal") String animal, 
@@ -81,8 +103,20 @@ public class CommunityRestController {
 	}
 	
 	@PostMapping("insert")
-	public ModelAndView insertCommunity(ModelAndView mv, Info info) {
-		mv.setViewName("redirect:/community");
+	public ModelAndView insertCommunity(HttpSession session, ModelAndView mv, Info info, MultipartFile upfile) {
+		
+		if(!upfile.getOriginalFilename().equals("")) {
+			saveFile(upfile, session);
+			
+			info.setOriginName(upfile.getOriginalFilename());
+			info.setChangeName(saveFile(upfile, session));
+		}
+		
+		if(communityService.insertCommunity(info) > 0) {
+			session.setAttribute("alertMsg", "작성 성공");
+			mv.setViewName("redirect:/community");
+		}
+		
 		return mv;
 	}
 	
