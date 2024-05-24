@@ -1,0 +1,124 @@
+div{
+		box-sizing : border-box;
+	}
+	#gomain{
+		width: 900px;
+		height: 120px;
+		margin : auto;
+		position : relative;
+	}	
+	#mainbtn{
+		width: 140px;
+		height: 50px;
+		position : absolute;
+		right: 0;
+		transform: translate(0, 10%);
+	    font-size: 15px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+	    bolder: 0;
+	    cursor :pointer;
+	}
+	#mainbtn:hover{
+		font-size: 16px;
+		width: 141px;
+		height: 51px;
+	}
+    .refresh_btn{
+    	margin: auto;
+    	text-align: center;
+    }
+    .refresh_btn > img{
+    	width: 45px;
+    	height: 45px;
+    	margin-top: 40px;
+    }
+	#w3sThk{
+		width: 1200px;
+	}
+	.info_body{
+		width : 1200px;
+		margin : auto;
+		height: auto;	
+	}
+    #infoList{
+    	width :250px;
+    	height: 350px;
+    	border: 1px solid rgb(233, 231, 231);
+    	border-radius: 10px;
+    }
+    #infoList:hover{
+    	box-shadow : 0 15px 20px rgb(168, 167, 167);
+    }
+    #thumbnailinfo{
+    	width : 100%;
+    	height: 250px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #thumbnailinfo > img{
+    	width : 95%;
+    	height: 95%;
+    	margin : 2.5% 0 0 2.5%;
+    	border: 1px solid rgb(233, 231, 231);
+    	border-radius: 20px;
+    	object-fit: cover;  
+    }
+    #info-list{
+    	width : 100%;
+    	height : 100px;
+    }
+    #infoTitle{
+    	width : 100%;
+    	height : 50%;
+    	font-size: 15px;
+    	font-weight: bold;
+    	text-align : center;
+    }
+    #info_info{
+   		width : 100%;
+    	height : 50%;
+    }
+    #infoDate{
+    	width :40%;
+    	height: 100%;
+    	font-size: 14px;
+    	padding-top : 15px;
+    	float: left;
+    }
+    #needgong{
+    	width :30%;
+    	height: 100%;
+   	}
+    #infoLike{
+    	width :60%;
+    	height: 30px;
+    	display:flex;
+    }
+    #info_like, #info_rep{
+    	width : 30px;
+    	height: 30px;
+    	float: right;
+    	padding-top :10px;
+    }
+    #info_like>img, #info_rep>img{
+    	width : 30px;
+    	height: 30px;
+    	cursor: pointer;
+    }
+    #info_like>img:hover{
+    	width :32px;
+    	height: 32px;
+    }
+    #info_rep>img:hover{
+    	width : 32px;
+    	height: 32px;
+    }
+    #oneline_info{
+    	width :100%;
+    	height : 350px;
+    }

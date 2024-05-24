@@ -21,6 +21,10 @@ public class Reply {
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 	private String replyStatus;
+	private int commentNo;
+	private String commentWriter;
+	private String commentContent;
+	private LocalDateTime comCreateDate;
 
 	private List<Comment> commentList;
 	

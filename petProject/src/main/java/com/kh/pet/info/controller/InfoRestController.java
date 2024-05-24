@@ -1,8 +1,9 @@
 package com.kh.pet.info.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
-import com.kh.pet.info.model.service.InfoServiceImpl;
+import com.kh.pet.info.model.service.InfoService;
 import com.kh.pet.info.model.vo.Info;
+import com.kh.pet.info.model.vo.Reply;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InfoRestController {
 
-	private final InfoServiceImpl infoService;
+	private final InfoService infoService;
 	
 	@GetMapping("/{category}")
 	public ModelAndView selectAll(@PathVariable("category") String category,ModelAndView mv) {
@@ -42,18 +44,13 @@ public class InfoRestController {
 	@GetMapping("selectInfoList")
 	public List<Info> selectInfoList(String animal, int page){
 		
-		PageInfo pi = Pagination.getPageInfo(infoService.selectListCount(), page, 10, 10);
+		PageInfo pi = Pagination.getPageInfo(infoService.selectListCount(animal), page, 12, 10);
 		RowBounds rowBounds = new RowBounds(
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
 				);
 		
-		HashMap<String, Object> map = new HashMap();
-		map.put("animal", animal);
-		map.put("rowBounds", rowBounds);
-		
-		List<Integer> boardNoList = infoService.selectBoardNoList(map);
-
+		List<Integer> boardNoList = infoService.selectBoardNoList(animal, rowBounds);
 		// Info 리스트 초기화
 		List<Info> infoList = new ArrayList<>();
 		if (boardNoList != null && !boardNoList.isEmpty()) {
@@ -75,28 +72,29 @@ public class InfoRestController {
 		}
 		return infoList;
 	}
-	/*
 	
-	@GetMapping("infoDetail")
-	public ResponseEntity<ResponseData> infoDetail(@PathVariable int boardNo){
-		Info info = null;
-		ResponseData rd = null;
-		try {
-		info = infoService.infoDetail(boardNo);
-		} catch(Exception e) {
-			rd = ResponseData.builder().data(info).message("서버측 문제로 응답불가").responseCode("10").build();
-		}
-		if(info != null) {
-			rd = ResponseData.builder().data(info).message("조회 잘했따~~").responseCode("00").build();
-			
-		} else {
-			rd = ResponseData.builder().data(null).message("내용이 없습니다.").responseCode("05").build();
-		}
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+	@GetMapping("infoDetail/{boardNo}")
+	public Info infoDetail(@PathVariable int boardNo, HttpSession session){
+		int page = 1;
 		
-		return new ResponseEntity<ResponseData>(info, headers, HttpStatus.OK);
+		Info info = infoService.infoDetail(boardNo);
+		PageInfo pi = Pagination.getPageInfo(infoService.selectReplyListCount(boardNo), page, 12, 10);
+		RowBounds rowBounds = new RowBounds(
+				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
+				pi.getBoardLimit()
+				);
+		List<Integer> replyNoList = infoService.selectReplyNoList(boardNo, rowBounds);
+		System.out.println(replyNoList);
+		if (replyNoList != null && !replyNoList.isEmpty()) {
+		    for (Integer replyNo : replyNoList) {
+		    	List<Reply> commentList = infoService.selectCommentNoList(replyNo);
+		    	info.setReplyList(commentList);
+		    	System.out.println(commentList);
+		    	System.out.println(info);
+		    }
+		}
+		System.out.println(info);
+		return info;
 	}
-		 */
 	
 }

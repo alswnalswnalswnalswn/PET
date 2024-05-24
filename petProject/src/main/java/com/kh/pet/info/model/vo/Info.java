@@ -38,7 +38,6 @@ public class Info {
 	private List<Attachment> attachmentList;
 	
 	private List<Reply> replyList;
-	
 	private PageInfo pageInfo;
 	
 	private List<Animal> animalList;

@@ -28,6 +28,33 @@
 		        TB_ANIMAL USING(ANIMAL_CODE)
 		LEFT JOIN
 		        TB_MEMBER USING(MEMBER_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                COUNT(*) BOARD_LIKE, 
+		                BOARD_NO 
+		        FROM 
+		                TB_LIKE 
+		        GROUP BY 
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        (
+		        SELECT 
+		                BOARD_NO,
+		                COUNT(REPLY_NO) REPLY_COUNT,
+		                COUNT(COMMENT_NO) COMMENT_COUNT
+		        FROM 
+		                TB_INFO 
+		        LEFT JOIN
+		                TB_REPLY USING(BOARD_NO)
+		        LEFT JOIN
+		                TB_COMMENT USING(REPLY_NO)
+		        GROUP BY
+		                BOARD_NO
+		        ) USING (BOARD_NO)
+		LEFT JOIN
+		        TB_ATTACHMENT USING(BOARD_NO)
     </sql>
 
 	<resultMap type="animal" id="animalResultSet">
@@ -59,6 +86,10 @@
 		<result column="REPLY_WRITER" property="replyWriter"/>
 		<result column="REPLY_CONTENT" property="replyContent"/>
 		<result column="REPLY_CREATE_DATE" property="createDate"/>
+		<result column="COMMENT_NO" property="commentNo"/>		
+		<result column="COMMENT_WRITER" property="commentWriter"/>
+		<result column="COMMENT_CONTENT" property="commentContent"/>
+		<result column="COMMENT_CREATE_DATE" property="comCreateDate"/>		
 		<result column="REPLY_UPDATE_DATE" property="updateDate"/>
 		<result column="REPLY_STATUS" property="replyStatus"/>
 		<collection resultMap="commentResultSet" property="commentList" />
@@ -285,74 +316,77 @@
 	   	   	   BOARD_NO = #{boardNo}
 	</delete>
 	
-	<select id="selectListCount" resultType="_int">
+	<select id="selectListCount" parameterType="string" resultType="_int">
 		SELECT 	
 				COUNT(*) 
 		  FROM
 				TB_INFO
+	    <if test="animal != 'A0'">		
+          JOIN
+                Tb_BOARD_ANIMAL USING (BOARD_NO)
+		</if> 					
 		 WHERE
 		 		CATEGORY_CODE = 'I3'
+	    <if test="animal != 'A0'">		
+	       AND 
+	     		ANIMAL_CODE = #{animal}
+		</if>  	 		 		
 		   AND
 				BOARD_STATUS = 'Y'
 	</select>
 	
-	<select id="selectInfo" parameterType="hashMap" resultMap="infoResultSet">
-		SELECT 
-				BOARD_NO
-      	  FROM 
-      	  		TB_INFO
+	<select id="selectReplyListCount" parameterType="_int" resultType="_int">
+		SELECT 	
+				(COUNT(REPLY_NO) + COUNT(COMMENT_NO)) REPLY_COUNT
+		  FROM
+				TB_REPLY
+          JOIN
+                TB_COMMENT USING(REPLY_NO)
+         WHERE 
+	     		BOARD_NO = #{boardNo}
+	</select>
+	
+	<select id="infoDetail" parameterType="_int" resultMap="infoResultSet">
+		<include refid="selectInfo" />
 		  WHERE
 		        BOARD_STATUS = 'Y'
 			AND
 				CATEGORY_CODE = 'I3'
-		ORDER BY
-				BOARD_NO DESC
-	</select>
-	
-	<select id="selectInfoList" parameterType="java.util.List" resultMap="infoResultSet">
-		<include refid="selectInfo" />
-		LEFT JOIN
-		        (
-		        SELECT 
-		                COUNT(*) BOARD_LIKE, 
-		                BOARD_NO 
-		        FROM 
-		                TB_LIKE 
-		        GROUP BY 
-		                BOARD_NO
-		        ) USING (BOARD_NO)
-		LEFT JOIN
-		        (
-		        SELECT 
-		                BOARD_NO,
-		                COUNT(REPLY_NO) REPLY_COUNT,
-		                COUNT(COMMENT_NO) COMMENT_COUNT
-		        FROM 
-		                TB_INFO 
-		        LEFT JOIN
-		                TB_REPLY USING(BOARD_NO)
-		        LEFT JOIN
-		                TB_COMMENT USING(REPLY_NO)
-		        GROUP BY
-		                BOARD_NO
-		        ) USING (BOARD_NO)
-		LEFT JOIN
-		        TB_ATTACHMENT USING(BOARD_NO)
-		WHERE
-				BOARD_STATUS = 'Y'
-	  		AND
-	  			CATEGORY_CODE = 'I3'
 			AND
-				BOARD_NO IN
-		<foreach collection="list" item="item" open="(" separator="," close=")">
-			#{item.attNo}
-	  	</foreach>
-		ORDER BY 
-				BOARD_NO DESC
+				BOARD_NO = #{boardNo}	
+			AND
+				ATT_LEVEL = 2	
+	</select>
+	<select id="selectReplyNoList" parameterType="_int" resultType="_int">
+		SELECT 
+		        REPLY_NO
+		  FROM
+		        TB_REPLY
+		  JOIN
+		        TB_INFO USING (BOARD_NO)
+		 WHERE
+		        BOARD_NO = #{boardNo}
+	</select>
+	<select id="selectCommentNoList" parameterType="_int" resultMap="replyResultSet" >
+        SELECT 	
+   		        REPLY_CONTENT,
+		        TB_REPLY.CREATE_DATE,
+		        TB_MEMBER.NICKNAME AS REPLY_WRITER,
+		        COMMENT_CONTENT,
+		        TB_MEMBER.NICKNAME AS COMMENT_WRITER,
+		        TB_COMMENT.CREATE_DATE,
+		        (SELECT COUNT(*) FROM TB_REPLY WHERE BOARD_NO = 5969) AS REPLY_COUNT,
+		        (SELECT COUNT(*) FROM TB_COMMENT WHERE BOARD_NO = 5969) AS COMMENT_COUNT,
+				COMMENT_NO
+		  FROM
+				TB_COMMENT
+          JOIN
+                TB_REPLY USING(REPLY_NO)
+         WHERE 
+	     		REPLY_NO = #{replyNo}
 	</select>
 	
-	
-	<select id="selectBoardNoList" parameterType="hashMap" resultType="_int">
+	<select id="selectBoardNoList" parameterType="string" resultType="_int">
 	    SELECT 
 	    		BOARD_NO
 	      FROM 
@@ -375,63 +409,15 @@
 	</select>
 	
 	<select id="selectInfoByBoardNo" parameterType="_int" resultMap="infoResultSet">
-		SELECT
-		        BOARD_NO,
-                MEMBER_NO,
-		        NICKNAME BOARD_WRITER,
-		        ANIMAL_NAME,
-		        CREATE_DATE,
-		        BOARD_TITLE,
-		        BOARD_CONTENT,
-		        BOARD_COUNT,
-		        BOARD_LIKE,
-		        REPLY_COUNT + COMMENT_COUNT SUM_COUNT,
-		        BOARD_STATUS,
-		        CATEGORY_CODE,
-		        ATT_PATH,
-		        CHANGE_NAME
-		FROM
-		        TB_INFO
-		LEFT JOIN
-		        TB_BOARD_ANIMAL USING(BOARD_NO)
-		LEFT JOIN
-		        TB_ANIMAL USING(ANIMAL_CODE)
-		LEFT JOIN
-		        TB_MEMBER USING(MEMBER_NO)
-		LEFT JOIN
-		        (
-		        SELECT 
-		                COUNT(*) BOARD_LIKE, 
-		                BOARD_NO 
-		        FROM 
-		                TB_LIKE 
-		        GROUP BY 
-		                BOARD_NO
-		        ) USING (BOARD_NO)
-		LEFT JOIN
-		        (
-		        SELECT 
-		                BOARD_NO,
-		                COUNT(REPLY_NO) REPLY_COUNT,
-		                COUNT(COMMENT_NO) COMMENT_COUNT
-		        FROM 
-		                TB_INFO 
-		        LEFT JOIN
-		                TB_REPLY USING(BOARD_NO)
-		        LEFT JOIN
-		                TB_COMMENT USING(REPLY_NO)
-		        GROUP BY
-		                BOARD_NO
-		        ) USING (BOARD_NO)
-		LEFT JOIN
-		        TB_ATTACHMENT USING(BOARD_NO)
+		<include refid="selectInfo" />
 		WHERE
 				BOARD_STATUS = 'Y'
 		  AND
 		  		ATT_LEVEL = 1
   		  AND
 	  			CATEGORY_CODE = 'I3'
-	      AND 	BOARD_NO = #{boardNo}
+	      AND 	
+	      		BOARD_NO = #{boardNo}
    	 	ORDER 
      	   BY 
 	     		BOARD_NO DESC  
