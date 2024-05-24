@@ -1,23 +1,11 @@
 package com.kh.pet.info.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.pet.common.model.vo.Attachment;
-import com.kh.pet.common.model.vo.PageInfo;
-import com.kh.pet.common.template.Pagination;
 import com.kh.pet.info.model.service.InfoServiceImpl;
-import com.kh.pet.info.model.vo.Info;
 
 @Controller
 @RequestMapping("info")
@@ -25,7 +13,7 @@ public class InfoController {
 	
 	@Autowired
 	private InfoServiceImpl infoService;
-
+/*
 	@GetMapping("/{category}")
 	public ModelAndView selectAll(@PathVariable("category") String category,ModelAndView mv) {
 		
@@ -38,12 +26,12 @@ public class InfoController {
 		}
 		return mv;
 	}
-	
+	*/
 	@RequestMapping("petInfo")
 	public String selectPetInfo() {
 		return "info/petInfo/petInfoAll";
 	}
-
+/*
 	@ResponseBody
 	@RequestMapping("selectInfoList")
 	public List<Info> selectInfoList(String animal, int page){
@@ -73,7 +61,6 @@ public class InfoController {
 		        info.setPageInfo(pi);
 		        
 		        // 최종 리스트에 추가
-		        System.out.println(info.getCreateDate());
 		        infoList.add(info);
 		    }
 		}
@@ -83,7 +70,7 @@ public class InfoController {
 		return infoList;
 	}
 	
-	
+	*/
 	
 	
 	
