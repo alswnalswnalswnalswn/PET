@@ -40,6 +40,11 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int likeCheck(HashMap<String, Integer> map) {
 		return communityMapper.likeCheck(map);
+	}
+
+	@Override
+	public int insertCommunity(Info info) {
+		return communityMapper.insertCommunity(info);
 	};
 	
 

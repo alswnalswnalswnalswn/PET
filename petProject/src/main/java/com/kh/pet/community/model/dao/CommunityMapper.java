@@ -20,5 +20,6 @@ public interface CommunityMapper {
 	int updateBoardCount(int boardNo);
 	
 	int likeCheck(HashMap<String, Integer> map);
+	int insertCommunity(Info info);
 
 }
