@@ -22,13 +22,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductsController {
 	
-
+	
 	private final ProductService productService;
 	
 	@GetMapping("/{page}/{category}/{animal}")
 	public List<Product> selectAll(@PathVariable int page,
             					   @PathVariable String category,
             					   @PathVariable String animal){
+		
 		HashMap<String, String> map = new HashMap();
 		
 		map.put("category", category);
