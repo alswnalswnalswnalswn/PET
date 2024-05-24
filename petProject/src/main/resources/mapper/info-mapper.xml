@@ -382,6 +382,8 @@
 				TB_COMMENT
           JOIN
                 TB_REPLY USING(REPLY_NO)
+          JOIN 
+          		      
          WHERE 
 	     		REPLY_NO = #{replyNo}
 	</select>
