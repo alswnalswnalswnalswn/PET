@@ -19,5 +19,6 @@ public class CommunityController {
 	public String communityInsertForwarding(){
 		return "info/community/communityInsert";
 	}
+	
 
 }

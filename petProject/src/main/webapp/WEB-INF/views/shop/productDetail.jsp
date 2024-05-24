@@ -10,7 +10,7 @@
 		*{
 			border:none;
 		}
-		#warp{
+		#wrap{
 			width:1200px;
 			height:auto;
 			margin:auto;
@@ -264,27 +264,23 @@
 			});
 			
 			$('.product-payment > button').click(() => {
-				$('.product-count').children().each(function(){
+				$('.product-count').children().each((index,element) => {
+					
 					let optionObj = {
-							optionNo : $(this).attr('id').substr(7),
-							productAmount : $(this).find('.input-count').val()
+							optionNo : $(element).attr('id').substr(7),
+							productAmount : $(element).find('.input-count').val(),
+							productName : $(element).find('.option_tit').text(),
+							price : $(element).find('.sum_price input').val(),
+							src : $('.product-img > img').attr('src')
 					};
 					divIds.push(optionObj);
-					
+
 				});
 
-				$.ajax({
-					url : 'order',
-					type : 'POST',
-					contentType: 'application/json',
-				    dataType: 'json',
-					data : JSON.stringify(divIds),
-					success : result => {
-						console.log(result);
-						location.href = 'order/'
-					}
-				});
-				/*location.href = 'order/'+ divIds;*/
+				sessionStorage.setItem('data',JSON.stringify(divIds));
+				location.href = 'order/';
+
+			
 			});
 			
 			$('.product-size').on('click','.dropdown-item', e =>{
@@ -347,7 +343,6 @@
 					input.val(inputCount);
 					let sumPrice = ${product.price} * inputCount;
 					$(e.currentTarget).parent().next().children('input').val(sumPrice);
-					console.log($(e.currentTarget).parent().next().children().val());
 					
 				}
 			});
@@ -365,7 +360,6 @@
 					
 					let sumPrice = ${product.price} * inputCount;
 					$(e.currentTarget).parent().next().children('input').val(sumPrice);
-					console.log($(e.currentTarget).parent().next().children().val());
 				}
 				
 			});

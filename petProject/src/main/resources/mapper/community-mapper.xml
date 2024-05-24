@@ -193,7 +193,9 @@
 				MEMBER_NO = #{memberNo}
 	</select>
 	
-	
+	<insert id="insertCommunity" parameterType="info">
+		INSERT INTO TB_INFO VALUES()	
+	</insert>
 	
 	
 </mapper>

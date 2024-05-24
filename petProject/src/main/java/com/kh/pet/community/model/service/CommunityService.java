@@ -14,7 +14,7 @@ public interface CommunityService {
 	
 	int updateBoardCount(int boardNo);
 	List<Info> selectCommunityList(List<Info> list);
-	//
-	int likeCheck(HashMap<String, Integer> map);
 	
+	int likeCheck(HashMap<String, Integer> map);
+	int insertCommunity(Info info);
 }
