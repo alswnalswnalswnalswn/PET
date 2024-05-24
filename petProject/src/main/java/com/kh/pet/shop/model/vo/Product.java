@@ -30,5 +30,4 @@ public class Product {
 	private PageInfo pageInfo;
 	
 	private Attachment attachment;
-	private List<ProductOption> optionList;
 }

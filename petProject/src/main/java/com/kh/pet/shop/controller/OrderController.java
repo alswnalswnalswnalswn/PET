@@ -21,6 +21,7 @@ public class OrderController {
 	
 	@PostMapping()
 	public Map<String, String> order(@RequestBody List<ProductOption> productOption, HttpSession session) {
+		System.out.println(productOption);
 		session.setAttribute("productOptions", productOption);
 		Map<String, String> response = new HashMap<>();
 		response.put("redirectUrl", "/orderConfirmation");
