@@ -321,7 +321,7 @@
 												+ '<div id="info_info">'
 													+ '<div id="infoDate">' + dateFormat(fullDate) + '</div>'
 													+ '<div id="infoLike">'
-														+ '<div id="info_like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>'
+														+ '<div id="info_like" class="like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>'
 														+ '<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>'
 													+ '</div>'
 												+ '</div>'
@@ -334,17 +334,20 @@
 	                        $(this).find('img').attr('src', likeNuroom);
 					});
 					$('.row').html(resultStr);
-					
-					<!--
-					$('.center_content').click(function() {
-						
-						var $infoDetail = $(this).next('.infoDetail');
-						var boardNo = $(this).find('input[type="hidden"]').val();
-						
-						console.log(boardNo);
-						location.href = 'infoDetail?boardNo=' + boardNo;s
+
+					$(document).ready(() =>{
+						$('.info_wrap').click(function() {
+							
+							var $infoDetail = $(this).next('.infoDetail');
+							var boardNo = $(this).find('input[type="hidden"]').val();
+							
+							console.log(boardNo);
+							location.href = 'petInfo/infoDetail?boardNo=' + boardNo;
+						});
+						$('.like').click(() =>{
+							$(this).stopPropagation();
+						});
 					});
-					-->
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
 						$('.refresh_btn').css('display', 'block');
 					}
@@ -359,7 +362,6 @@
 					}
 				});		
 			};
-			
 			
 		
 	</script>

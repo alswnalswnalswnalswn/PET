@@ -1,19 +1,31 @@
 package com.kh.pet.info.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pet.common.model.vo.Attachment;
+import com.kh.pet.common.model.vo.PageInfo;
+import com.kh.pet.common.template.Pagination;
 import com.kh.pet.info.model.service.InfoServiceImpl;
+import com.kh.pet.info.model.vo.Info;
 
-@Controller
-@RequestMapping("info")
-public class InfoController {
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/info")
+@RequiredArgsConstructor
+public class InfoRestController {
+
+	private final InfoServiceImpl infoService;
 	
-	@Autowired
-	private InfoServiceImpl infoService;
-/*
 	@GetMapping("/{category}")
 	public ModelAndView selectAll(@PathVariable("category") String category,ModelAndView mv) {
 		
@@ -26,14 +38,8 @@ public class InfoController {
 		}
 		return mv;
 	}
-	*/
-	@RequestMapping("petInfo")
-	public String selectPetInfo() {
-		return "info/petInfo/petInfoAll";
-	}
-/*
-	@ResponseBody
-	@RequestMapping("selectInfoList")
+	
+	@GetMapping("selectInfoList")
 	public List<Info> selectInfoList(String animal, int page){
 		
 		PageInfo pi = Pagination.getPageInfo(infoService.selectListCount(), page, 10, 10);
@@ -69,9 +75,28 @@ public class InfoController {
 		}
 		return infoList;
 	}
+	/*
 	
-	*/
-	
-	
+	@GetMapping("infoDetail")
+	public ResponseEntity<ResponseData> infoDetail(@PathVariable int boardNo){
+		Info info = null;
+		ResponseData rd = null;
+		try {
+		info = infoService.infoDetail(boardNo);
+		} catch(Exception e) {
+			rd = ResponseData.builder().data(info).message("서버측 문제로 응답불가").responseCode("10").build();
+		}
+		if(info != null) {
+			rd = ResponseData.builder().data(info).message("조회 잘했따~~").responseCode("00").build();
+			
+		} else {
+			rd = ResponseData.builder().data(null).message("내용이 없습니다.").responseCode("05").build();
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		return new ResponseEntity<ResponseData>(info, headers, HttpStatus.OK);
+	}
+		 */
 	
 }
