@@ -61,140 +61,134 @@
    right: 15px;
 }
 .menu_head{
-            width: 100%;
-            height: 20%;
-            font-size: 20px;
-            font-weight: bold;
-            line-height: 45px;
-            border-bottom: 1px solid gray;
-        }
-        .menu_title{
-            float: left;
-            width: 95%;
-        }
-        .menu_heads{
-            height: 50%;
-        }
-        .heads_content{
-            float: left;
-            height: 100%;
-            width: 50%;
-            
-        }
-        .heads_content > div{
-            height: 50%;
-            font-size: 15px;
-            line-height: 20px;
-        }
-        .heads_content > div > div{
-            font-size: 13px;
-            font-weight: 100;
-            color: gray;
-        }    
+    width: 100%;
+    height: 20%;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 45px;
+    border-bottom: 1px solid gray;
+}
+.menu_title{
+    float: left;
+    width: 95%;
+}
+.menu_heads{
+    height: 50%;
+}
+.heads_content{
+    float: left;
+    height: 100%;
+    width: 50%;
+    
+}
+.heads_content > div{
+    height: 50%;
+    font-size: 15px;
+    line-height: 20px;
+}
+.heads_content > div > div{
+    font-size: 13px;
+    font-weight: 100;
+    color: gray;
+}    
 
-        .menu_create_date{
-            float: left;
-            height: 100%;
-            width: 100%;
-        }
+.menu_create_date{
+    float: left;
+    height: 100%;
+    width: 100%;
+}
 
-        .menu_content{
-            margin-bottom: 20px;
-            height: 300px;
-            width: 100%;
-            position: relative;
-        }
+.menu_content{
+    margin-bottom: 20px;
+    height: 300px;
+    width: 100%;
+    position: relative;
+}
 
-        .menu_like{
-            position: absolute;
-            bottom: 0px;
-            font-size: 15px;
-        }
-        .footer_title{
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        .reply{
-            border-bottom: 1px solid gray;
-            margin-top: 5px;
-        }
-        .comment{
-       		margin-top: 2px;
-        	margin-left: 20px;
-        	border-bottom: 1px solid gray;
-        }
-        .reply_write{
-        	border:2px solid gray;
-        	width:100%;
-        }
-        .reply_writer{
-            font-weight: 700;
-            font-size: 14px;
-            margin: 5px;
-            padding : 7px;
-            
-        }
-        .reply_content{
-            font-size: 13px;
-            word-break:break-all;
-            padding-bottom: 5px;
-        }
-        .reply_createDate{
-        	font-size: 10px;
-        	padding-bottom: 5px;
-        }
-        .write_content{
-        	width: 85%;
-        	height: 47px;
-		    overflow-y: hidden;
-		    resize: none;
-		    padding: 10px;
-		    border: none;
-		    margin-left: 10px;
-		    margin-bottom: 5px;
-		    
-        }
-		.reply_write_content{
-			position: relative;
-		}
-		.write-btn-cansle{
-			position: absolute;
-			right : 10px;
-			bottom : 40px;
-			border:none;
-        	background: white;
-        	font-weight: 700;
-        	font-size: 14px;
-		}
-		.comment_write_btn, .update_write_btn, .reply_write_btn{
-			position: absolute;
-			right : 10px;
-			bottom : 10px;
-			border:none;
-        	background: white;
-        	font-weight: 700;
-        	font-size: 14px;
-		}
+.menu_like{
+    position: absolute;
+    bottom: 0px;
+    font-size: 15px;
+}
+.footer_title{
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.reply{
+    border-bottom: 1px solid gray;
+    margin-top: 5px;
+}
+.comment{
+	margin-top: 2px;
+	margin-left: 20px;
+	border-bottom: 1px solid gray;
+}
+.reply_write{
+	border:2px solid gray;
+	width:100%;
+}
+.reply_writer{
+    font-weight: 700;
+    font-size: 14px;
+    margin: 5px;
+    padding : 7px;
+    
+}
+.reply_content{
+    font-size: 13px;
+    word-break:break-all;
+    padding-bottom: 5px;
+}
+.reply_createDate{
+	font-size: 10px;
+	padding-bottom: 5px;
+}
+.write_content{
+	width: 85%;
+	height: 47px;
+	overflow-y: hidden;
+	resize: none;
+	padding: 10px;
+	border: none;
+	margin-left: 10px;
+	margin-bottom: 5px;
+}
+.reply_write_content{
+	position: relative;
+}
+.write-btn-cansle{
+	position: absolute;
+	right : 10px;
+	bottom : 40px;
+	border:none;
+   	background: white;
+   	font-weight: 700;
+   	font-size: 14px;
+}
+.comment_write_btn, .update_write_btn, .reply_write_btn{
+	position: absolute;
+	right : 10px;
+	bottom : 10px;
+	border:none;
+  	background: white;
+  	font-weight: 700;
+  	font-size: 14px;
+}
 
-      
-        .write-btn:hover{
-        	background:rgba(3, 199, 90, 0.12);
-        	color:#009f47;
-        }
-        .comment_btn, .comment_btn:hover, .update_btn , .update_btn:hover, .delete_btn, .delete_btn:hover{
-        	text-decoration: none;
-        	color:gray;
-        	cursor: pointer;
-        }
-        {
-        	text-decoration: none;
-        	color:gray;
-        	cursor: pointer;
-        }
-        .comment_writer{
-        	margin-left: 20px;
-        }
+    
+.write-btn:hover{
+	background:rgba(3, 199, 90, 0.12);
+	color:#009f47;
+}
+.comment_btn, .comment_btn:hover, .update_btn , .update_btn:hover, .delete_btn, .delete_btn:hover{
+	text-decoration: none;
+	color:gray;
+	cursor: pointer;
+}
+.comment_writer{
+	margin-left: 20px;
+}
 </style>
 </head>
 <body>
