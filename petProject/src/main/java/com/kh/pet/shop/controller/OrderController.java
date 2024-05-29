@@ -34,4 +34,9 @@ public class OrderController {
 		return mv;
 	}
 	
+	@GetMapping("payment")
+	public ModelAndView paymentPage(ModelAndView mv) {
+		mv.setViewName("shop/paymentPage");
+		return mv;
+	}
 }

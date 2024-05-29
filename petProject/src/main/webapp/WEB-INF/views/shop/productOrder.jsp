@@ -110,7 +110,7 @@
 						<h6>주문 요약</h6>
 							<div class="row">
 								<div class="col-sm-6">총 주문금액</div>
-								<div class="col-sm-6 totalPrice"></div>
+								<div id="totalPrice" class="col-sm-6 totalPrice"></div>
 							</div>
 							
 							<h6>주문자 정보</h6>
@@ -167,19 +167,7 @@
 		$('.totalPrice').text(totalPrice+'원');
 		$('.productList-detail').html(text);
 		$('#kakaopay-btn').click(() => {
-			$.ajax({
-				url:'/kakaopay',
-				dataType:'json',
-				success:function(data){
-					console.log(data);
-					var box = resp.next_redirect_pc_url;
-					location.href = box;
-				},
-				error:function(error){
-					alert(error);
-				}
-			});
-
+			window.open("payment","결제팝업","width = 500, height = 500");
 		});
 		
 		$('#address-btn').click(() => {
