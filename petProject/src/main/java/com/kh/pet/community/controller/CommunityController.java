@@ -59,8 +59,8 @@ public class CommunityController {
 		for(int i = 0; i < upfile.length; i++) {
 			if(upfile[i].getOriginalFilename().equals("")) {
 				saveFile(upfile[i], session);
-				info.setOriginName(upfile.getOriginalFilename());
-				info.setChangeName(saveFile(upfile, session));
+				info.setOriginName(upfile[i].getOriginalFilename());
+				info.setChangeName(saveFile(upfile[i], session));
 			}
 		}
 		
