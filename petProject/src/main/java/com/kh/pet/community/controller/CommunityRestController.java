@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
 import com.kh.pet.community.model.service.CommunityServiceImpl;
@@ -32,23 +33,6 @@ import lombok.RequiredArgsConstructor;
 public class CommunityRestController {
 	
 	private final CommunityServiceImpl communityService;
-	
-	public String saveFile(MultipartFile file, HttpSession session) {
-		String originName = file.getOriginalFilename();
-		String ext = originName.substring(originName.lastIndexOf("."));
-		int ranNum = (int)(Math.random() * 90000) + 10000;
-		String changeName = "profile" + ranNum + ext;
-		String savePath = session.getServletContext().getRealPath("/resources/img/profile/");
-		
-		try {
-			file.transferTo(new File(savePath + changeName));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
-		
-		return changeName;
-	}
-
 	
 	@GetMapping
 	public String selectCommunityList(@RequestParam("animal") String animal, 
@@ -102,23 +86,7 @@ public class CommunityRestController {
 		return communityService.likeCheck(map);
 	}
 	
-	@PostMapping("insert")
-	public ModelAndView insertCommunity(HttpSession session, ModelAndView mv, Info info, MultipartFile upfile) {
-		
-		if(!upfile.getOriginalFilename().equals("")) {
-			saveFile(upfile, session);
-			
-			info.setOriginName(upfile.getOriginalFilename());
-			info.setChangeName(saveFile(upfile, session));
-		}
-		
-		if(communityService.insertCommunity(info) > 0) {
-			session.setAttribute("alertMsg", "작성 성공");
-			mv.setViewName("redirect:/community");
-		}
-		
-		return mv;
-	}
+	
 	
 
 }

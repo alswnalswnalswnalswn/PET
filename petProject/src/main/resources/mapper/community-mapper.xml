@@ -193,8 +193,36 @@
 				MEMBER_NO = #{memberNo}
 	</select>
 	
+	
+	
+	
+	
+	
 	<insert id="insertCommunity" parameterType="info">
-		INSERT INTO TB_INFO VALUES()	
+		INSERT 
+				ALL
+		INTO 
+				TB_INFO 
+		VALUES(
+				SEQ_BOANO.NEXTVAL,
+				#{boardTitle},
+				#{boardContent},
+				0,
+				DEFAULT,
+				#{memNo},
+				#{categoryCode},
+				DEFAULT,
+				DEFAULT
+		)
+				<foreach collection="animalCode" item="animalCode">
+		INTO
+				TB_BOARD_ANIMAL
+		VALUES(
+		   		#{animalCode},
+		   		SEQ_BOANO.CURRVAL
+		)
+			  	</foreach>
+		SELECT * FROM DUAL
 	</insert>
 	
 	
