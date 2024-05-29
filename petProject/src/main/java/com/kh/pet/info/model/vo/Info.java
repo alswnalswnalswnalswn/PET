@@ -24,6 +24,7 @@ public class Info {
 	private int boardCount;
 	private LocalDateTime  createDate;
 	private String memberNo;
+	private int memNo;
 	private String categoryCode;
 	private LocalDateTime  updateDate;
 	private String boardStatus;
@@ -39,6 +40,10 @@ public class Info {
 	
 	private List<Reply> replyList;
 	private PageInfo pageInfo;
+	
+	private List animalCode;
+	
+	
 	
 	private List<Animal> animalList;
 

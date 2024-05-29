@@ -1,0 +1,11 @@
+SELECT 
+				BOARD_NO
+		FROM
+				TB_INFO
+	
+						WHERE CATEGORY_CODE IN ('I1', 'I2')	
+	
+		AND
+				BOARD_STATUS = 'Y'
+		ORDER BY
+				BOARD_NO DESC

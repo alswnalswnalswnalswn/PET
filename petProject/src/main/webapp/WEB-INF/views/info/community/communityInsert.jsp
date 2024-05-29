@@ -8,11 +8,12 @@
 <title>상세보기</title>
 	<link rel="stylesheet" href="resources/css/community/communityInsert.css" />
 </head>
-<body>
+<body onload="manageCheckboxes()">
 	<jsp:include page="../../common/header.jsp" />
 	
 	<div class="wrap">
-		<form action="communities/insert" method="post" enctype="multipart/form-data">
+		<form action="insertCommunity" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+			<input type="hidden" name="memberNo" value="${sessionScope.loginUser.memberNo}">
 			<div class="row titleRow">
 				<div class="col-sm-2">제목</div>
 				<div class="col-sm-9 boardTitle"><input name="boardTitle"></div>
@@ -20,23 +21,23 @@
 			
 			<div class="row">
 				<div class="col-sm-2">글성격</div>
-				<div class="col-sm-6 boardCategory">
-					<input type="radio" value="I1">자유
-					<input type="radio" value="I2">질문
+				<div class="col-sm-6 boardCategory" name="categoryCode">
+					<input type="radio" name="categoryCode" value="I1">자유
+					<input type="radio" name="categoryCode" value="I2">질문
 				</div>
 				
 			</div>
 			
 			<div class="row">
 				<div class="col-sm-2">반려동물</div>
-				<div class="col-sm-9 animalCategory">
-					<input type="checkbox" value="A0">전체
-					<input type="checkbox" value="A1">강아지
-					<input type="checkbox" value="A2">고양이
-					<input type="checkbox" value="A3">토끼
-					<input type="checkbox" value="A4">물고기
-					<input type="checkbox" value="A5">새
-					<input type="checkbox" value="A6">햄스터
+				<div class="col-sm-9 animalCategory" name="animalCode">
+					<input type="checkbox" name="animalCode" value="A0"><label for="A0" class="animalLabel">전체</label>
+					<input type="checkbox" name="animalCode" value="A1"><label for="A1" class="animalLabel">강아지</label>
+					<input type="checkbox" name="animalCode" value="A2"><label for="A2" class="animalLabel">고양이</label>
+					<input type="checkbox" name="animalCode" value="A3"><label for="A3" class="animalLabel">토끼</label>
+					<input type="checkbox" name="animalCode" value="A4"><label for="A4" class="animalLabel">물고기</label>
+					<input type="checkbox" name="animalCode" value="A5"><label for="A5" class="animalLabel">새</label>
+					<input type="checkbox" name="animalCode" value="A6"><label for="A6" class="animalLabel">햄스터</label>
 				</div>
 			</div>
 			
@@ -44,7 +45,7 @@
 				<div class="col-sm-2">내용</div>
 			</div>
 			
-			<textarea class="col-sm-12" style="width: 100%; height: 550px; resize: none;">
+			<textarea class="col-sm-12" style="width: 100%; height: 550px; resize: none;" name="boardContent">
 			
 			</textarea>
 			
@@ -60,6 +61,11 @@
 			</div>
 		</form>
 	</div>
+	
+	<script>
+	
+	</script>
+	
 	
 	<jsp:include page="../../common/footer.jsp" />
 	
