@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import com.kh.pet.shop.model.dao.ProductMapper;
+import com.kh.pet.shop.model.vo.Order;
 import com.kh.pet.shop.model.vo.Product;
 import com.kh.pet.shop.model.vo.ProductColor;
 import com.kh.pet.shop.model.vo.ProductOption;
@@ -48,6 +49,16 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductOption> selectSize(HashMap<String, String> map) {
 		return productMapper.selectSize(map);
+	}
+
+	@Override
+	public int insertOrder(Order order) {
+		return productMapper.insertOrder(order);
+	}
+
+	@Override
+	public Order selectNowOrder() {
+		return productMapper.selectNowOrder();
 	}
 	
 	

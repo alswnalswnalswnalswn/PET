@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -16,12 +16,15 @@ import org.springframework.web.client.RestTemplate;
 import com.kh.pet.shop.model.vo.KakaoPayReadyVO;
 import com.kh.pet.shop.model.vo.KakaoPayVo;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
 
 
 @Service
 @CrossOrigin("*")
+@Transactional
+@RequiredArgsConstructor
 @Log
 public class KakaoPayServiceImpl implements KakaoPayService {
 
@@ -68,33 +71,24 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	@Override
     public KakaoPayVo kakaopayVo(String pg_token) {
     	 RestTemplate restTemplate = new RestTemplate();
+    	 log.info(""+ kakaoPayReadyVO);
 
-         // Server Request Header : 서버 요청 헤더
          HttpHeaders headers = new HttpHeaders();
          headers.add("Authorization", "SECRET_KEY " + SECRET_KEY); // 어드민 키
-         //headers.add("Accept", "application/json");
-         //headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-         headers.add("Content-type", "application/json");
-         // Server Request Body : 서버 요청 본문
+         headers.add("Content-type", "application/json;charset=UTF-8");
+
          Map<String, String> params = new HashMap<String, String>();
-         params.put("cid", "TC0ONETIME"); // 가맹점 코드 - 테스트용
+         params.put("cid", "TC0ONETIME");
          params.put("tid", kakaoPayReadyVO.getTid());
-         //paramss.put("partner_order_id", String.valueOf(((Experience)session.getAttribute("experince")).getExperienceNo())); // 주문 번호
-         //paramss.put("partner_user_id",  ((Experience)session.getAttribute("experince")).getUserId()); // 회원 아이디
+
          params.put("partner_order_id", "1");
          params.put("partner_user_id", "id");
          params.put("pg_token", pg_token);
-//         params.put("total_amount", "20000"); // 상품 가격
-//         params.put("tax_free_amount", "100"); // 상품 비과세 금액
-//         params.put("approval_url", "http://localhost:8024/success"); // 성공시 url
-//         params.put("fail_url", "http://localhost:8024/fail"); // 실패시 url
-//         params.put("cancel_url", "http://localhost:8024/cancel");
-         // 헤더와 바디 붙이기
+
          HttpEntity<Map<String, String>> body = new HttpEntity<Map<String, String>>(params, headers);
          try {
         	 kakaopayVo = restTemplate.postForObject(new URI(Host2), body, KakaoPayVo.class);
-            //HttpEntity<Reserve> reserve = restTemplate.exchange(new URI(Host + "/online/v1/payment/ready"), HttpMethod.POST, body, Reserve.class);
-            log.info(""+ kakaopayVo);
+        	 log.info(""+ kakaopayVo);
             
          } catch (RestClientException e) {
              e.printStackTrace();
