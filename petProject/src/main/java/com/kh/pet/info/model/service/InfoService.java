@@ -34,4 +34,6 @@ public interface InfoService {
 
 	int deleteLike(HashMap<Object, Object> map);
 
+	List<Reply> selectReply(int boardNo);
+
 }

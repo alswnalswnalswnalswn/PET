@@ -126,6 +126,81 @@
 		width: 141px;
 		height: 51px;
     }
+    #myrep {
+		width: 800px;
+		height: auto;
+		margin: auto;
+	}
+	#myreply {
+		width: 750px;
+		height: 90px;
+		margin: auto;
+		position: relative;
+	}
+	
+	#ndia {
+		width: 100%;
+		height: 30px;
+		display: flex;
+	}
+	
+	#nickna {
+		width: 80%;
+		height: 100%;
+	}
+	
+	#daterep {
+		width: 20%;
+		height: 100%;
+	}
+	
+	#repcon {
+		width: 100%;
+		height: 30px;
+	}
+	
+	#btncom {
+		width: 10%;
+		height: 30px;
+		right: 0;
+		position: absolute;
+		cursor: pointer;
+	}
+	
+	#btncom img {
+		width: 20px;
+	}
+	
+	#inscom {
+		width: 750px;
+		height: 100px;
+		margin: auto;
+	}
+	
+	#inscomment {
+		width: 650px;
+		height: 80px;
+		margin: auto;
+		outline: none;
+	}
+    #replybtn {
+		width: 80px;
+		height: 30px;
+		right: 0;
+		font-size: 13px;
+		border-radius: 10px;
+		background-color: rgb(94, 87, 59);
+		color: white;
+		font-weight: bold;
+		bolder: 0;
+		cursor: pointer;
+	}
+	
+	#replybtn:hover {
+		font-size: 14px;
+		width: 80px;
+		height: 30px;
+	}
 </style>
 </head>
 <body>
@@ -141,25 +216,29 @@
 	</div>
 	<div id="likeAndList">
 		<div id="boardLike">
-			<div id="info_like" class="like"><img src="${sessionScope.path }/resources/img/common/like.png"><span id="likeCount"></span></div>
-			<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>
-			<div id="info_search"><div>조회</div></div>
+			<div id="info_like" class="like"><img src="${sessionScope.path }/resources/img/common/like.png">&nbsp;&nbsp;&nbsp;<span id="likeCount"></span></div>
+			<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png">&nbsp;&nbsp;&nbsp;<span id="replyCount"></span></div>
+			<div id="info_search"><div>조회</div>&nbsp;&nbsp;&nbsp;<span id="sumCount"></span></div>
 		</div>
 		<div id="goList">
 			<button id="listbtn" onclick="history.back();">이전</button>
 		</div>
 	</div>
 	
+	<div id="myrep" class="">
+	</div>	
 	<jsp:include page="../common/footer.jsp" />	
 	
 	
 	<script>
     const memberNo = '${sessionScope.loginUser.memberNo}';
     const boardNo = ${info.boardNo};
+    resultStr = '';
     console.log(memberNo);
     console.log(boardNo);
 		$(() => {
 		selectLike(boardNo);
+		selectReply(boardNo);
 			
 			const fullDate = '${info.createDate }';
 			let createDate = fullDate.substring(0, 10);
@@ -219,6 +298,45 @@
         		}
         	});
         }
+        function selectReply(boardNo){
+        	$.ajax({
+        		url : '/pet/info/selectReply/' + boardNo,
+        		type : 'get',
+        		success : result => {
+        			if(result === "") {
+        				resultStr += '<div id="myreply"><span>등록된 댓글이 없습니다.</span></div>'
+        			} else {
+	        			console.log(result);
+	        			for(let i in result){
+		        			resultStr += '<div id="myreply">'
+							        		+ '<div id="ndia">'
+							        			+ '<div id="nickna">' + result[i].replyWriter + '</div><div id="daterep">날짜</div>'
+							        		+ '</div>'
+							        		+ '<div id="repcon">' + result[i].replyContent + '</div>'
+							        		+ '<div id="btncom">댓글<img src="${path}/resources/img/common/replyarrow.png"></div>'
+						        		+ '</div>'
+						        		+ '<div id="inscom" style="display:none;">'
+							        		+ '<textarea name="comment" id="inscomment"></textarea>'
+							        		+ '<a href=""><button id="replybtn">댓글 작성</button></a>'
+						        		+ '</div>'
+	        			}
+        			}
+        			$('.myrep').html(resultStr);
+        		},
+        		error : result => {
+        			console.log('실패');
+        		}        		
+        	})
+        };
+        
+        
+        
+        $(() => {
+	    	$('#btncom').click(function(){
+	    		$('#inscom').toggle();
+	    	})
+	    });
+        
 	</script>
 	
 	

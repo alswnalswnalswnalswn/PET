@@ -18,6 +18,7 @@ import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
 import com.kh.pet.info.model.service.InfoService;
 import com.kh.pet.info.model.vo.Info;
+import com.kh.pet.info.model.vo.Reply;
 
 import lombok.RequiredArgsConstructor;
 
@@ -133,7 +134,12 @@ public class InfoRestController {
 		return boardLike;
 	}
 	
-	
+	@GetMapping("selectReply/{boardNo}")
+	public List<Reply> selectReply(@PathVariable int boardNo) {
+		List<Reply> replyList= infoService.selectReply(boardNo);
+		System.out.println(replyList);
+		return replyList;
+	}
 	
 	
 	

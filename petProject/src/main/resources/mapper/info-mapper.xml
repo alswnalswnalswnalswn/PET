@@ -86,6 +86,7 @@
 		<result column="REPLY_WRITER" property="replyWriter"/>
 		<result column="REPLY_CONTENT" property="replyContent"/>
 		<result column="REPLY_CREATE_DATE" property="createDate"/>
+		<result column="REPLY_COUNT" property="replyCount"/>
 		<result column="COMMENT_NO" property="commentNo"/>		
 		<result column="COMMENT_WRITER" property="commentWriter"/>
 		<result column="COMMENT_CONTENT" property="commentContent"/>
@@ -355,7 +356,7 @@
 			AND
 				ATT_LEVEL = 2	
 	</select>
-	<select id="selectReplyNoList" parameterType="_int" resultMap="replyResultSet">
+	<select id="selectReply" parameterType="_int" resultMap="replyResultSet">
  		SELECT 
 		        REPLY_NO,
                 TB_MEMBER.NICKNAME AS REPLY_WRITER,

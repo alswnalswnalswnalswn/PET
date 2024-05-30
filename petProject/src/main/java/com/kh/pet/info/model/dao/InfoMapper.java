@@ -36,5 +36,7 @@ public interface InfoMapper {
 
 	int deleteLike(HashMap<Object, Object> map);
 
+	List<Reply> selectReply(int boardNo);
+
 
 }

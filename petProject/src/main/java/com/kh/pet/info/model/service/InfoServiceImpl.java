@@ -72,6 +72,11 @@ public class InfoServiceImpl implements InfoService {
 		return infoMapper.deleteLike(map);
 	}
 
+	@Override
+	public List<Reply> selectReply(int boardNo) {
+		return infoMapper.selectReply(boardNo);
+	}
+
 
 	
 }
