@@ -169,7 +169,7 @@
 	        
 			$(document).on('click', '#info_like', function() {
 				
-				if(loginUser.equals("")){
+				if(loginUser === ""){
 					alert('로그인 부탁드려욧');
 				}
 				else{
