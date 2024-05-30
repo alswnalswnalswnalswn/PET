@@ -136,7 +136,7 @@ div {
 
 span {
 	text-align: center;
-	cursor: pointer;
+	/*cursor: pointer;*/
 	font-size: 15px;
 }
 
@@ -202,7 +202,7 @@ span:hover {
 
 #myimg {
 	width: 600px;
-	height: 600px;
+	height: auto;
 	margin: auto;
 }
 
@@ -215,13 +215,7 @@ span:hover {
 
 #myinfoContent {
 	width: 600px;
-	text-align: center;
-	padding-bottom: 70px;
-}
-
-#needgongan4 {
-	width: 800px;
-	height: 150px;
+	padding: 70px;
 }
 
 #boardti {

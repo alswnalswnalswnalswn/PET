@@ -90,6 +90,7 @@
 		<result column="CATEGORY_CODE" property="categoryCode"/>
 		<result column="BOARD_LIKE" property="boardLike"/>
 		<result column="SUM_COUNT" property="sumCount"/>
+		<result column="MEMBER_PROFILE" property="memberProfile" />
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
 		<collection resultMap="replyResultSet" property="replyList"/>
@@ -126,7 +127,9 @@
 		        BOARD_STATUS,
 		        CATEGORY_CODE,
 		        ATT_PATH,
-		        CHANGE_NAME
+		        CHANGE_NAME,
+		        ATT_NO,
+		        MEMBER_PROFILE
 		FROM
 		        TB_INFO
 		LEFT JOIN
@@ -193,14 +196,8 @@
 				MEMBER_NO = #{memberNo}
 	</select>
 	
-	
-	
-	
-	
-	
 	<insert id="insertCommunity" parameterType="info">
 		INSERT 
-				ALL
 		INTO 
 				TB_INFO 
 		VALUES(
@@ -214,16 +211,38 @@
 				DEFAULT,
 				DEFAULT
 		)
-				<foreach collection="animalCode" item="animalCode">
-		INTO
-				TB_BOARD_ANIMAL
-		VALUES(
-		   		#{animalCode},
-		   		SEQ_BOANO.CURRVAL
-		)
-			  	</foreach>
+	</insert>
+	
+	<insert id="insertBoardAnimal" parameterType="java.util.List">
+		INSERT 
+		ALL
+		<foreach collection="list" item="item">
+			INTO
+					TB_BOARD_ANIMAL
+			VALUES
+					(
+					#{item}, 
+					SEQ_BOANO.CURRVAL
+					)
+		</foreach>
 		SELECT * FROM DUAL
 	</insert>
 	
+	<insert id="insertAttachment" parameterType="attachment">
+		INSERT 
+		INTO 
+				TB_ATTACHMENT
+		VALUES
+				(
+				SEQ_ATTNO.NEXTVAL, 
+				#{attPath}, 
+				#{originName}, 
+				#{changeName}, 
+				DEFAULT, 
+				SEQ_BOANO.CURRVAL, 
+				#{attLevel}
+				)
+	</insert>
+		
 	
 </mapper>

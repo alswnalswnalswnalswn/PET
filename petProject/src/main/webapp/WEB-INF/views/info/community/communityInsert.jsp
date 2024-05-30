@@ -49,11 +49,30 @@
 			
 			</textarea>
 			
-			<div class="row">
-				<div class="col-sm-3">첨부파일<input type="file" name="upfile"></div>
-				<div class="col-sm-3">첨부파일<input type="file" name="upfile"></div>
-				<div class="col-sm-3">첨부파일<input type="file" name="upfile"></div>
-				<div class="col-sm-3">첨부파일<input type="file" name="upfile"></div>
+			<div class="attchList">
+				<div class="upfileDiv1">1번 첨부파일</div>
+				<div class="upfileDiv2"><input type="file" name="upfiles"></div>
+			</div>
+			<div class="attchList">
+				<div class="upfileDiv1">2번 첨부파일</div>
+				<div class="upfileDiv2"><input type="file" name="upfiles"></div>
+			</div>
+			<div class="attchList">
+				<div class="upfileDiv1">3번 첨부파일</div>
+				<div class="upfileDiv2"><input type="file" name="upfiles"></div>
+			</div>
+			<div class="attchList">
+				<div class="upfileDiv1">4번 첨부파일</div>
+				<div class="upfileDiv2"><input type="file" name="upfiles"></div>
+			</div>
+			
+			
+			<div style="padding-left : 100px;">
+				* 1번 첨부파일은 해당 게시글의 썸네일 이미지로 활용됩니다.
+			</div>
+				
+				
+			<div class="row abc">
 			</div>
 			<br><br>
 			<div  class="row">
