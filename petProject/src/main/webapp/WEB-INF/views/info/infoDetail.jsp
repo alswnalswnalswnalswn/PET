@@ -154,12 +154,10 @@
 	
 	
 	<script>
-    const memberNo = ${info.memberNo};
+    const memberNo = '${sessionScope.loginUser.memberNo}';
     const boardNo = ${info.boardNo};
     console.log(memberNo);
     console.log(boardNo);
-    const loginUser = '${sessionScope.loginUser}';
-    console.log(loginUser);
 		$(() => {
 		selectLike(boardNo);
 			
@@ -169,7 +167,7 @@
 	        
 			$(document).on('click', '#info_like', function() {
 				
-				if(loginUser === ""){
+				if(memberNo === ""){
 					alert('로그인 부탁드려욧');
 				}
 				else{
