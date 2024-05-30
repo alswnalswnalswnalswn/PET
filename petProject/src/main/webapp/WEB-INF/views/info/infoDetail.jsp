@@ -154,12 +154,10 @@
 	
 	
 	<script>
-    const memberNo = ${info.memberNo};
+    const memberNo = '${sessionScope.loginUser.memberNo}';
     const boardNo = ${info.boardNo};
     console.log(memberNo);
     console.log(boardNo);
-    const loginUser = '${sessionScope.loginUser}';
-    console.log(loginUser);
 		$(() => {
 		selectLike(boardNo);
 			
@@ -167,9 +165,9 @@
 			let createDate = fullDate.substring(0, 10);
 	        $('#detailDate').append('<span>' + createDate + '</span>');
 	        
-			$(document).on('click', '#info_like', function() {
+			$('#info_like').click(function() {
 				
-				if(loginUser === ""){
+				if(memberNo === ""){
 					alert('로그인 부탁드려욧');
 				}
 				else{
