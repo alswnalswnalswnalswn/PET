@@ -227,12 +227,14 @@
 		</foreach>
 		SELECT * FROM DUAL
 	</insert>
-	
-	<insert id="insertAttachment" parameterType="attachment">
+
+	<insert id="insertAttachment" parameterType="attachment" useGeneratedKeys="true" keyProperty="ATT_NO">
+		
 		INSERT 
 		INTO 
 				TB_ATTACHMENT
 		VALUES
+		<foreach item="item" collection="list" separator
 				(
 				SEQ_ATTNO.NEXTVAL, 
 				#{attPath}, 

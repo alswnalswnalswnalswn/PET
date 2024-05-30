@@ -61,10 +61,14 @@ public class CommunityServiceImpl implements CommunityService {
 		if(info.getAttachmentList() != null) {
 			for(Attachment att : info.getAttachmentList()) {
 				result3 *= communityMapper.insertAttachment(att);
+				System.out.println(att.getAttNo());
 			}
 		}
 		
 		// select문 sql 하나 새로 만들어서 방금 들어간게 추가 된건가? 확인하라고?
+		
+		
+		
 		return result1 * result2 * result3;
 	};
 	
