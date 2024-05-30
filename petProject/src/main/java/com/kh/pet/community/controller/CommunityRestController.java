@@ -60,21 +60,7 @@ public class CommunityRestController {
 		return new Gson().toJson(listInfo);
 	}
 	
-	@GetMapping("/{id}")
-	public ModelAndView communityDetail(@PathVariable("id")int boardNo, ModelAndView mv) {
-
-		if(communityService.updateBoardCount(boardNo) > 0) {
-			List<Info> list = new ArrayList();
-			Info info = new Info();
-			
-			info.setBoardNo(boardNo);
-			list.add(info);
-			
-			mv.addObject("infoList", communityService.selectCommunityList(list)).setViewName("info/community/communityDetail");
-		};
-		
-		return mv;
-	}
+	
 	
 	@GetMapping("likeCheck")
 	public int likeCheck(int boardNo, int memberNo) {

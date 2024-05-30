@@ -27,3 +27,25 @@ row > textarea {
 	height : 250px;
 	resize : none;
 }
+
+.attchList {
+	marging : 5px 0 0 5px;	
+}
+
+
+.attchList > div {
+	float : left;
+}
+
+.upfileDiv1 { 
+	width : 30%;
+	text-align : center;
+	
+}
+
+.upfileDiv2 {
+	width : 70%;
+	
+}
+
+

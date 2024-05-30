@@ -10,36 +10,36 @@
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
-	<c:set value="${ sessionScope.path }" var="path" />
-	<c:set value="${ infoList[0] }" var="info" />
-	
 	<div id="infooutput">
 		<div id="infoheader">
-			<div id="infoheader1"><img src="" alt="작성자 프사"></div>
-			<div id="infoheader2"><span id="infonickName">${ info.memberNo }</span>님</div>
+			<div id="infoheader1"><img src="/pet/resources/img/profile/${ infoList[0].memberProfile }" alt="작성자 프사"></div>
+			<div id="infoheader2"><span id="infonickName">${ infoList[0].memberNo }</span>님</div>
 			<div id="infoheader3">
 				
 			</div>
 			<div id="infoheader4"><span>˚&nbsp;˚&nbsp;˚</span></div>
 		</div>
-		<div id="boardti">제목 : ${info.boardTitle }</div>
+		<div id="boardti">제목 : ${infoList[0].boardTitle }</div>
 		
 		<div id="myimg">
-			<img src="${sessionScope.path }/" alt="첨부사진" />
+			<c:forEach var="attachment" items="${ infoList[0].attachmentList }">
+				<img src="/pet${attachment.attPath }${attachment.changeName}" alt="첨부사진" />
+			</c:forEach>
 		</div>
+		
 		<div id="needgongan4"></div>
 		<div id="myinfoContent">
 			<span style="font-size: 20px;">
-				${info.boardContent }
+				${infoList[0].boardContent }
 			</span>
 		</div>
 	</div>
 	
 	<div id="boardLike2">
-		<div id="likeboard2"><img src=""><span>(${info.boardLike})</span></div>
+		<div id="likeboard2"><img src=""><span>(${infoList[0].boardLike})</span></div>
 		
-		<div id="seeboard2"><span>조회 (${info.boardCount})</span></div>
-		<div id="replyboard2"><img src="${path}/resources/img/common/reply.png"><span>(${info.sumCount})</span></div>
+		<div id="seeboard2"><span>조회 (${infoList[0].boardCount})</span></div>
+		<div id="replyboard2"><img src="${path}/resources/img/common/reply.png"><span>(${infoList[0].sumCount})</span></div>
 		<div id="golist">
 			<a href="selectCommunityList"><button id="listbtn">메인으로</button></a>
 		</div>
@@ -51,7 +51,7 @@
 				<div id="nickna">닉네임</div><div id="daterep">날짜</div>
 			</div>
 			<div id="repcon">댓글내용</div>
-			<div id="btncom">댓글<img src="${sessionScope.path }/resources/img/common/replyarrow.png"></div>
+			<div id="btncom">댓글<img src="${path}/resources/img/common/replyarrow.png"></div>
 		</div>
 		<div id="inscom" style="display:none;">
 			<textarea name="comment" id="inscomment"></textarea>
@@ -77,7 +77,7 @@
 			$.ajax({
 				url : 'likeCheck',
 				data : {
-					boardNo : '${info.boardNo}',
+					boardNo : '${infoList[0].boardNo}',
 					memberNo : '${loginUserNo}'
 				},
 				success : result => {
@@ -90,8 +90,6 @@
 					}
 				}
 			});
-			
-			
 		});
 	
 	</script>

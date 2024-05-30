@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.info.model.vo.Info;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,11 @@ public interface CommunityMapper {
 	int updateBoardCount(int boardNo);
 	
 	int likeCheck(HashMap<String, Integer> map);
+	
 	int insertCommunity(Info info);
+	int insertBoardAnimal(List animalList);
+	int insertAttachment(Attachment att);
+	
+	
 
 }

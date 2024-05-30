@@ -108,9 +108,14 @@
 						animalListStr += '<br clear="both">';
 						
 						resultStr += '<div id="myboard" class="communityList">'
-										+ '<div class="thumbnailImg" id="thumbnail"><img src="'
-										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
-										+ '"></div>'
+										+ '<div class="thumbnailImg" id="thumbnail"><img src="/pet/';
+										if(result[i].attachmentList[0].attNo != 0){
+											resultStr += result[i].attachmentList[0].attPath  + result[i].attachmentList[0].changeName;
+										}
+										else {
+											resultStr += 'resources/img/profile/profile.png"';
+										}
+						resultStr 		+= '"></div>'
 										+ '<div class="center_content" id="boardlist">'
 										+ '<input type="hidden" value="' + result[i].boardNo + '">'
 											+ '<div id="boardheader">'
@@ -142,7 +147,7 @@
 						var $communityDetail = $(this).next('.communityDetail');
 						var boardNo = $(this).find('input[type="hidden"]').val();
 						
-						location.href = 'communities/' + boardNo;
+						location.href = 'communityDetail/' + boardNo;
 					});
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
