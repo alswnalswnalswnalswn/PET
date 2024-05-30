@@ -43,8 +43,6 @@ public class Info {
 	
 	private List animalCode;
 	
-	
-	
 	private List<Animal> animalList;
 
 	

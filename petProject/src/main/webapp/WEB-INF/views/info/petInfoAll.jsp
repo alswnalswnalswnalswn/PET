@@ -112,15 +112,19 @@
 					console.log(result);
 					//console.log(result[0].attachmentList[0].attPath + result[0].attachmentList[0].changeName);
 					for(let i in result){
-						
+						//console.log(result[i].boardNo);
 						let createDate = result[i].createDate.date;
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 						resultStr += '<div class="col-sm-3">'
 								   		+ '<div id="infoList" class="info_wrap">'
-											+ '<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/' + result[i].attachmentList[0].attPath + result[i].attachmentList[0].changeName + '"></div>'
+											+ '<div class="thumbnailImg" id="thumbnailinfo"><img src="${sessionScope.path }/' + result[i].attachmentList[0].attPath + result[i].attachmentList[0].changeName + '">'
+											+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '" />'
+											+ '</div>'
 											+ '<div class="center_content" id="info-list">'
 												+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '" />'
-												+ '<div id="infoTitle">' + result[i].boardTitle + '</div>'
+												+ '<div id="infoTitle">' + result[i].boardTitle 
+												+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '" />'
+												+ '</div>'
 												+ '<div id="info_info">'
 													+ '<div id="infoDate">' + dateFormat(fullDate) + '</div>'
 													+ '<div id="infoLike">'
@@ -147,9 +151,11 @@
 					$('.row').html(resultStr);
 
 					$('#infoTitle, #thumbnailinfo').on('click', function() {
-						var boardNo = $('input[name="boardNo"]').val();
+						
+						const boardNo = $(this).find('input').val();
+						//console.log(num);
+						
 						location.href='${sessionScope.path}/info/infoDetail/' + boardNo;
-						console.log(boardNo);
 					});
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
