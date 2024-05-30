@@ -24,8 +24,8 @@ public interface CommunityMapper {
 	int likeCheck(HashMap<String, Integer> map);
 	
 	int insertCommunity(Info info);
-	int insertBoardAnimal(List animalList);
-	int insertAttachment(Attachment att);
+	int insertBoardAnimal(List<Animal> animalList);
+	int insertAttachment(List<Attachment> attachmentList);
 	
 	
 

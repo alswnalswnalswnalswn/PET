@@ -53,18 +53,19 @@ public class CommunityServiceImpl implements CommunityService {
 		// 필수
 		int result1 = communityMapper.insertCommunity(info);
 		
-		//필수
+		// 필수
 		int result2 = communityMapper.insertBoardAnimal(info.getAnimalCode());
 		
 		// 선택
 		int result3 = 1;
 		if(info.getAttachmentList() != null) {
-			for(Attachment att : info.getAttachmentList()) {
-				result3 *= communityMapper.insertAttachment(att);
-			}
+			result3 = communityMapper.insertAttachment(info.getAttachmentList());
 		}
 		
 		// select문 sql 하나 새로 만들어서 방금 들어간게 추가 된건가? 확인하라고?
+		
+		
+		
 		return result1 * result2 * result3;
 	};
 	

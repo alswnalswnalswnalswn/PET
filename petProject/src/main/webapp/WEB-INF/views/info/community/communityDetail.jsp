@@ -54,7 +54,7 @@
 			<div id="btncom">댓글<img src="${path}/resources/img/common/replyarrow.png"></div>
 		</div>
 		<div id="inscom" style="display:none;">
-			<textarea name="comment" id="inscomment"></textarea>
+			<textarea name="comment" id="inscomment" style="resize:none;"></textarea>
 			<a href=""><button id="replybtn">댓글 작성</button></a>
 		</div>
 	</div>
@@ -71,8 +71,83 @@
 	
 
 	
-	<script>
+	<script>  
+	
+		const memberNo = 1;
+	    const boardNo = 5983;
+	    console.log(memberNo);
+	    console.log(boardNo);
+	    const loginUser = '';
+	    console.log(loginUser);
+	    
 		$(() => {
+			selectLike(boardNo);
+			
+			const fullDate = '2024-05-23T09:16:17';
+			let createDate = fullDate.substring(0, 10);
+	        $('#detailDate').append('<span>' + createDate + '</span>');
+	        
+			$(document).on('click', '#info_like', function() {
+				
+				if(loginUser === ""){
+					alert('로그인 부탁드려욧');
+				}
+				else{
+					var likeNuroom = "/pet/resources/img/common/like2.png";
+					var nolikeNuroom = "/pet/resources/img/common/like.png";
+		            var likeImg = $(this).find('img').attr('src');
+		            
+		            if(likeImg == nolikeNuroom){
+		            	
+		            	$.ajax({
+		            		url : '/pet/info/addLikeCount/' + boardNo + '/' + memberNo,
+		            		success : result => {
+		            			$('#likeCount').text('(' + result + ')');
+		            			$(this).find('img').attr('src', likeNuroom);
+		            		},
+		            		error : result => {
+		            			alert('응 안돼요');
+		            		}
+		            	})
+		            	
+		            } else {
+		            	$.ajax({
+		            		url : '/pet/info/removeLikeCount/' + boardNo + '/' + memberNo,
+		            		success : result => {
+		            			console.log('삭제완료');
+		            			$(this).find('img').attr('src', nolikeNuroom);
+		            			$('#likeCount').text('(' + result + ')');
+		            		},
+		            		error : result => {
+		            			alert('응 안돼요');
+		            		}
+		            	})
+		            }
+				}
+               
+			});
+		});
+		
+        function selectLike(boardNo){	
+        	$.ajax({
+        		url : '/pet/info/selectLike/' + boardNo,
+        		type : 'get',
+        		success : result => {
+        			console.log(result);
+        			$('#likeCount').html('(' + result + ')');
+        		},
+        		error : result => {
+        			console.log('실패');
+        		}
+        	});
+        }
+	
+        
+		$(() => {
+			
+			$('#btncom').click(function(){
+	    		$('#inscom').toggle();
+	    	})
 			
 			$.ajax({
 				url : 'likeCheck',
@@ -91,7 +166,7 @@
 				}
 			});
 		});
-	
+		
 	</script>
 	
 	

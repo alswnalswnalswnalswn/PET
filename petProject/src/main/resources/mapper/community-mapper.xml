@@ -227,21 +227,29 @@
 		</foreach>
 		SELECT * FROM DUAL
 	</insert>
-	
-	<insert id="insertAttachment" parameterType="attachment">
+
+	<insert id="insertAttachment" parameterType="java.util.List">
+		
 		INSERT 
 		INTO 
 				TB_ATTACHMENT
-		VALUES
-				(
+		SELEECT 
 				SEQ_ATTNO.NEXTVAL, 
-				#{attPath}, 
-				#{originName}, 
-				#{changeName}, 
-				DEFAULT, 
-				SEQ_BOANO.CURRVAL, 
-				#{attLevel}
-				)
+				A.*
+		FROM
+				(
+				<foreach collection="list" item="item" separator="UNION ALL ">
+					SELECT 
+							#{item.attPath}, 
+							#{item.originName}, 
+							#{item.changeName}, 
+							DEFAULT, 
+							SEQ_BOANO.CURRVAL, 
+							#{item.attLevel}
+					FROM
+							DUAL
+				</foreach>
+				) A
 	</insert>
 		
 	
