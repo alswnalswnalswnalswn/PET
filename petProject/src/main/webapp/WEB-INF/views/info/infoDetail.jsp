@@ -165,7 +165,7 @@
 			let createDate = fullDate.substring(0, 10);
 	        $('#detailDate').append('<span>' + createDate + '</span>');
 	        
-			$(document).on('click', '#info_like', function() {
+			$('#info_like').click(function() {
 				
 				if(memberNo === ""){
 					alert('로그인 부탁드려욧');
