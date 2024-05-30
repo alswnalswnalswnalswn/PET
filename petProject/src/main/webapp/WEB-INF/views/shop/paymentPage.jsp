@@ -14,14 +14,25 @@
 	<script>
 	
 		$(() => {
-			$('#kakaoSubmit').submit();
-			$.ajax({
-				url : '${ sessionScope.path }/kakaopay',
-				type : 'post',
-				success : result => {
-					location.href = result;
-				}
-			});
+			const data = JSON.parse(sessionStorage.getItem('data'));
+			let check = sessionStorage.getItem('check');
+			if(check == 1){
+				$.ajax({
+					url : '${ sessionScope.path }/kakaopay',
+					contentType:'application/json',
+					type : 'post',
+					data : JSON.stringify(data),
+					success : result => {
+						sessionStorage.setItem('check',0);
+						location.href = result;
+						
+					}
+				});
+			}
+			else {
+				window.opener.location.href="${sessionScope.path}";
+				window.close()
+			}
 			
 			
 		});

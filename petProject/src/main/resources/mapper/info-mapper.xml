@@ -112,9 +112,7 @@
 		<result column="LIKECHECK" property="likeCheck" />
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
-		
 		<collection resultMap="replyResultSet" property="replyList"/>
-
 		<collection resultMap="animalResultSet" property="animalList"/>
 	</resultMap>
 	
@@ -337,7 +335,7 @@
 	
 	<select id="selectReplyListCount" parameterType="_int" resultType="_int">
 		SELECT 	
-				(COUNT(REPLY_NO) + COUNT(COMMENT_NO)) REPLY_COUNT
+				COUNT(*) REPLY_COUNT
 		  FROM
 				TB_REPLY
           JOIN
@@ -357,33 +355,32 @@
 			AND
 				ATT_LEVEL = 2	
 	</select>
-	<select id="selectReplyNoList" parameterType="_int" resultType="_int">
-		SELECT 
-		        REPLY_NO
+	<select id="selectReplyNoList" parameterType="_int" resultMap="replyResultSet">
+ 		SELECT 
+		        REPLY_NO,
+                TB_MEMBER.NICKNAME AS REPLY_WRITER,
+                REPLY_CONTENT,
+                TB_REPLY.CREATE_DATE AS REPLY_CREATE_DATE,
+                REPLY_STATUS,
+                (SELECT COUNT(*) FROM TB_REPLY WHERE BOARD_NO = #{boardNo}) AS REPLY_COUNT
 		  FROM
 		        TB_REPLY
-		  JOIN
-		        TB_INFO USING (BOARD_NO)
+          JOIN
+                TB_MEMBER ON TB_REPLY.MEMBER_NO = TB_MEMBER.MEMBER_NO 
 		 WHERE
 		        BOARD_NO = #{boardNo}
 	</select>
-	<select id="selectCommentNoList" parameterType="_int" resultMap="replyResultSet" >
+	<select id="selectCommentList" parameterType="_int" resultMap="replyResultSet" >
         SELECT 	
-   		        REPLY_CONTENT,
-		        TB_REPLY.CREATE_DATE,
-		        TB_MEMBER.NICKNAME AS REPLY_WRITER,
 		        COMMENT_CONTENT,
 		        TB_MEMBER.NICKNAME AS COMMENT_WRITER,
-		        TB_COMMENT.CREATE_DATE,
-		        (SELECT COUNT(*) FROM TB_REPLY WHERE BOARD_NO = 5969) AS REPLY_COUNT,
-		        (SELECT COUNT(*) FROM TB_COMMENT WHERE BOARD_NO = 5969) AS COMMENT_COUNT,
+		        CREATE_DATE AS COMMENT_CREATE_DATE,
+		        (SELECT COUNT(*) FROM TB_COMMENT WHERE REPLY_NO = #{replyNo}) AS COMMENT_COUNT,
 				COMMENT_NO
 		  FROM
 				TB_COMMENT
-          JOIN
-                TB_REPLY USING(REPLY_NO)
           JOIN 
-          		      
+          		TB_MEMBER ON TB_COMMENT.MEMBER_NO = TB_MEMBER.MEMBER_NO 
          WHERE 
 	     		REPLY_NO = #{replyNo}
 	</select>
@@ -437,9 +434,14 @@
 	      		ATT_LEVEL = 1
 	</select>
 	
-	
-	
-	
+	<select id="selectLike" parameterType="_int" resultType="_int">
+		SELECT
+				COUNT(*) AS BOARD_LIKE
+		  FROM
+		  		TB_LIKE
+		 WHERE
+		 		BOARD_NO = #{boardNo}	
+	</select>
 	
 	
 	

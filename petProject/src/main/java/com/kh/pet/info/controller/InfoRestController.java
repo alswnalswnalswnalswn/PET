@@ -1,6 +1,7 @@
 package com.kh.pet.info.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -17,7 +18,6 @@ import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
 import com.kh.pet.info.model.service.InfoService;
 import com.kh.pet.info.model.vo.Info;
-import com.kh.pet.info.model.vo.Reply;
 
 import lombok.RequiredArgsConstructor;
 
@@ -74,27 +74,76 @@ public class InfoRestController {
 	}
 	
 	@GetMapping("infoDetail/{boardNo}")
-	public Info infoDetail(@PathVariable int boardNo, HttpSession session){
-		int page = 1;
-		
+	public ModelAndView infoDetail(@PathVariable int boardNo, HttpSession session, ModelAndView mv){
 		Info info = infoService.infoDetail(boardNo);
-		PageInfo pi = Pagination.getPageInfo(infoService.selectReplyListCount(boardNo), page, 12, 10);
-		RowBounds rowBounds = new RowBounds(
-				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
-				pi.getBoardLimit()
-				);
-		List<Integer> replyNoList = infoService.selectReplyNoList(boardNo, rowBounds);
-		System.out.println(replyNoList);
-		if (replyNoList != null && !replyNoList.isEmpty()) {
-		    for (Integer replyNo : replyNoList) {
-		    	List<Reply> commentList = infoService.selectCommentNoList(replyNo);
-		    	info.setReplyList(commentList);
-		    	System.out.println(commentList);
-		    	System.out.println(info);
-		    }
+		/*
+		List<Reply> replyList = infoService.selectReplyNoList(boardNo, rowBounds);
+		System.out.println(replyList);
+		for(int i = 0; i < replyList.size(); i++) {
+			int replyNo = replyList.get(i).getReplyNo();
+			List<Reply> commentList = infoService.selectCommentList(replyNo);
+			System.out.println(commentList);
+			info.setReplyList(commentList);
 		}
+		info.setReplyList(replyList);
+		System.out.println(info.getReplyList());
+		
 		System.out.println(info);
-		return info;
+		*/
+		session.setAttribute("info", info);
+		System.out.println(info);
+		mv.setViewName("info/infoDetail");
+		return mv;
 	}
+	
+	@GetMapping("addLikeCount/{boardNo}/{memberNo}")
+	public int addLikeCount(@PathVariable int boardNo, @PathVariable int memberNo, ModelAndView mv) {
+		System.out.println(boardNo);
+		System.out.println(memberNo);
+		HashMap<Object, Object> map = new HashMap();
+		
+		map.put("boardNo", boardNo);
+		map.put("memberNo", memberNo);
+		int result = infoService.insertLike(map);
+		int boardLike = 0;
+		if(result > 0) {
+			boardLike = infoService.selectLike(boardNo);
+		};
+		return boardLike;
+	}
+	
+	@GetMapping("removeLikeCount/{boardNo}/{memberNo}")
+	public int removeLikeCount(@PathVariable int boardNo, @PathVariable int memberNo, ModelAndView mv) {
+		HashMap<Object, Object> map = new HashMap();
+		
+		map.put("boardNo", boardNo);
+		map.put("memberNo", memberNo);
+		int result = infoService.deleteLike(map);
+		int boardLike = 0;
+		if(result > 0) {
+			boardLike = infoService.selectLike(boardNo);
+		};
+		return boardLike;
+	}
+	
+	@GetMapping("selectLike/{boardNo}")
+	public int selectLike(@PathVariable int boardNo) {
+		int	boardLike = infoService.selectLike(boardNo);
+		System.out.println(boardLike);
+		return boardLike;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

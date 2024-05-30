@@ -167,6 +167,7 @@
 		$('.totalPrice').text(totalPrice+'원');
 		$('.productList-detail').html(text);
 		$('#kakaopay-btn').click(() => {
+			sessionStorage.setItem('check',1);
 			window.open("payment","결제팝업","width = 500, height = 500");
 		});
 		

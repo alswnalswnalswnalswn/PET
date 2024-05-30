@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.pet.shop.model.vo.Order;
 import com.kh.pet.shop.model.vo.Product;
 import com.kh.pet.shop.model.vo.ProductColor;
 import com.kh.pet.shop.model.vo.ProductOption;
@@ -22,6 +23,10 @@ public interface ProductService {
 	List<ProductColor> selectColor(int productNo);
 
 	List<ProductOption> selectSize(HashMap<String, String> map);
+
+	int insertOrder(Order order);
+
+	Order selectNowOrder();
 	
 	
 
