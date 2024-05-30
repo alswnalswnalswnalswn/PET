@@ -1,14 +1,23 @@
 package com.kh.pet.shop.model.vo;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import lombok.Data;
-
-@Data
+@Getter @Setter @ToString
 public class KakaoPayVo {
-	private String aid, tid, cid, sid;
-    private String partner_order_id, partner_user_id, payment_method_type;
-    private String item_name, item_code, payload;
-    private Integer quantity, tax_free_amount, vat_amount;
-    private LocalDateTime created_at, approved_at;
+	private String aid;
+    private String tid;
+    private String cid;
+    private String sid;
+    private String partner_order_id;
+    private String partner_user_id; 
+    private String payment_method_type;
+    private Amount amount; 
+    private String item_name; 
+    private String item_code;
+    private int quantity;
+    private String created_at; 
+    private String approved_at;
+    private String payload;
 }

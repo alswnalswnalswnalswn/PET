@@ -44,6 +44,9 @@
 		
 	</resultMap>
 	
+	<resultMap type="order" id="orderResultSet">
+			
+	</resultMap>
 
 	
 	<select id="selectListCount" parameterType="hashmap" resultType="_int">
@@ -228,6 +231,44 @@
 		       COLOR_NAME = #{colorName}
 		   AND
 		       PRODUCT_NO = TO_NUMBER(#{productNo})
+	
+	</select>
+	
+	<insert id="insertOrder" parameterType="order">
+		INSERT ALL
+		  INTO
+		  	  TB_ORDER
+		 VALUES(
+		 		SEQ_ORDNO.NEXTVAL,
+		        (SELECT DELIVERY_NO FROM TB_DELIVERY WHERE MEMBER_NO = #{member.memberNo} AND DELIVERY_NAME = '집'),
+		        SYSDATE,
+		        'B',
+		        SYSDATE,
+		        #{member.memberName},
+		        #{member.phone}
+		        )
+		  <foreach collection="optionList" item="option">
+		  INTO
+		       TB_ORDERLIST
+		VALUES
+		       (
+		       SEQ_ORDNO.CURRVAL,
+		       #{option.optionNo},
+		       #{option.productAmount}
+		       )
+		  </foreach>
+		  SELECT * FROM DUAL
+			  	
+	</insert>
+	
+	<select id="selectNowOrder">
+		SELECT
+			   *
+		  FROM
+		  	   (SELECT
+		  	   		   *
+		  	   	  FROM
+		  	   	  	   )	 
 	
 	</select>
 </mapper>
