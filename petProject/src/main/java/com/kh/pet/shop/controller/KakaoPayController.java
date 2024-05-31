@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.member.model.vo.Member;
 import com.kh.pet.shop.model.service.KakaoPayService;
@@ -43,11 +44,16 @@ public class KakaoPayController {
 		
 		List<ProductOption> optionList = new ArrayList();
 		
-		
+		int price = 0;
+		String itemName = "";
 		for (Map<String, Object> item : data) {
 	        ProductOption option = new ProductOption();
 	        option.setOptionNo(Integer.parseInt(String.valueOf(item.get("optionNo"))));
 	        option.setProductAmount(Integer.parseInt(String.valueOf(item.get("productAmount"))));
+	        
+	        price += Integer.parseInt(String.valueOf(item.get("price")));
+	        
+	        itemName = String.valueOf(item.get("productName"));
 	        optionList.add(option);
 	    }
 		
@@ -59,22 +65,42 @@ public class KakaoPayController {
 		
 		if(productService.insertOrder(order) > 0) {
 			newOrder = productService.selectNowOrder();
+			newOrder.setMember((Member)session.getAttribute("loginUser"));
 		} else {
 			
 		}
 		
 		
-		
-		
-		return kakaoService.kakaoPayReady();
+		return kakaoService.kakaoPayReady(price,itemName,newOrder);
 	}
 	
 
 	
 	@GetMapping("success")
 	public String kakaopaySuccess(@RequestParam("pg_token")String pg_token){
-		kakaopayVo = kakaoService.kakaopayVo(pg_token);
-		return "shop/paymentPage";
+		Order order = productService.selectNowOrder();
+		int result = productService.updateOrder(order.getOrderNo());
+		
+		if(result > 0) {
+			kakaopayVo = kakaoService.kakaopayVo(pg_token);
+			return "shop/paymentPage";
+		}
+		return "";
+		
+		
+		
+		
+	}
+	
+	@GetMapping("result")
+	public ModelAndView kakaopayResult(HttpSession session,ModelAndView mv) {
+		
+		Order order = productService.selectNowOrder();
+		
+		mv.addObject("order",order).setViewName("shop/orderResult");
+		
+		
+		return mv;
 	}
 
 }

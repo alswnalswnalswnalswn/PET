@@ -17,6 +17,7 @@ public class ProductOption {
 	private int optionNo;
 	private int productNo;
 	private int productAmount;
+	private String productName;
 	private int sizeCode;
 	private String sizeName;;
 	

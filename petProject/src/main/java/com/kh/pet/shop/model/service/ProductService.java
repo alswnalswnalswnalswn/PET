@@ -27,6 +27,8 @@ public interface ProductService {
 	int insertOrder(Order order);
 
 	Order selectNowOrder();
+
+	int updateOrder(int orderNo);
 	
 	
 

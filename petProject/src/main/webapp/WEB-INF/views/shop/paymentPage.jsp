@@ -30,7 +30,7 @@
 				});
 			}
 			else {
-				window.opener.location.href="${sessionScope.path}";
+				window.opener.location.href="${sessionScope.path}/kakaopay/result";
 				window.close()
 			}
 			
