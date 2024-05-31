@@ -60,6 +60,11 @@ public class CommunityRestController {
 		return new Gson().toJson(listInfo);
 	}
 	
+	@GetMapping("selectLike/{boardNo}")
+	public int selectLike(@PathVariable int boardNo) {
+		return communityService.selectLike(boardNo);
+	}
+	
 	@GetMapping("likeCheck/{boardNo}/{memberNo}")
 	public int likeCheck(@PathVariable int boardNo, @PathVariable int memberNo) {
 
@@ -76,6 +81,7 @@ public class CommunityRestController {
 		HashMap<String, Integer> map = new HashMap();
 		map.put("boardNo", boardNo);
 		map.put("memberNo", memberNo);
+		
 		
 		return communityService.addLike(map);
 	}

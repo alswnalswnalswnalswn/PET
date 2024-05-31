@@ -20,8 +20,9 @@ public interface CommunityMapper {
 	List<Info> selectCommunityList(List<Info> list);
 	
 	int updateBoardCount(int boardNo);
-	
+
 	int likeCheck(HashMap<String, Integer> map);
+	int selectLike(int boardNo);
 	int addLike(HashMap<String, Integer> map);
 	int deleteLike(HashMap<String, Integer> map);
 	
