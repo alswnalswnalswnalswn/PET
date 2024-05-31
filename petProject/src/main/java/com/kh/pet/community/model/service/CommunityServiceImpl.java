@@ -62,10 +62,6 @@ public class CommunityServiceImpl implements CommunityService {
 			result3 = communityMapper.insertAttachment(info.getAttachmentList());
 		}
 		
-		// select문 sql 하나 새로 만들어서 방금 들어간게 추가 된건가? 확인하라고?
-		
-		
-		
 		return result1 * result2 * result3;
 	};
 	
