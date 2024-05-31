@@ -23,6 +23,7 @@
 		<typeAlias type="com.kh.pet.shop.model.vo.ProductColor" alias="productColor"/>
 		<typeAlias type="com.kh.pet.shop.model.vo.ProductSize" alias="productSize"/>
 		<typeAlias type="com.kh.pet.shop.model.vo.Order" alias="order"/>
+		<typeAlias type="com.kh.pet.common.model.vo.Alert" alias="alert"/>
 	</typeAliases>
 	
 	<typeHandlers>
