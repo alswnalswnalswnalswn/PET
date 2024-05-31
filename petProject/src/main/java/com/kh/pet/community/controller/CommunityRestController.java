@@ -60,8 +60,6 @@ public class CommunityRestController {
 		return new Gson().toJson(listInfo);
 	}
 	
-	
-	
 	@GetMapping("likeCheck")
 	public int likeCheck(int boardNo, int memberNo) {
 

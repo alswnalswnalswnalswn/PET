@@ -41,7 +41,7 @@
 		<div id="seeboard2"><span>조회 (${infoList[0].boardCount})</span></div>
 		<div id="replyboard2"><img src="${path}/resources/img/common/reply.png"><span>(${infoList[0].sumCount})</span></div>
 		<div id="golist">
-			<a href="selectCommunityList"><button id="listbtn">메인으로</button></a>
+			<button id="listbtn" onclick="history.back();">이전으로</button>
 		</div>
 	</div>
 	
@@ -55,7 +55,7 @@
 		</div>
 		<div id="inscom" style="display:none;">
 			<textarea name="comment" id="inscomment" style="resize:none;"></textarea>
-			<a href=""><button id="replybtn">댓글 작성</button></a>
+			<button id="replybtn">댓글 작성</button>
 		</div>
 	</div>
 	
@@ -73,21 +73,17 @@
 	
 	<script>  
 	
-		const memberNo = 1;
-	    const boardNo = 5983;
-	    console.log(memberNo);
-	    console.log(boardNo);
-	    const loginUser = '';
-	    console.log(loginUser);
-	    
-		$(() => {
-			selectLike(boardNo);
+		$(() => {	
 			
-			const fullDate = '2024-05-23T09:16:17';
-			let createDate = fullDate.substring(0, 10);
-	        $('#detailDate').append('<span>' + createDate + '</span>');
-	        
-			$(document).on('click', '#info_like', function() {
+			$('#btncom').click(() => {
+    			$('#inscom').toggle();
+    		});
+		
+			selectLikeCount(boardNo);
+			
+			likeCheck();
+			
+			$().on('click', '#info_like', function() {
 				
 				if(loginUser === ""){
 					alert('로그인 부탁드려욧');
@@ -128,7 +124,7 @@
 			});
 		});
 		
-        function selectLike(boardNo){	
+        function selectLikeCount(boardNo){	
         	$.ajax({
         		url : '/pet/info/selectLike/' + boardNo,
         		type : 'get',
@@ -142,13 +138,7 @@
         	});
         }
 	
-        
-		$(() => {
-			
-			$('#btncom').click(function(){
-	    		$('#inscom').toggle();
-	    	})
-			
+        function lickCheck(){
 			$.ajax({
 				url : 'likeCheck',
 				data : {
@@ -165,7 +155,8 @@
 					}
 				}
 			});
-		});
+		}
+		
 		
 	</script>
 	
