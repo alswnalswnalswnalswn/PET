@@ -72,7 +72,8 @@
 
 	
 	<script>  
-	
+	const memberNo = '${sessionScope.loginUser.memberNo}';
+	const boardNo = ${info.boardNo};
 		$(() => {	
 			
 			$('#btncom').click(() => {
@@ -137,6 +138,7 @@
         		}
         	});
         }
+        
 	
         function lickCheck(){
 			$.ajax({
