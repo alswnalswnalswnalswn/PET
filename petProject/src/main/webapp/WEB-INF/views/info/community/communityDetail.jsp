@@ -29,9 +29,7 @@
 		
 		<div id="needgongan4"></div>
 		<div id="myinfoContent">
-			<span style="font-size: 20px;">
-				${infoList[0].boardContent }
-			</span>
+			${infoList[0].boardContent }
 		</div>
 	</div>
 	
@@ -72,35 +70,35 @@
 
 	
 	<script>  
-	const memberNo = '${sessionScope.loginUser.memberNo}';
-	const boardNo = ${info.boardNo};
-		$(() => {	
+	const boardNo = '${infoList[0].boardNo}',
+	memberNo = '${loginUserNo}',
+	like = "/pet/resources/img/common/like2.png",
+	noLike = "/pet/resources/img/common/like.png";
+
+	$(() => {	
 			
 			$('#btncom').click(() => {
     			$('#inscom').toggle();
     		});
-		
-			selectLikeCount(boardNo);
+
+			likeCheck(boardNo, memberNo);
 			
-			likeCheck();
-			
-			$().on('click', '#info_like', function() {
+			$().on('click', '#likeboard2', () => {
 				
-				if(loginUser === ""){
+				if(memberNo === "0"){
 					alert('로그인 부탁드려욧');
 				}
-				else{
-					var likeNuroom = "/pet/resources/img/common/like2.png";
-					var nolikeNuroom = "/pet/resources/img/common/like.png";
+				else {
 		            var likeImg = $(this).find('img').attr('src');
 		            
-		            if(likeImg == nolikeNuroom){
+		            if(likeImg == noLike){
 		            	
 		            	$.ajax({
-		            		url : '/pet/info/addLikeCount/' + boardNo + '/' + memberNo,
+		            		url : '/pet/communities/addLike/' + boardNo + '/' + memberNo,
 		            		success : result => {
 		            			$('#likeCount').text('(' + result + ')');
-		            			$(this).find('img').attr('src', likeNuroom);
+		            			
+		            			$(this).find('img').attr('src', like);
 		            		},
 		            		error : result => {
 		            			alert('응 안돼요');
@@ -125,35 +123,21 @@
 			});
 		});
 		
-        function selectLikeCount(boardNo){	
-        	$.ajax({
-        		url : '/pet/info/selectLike/' + boardNo,
-        		type : 'get',
-        		success : result => {
-        			console.log(result);
-        			$('#likeCount').html('(' + result + ')');
-        		},
-        		error : result => {
-        			console.log('실패');
-        		}
-        	});
-        }
-        
-	
-        function lickCheck(){
+        function likeCheck(boardNo, memberNo){
 			$.ajax({
-				url : 'likeCheck',
+				url : '/pet/communities/likeCheck',
 				data : {
-					boardNo : '${infoList[0].boardNo}',
-					memberNo : '${loginUserNo}'
+					boardNo : boardNo,
+					memberNo : memberNo
 				},
 				success : result => {
 					console.log(result);
+					
 					if(result > 0){
-						$('#likeboard2 > img').attr('src', '${path}/resources/img/common/like2.png' )
+						$('#likeboard2 > img').attr('src', like)
 					}
 					else {
-						$('#likeboard2 > img').attr('src', '${path}/resources/img/common/like.png' )
+						$('#likeboard2 > img').attr('src', noLike)
 					}
 				}
 			});

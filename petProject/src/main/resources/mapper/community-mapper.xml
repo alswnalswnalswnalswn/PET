@@ -253,6 +253,24 @@
 		</foreach>
 		SELECT * FROM DUAL
 	</insert>
+	
+	<insert id="addLike" parameterType="hashMap">
+		INSERT 
+		INTO
+				TB_LIKE
+		VALUES
+				(
+				#{memberNo},
+				#{boardNo}
+				) 
+	</insert>
+	
+	<delete id="deleteLike" parameterType="hashMap">
+		DELETE FROM 
+	</delete>
+	
+	
+	
 		
 	
 </mapper>

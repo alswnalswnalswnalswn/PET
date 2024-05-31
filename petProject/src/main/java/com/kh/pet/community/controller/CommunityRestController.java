@@ -60,7 +60,7 @@ public class CommunityRestController {
 		return new Gson().toJson(listInfo);
 	}
 	
-	@GetMapping("likeCheck")
+	@GetMapping("likeCheck/{boardNo}/{memberNo}")
 	public int likeCheck(int boardNo, int memberNo) {
 
 		HashMap<String, Integer> map = new HashMap();
@@ -70,7 +70,23 @@ public class CommunityRestController {
 		return communityService.likeCheck(map);
 	}
 	
+	@PostMapping("addLike/{boardNo}/{memberNo}")
+	public int addLike(int boardNo, int memberNo) {
+		
+		HashMap<String, Integer> map = new HashMap();
+		map.put("boardNo", boardNo);
+		map.put("memberNo", memberNo);
+		
+		return communityService.addLike(map);
+	}
 	
-	
-
+	@PostMapping("deleteLike/{boardNo}/{memberNo}")
+	public int deleteLike(int boardNo, int memberNo) {
+		
+		HashMap<String, Integer> map = new HashMap();
+		map.put("boardNo", boardNo);
+		map.put("memberNo", memberNo);
+		
+		return communityService.deleteLike(map);
+	}
 }
