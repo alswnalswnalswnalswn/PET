@@ -90,6 +90,7 @@
 		<result column="CATEGORY_CODE" property="categoryCode"/>
 		<result column="BOARD_LIKE" property="boardLike"/>
 		<result column="SUM_COUNT" property="sumCount"/>
+		<result column="MEMBER_PROFILE" property="memberProfile" />
 		
 		<collection resultMap="attachmentResultSet" property="attachmentList"/>
 		<collection resultMap="replyResultSet" property="replyList"/>
@@ -126,7 +127,9 @@
 		        BOARD_STATUS,
 		        CATEGORY_CODE,
 		        ATT_PATH,
-		        CHANGE_NAME
+		        CHANGE_NAME,
+		        ATT_NO,
+		        MEMBER_PROFILE
 		FROM
 		        TB_INFO
 		LEFT JOIN
@@ -182,6 +185,15 @@
 				BOARD_NO = #{boardNo}
 	</update>
 	
+	<select id="selectLike" parameterType="_int" resultType="_int">
+		SELECT 
+				COUNT(*)
+		FROM
+				TB_LIKE
+		WHERE
+				BOARD_NO = #{boardNo}
+	</select>
+	
 	<select id="likeCheck" parameterType="hashMap" resultType="_int">
 		SELECT 
 				COUNT(*)
@@ -193,14 +205,8 @@
 				MEMBER_NO = #{memberNo}
 	</select>
 	
-	
-	
-	
-	
-	
 	<insert id="insertCommunity" parameterType="info">
 		INSERT 
-				ALL
 		INTO 
 				TB_INFO 
 		VALUES(
@@ -214,16 +220,72 @@
 				DEFAULT,
 				DEFAULT
 		)
-				<foreach collection="animalCode" item="animalCode">
-		INTO
-				TB_BOARD_ANIMAL
-		VALUES(
-		   		#{animalCode},
-		   		SEQ_BOANO.CURRVAL
+	</insert>
+	
+	<insert id="insertBoardAnimal" parameterType="java.util.List">
+		INSERT 
+		ALL
+		<foreach collection="list" item="item">
+			INTO
+					TB_BOARD_ANIMAL
+			VALUES
+					(
+					#{item}, 
+					SEQ_BOANO.CURRVAL
+					)
+		</foreach>
+		SELECT * FROM DUAL
+	</insert>
+
+	<insert id="insertAttachment" parameterType="java.util.List">
+		INSERT ALL
+		
+		<foreach collection="list" item="item">
+		INTO 
+				TB_ATTACHMENT(
+				ATT_NO, 
+				ATT_PATH, 
+				ORIGIN_NAME, 
+				CHANGE_NAME, 
+				BOARD_NO, 
+				ATT_LEVEL
+				)
+		VALUES
+		(
+				ATTNO_NEXT,
+				#{item.attPath}, 
+				#{item.originName}, 
+				#{item.changeName}, 
+				SEQ_BOANO.CURRVAL, 
+				#{item.attLevel}
 		)
-			  	</foreach>
+		</foreach>
 		SELECT * FROM DUAL
 	</insert>
 	
+	<insert id="addLike" parameterType="hashMap">
+		INSERT 
+		INTO
+				TB_LIKE
+		VALUES
+				(
+				#{memberNo},
+				#{boardNo}
+				) 
+	</insert>
+	
+	<delete id="deleteLike" parameterType="hashMap">
+		DELETE
+		FROM 
+		 			TB_LIKE
+		 WHERE 
+		 			MEMBER_NO = #{memberNo} 
+		 AND 
+		 			BOARD_NO = #{boardNo}
+	</delete>
+	
+	
+	
+		
 	
 </mapper>

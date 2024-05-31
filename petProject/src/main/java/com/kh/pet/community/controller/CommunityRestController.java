@@ -60,24 +60,13 @@ public class CommunityRestController {
 		return new Gson().toJson(listInfo);
 	}
 	
-	@GetMapping("/{id}")
-	public ModelAndView communityDetail(@PathVariable("id")int boardNo, ModelAndView mv) {
-
-		if(communityService.updateBoardCount(boardNo) > 0) {
-			List<Info> list = new ArrayList();
-			Info info = new Info();
-			
-			info.setBoardNo(boardNo);
-			list.add(info);
-			
-			mv.addObject("infoList", communityService.selectCommunityList(list)).setViewName("info/community/communityDetail");
-		};
-		
-		return mv;
+	@GetMapping("selectLike/{boardNo}")
+	public int selectLike(@PathVariable int boardNo) {
+		return communityService.selectLike(boardNo);
 	}
 	
-	@GetMapping("likeCheck")
-	public int likeCheck(int boardNo, int memberNo) {
+	@GetMapping("likeCheck/{boardNo}/{memberNo}")
+	public int likeCheck(@PathVariable int boardNo, @PathVariable int memberNo) {
 
 		HashMap<String, Integer> map = new HashMap();
 		map.put("boardNo", boardNo);
@@ -86,7 +75,24 @@ public class CommunityRestController {
 		return communityService.likeCheck(map);
 	}
 	
+	@PostMapping("addLike")
+	public int addLike(int boardNo, int memberNo) {
+		
+		HashMap<String, Integer> map = new HashMap();
+		map.put("boardNo", boardNo);
+		map.put("memberNo", memberNo);
+		
+		
+		return communityService.addLike(map);
+	}
 	
-	
-
+	@PostMapping("deleteLike")
+	public int deleteLike(int boardNo, int memberNo) {
+		
+		HashMap<String, Integer> map = new HashMap();
+		map.put("boardNo", boardNo);
+		map.put("memberNo", memberNo);
+		
+		return communityService.deleteLike(map);
+	}
 }

@@ -2,15 +2,19 @@ package com.kh.pet.community.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.community.model.service.CommunityServiceImpl;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.vo.Member;
@@ -27,8 +31,8 @@ public class CommunityController {
 		String originName = file.getOriginalFilename();
 		String ext = originName.substring(originName.lastIndexOf("."));
 		int ranNum = (int)(Math.random() * 90000) + 10000;
-		String changeName = "profile" + ranNum + ext;
-		String savePath = session.getServletContext().getRealPath("/resources/img/profile/");
+		String changeName = "community" + ranNum + ext;
+		String savePath = session.getServletContext().getRealPath("/resources/img/info/community/");
 		
 		try {
 			file.transferTo(new File(savePath + changeName));
@@ -50,29 +54,43 @@ public class CommunityController {
 	}
 	
 	@PostMapping("insertCommunity")
-	public ModelAndView insertCommunity(
-										HttpSession session, ModelAndView mv, Info info, MultipartFile[] upfile) {
+	public ModelAndView insertCommunity(HttpSession session, ModelAndView mv, Info info, MultipartFile[] upfiles) {
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		info.setMemNo(loginUser.getMemberNo());
 		
-		for(int i = 0; i < upfile.length; i++) {
-			if(upfile[i].getOriginalFilename().equals("")) {
-				saveFile(upfile[i], session);
-				info.setOriginName(upfile[i].getOriginalFilename());
-				info.setChangeName(saveFile(upfile[i], session));
+		List<Attachment> attachmentList = new ArrayList();
+		
+		if(!upfiles[0].getOriginalFilename().equals("")) {
+			
+			for(int i = 0; i < upfiles.length; i++) {
+				
+				if(!upfiles[i].getOriginalFilename().equals("")) {
+					
+					Attachment att = new Attachment();
+					att.setOriginName(upfiles[i].getOriginalFilename());
+					att.setChangeName(saveFile(upfiles[i], session));
+					att.setAttPath("/resources/img/info/community/");
+					if(i == 0) {
+						att.setAttLevel(1);
+					} else {
+						att.setAttLevel(2);
+					}
+					attachmentList.add(att);
+				}
+				info.setAttachmentList(attachmentList);
 			}
 		}
 		
-		/*
-		if(!upfile.getOriginalFilename().equals("")) {
-			saveFile(upfile, session);
-			System.out.println(saveFile(upfile, session));
-			info.setOriginName(upfile.getOriginalFilename());
-			info.setChangeName(saveFile(upfile, session));
+		List animalCodes = info.getAnimalCode();
+		if(animalCodes.get(0).equals("A0")) {
+			animalCodes.clear();
+			for(int i = 1; i < 7; i++) {
+				animalCodes.add("A" + i);
+			}
+			info.setAnimalCode(animalCodes);
+			System.out.println(animalCodes);
 		}
-		*/
-		System.out.println(info);
 		
 		if(communityService.insertCommunity(info) > 0) {
 			session.setAttribute("alertMsg", "작성 성공");
@@ -82,7 +100,36 @@ public class CommunityController {
 		return mv;
 	}
 	
+	@GetMapping("communityDetail/{id}")
+	public ModelAndView communityDetail(@PathVariable("id")int boardNo, ModelAndView mv) {
+
+		if(communityService.updateBoardCount(boardNo) > 0) {
+			List<Info> list = new ArrayList();
+			Info info = new Info();
+			
+			info.setBoardNo(boardNo);
+			list.add(info);
+			
+			mv.addObject("infoList", communityService.selectCommunityList(list)).setViewName("info/community/communityDetail");
+		};
+		
+		return mv;
+	}
 	
+	@GetMapping("updateCommunityForm")
+	public String updateCommunityForm() {
+		return "info/community/communityDetail";
+	}
+	
+	@PostMapping("updateCommunity")
+	public ModelAndView updateCommunity(ModelAndView mv, Info info) {
+		return mv;
+	}
+	
+	@PostMapping("deleteCommunity")
+	public String deleteCommunity() {
+		return "";
+	}
 	
 
 }

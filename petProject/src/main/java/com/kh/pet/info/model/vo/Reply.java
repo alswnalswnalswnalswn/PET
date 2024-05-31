@@ -25,6 +25,7 @@ public class Reply {
 	private String commentWriter;
 	private String commentContent;
 	private LocalDateTime comCreateDate;
+	private int replyCount;
 
 	private List<Comment> commentList;
 	

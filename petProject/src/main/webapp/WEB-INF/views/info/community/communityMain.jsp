@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<script src="${sessionScope.path }/resources/script/date.js"></script>
 	<jsp:include page="../../common/header.jsp" />
 	<c:set value="${ sessionScope.path }" var="path" />
 	
@@ -65,7 +66,9 @@
 	<div id="gomain">
 		<button id="showMore" class="mainbtn">더 보기</button>
 		<button class="mainbtn">메인으로</button>
-		<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
+		<c:if test="${sessionScope.loginUser ne null }">
+			<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
+		</c:if>
 	</div>
 	
 	
@@ -95,7 +98,8 @@
 				success : result => {
 					console.log(result);
 					for(let i in result){
-						
+						let createDate = result[i].createDate.date;
+						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 						var animalListStr = '';
 						var animalListResult = result[i].animalList;
 						
@@ -108,15 +112,20 @@
 						animalListStr += '<br clear="both">';
 						
 						resultStr += '<div id="myboard" class="communityList">'
-										+ '<div class="thumbnailImg" id="thumbnail"><img src="'
-										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
-										+ '"></div>'
+										+ '<div class="thumbnailImg" id="thumbnail"><img src="/pet/';
+										if(result[i].attachmentList[0].attNo != 0){
+											resultStr += result[i].attachmentList[0].attPath  + result[i].attachmentList[0].changeName;
+										}
+										else {
+											resultStr += 'resources/img/profile/profile.png"';
+										}
+						resultStr 		+= '"></div>'
 										+ '<div class="center_content" id="boardlist">'
 										+ '<input type="hidden" value="' + result[i].boardNo + '">'
 											+ '<div id="boardheader">'
 												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
 												+ '<div id="myboardAni"><span class="category" id="myani">' + animalListStr + '</span></div>'
-												+ '<div class="create_date" id="boardCreate">' + result[i].boardCreateDate + '</div>'
+												+ '<div class="create_date" id="boardCreate">' + dateFormat(fullDate) + '</div>'
 											+ '</div>'
 											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
 											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
@@ -142,14 +151,14 @@
 						var $communityDetail = $(this).next('.communityDetail');
 						var boardNo = $(this).find('input[type="hidden"]').val();
 						
-						location.href = 'communities/' + boardNo;
+						location.href = 'communityDetail/' + boardNo;
 					});
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-						$('.btnDiv').css('display', 'block');
+						$('#showMore').css('display', 'block');
 					}
 					else{
-						$('.btnDiv').css('display', 'none');
+						$('#showMore').css('display', 'none');
 					}
 				}
 			});
@@ -207,20 +216,6 @@
 			});
 		});
 		
-		function dateFormat(date) {
-	        let month = date.getMonth() + 1;
-	        let day = date.getDate();
-	        let hour = date.getHours();
-	        let minute = date.getMinutes();
-	        let second = date.getSeconds();
-	        month = month >= 10 ? month : '0' + month;
-	        day = day >= 10 ? day : '0' + day;
-	        hour = hour >= 10 ? hour : '0' + hour;
-	        minute = minute >= 10 ? minute : '0' + minute;
-	        second = second >= 10 ? second : '0' + second;
-	        
-	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-		}
 				
 		
 	
