@@ -83,6 +83,7 @@ public class CommunityController {
 		}
 		
 		List animalCodes = info.getAnimalCode();
+		
 		if(animalCodes.get(0).equals("A0")) {
 			animalCodes.clear();
 			for(int i = 1; i < 7; i++) {
