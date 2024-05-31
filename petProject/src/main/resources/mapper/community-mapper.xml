@@ -266,7 +266,13 @@
 	</insert>
 	
 	<delete id="deleteLike" parameterType="hashMap">
-		DELETE FROM 
+		DELETE
+		FROM 
+		 			TB_LIKE
+		 WHERE 
+		 			MEMBER_NO = #{memberNo} 
+		 AND 
+		 			BOARD_NO = #{boardNo}
 	</delete>
 	
 	

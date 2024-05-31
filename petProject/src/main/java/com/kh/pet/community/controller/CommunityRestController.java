@@ -61,7 +61,7 @@ public class CommunityRestController {
 	}
 	
 	@GetMapping("likeCheck/{boardNo}/{memberNo}")
-	public int likeCheck(int boardNo, int memberNo) {
+	public int likeCheck(@PathVariable int boardNo, @PathVariable int memberNo) {
 
 		HashMap<String, Integer> map = new HashMap();
 		map.put("boardNo", boardNo);
@@ -70,7 +70,7 @@ public class CommunityRestController {
 		return communityService.likeCheck(map);
 	}
 	
-	@PostMapping("addLike/{boardNo}/{memberNo}")
+	@PostMapping("addLike")
 	public int addLike(int boardNo, int memberNo) {
 		
 		HashMap<String, Integer> map = new HashMap();
@@ -80,7 +80,7 @@ public class CommunityRestController {
 		return communityService.addLike(map);
 	}
 	
-	@PostMapping("deleteLike/{boardNo}/{memberNo}")
+	@PostMapping("deleteLike")
 	public int deleteLike(int boardNo, int memberNo) {
 		
 		HashMap<String, Integer> map = new HashMap();

@@ -83,55 +83,49 @@
 
 			likeCheck(boardNo, memberNo);
 			
-			$().on('click', '#likeboard2', () => {
+			$('#likeboard2').click(function() {
 				
 				if(memberNo === "0"){
 					alert('로그인 부탁드려욧');
 				}
 				else {
 		            var likeImg = $(this).find('img').attr('src');
-		            
+		           console.log(likeImg);
 		            if(likeImg == noLike){
-		            	
 		            	$.ajax({
-		            		url : '/pet/communities/addLike/' + boardNo + '/' + memberNo,
-		            		success : result => {
-		            			$('#likeCount').text('(' + result + ')');
-		            			
-		            			$(this).find('img').attr('src', like);
+		            		url : '/pet/communities/addLike',
+		            		method: 'post',
+		            		data : {
+		            			memberNo : memberNo,
+		            			boardNo : boardNo
 		            		},
-		            		error : result => {
-		            			alert('응 안돼요');
-		            		}
+		            		success : result => {
+		            		},
 		            	})
-		            	
-		            } else {
+		            } 
+		            else {
 		            	$.ajax({
-		            		url : '/pet/info/removeLikeCount/' + boardNo + '/' + memberNo,
-		            		success : result => {
-		            			console.log('삭제완료');
-		            			$(this).find('img').attr('src', nolikeNuroom);
-		            			$('#likeCount').text('(' + result + ')');
+		            		url : '/pet/communities/deleteLike',
+		            		method: 'post',
+		            		data : {
+		            			memberNo : memberNo,
+		            			boardNo : boardNo
 		            		},
-		            		error : result => {
-		            			alert('응 안돼요');
-		            		}
+		            		success : result => {
+		            		},
 		            	})
 		            }
+		            likeCheck(boardNo, memberNo);
 				}
-               
 			});
+			
+			
 		});
 		
         function likeCheck(boardNo, memberNo){
 			$.ajax({
-				url : '/pet/communities/likeCheck',
-				data : {
-					boardNo : boardNo,
-					memberNo : memberNo
-				},
+				url : '/pet/communities/likeCheck/' + boardNo + "/" + memberNo,
 				success : result => {
-					console.log(result);
 					
 					if(result > 0){
 						$('#likeboard2 > img').attr('src', like)
