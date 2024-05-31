@@ -75,6 +75,7 @@
 	<resultMap type="comment" id="commentResultSet">
 		<result column="COMMENT_NO" property="commentNo"/>
 		<result column="REPLY_NO" property="replyNo"/>
+		<result column="MEMBER_NO" property="memberNo"/>
 		<result column="COMMENT_WRITER" property="commentWriter"/>
 		<result column="COMMENT_CONTENT" property="commentContent"/>
 		<result column="COMMENT_CREATE_DATE" property="createDate"/>
@@ -371,7 +372,7 @@
 		 WHERE
 		        BOARD_NO = #{boardNo}
 	</select>
-	<select id="selectCommentList" parameterType="_int" resultMap="replyResultSet" >
+	<select id="selectComment" parameterType="_int" resultMap="commentResultSet" >
         SELECT 	
 		        COMMENT_CONTENT,
 		        TB_MEMBER.NICKNAME AS COMMENT_WRITER,
@@ -444,8 +445,14 @@
 		 		BOARD_NO = #{boardNo}	
 	</select>
 	
-	
-	
+	<update id="selectInfoCount" parameterType="_int">
+		UPDATE
+				TB_INFO
+		   SET
+		   		BOARD_COUNT = BOARD_COUNT + 1
+		 WHERE
+		 		BOARD_NO = #{boardNo}  						
+	</update>
 	
 	
 	

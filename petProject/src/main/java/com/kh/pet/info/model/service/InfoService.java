@@ -36,4 +36,10 @@ public interface InfoService {
 
 	List<Reply> selectReply(int boardNo);
 
+	void selectInfoCount(int boardNo);
+
+	int insertComment(Comment comment);
+
+	List<Comment> selectComment(int replyNo);
+
 }

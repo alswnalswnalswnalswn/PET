@@ -77,6 +77,21 @@ public class InfoServiceImpl implements InfoService {
 		return infoMapper.selectReply(boardNo);
 	}
 
+	@Override
+	public void selectInfoCount(int boardNo) {
+		infoMapper.selectInfoCount(boardNo);
+	}
+
+	@Override
+	public int insertComment(Comment comment) {
+		return infoMapper.insertComment(comment);
+	}
+
+	@Override
+	public List<Comment> selectComment(int replyNo) {
+		return infoMapper.selectComment(replyNo);
+	}
+
 
 	
 }
