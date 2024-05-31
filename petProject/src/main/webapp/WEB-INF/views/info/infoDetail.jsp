@@ -127,26 +127,34 @@
 		height: 51px;
     }
     #myrep {
-		width: 800px;
+		width: 1000px;
 		height: auto;
 		margin: auto;
+		border: 1px solid rgb(153, 153, 153);
 	}
 	#myreply {
-		width: 750px;
-		height: 90px;
+		width: 1000px;
+		height : 120px;
 		margin: auto;
 		position: relative;
+		padding-left : 20px;
+	}
+	#needgongan{
+		width : 800px;
+		height :10px;
 	}
 	
 	#ndia {
 		width: 100%;
-		height: 30px;
+		height: 40px;
 		display: flex;
 	}
 	
 	#nickna {
 		width: 80%;
 		height: 100%;
+		font-weight : bold;
+		font-size : 20px;
 	}
 	
 	#daterep {
@@ -171,17 +179,18 @@
 		width: 20px;
 	}
 	
-	#inscom {
-		width: 750px;
+	.inscom {
+		width: 1000px;
 		height: 100px;
 		margin: auto;
 	}
 	
 	#inscomment {
-		width: 650px;
+		width: 800px;
 		height: 80px;
 		margin: auto;
 		outline: none;
+		margin-left : 20px;
 	}
     #replybtn {
 		width: 80px;
@@ -204,7 +213,7 @@
 </style>
 </head>
 <body>
-	
+	<script src="${sessionScope.path }/resources/script/date.js"></script>
 	<jsp:include page="../common/header.jsp" />
 	<div id="needgongan1"><div id="detailDate"></div></div>	
 	<div id="infoDetail">
@@ -225,7 +234,7 @@
 		</div>
 	</div>
 	
-	<div id="myrep" class="">
+	<div id="myrep" class="myrep">
 	</div>	
 	<jsp:include page="../common/footer.jsp" />	
 	
@@ -309,19 +318,23 @@
 	        			console.log(result);
 	        			for(let i in result){
 		        			resultStr += '<div id="myreply">'
+		        							+ '<div id="needgongan"></div>'
 							        		+ '<div id="ndia">'
-							        			+ '<div id="nickna">' + result[i].replyWriter + '</div><div id="daterep">날짜</div>'
+							        			+ '<div id="nickna">' + result[i].replyWriter + '</div><div id="daterep">' + result[i].dateFormat(createDate) + '</div>'
 							        		+ '</div>'
 							        		+ '<div id="repcon">' + result[i].replyContent + '</div>'
-							        		+ '<div id="btncom">댓글<img src="${path}/resources/img/common/replyarrow.png"></div>'
+							        		+ '<div id="btncom" class="btncom">댓글<img src="${sessionScope.path}/resources/img/common/replyarrow.png"></div>'
 						        		+ '</div>'
-						        		+ '<div id="inscom" style="display:none;">'
+						        		+ '<div class="inscom" style="display:none;">'
 							        		+ '<textarea name="comment" id="inscomment"></textarea>'
 							        		+ '<a href=""><button id="replybtn">댓글 작성</button></a>'
 						        		+ '</div>'
 	        			}
         			}
         			$('.myrep').html(resultStr);
+        	    	$('.btncom').click(function(){
+        	    		$(this).parent().next('.inscom').toggle();
+        	    	})
         		},
         		error : result => {
         			console.log('실패');
@@ -329,13 +342,9 @@
         	})
         };
         
-        
-        
-        $(() => {
-	    	$('#btncom').click(function(){
-	    		$('#inscom').toggle();
-	    	})
-	    });
+        let date = new Date();
+        let createDate = dateFormat(date);
+        console.log(createDate);
         
 	</script>
 	
