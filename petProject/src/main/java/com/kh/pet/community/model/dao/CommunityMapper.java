@@ -22,6 +22,8 @@ public interface CommunityMapper {
 	int updateBoardCount(int boardNo);
 	
 	int likeCheck(HashMap<String, Integer> map);
+	int addLike(HashMap<String, Integer> map);
+	int deleteLike(HashMap<String, Integer> map);
 	
 	int insertCommunity(Info info);
 	int insertBoardAnimal(List<Animal> animalList);

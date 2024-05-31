@@ -63,6 +63,16 @@ public class CommunityServiceImpl implements CommunityService {
 		}
 		
 		return result1 * result2 * result3;
+	}
+
+	@Override
+	public int addLike(HashMap<String, Integer> map) {
+		return communityMapper.addLike(map);
+	};
+	
+	@Override
+	public int deleteLike(HashMap<String, Integer> map) {
+		return communityMapper.deleteLike(map);
 	};
 	
 

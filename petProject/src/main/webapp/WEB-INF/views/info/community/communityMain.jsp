@@ -65,7 +65,9 @@
 	<div id="gomain">
 		<button id="showMore" class="mainbtn">더 보기</button>
 		<button class="mainbtn">메인으로</button>
-		<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
+		<c:if test="${sessionScope.loginUser ne null }">
+			<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
+		</c:if>
 	</div>
 	
 	
@@ -151,10 +153,10 @@
 					});
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-						$('.btnDiv').css('display', 'block');
+						$('#showMore').css('display', 'block');
 					}
 					else{
-						$('.btnDiv').css('display', 'none');
+						$('#showMore').css('display', 'none');
 					}
 				}
 			});

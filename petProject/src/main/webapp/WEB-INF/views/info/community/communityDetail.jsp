@@ -29,9 +29,7 @@
 		
 		<div id="needgongan4"></div>
 		<div id="myinfoContent">
-			<span style="font-size: 20px;">
-				${infoList[0].boardContent }
-			</span>
+			${infoList[0].boardContent }
 		</div>
 	</div>
 	
@@ -41,7 +39,7 @@
 		<div id="seeboard2"><span>조회 (${infoList[0].boardCount})</span></div>
 		<div id="replyboard2"><img src="${path}/resources/img/common/reply.png"><span>(${infoList[0].sumCount})</span></div>
 		<div id="golist">
-			<a href="selectCommunityList"><button id="listbtn">메인으로</button></a>
+			<button id="listbtn" onclick="history.back();">이전으로</button>
 		</div>
 	</div>
 	
@@ -55,7 +53,7 @@
 		</div>
 		<div id="inscom" style="display:none;">
 			<textarea name="comment" id="inscomment" style="resize:none;"></textarea>
-			<a href=""><button id="replybtn">댓글 작성</button></a>
+			<button id="replybtn">댓글 작성</button>
 		</div>
 	</div>
 	
@@ -72,38 +70,35 @@
 
 	
 	<script>  
-	
-		const memberNo = 1;
-	    const boardNo = 5983;
-	    console.log(memberNo);
-	    console.log(boardNo);
-	    const loginUser = '';
-	    console.log(loginUser);
-	    
-		$(() => {
-			selectLike(boardNo);
+	const boardNo = '${infoList[0].boardNo}',
+	memberNo = '${loginUserNo}',
+	like = "/pet/resources/img/common/like2.png",
+	noLike = "/pet/resources/img/common/like.png";
+
+	$(() => {	
 			
-			const fullDate = '2024-05-23T09:16:17';
-			let createDate = fullDate.substring(0, 10);
-	        $('#detailDate').append('<span>' + createDate + '</span>');
-	        
-			$(document).on('click', '#info_like', function() {
+			$('#btncom').click(() => {
+    			$('#inscom').toggle();
+    		});
+
+			likeCheck(boardNo, memberNo);
+			
+			$().on('click', '#likeboard2', () => {
 				
-				if(loginUser === ""){
+				if(memberNo === "0"){
 					alert('로그인 부탁드려욧');
 				}
-				else{
-					var likeNuroom = "/pet/resources/img/common/like2.png";
-					var nolikeNuroom = "/pet/resources/img/common/like.png";
+				else {
 		            var likeImg = $(this).find('img').attr('src');
 		            
-		            if(likeImg == nolikeNuroom){
+		            if(likeImg == noLike){
 		            	
 		            	$.ajax({
-		            		url : '/pet/info/addLikeCount/' + boardNo + '/' + memberNo,
+		            		url : '/pet/communities/addLike/' + boardNo + '/' + memberNo,
 		            		success : result => {
 		            			$('#likeCount').text('(' + result + ')');
-		            			$(this).find('img').attr('src', likeNuroom);
+		            			
+		            			$(this).find('img').attr('src', like);
 		            		},
 		            		error : result => {
 		            			alert('응 안돼요');
@@ -128,44 +123,26 @@
 			});
 		});
 		
-        function selectLike(boardNo){	
-        	$.ajax({
-        		url : '/pet/info/selectLike/' + boardNo,
-        		type : 'get',
-        		success : result => {
-        			console.log(result);
-        			$('#likeCount').html('(' + result + ')');
-        		},
-        		error : result => {
-        			console.log('실패');
-        		}
-        	});
-        }
-	
-        
-		$(() => {
-			
-			$('#btncom').click(function(){
-	    		$('#inscom').toggle();
-	    	})
-			
+        function likeCheck(boardNo, memberNo){
 			$.ajax({
-				url : 'likeCheck',
+				url : '/pet/communities/likeCheck',
 				data : {
-					boardNo : '${infoList[0].boardNo}',
-					memberNo : '${loginUserNo}'
+					boardNo : boardNo,
+					memberNo : memberNo
 				},
 				success : result => {
 					console.log(result);
+					
 					if(result > 0){
-						$('#likeboard2 > img').attr('src', '${path}/resources/img/common/like2.png' )
+						$('#likeboard2 > img').attr('src', like)
 					}
 					else {
-						$('#likeboard2 > img').attr('src', '${path}/resources/img/common/like.png' )
+						$('#likeboard2 > img').attr('src', noLike)
 					}
 				}
 			});
-		});
+		}
+		
 		
 	</script>
 	
