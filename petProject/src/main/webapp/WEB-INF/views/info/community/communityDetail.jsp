@@ -32,14 +32,17 @@
 			${infoList[0].boardContent }
 		</div>
 	</div>
-	
-	<div id="boardLike2">
-		<div id="likeboard2"><img src=""><span>(${infoList[0].boardLike})</span></div>
-		
-		<div id="seeboard2"><span>조회 (${infoList[0].boardCount})</span></div>
-		<div id="replyboard2"><img src="${path}/resources/img/common/reply.png"><span id="likeCount"></span></div>
+	<div class="underMenu">
+		<div id="boardLike2">
+			<div id="likeboard2"><img src=""><span>(${infoList[0].boardLike})</span></div>
+			
+			<div id="seeboard2"><span>조회 (${infoList[0].boardCount})</span></div>
+			<div id="replyboard2"><img src="${path}/resources/img/common/reply.png"><span id="likeCount"></span></div>
+		</div>
 		<div id="golist">
-			<button id="listbtn" onclick="history.back();">이전으로</button>
+			<button class="listbtn" onclick="history.back();">이전으로</button>
+			<button class="listbtn" onclick="updateCommunity">수정하기</button>
+			<button class="listbtn" onclick="deleteCommunity">삭제하기</button>
 		</div>
 	</div>
 	
@@ -72,12 +75,14 @@
 		var noLike = "${sessionScope.path}/resources/img/common/like.png";
 	
 		$(() => {	
+				selectLike(boardNo);
+				
 				console.log(memberNo);
+				
 				$('#btncom').click(() => {
 	    			$('#inscom').toggle();
 	    		});
 	
-				selectLike(boardNo);
 				
 				$('#likeboard2').click(function() {
 					

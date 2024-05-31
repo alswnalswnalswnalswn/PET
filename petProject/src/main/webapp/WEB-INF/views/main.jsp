@@ -11,8 +11,7 @@
 	<jsp:include page="common/header.jsp" />
 	
 	<!-- 나중에 지울것 -->
-	<div><h1 style="color:orangered;"><marquee scrollamount=15>정근경 집중해!! ╰( ･ ᗜ ･ )╯</marquee></h1></div>
-	<div style="text-align : center;"><button class="btn btn-success" onclick="location.href='deleteLater'">쉬러가기</button></div>
+	<div><h1 style="color:orangered;"><marquee scrollamount=35>파이널 하시느라 고생 많으셨습니다.</marquee></h1></div>
 	<!-- 언제든 지워도 괜찮아요....ㅎ -->
 
 	

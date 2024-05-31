@@ -229,14 +229,13 @@ span:hover {
 
 #boardLike2 {
 	width: 800px;
-	height: 100px;
-	display: flex;
 	margin: auto;
 }
 
 #boardLike2>div {
 	width: 80px;
 	height: 100px;
+	float : left;
 }
 
 #likeboard2>span {
@@ -255,13 +254,6 @@ span:hover {
 	line-height: 60px;
 }
 
-#likeboard2>img {
-	
-}
-
-#replyboard2>img {
-	
-}
 
 #boardLike2>div>img {
 	width: 30px;
@@ -269,18 +261,15 @@ span:hover {
 }
 
 #golist {
-	width: 140px;
+	width: 60px;
 	height: 120px;
 	margin: auto;
 	position: relative;
 	padding-left: 500px;
 }
 
-#listbtn {
-	width: 140px;
-	height: 50px;
-	position: absolute;
-	right: 0;
+.listbtn {
+	
 	transform: translate(0, 10%);
 	font-size: 15px;
 	border-radius: 10px;
@@ -289,13 +278,9 @@ span:hover {
 	font-weight: bold;
 	bolder: 0;
 	cursor: pointer;
+	float:left;
 }
 
-#listbtn:hover {
-	font-size: 16px;
-	width: 141px;
-	height: 51px;
-}
 
 #replybtn {
 	width: 80px;

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상세보기</title>
+<title>게시글 수정</title>
 	<link rel="stylesheet" href="resources/css/community/communityInsert.css" />
 </head>
 <body>
