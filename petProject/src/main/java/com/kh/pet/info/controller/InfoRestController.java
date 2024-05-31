@@ -17,6 +17,7 @@ import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
 import com.kh.pet.info.model.service.InfoService;
+import com.kh.pet.info.model.vo.Comment;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.info.model.vo.Reply;
 
@@ -76,31 +77,17 @@ public class InfoRestController {
 	
 	@GetMapping("infoDetail/{boardNo}")
 	public ModelAndView infoDetail(@PathVariable int boardNo, HttpSession session, ModelAndView mv){
-		Info info = infoService.infoDetail(boardNo);
-		/*
-		List<Reply> replyList = infoService.selectReplyNoList(boardNo, rowBounds);
-		System.out.println(replyList);
-		for(int i = 0; i < replyList.size(); i++) {
-			int replyNo = replyList.get(i).getReplyNo();
-			List<Reply> commentList = infoService.selectCommentList(replyNo);
-			System.out.println(commentList);
-			info.setReplyList(commentList);
-		}
-		info.setReplyList(replyList);
-		System.out.println(info.getReplyList());
 		
-		System.out.println(info);
-		*/
+		infoService.selectInfoCount(boardNo);
+			
+		Info info = infoService.infoDetail(boardNo);
 		session.setAttribute("info", info);
-		System.out.println(info);
 		mv.setViewName("info/infoDetail");
 		return mv;
 	}
 	
 	@GetMapping("addLikeCount/{boardNo}/{memberNo}")
 	public int addLikeCount(@PathVariable int boardNo, @PathVariable int memberNo, ModelAndView mv) {
-		System.out.println(boardNo);
-		System.out.println(memberNo);
 		HashMap<Object, Object> map = new HashMap();
 		
 		map.put("boardNo", boardNo);
@@ -130,17 +117,37 @@ public class InfoRestController {
 	@GetMapping("selectLike/{boardNo}")
 	public int selectLike(@PathVariable int boardNo) {
 		int	boardLike = infoService.selectLike(boardNo);
-		System.out.println(boardLike);
 		return boardLike;
 	}
 	
 	@GetMapping("selectReply/{boardNo}")
 	public List<Reply> selectReply(@PathVariable int boardNo) {
-		List<Reply> replyList= infoService.selectReply(boardNo);
-		System.out.println(replyList);
+		List<Reply> replyList = infoService.selectReply(boardNo);
 		return replyList;
 	}
 	
+	@GetMapping("insertComment/{replyNo}/{commentContent}/{memberNo}")
+	public List<Comment> insertComment(@PathVariable int replyNo,
+										@PathVariable String commentContent,
+										@PathVariable int memberNo,
+										HttpSession session){
+		System.out.println(commentContent);
+		System.out.println(replyNo);
+		System.out.println(memberNo);
+		Comment comment = new Comment();
+		comment.setCommentContent(commentContent);
+		comment.setMemberNo(memberNo);
+		comment.setReplyNo(replyNo);
+		List<Comment> commentList = new ArrayList();
+		if(infoService.insertComment(comment) > 0 ) {
+			session.setAttribute("alertMsg", "댓글이 등록되었습니다.");
+			commentList = infoService.selectComment(replyNo);
+			System.out.println(commentList);
+		} else {
+			session.setAttribute("alertMsg", "댓글 작성에 실패하였습니다..");
+		}
+		return commentList;
+	}
 	
 	
 	
