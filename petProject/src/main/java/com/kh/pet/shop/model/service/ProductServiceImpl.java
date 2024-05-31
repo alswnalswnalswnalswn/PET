@@ -60,6 +60,13 @@ public class ProductServiceImpl implements ProductService {
 	public Order selectNowOrder() {
 		return productMapper.selectNowOrder();
 	}
+
+	@Override
+	public int updateOrder(int orderNo) {
+		productMapper.updateProduct(orderNo);
+		return productMapper.updateOrder(orderNo);
+	}
+	
 	
 	
 }

@@ -44,8 +44,19 @@
 		
 	</resultMap>
 	
+	<resultMap type="member" id="memberResultSet">
+		<result column="ORDER_NAME" property="memberName"/>
+		<result column="ORDER_TEL" property="phone"/>
+	</resultMap>
+	
 	<resultMap type="order" id="orderResultSet">
-			
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="DELIVERY_NO" property="deliveryNo"/>
+		<result column="ORDER_DATE" property="orderDate"/>
+		<result column="ORDER_STATUS" property="orderStatus"/>
+		<result column="ORDER_UP" property="orderUp"/>
+		
+		<collection resultMap="memberResultSet" property="member"/>
 	</resultMap>
 
 	
@@ -261,14 +272,49 @@
 			  	
 	</insert>
 	
-	<select id="selectNowOrder">
+	<select id="selectNowOrder" resultMap="orderResultSet">
 		SELECT
-			   *
+		       *
 		  FROM
-		  	   (SELECT
-		  	   		   *
-		  	   	  FROM
-		  	   	  	   )	 
-	
+		       (SELECT
+		               ORDER_NO,
+		               DELIVERY_NO,
+		               ORDER_DATE,
+		               ORDER_STATUS,
+		               ORDER_UP,
+		               ORDER_NAME,
+		               ORDER_TEL
+		          FROM
+		               TB_ORDER
+		         ORDER
+		            BY ORDER_NO DESC 
+		               )
+		    WHERE ROWNUM = 1	 
 	</select>
+	
+	<update id="updateOrder" parameterType="_int">
+		UPDATE
+		       TB_ORDER
+		   SET
+		   	   ORDER_STATUS = 'Y'
+		 WHERE
+		 	   ORDER_NO = #{orderNo}
+	</update>
+	
+	<update id="updateProduct" parameterType="_int">
+		UPDATE TB_PRODUCT_OPTION
+		    SET PRODUCT_AMOUNT = PRODUCT_AMOUNT - (
+		        SELECT ORDER_COUNT
+		        FROM TB_ORDERLIST
+		        WHERE TB_ORDERLIST.OPTION_NO = TB_PRODUCT_OPTION.OPTION_NO
+		        AND TB_ORDERLIST.ORDER_NO = #{orderNo}
+		    )
+		WHERE OPTION_NO IN (
+		    SELECT OPTION_NO
+		    FROM TB_ORDERLIST
+		    WHERE ORDER_NO = #{orderNo}
+		)	
+		
+	</update>
+	
 </mapper>

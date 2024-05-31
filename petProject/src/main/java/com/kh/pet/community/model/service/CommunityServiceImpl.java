@@ -41,8 +41,8 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public int likeCheck(HashMap<String, Integer> map) {
-		return communityMapper.likeCheck(map);
+	public int selectLike(int boardNo) {
+		return communityMapper.selectLike(boardNo);
 	}
 
 	// aop 개념
@@ -73,6 +73,11 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int deleteLike(HashMap<String, Integer> map) {
 		return communityMapper.deleteLike(map);
+	}
+
+	@Override
+	public int likeCheck(HashMap<String, Integer> map) {
+		return communityMapper.likeCheck(map);
 	};
 	
 

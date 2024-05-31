@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<script src="${sessionScope.path }/resources/script/date.js"></script>
 	<jsp:include page="../../common/header.jsp" />
 	<c:set value="${ sessionScope.path }" var="path" />
 	
@@ -97,7 +98,8 @@
 				success : result => {
 					console.log(result);
 					for(let i in result){
-						
+						let createDate = result[i].createDate.date;
+						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 						var animalListStr = '';
 						var animalListResult = result[i].animalList;
 						
@@ -123,7 +125,7 @@
 											+ '<div id="boardheader">'
 												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
 												+ '<div id="myboardAni"><span class="category" id="myani">' + animalListStr + '</span></div>'
-												+ '<div class="create_date" id="boardCreate">' + result[i].boardCreateDate + '</div>'
+												+ '<div class="create_date" id="boardCreate">' + dateFormat(fullDate) + '</div>'
 											+ '</div>'
 											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
 											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
@@ -214,20 +216,6 @@
 			});
 		});
 		
-		function dateFormat(date) {
-	        let month = date.getMonth() + 1;
-	        let day = date.getDate();
-	        let hour = date.getHours();
-	        let minute = date.getMinutes();
-	        let second = date.getSeconds();
-	        month = month >= 10 ? month : '0' + month;
-	        day = day >= 10 ? day : '0' + day;
-	        hour = hour >= 10 ? hour : '0' + hour;
-	        minute = minute >= 10 ? minute : '0' + minute;
-	        second = second >= 10 ? second : '0' + second;
-	        
-	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-		}
 				
 		
 	

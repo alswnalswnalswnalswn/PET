@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.community.model.service.CommunityServiceImpl;
 import com.kh.pet.info.model.vo.Info;
@@ -84,6 +83,7 @@ public class CommunityController {
 		}
 		
 		List animalCodes = info.getAnimalCode();
+		
 		if(animalCodes.get(0).equals("A0")) {
 			animalCodes.clear();
 			for(int i = 1; i < 7; i++) {
@@ -117,6 +117,20 @@ public class CommunityController {
 		return mv;
 	}
 	
+	@GetMapping("updateCommunityForm")
+	public String updateCommunityForm() {
+		return "info/community/communityDetail";
+	}
+	
+	@PostMapping("updateCommunity")
+	public ModelAndView updateCommunity(ModelAndView mv, Info info) {
+		return mv;
+	}
+	
+	@PostMapping("deleteCommunity")
+	public String deleteCommunity() {
+		return "";
+	}
 	
 
 }

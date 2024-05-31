@@ -30,6 +30,10 @@ public interface ProductMapper {
 
 	Order selectNowOrder();
 
+	int updateOrder(int orderNo);
+
+	void updateProduct(int orderNo);
+
 
 
 }
