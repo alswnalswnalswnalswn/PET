@@ -63,6 +63,17 @@
 	    <result column="MEMBER_NO" property="memberNo"/>
 	</resultMap>
 	
+	<resultMap type="alert" id="alertResultSet">
+		<result column="RP_ALERT_NO" property="alertNo"/>
+		<result column="BOARD_NO" property="boardNo"/>
+	    <result column="ALERT_TYPE" property="alertType"/>
+	    <result column="SE_MEM_NO" property="memberNo"/>
+   		<result column="ALERT_TIME" property="alertTime"/>
+   		<result column="READ_TIME" property="readTime"/>
+   		<result column="ALERT_NAME" property="alertName"/>
+   		<result column="REPLY_NO" property="replyNo"/>
+	</resultMap>
+	
 	<resultMap type="attachment" id="attachmentResultSet">
 		<result column="ATT_NO" property="attNo"/>
 		<result column="ATT_PATH" property="attPath"/>
@@ -135,7 +146,16 @@
 							WHERE
 							      PLACE_NO = #{placeNo})	
 	</select>
-	
+	<select id="likeCheckInfo" parameterType="hashmap" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_LIKE
+		 WHERE
+		 	   MEMBER_NO = #{memberNo}
+		   AND
+		   	   BOARD_NO = #{boardNo}	
+	</select>
 	
 	<update id="updateCount" parameterType="_int">
 		UPDATE
@@ -374,6 +394,7 @@
 	</select>
 	<select id="selectComment" parameterType="_int" resultMap="commentResultSet" >
         SELECT 	
+        		REPLY_NO,
 		        COMMENT_CONTENT,
 		        TB_MEMBER.NICKNAME AS COMMENT_WRITER,
 		        CREATE_DATE AS COMMENT_CREATE_DATE,
@@ -409,7 +430,7 @@
 	     		BOARD_NO DESC
 	</select>
 	
-	<select id="selectInfoByBoardNo" parameterType="_int" resultMap="infoResultSet">
+	<select id="selectInfoByBoardNo" parameterType="hashmap" resultMap="infoResultSet">
 		<include refid="selectInfo" />
 		WHERE
 				BOARD_STATUS = 'Y'
@@ -454,7 +475,22 @@
 		 		BOARD_NO = #{boardNo}  						
 	</update>
 	
-	
+	<insert id="insertAlert" parameterType="alert">
+		INSERT
+		  INTO
+		  		TB_REPLY_ALERT
+		  		(RP_ALERT_NO,
+				REPLY_NO,
+				SE_MEM_NO,
+				ALERT_TIME)	
+		VALUES
+				(
+				SEQ_RALNO.NEXTVAL,
+				#{replyNo},
+				#{seMemNo},
+				SYSDATE
+				)  		
+	</insert>
 	
 	
 	

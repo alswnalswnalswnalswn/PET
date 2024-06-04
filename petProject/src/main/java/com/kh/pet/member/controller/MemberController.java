@@ -59,7 +59,8 @@ public class MemberController {
 	public ModelAndView login(Member member, HttpSession session, ModelAndView mv) {
 		
 		Member loginUser = memberService.login(member);
-		if(loginUser != null && bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
+		if(loginUser != null && 
+		bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
 			
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("redirect:/");
@@ -423,7 +424,7 @@ public class MemberController {
 		SocialMember sm = kakaoService.getUserInfo(accessToken);
 		
 		session.setAttribute("socialLogin", sm);
-		
+		session.setAttribute("alertMsg", "회원가입으로 이동합니다");
 		return "redirect:kakao";
 	}
 	

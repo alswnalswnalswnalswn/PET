@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
+import com.kh.pet.common.model.vo.Alert;
 import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.info.model.dao.InfoMapper;
 import com.kh.pet.info.model.vo.Comment;
@@ -24,8 +25,8 @@ public class InfoServiceImpl implements InfoService {
 		return infoMapper.selectListCount(animal);
 	}
 
-	public Info selectInfoByBoardNo(Integer boardNo) {
-		return infoMapper.selectInfoByBoardNo(boardNo);
+	public Info selectInfoByBoardNo(HashMap<Object, Object> map) {
+		return infoMapper.selectInfoByBoardNo(map);
 	}
 	
 	public List<Attachment> selectAttNoListByBoardNo(Integer boardNo) {
@@ -90,6 +91,16 @@ public class InfoServiceImpl implements InfoService {
 	@Override
 	public List<Comment> selectComment(int replyNo) {
 		return infoMapper.selectComment(replyNo);
+	}
+
+	@Override
+	public int insertAlert(Alert alert) {
+		return infoMapper.insertAlert(alert);
+	}
+
+	@Override
+	public int likeCheckInfo(HashMap<Object, Object> map) {
+		return infoMapper.likeCheckInfo(map);
 	}
 
 

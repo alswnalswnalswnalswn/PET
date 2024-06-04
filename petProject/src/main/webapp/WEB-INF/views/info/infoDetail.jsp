@@ -74,10 +74,13 @@
     	display:flex;
     }
     #boardLike > div{
-    	width : 80px;
+    	width : 100px;
     	height: 50px;
     	float: right;
     	padding-top :10px;
+    }
+    #boardLike > div > span{
+    	cursor: pointer;
     }
     #info_like>img, #info_rep>img{
     	width : 30px;
@@ -98,9 +101,11 @@
     	line-height: 2;
     	font-weight: 700;
     	float: left;
+    	cursor : pointer;
     }
     #info_search{
     	line-height: 2;
+    	cursor : pointer;
     }
     #goList{
     	width : 200px;
@@ -131,18 +136,19 @@
 		height: auto;
 		margin: auto;
 		border: 1px solid rgb(153, 153, 153);
+		padding-bottom : 10px;
+		border-radius : 15px;
 	}
 	.myreply {
 		width: 1000px;
-		height : 120px;
 		margin: auto;
 		position: relative;
 		padding-left : 20px;
 	}
 	.noreply {
 		width: 1000px;
-		height : 120px;
 		margin: auto;
+		height: 100px;
 		position: relative;
 		padding-left : 20px;
 		font-weight : bold;
@@ -158,29 +164,26 @@
 		height: 40px;
 		display: flex;
 	}
-	
 	.nickna {
 		width: 80%;
 		height: 100%;
 		font-weight : bold;
 		font-size : 20px;
 	}
-	
 	.daterep {
 		width: 20%;
 		height: 100%;
 	}
-	
 	.repcon {
 		width: 100%;
 		height: 30px;
 	}
-	
 	.btncom {
 		height: 100px;
 		right: 0;
 		position: absolute;
 		cursor: pointer;
+		top : 50px;
 	}
 	
 	.btncom img {
@@ -189,13 +192,13 @@
 	}
 	
 	.inscom {
-		width: 1000px;
+		width: 900px;
 		height: 100px;
 		margin: auto;
-	}
-	
+		padding-top : 10px;
+	}	
 	.inscomment {
-		width: 800px;
+		width: 700px;
 		height: 80px;
 		margin: auto;
 		outline: none;
@@ -217,7 +220,50 @@
 	
 	.replybtn:hover {
 		font-size: 14px;
-		width: 8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000px;
+		width: 81px;
+		height: 30px;
+	}
+	.commentNone{
+		width : 900px;
+		height : 60px;
+		margin : auto;
+	}
+	.commentNo{
+		display : flex;
+	}
+	.comaa{
+		width : 600px;
+		height : 30px;	
+		font-size : 17px;
+		font-weight: bold;
+	}
+	.combb{
+		width : 200px;
+		height : 30px;		
+		font-size : 14px;
+	}
+	.comcc{
+		border-bottom : 1px solid rgb(153, 153, 153);
+		width : 900px;
+		height : 30px;		
+		font-size : 15px;
+	}
+	.clickBtn{
+		width: 80px;
+		height: 30px;
+		font-size: 13px;
+		border-radius: 10px;
+		background-color: rgb(94, 87, 59);
+		color: white;
+		font-weight: bold;
+		bolder: 0;
+		cursor: pointer;
+		margin-right: 20px;
+	}
+	
+	.clickBtn:hover {
+		font-size: 14px;
+		width: 82px;
 		height: 30px;
 	}
 </style>
@@ -334,16 +380,31 @@
 		        			resultStr += '<div class="myreply">'
 		        							+ '<div class="needgongan"></div>'
 							        		+ '<div class="ndia">'
-							        			+ '<div class="nickna">' + result[i].replyWriter + '</div><div class="daterep">' + dateFormat(fullDate) + '</div>'
+							        			+ '<div class="nickna">' + result[i].replyWriter + '</div><button class="clickBtn">댓글 보기</button><div class="daterep">' + dateFormat(fullDate) + '</div>'
 							        		+ '</div>'
-							        		+ '<div class="repcon">' + result[i].replyContent + '</div>'
-							        		+ '<div class="btncom">' + result[i].replyWriter + '님에게 댓글 쓰기<img src="${sessionScope.path}/resources/img/common/replyarrow.png"></div>'
-						        		+ '</div>'
-						        		+ '<div class="inscom" style="display:none;">'
-							        		+ '<textarea name="commentContent" class="inscomment"></textarea>'
-							        		+ '<a href=""><button class="replybtn" onclick="insertComment(' + result[i].replyNo + ');">댓글 작성</button></a>'
-						        		+ '</div>'
-	        			}
+							        		+ '<div class="repcon">' + result[i].replyContent + '</div>';
+							        		
+			        		for(let o in result[i].commentList){
+								let comCreateDate = result[i].commentList[o].createDate;
+								var comFullDate = new Date(comCreateDate.date.year, comCreateDate.date.month - 1, comCreateDate.date.day);
+			        			if(result[i].replyNo == result[i].commentList[o].replyNo){
+							        	resultStr += '<div class="commentNone" style="display:none;">'
+							        					+ '<div class="commentNo">'
+									        				+ '<div class="comaa">' + result[i].commentList[o].commentWriter + '</div>'
+									        				+ '<div class="combb">' + dateFormat(comFullDate) + '</div>'
+								        				+ '</div>'
+								        				+ '<div class="comcc">' + result[i].commentList[o].commentContent  + '</div>'
+							        				 + '</div>'
+				        			}
+				        		}
+							        resultStr += '<div class="btncom">' + result[i].replyWriter + '님에게 댓글 쓰기<img src="${sessionScope.path}/resources/img/common/replyarrow.png"></div>'
+								        		+ '</div>'
+								        		+ '<div class="inscom" style="display:none;">'
+									        		+ '<textarea name="commentContent" class="inscomment"></textarea>'
+									        		+ '<a href=""><button class="replybtn" onclick="insertComment(' + result[i].replyNo + ',' + result[i].memberNo + ');">댓글 작성</button></a>'
+								        		+ '</div>'
+								    
+        			}
 	        			$('#replyCount').append('(' + result[0].replyCount + ')');
         			}
         			$('.myrep').html(resultStr);
@@ -354,6 +415,9 @@
         	    			$(this).parent().next('.inscom').toggle();
         	    		}
         	    	});
+        	    	$('.clickBtn').click(function(){
+       	    			$('.commentNone').toggle();
+        	    	});
         		},
         		error : result => {
         			console.log('실패');
@@ -362,13 +426,13 @@
         };
         
        	
-       	function insertComment(replyNo){
+       	function insertComment(replyNo, seMemNo){
        	let commentContent = $('textarea[name=commentContent]').val();
        	console.log(commentContent);
        	
        		console.log('성공')
        		$.ajax({
-       			url : '/pet/info/insertComment/' + replyNo + '/' + commentContent + '/' + memberNo,
+       			url : '/pet/info/insertComment/' + replyNo + '/' + commentContent + '/' + memberNo + '/' + seMemNo,
        			type : 'get',
        			success : result => {
        				console.log(result);
