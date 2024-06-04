@@ -58,5 +58,9 @@ public interface MemberService {
 
 	int selectMember(String id);
 
+	int socialJoin(Member member);
+
+	Member selectSocialMember(Member member);
+
 
 }

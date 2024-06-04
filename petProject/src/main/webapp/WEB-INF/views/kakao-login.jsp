@@ -403,7 +403,7 @@
 				<label for="animalham"><input type="checkbox" class="animal" name="animal" value="A6" id="animalham" style="display:none;">햄스터</label>
 			</div>
 			<div class="input_btn2"><button type="submit" id="join-btn" class="btn">회원가입</button></div>
-	    </form>	
+	    </form>
 	</div>
 	
 	
@@ -423,7 +423,7 @@
 		        	$('input[name=animalList]').val(animalList.join(','));
 		        	console.log($('input[name=animalList]').val());
 			});
-		})
+		});
 		
 	 </script>
 		 

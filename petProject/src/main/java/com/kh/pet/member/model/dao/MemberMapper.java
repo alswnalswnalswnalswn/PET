@@ -9,6 +9,7 @@ import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
+import com.kh.pet.member.model.vo.SocialMember;
 
 @Mapper
 public interface MemberMapper {
@@ -56,6 +57,10 @@ public interface MemberMapper {
 	 int selectListCount(HashMap<Object, Object> map);
 
 	int selectMember(String id);
+
+	int socialJoin(Member member);
+
+	Member selectSocialMember(Member member);
 	 
 
 }

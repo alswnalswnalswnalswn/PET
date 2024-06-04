@@ -611,12 +611,14 @@
    		  		TB_ANIMAL.ANIMAL_NAME = #{animalName}
 	</select>
 	
-	<!-- 여기서부터 지워도 되는건지 확인 부탁 -->
-	
-	
-	
-	
-	
+	<insert id="socialJoin" parameterType="member" >
+		INSERT
+		  INTO
+		  		TB_MEMBER
+		  		(MEMBER_NO, MEMBER_ID, NICKNAME, PROFILE, MEMBER_STATUS, SOCIAL_ID)
+		VALUES
+				(SEQ_MEMNO.NEXTVAL, #{memberId}, #{nickname}, #{profile}, #{memberStatus}, #{memberId})  		
+	</insert>
 	
 	
 	

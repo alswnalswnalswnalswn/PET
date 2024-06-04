@@ -411,10 +411,14 @@ public class MemberController {
 	public String code(String code, HttpSession session) throws IOException, ParseException {
 		String accessToken = kakaoService.getToken(code);
 		
-		SocialMember sm = kakaoService.getUserInfo(accessToken);
-		if(memberService.selectMember(sm.getId()) == 0 ) {
-			session.setAttribute("socialLogin", sm);
+		Member member = kakaoService.getUserInfo(accessToken);
+		if(memberService.selectMember(member.getMemberId()) == 0) {
+			session.setAttribute("loginUser", member);
 		} else {
+			if(memberService.socialJoin(member) > 0) {
+				Member loginUser = memberService.selectSocialMember(member);
+				session.setAttribute("loginUser", loginUser);
+			};
 		}
 		return "redirect:kakao";
 	}
