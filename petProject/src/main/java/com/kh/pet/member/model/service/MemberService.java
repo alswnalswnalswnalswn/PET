@@ -60,7 +60,7 @@ public interface MemberService {
 
 	int socialJoin(Member member);
 
-	Member selectSocialMember(Member member);
+	Member selectSocialMember(String memberId);
 
 
 }

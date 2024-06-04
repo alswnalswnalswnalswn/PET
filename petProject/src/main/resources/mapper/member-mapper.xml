@@ -405,11 +405,7 @@
 				BOARD_NO DESC
 	</select>
 	
-	
-	
-	
 	<!-- 여기서부터 지워도 되는건지 확인 부탁 -->
-	
 	<select id="selectBoardDetail" parameterType="_int" resultMap="infoResultSet">
 		SELECT 
 				BOARD_NO,
@@ -512,7 +508,7 @@
            		ATT_LEVEL = 1     
            AND
                 TB_INFO.CATEGORY_CODE != 'I4'
-		   AND  -->
+		   AND 
   				BOARD_NO = #{boardNo} 
 	
 	</select>
@@ -615,11 +611,16 @@
 		INSERT
 		  INTO
 		  		TB_MEMBER
-		  		(MEMBER_NO, MEMBER_ID, NICKNAME, PROFILE, MEMBER_STATUS, SOCIAL_ID)
+		  		(MEMBER_NO, MEMBER_ID, NICKNAME, MEMBER_PROFILE, MEMBER_STATUS, SOCIAL_ID)
 		VALUES
-				(SEQ_MEMNO.NEXTVAL, #{memberId}, #{nickname}, #{profile}, #{memberStatus}, #{memberId})  		
+				(SEQ_MEMNO.NEXTVAL, #{memberId}, #{nickname}, #{profile}, DEFAULT, #{memberId})  		
 	</insert>
 	
+	<select id="selectSocialMember" resultMap="memberResultSet" parameterType="string">
+		<include refid="select" />
+		 WHERE 
+		 	   MEMBER_ID = #{memberId}
+	</select>
 	
 	
 	

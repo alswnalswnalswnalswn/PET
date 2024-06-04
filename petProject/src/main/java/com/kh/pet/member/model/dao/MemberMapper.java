@@ -60,7 +60,7 @@ public interface MemberMapper {
 
 	int socialJoin(Member member);
 
-	Member selectSocialMember(Member member);
+	Member selectSocialMember(String memberId);
 	 
 
 }

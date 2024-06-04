@@ -149,8 +149,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member selectSocialMember(Member member) {
-		return memberMapper.selectSocialMember(member);
+	public Member selectSocialMember(String memberId) {
+		return memberMapper.selectSocialMember(memberId);
 	}
 
 

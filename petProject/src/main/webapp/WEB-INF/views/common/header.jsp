@@ -443,7 +443,6 @@
 <body>
  
 	<c:set var="path" value="${ pageContext.request.contextPath}" scope="session"/>
-
 	<c:if test="${ not empty alertMsg }">
 		<script>
 			alert('${alertMsg}');
@@ -453,7 +452,6 @@
 	<c:set var="loginUser" value="${ sessionScope.loginUser }" scope="session" />
     <div id="header">
         <div id="header1">
-         
             <div id="logo"><img src="${sessionScope.path}/resources/img/common/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${sessionScope.path}'"></div>
             <div id="search_form">
                 <form action="#">
@@ -472,11 +470,10 @@
             			</li>
             		</ul>
             	</div>
-            	
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
             		<c:choose>
-            		<c:when test='${ loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
+            		<c:when test='${ sessionScope.loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
     					<li class="nav-item">
     						<a class="nav-link" href="${sessionScope.path}/member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/common/logout.png" alt=""></a>
     					</li>
@@ -588,14 +585,7 @@
 		$(() => {
 			
 			$('#kakao-login-btn').click(() => {
-				var left = Math.ceil((window.screen.width - 500)/2);
-			  	var top = Math.ceil((window.screen.height - 500)/2);
-
-
-				window.open('https://kauth.kakao.com/oauth/authorize?client_id=bf4263613861b95f8402b64976c94858&redirect_uri=http://localhost:7777/pet/member/code&response_type=code&scope=profile_image,profile_nickname'
-							,"카카오 로그인", "width = 500 , height = 500 , left = " + left + ", top="+top);
-				
-
+				location.href='https://kauth.kakao.com/oauth/authorize?client_id=bf4263613861b95f8402b64976c94858&redirect_uri=http://localhost:7777/pet/member/code&response_type=code&scope=profile_image,profile_nickname';
 			});
 		});
 		
