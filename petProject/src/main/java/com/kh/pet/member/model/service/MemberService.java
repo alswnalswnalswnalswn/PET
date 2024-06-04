@@ -56,5 +56,7 @@ public interface MemberService {
 
 	int selectListCount(HashMap<Object, Object> map);
 
+	int selectMember(String id);
+
 
 }

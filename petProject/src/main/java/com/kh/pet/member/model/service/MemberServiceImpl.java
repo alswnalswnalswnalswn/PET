@@ -137,6 +137,11 @@ public class MemberServiceImpl implements MemberService {
 		return null;
 	}
 
+	@Override
+	public int selectMember(String id) {
+		return  memberMapper.selectMember(id);
+	}
+
 
 
 }

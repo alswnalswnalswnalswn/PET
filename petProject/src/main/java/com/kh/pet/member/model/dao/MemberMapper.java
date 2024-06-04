@@ -54,6 +54,8 @@ public interface MemberMapper {
 	 Info selectBoardDetail(int boardNo);
 	 
 	 int selectListCount(HashMap<Object, Object> map);
+
+	int selectMember(String id);
 	 
 
 }

@@ -374,16 +374,6 @@ public class MemberController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@RequestMapping("selectBoardDetail")
 	public ModelAndView selectBoardDetail(int boardNo, ModelAndView mv, HttpSession session) {
 		Info info = memberService.selectBoardDetail(boardNo);
@@ -413,8 +403,8 @@ public class MemberController {
 	
 	
 	@GetMapping("kakao")
-	public String kakaologin() {
-		return "redirect:/";
+	public String kakaologin(HttpSession session) {
+		return "kakao-login";
 	}
 	
 	@GetMapping("code")
@@ -422,12 +412,11 @@ public class MemberController {
 		String accessToken = kakaoService.getToken(code);
 		
 		SocialMember sm = kakaoService.getUserInfo(accessToken);
-		
-		session.setAttribute("socialLogin", sm);
-		if(sm != null) {
-			session.setAttribute("alertMsg", "회원가입으로 이동합니다");
+		if(memberService.selectMember(sm.getId()) == 0 ) {
+			session.setAttribute("socialLogin", sm);
+		} else {
 		}
-		return "kakao-login";
+		return "redirect:kakao";
 	}
 	
 	

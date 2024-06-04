@@ -189,6 +189,7 @@
 	    background-color: rgb(94, 87, 59);
 	    color:white;
 	    font-weight: bold;
+	    cursor:  pointer;
     }
     #join-area input{
    	    border: none;
@@ -587,7 +588,14 @@
 		$(() => {
 			
 			$('#kakao-login-btn').click(() => {
-				location.href='https://kauth.kakao.com/oauth/authorize?client_id=bf4263613861b95f8402b64976c94858&redirect_uri=http://localhost:7777/pet/member/code&response_type=code&scope=profile_image,profile_nickname';
+				var left = Math.ceil((window.screen.width - 500)/2);
+			  	var top = Math.ceil((window.screen.height - 500)/2);
+
+
+				window.open('https://kauth.kakao.com/oauth/authorize?client_id=bf4263613861b95f8402b64976c94858&redirect_uri=http://localhost:7777/pet/member/code&response_type=code&scope=profile_image,profile_nickname'
+							,"카카오 로그인", "width = 500 , height = 500 , left = " + left + ", top="+top);
+				
+
 			});
 		});
 		
