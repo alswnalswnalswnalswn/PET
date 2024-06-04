@@ -424,8 +424,10 @@ public class MemberController {
 		SocialMember sm = kakaoService.getUserInfo(accessToken);
 		
 		session.setAttribute("socialLogin", sm);
-		session.setAttribute("alertMsg", "회원가입으로 이동합니다");
-		return "redirect:kakao";
+		if(sm != null) {
+			session.setAttribute("alertMsg", "회원가입으로 이동합니다");
+		}
+		return "kakao-login";
 	}
 	
 	
