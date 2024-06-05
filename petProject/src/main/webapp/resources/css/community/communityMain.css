@@ -1,3 +1,68 @@
+.wrap {
+	width: 1200px;
+	height: 1000px;
+	border: 1px solid red;
+	margin : auto;
+}
+
+#community_header {
+	width : 1200px;
+	height : 300px;
+}
+
+#community_header > div {
+	float : left;
+}
+
+#left_header {
+	width : 50%;
+}
+
+#left_header > div {
+	float : left;
+}
+
+#right_header {
+	width : 50%;
+}
+
+#right_header > div {
+}
+
+.searchKeyword > input {
+	border : none;
+	border-bottom: 1px solid rgb(235, 235, 235);
+}
+
+.searchImage>img {
+	width : 20px;
+	margin-left : 10px;
+}
+
+.boardCategory > div, .animalCategory > div {
+    float: right;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 div {
 	box-sizing: border-box;
 }
@@ -329,4 +394,4 @@ span:hover {
 	margin: auto;
 }
 
-
+*/

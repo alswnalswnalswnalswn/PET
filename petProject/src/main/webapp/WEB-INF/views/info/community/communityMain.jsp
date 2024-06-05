@@ -9,40 +9,56 @@
 	<link rel="stylesheet" href="resources/css/community/communityMain.css" />
 </head>
 <body>
-<script src="${sessionScope.path }/resources/script/date.js"></script>
+
+	<script src="${sessionScope.path }/resources/script/date.js" />
 	<jsp:include page="../../common/header.jsp" />
 	<c:set value="${ sessionScope.path }" var="path" />
 	
-	<div id="submenubar">
+	<div class="wrap">
 	
-		<div id="searchForm">
-			<div id="search">
-				<div id="searchcon">
-					<input type="text" name="searchContent" id="searchContent"/>
+		<div id="community_header">
+		
+			<div id="left_header">
+				<div class="searchKeyword">
+					<input type="text" />
 				</div>
-				<div id="searchImg">
-					<img src="${path}/resources/img/common/searchform.png" alt="" id="searchimg">
+				<div class="searchImage">
+					<img src="${path}/resources/img/common/searchform.png" alt="검색이미지">
 				</div>
 			</div>
-		</div>
+			
+			<div id="right_header">
 		
-		<div class="selectctg">
-			<div id="select">
-				<div id="styleboardform">
-					<div id="selectstyle" class="boardCategory">
-						<span id="styleboard">글 성격</span>
+				<div class="btn-group">
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+				     글 성격
+				     </button>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="#">Tablet</a>
+						<a class="dropdown-item" href="#">Smartphone</a>
 					</div>
-					<div id="boardinfo">
+				</div>
+		
+			
+			
+				<div class="boardCategory">
+					<div>
+						<span>글 성격</span>
+					</div>
+					<br clear="both">
+					<div class="selectCategory">
 						<span class="category_info" value="I0"># 전체</span><br>
 						<span class="category_info" value="I1"># 자유</span><br>
 						<span class="category_info" value="I2"># 질문</span><br>
 					</div>
 				</div>
-				<div id="styleaniform">
-					<div id="selectani" class="aniCategory">	
+				
+				<div class="animalCategory">
+					<div>
 						<span id="styleani">반려 동물</span>
 					</div>
-					<div id="aniinfo">
+					
+					<div class="selectAnimal">
 						<span class="animal_info" value='A0'># 전체</span><br>
 						<span class="animal_info" value='A1'># 강아지</span><br>
 						<span class="animal_info" value='A2'># 고양이</span><br>
@@ -54,38 +70,53 @@
 				</div>
 			</div>
 			
-			<div id="line"></div>
+		</div>
+		
+		<div id="community_content">
+			<div class="thumbnailImg">
+				<img>
+			</div>
+			
+			<div class="community_result">
+				<div class="boardWriter"></div>
+				<div class="animalList"></div>
+				<div class="createDate"></div>
+				<div class="boardTitle"></div>
+				<div class="boardContent"></div>
+			</div>
+			
+			<div class="about_result">			
+				<div></div>
+				<div class="likeImg"><img></div>
+				<div class="likeCount"></div>
+				<div class="boardCountName"></div>
+				<div class="boardCountResult"></div>
+				<div class="replyImg"><img></div>
+				<div class="replyCount"></div>
+			</div>
+		</div>
+		
+		<div id="guitarMenu">
+			<button id="showMore" class="mainbtn">더 보기</button>
+			<button class="mainbtn">메인으로</button>
+			<c:if test="${sessionScope.loginUser ne null }">
+				<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
+			</c:if>
 		</div>
 		
 	</div>
 	
-	<div id="needgongan"></div>
-		<div class="content_wrap" id="boardoutput"></div>
-			
-	<div id="gomain">
-		<button id="showMore" class="mainbtn">더 보기</button>
-		<button class="mainbtn">메인으로</button>
-		<c:if test="${sessionScope.loginUser ne null }">
-			<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
-		</c:if>
-	</div>
-	
-	
 	<script>
-	
 		// 초기 변수 선언
 		let animal='A0',
 		category = 'I0', 
 		page = 1,
 		text = '',
 		resultStr = '',
-		animalListStr = '';
+		animalListStr = '',
+		attachmentListStr = '';
 		
 		function selectCommunityList(animal, category, page){
-			
-			console.log(animal);
-			console.log(category);
-			console.log(page);
 			
 			$.ajax({
 				url : 'communities',
@@ -96,19 +127,24 @@
 				},
 				success : result => {
 					console.log(result);
+					/*
 					for(let i in result){
+						
 						let createDate = result[i].createDate.date;
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
-						var animalListStr = '';
+
 						var animalListResult = result[i].animalList;
-						
 						for(let i in animalListResult){
 							animalListStr += '<div class="animalAndCategory">' 
 										  + animalListResult[i].animalName
 										  + '</div>'
 						}
-						
 						animalListStr += '<br clear="both">';
+						
+						var attachmentListResult = result[i].attachmentList;
+						for(let i in attachmentListResult){
+							attachmentListStr += 
+						}
 						
 						resultStr += '<div id="myboard" class="communityList">'
 										+ '<div class="thumbnailImg" id="thumbnail"><img src="/pet/';
@@ -159,6 +195,7 @@
 					else{
 						$('#showMore').css('display', 'none');
 					}
+					*/
 				}
 			});
 		}

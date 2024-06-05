@@ -242,6 +242,7 @@ span:hover {
 	line-height: 50px;
 	font-size: 20px;
 	margin-top: 200px;
+	margin-left: 10px;
 }
 
 #seeboard2>span {
@@ -258,6 +259,7 @@ span:hover {
 #boardLike2>div>img {
 	width: 30px;
 	height: 30px;
+	marign-right: 3px;
 }
 
 #golist {

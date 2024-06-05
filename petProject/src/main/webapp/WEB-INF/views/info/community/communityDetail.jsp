@@ -10,6 +10,16 @@
 </head>
 <body>
 	<jsp:include page="../../common/header.jsp" />
+	
+	<div>
+		
+	
+	
+	
+	</div>
+	
+	
+	
 	<div id="infooutput">
 		<div id="infoheader">
 			<div id="infoheader1"><img src="/pet/resources/img/profile/${ infoList[0].memberProfile }" alt="작성자 프사"></div>
@@ -22,9 +32,11 @@
 		<div id="boardti">제목 : ${infoList[0].boardTitle }</div>
 		
 		<div id="myimg">
-			<c:forEach var="attachment" items="${ infoList[0].attachmentList }">
-				<img src="/pet${attachment.attPath }${attachment.changeName}" alt="첨부사진" />
-			</c:forEach>
+			<c:if test="${infoList[0].attachmentList[0].attNo ne 0 }">
+				<c:forEach var="attachment" items="${ infoList[0].attachmentList }">
+					<img src="/pet${attachment.attPath }${attachment.changeName}" alt="첨부사진" />
+				</c:forEach>
+			</c:if>
 		</div>
 		
 		<div id="needgongan4"></div>
@@ -39,10 +51,10 @@
 			<div id="seeboard2"><span>조회 (${infoList[0].boardCount})</span></div>
 			<div id="replyboard2"><img src="${path}/resources/img/common/reply.png"><span id="likeCount"></span></div>
 		</div>
-		<div id="golist">
-			<button class="listbtn" onclick="history.back();">이전으로</button>
-			<button class="listbtn" onclick="updateCommunity">수정하기</button>
-			<button class="listbtn" onclick="deleteCommunity">삭제하기</button>
+		<div id="golist" class="row">
+			<button class="listbtn col-sm-4" onclick="history.back();">이전으로</button>
+			<button class="listbtn col-sm-4" onclick="updateCommunity">수정하기</button>
+			<button class="listbtn col-sm-4" onclick="deleteCommunity">삭제하기</button>
 		</div>
 	</div>
 	
@@ -75,76 +87,75 @@
 		var noLike = "${sessionScope.path}/resources/img/common/like.png";
 	
 		$(() => {	
-				selectLike(boardNo);
+			likeCheck(boardNo, memberNo);
+			selectLike(boardNo);
 				
-				console.log(memberNo);
+			$('#btncom').click(() => {
+    			$('#inscom').toggle();
+    		});
+
+			
+			$('#likeboard2').click(function() {
 				
-				$('#btncom').click(() => {
-	    			$('#inscom').toggle();
-	    		});
-	
-				
-				$('#likeboard2').click(function() {
-					
-					if(memberNo === ""){
-						alert('로그인 부탁드려욧');
-					}
-					else {
-			            var likeImg = $(this).find('img').attr('src');
-			            
-			           console.log(likeImg);
-			           
-			            if(likeImg == noLike){
-			            	$.ajax({
-			            		url : '/pet/communities/addLike',
-			            		method: 'post',
-			            		data : {
-			            			memberNo : memberNo,
-			            			boardNo : boardNo
-			            		},
-			            		success : result => {
-			            			 likeCheck(boardNo, memberNo)
-			            		},
-			            	})
-			            } 
-			            else {
-			            	$.ajax({
-			            		url : '/pet/communities/deleteLike',
-			            		method: 'post',
-			            		data : {
-			            			memberNo : memberNo,
-			            			boardNo : boardNo
-			            		},
-			            		success : result => {
-			            			 likeCheck(boardNo, memberNo)
-			            		},
-			            	})
-			            }
-					}
-				});
-				
-				
+				if(memberNo === ""){
+					alert('로그인 부탁드려욧');
+				}
+				else {
+		            var likeImg = $(this).find('img').attr('src');
+		            
+		           console.log(likeImg);
+		           
+		            if(likeImg == noLike){
+		            	$.ajax({
+		            		url : '/pet/communities/addLike',
+		            		method: 'post',
+		            		data : {
+		            			memberNo : memberNo,
+		            			boardNo : boardNo
+		            		},
+		            		success : result => {
+		            			 likeCheck(boardNo, memberNo)
+		            		},
+		            	})
+		            } 
+		            else {
+		            	$.ajax({
+		            		url : '/pet/communities/deleteLike',
+		            		method: 'post',
+		            		data : {
+		            			memberNo : memberNo,
+		            			boardNo : boardNo
+		            		},
+		            		success : result => {
+		            			 likeCheck(boardNo, memberNo)
+		            		},
+		            	})
+		            }
+				}
 			});
+				
+				
+		});
 	
-			function selectLike(boardNo){	
-			   	$.ajax({
-			   		url : '/pet/communities/likeCheck/' + boardNo,
-			   		type : 'get',
-			   		success : result => {
-			   			$('#likeCount').html('(' + result + ')');
-			   		}
-			   	});
-			}
-		
-        function likeCheck(boardNo, memberNo){
+		function selectLike(boardNo){	
+		   	$.ajax({
+		   		url : '/pet/communities/likeCheck/' + boardNo,
+		   		type : 'get',
+		   		success : result => {
+		   			$('#likeCount').html('(' + result + ')');
+		   		}
+		   	});
+		}
+	
+       	function likeCheck(boardNo, memberNo){
 			$.ajax({
 				url : '/pet/communities/likeCheck/' + boardNo + "/" + memberNo,
 				success : result => {
 					if(result > 0){
-						$('#likeboard2 > img').attr('src', like)
+						$('#likeboard2>img').attr('src', like)
 					}
 					else {
-						$('#likeboard2 > img').attr('src', noLike)
+						$('#likeboard2>img').attr('src', noLike)
 					}
 				}
 			});
