@@ -30,5 +30,5 @@ public class Member {
 	private String changeName;
 	private String[] animalList;
 	private List<MemberCoupon> couponList;
-	
+	private int boardNo;
 }

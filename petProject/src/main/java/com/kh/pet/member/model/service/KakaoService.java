@@ -64,7 +64,7 @@ public class KakaoService {
 		return accessToken;
 	}
 
-	public SocialMember getUserInfo(String accessToken) throws IOException, ParseException {
+	public Member getUserInfo(String accessToken) throws IOException, ParseException {
 		
 		String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
 		
@@ -80,15 +80,15 @@ public class KakaoService {
 		
 		JSONObject responseObj = (JSONObject)new JSONParser().parse(responseData);
 		
-		SocialMember sm = new SocialMember();
+		Member member = new Member();
 		
-		sm.setId(responseObj.get("id").toString());
+		member.setMemberId(responseObj.get("id").toString());
 		
 		JSONObject propObj = (JSONObject)responseObj.get("properties");
-		sm.setNickname(propObj.get("nickname").toString());
-		sm.setThumbnailImage(propObj.get("thumbnail_image").toString());
+		member.setNickname(propObj.get("nickname").toString());
+		member.setProfile(propObj.get("thumbnail_image").toString());
 		
-		return sm;
+		return member;
 	}
 
 

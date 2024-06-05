@@ -13,6 +13,7 @@ import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.dao.MemberMapper;
 import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
+import com.kh.pet.member.model.vo.SocialMember;
 
 import lombok.RequiredArgsConstructor;
 
@@ -123,18 +124,33 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Info> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds) {
+	public List<Integer> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds) {
 		return memberMapper.selectBoard(map, rowBounds);
 	}
 
 	@Override
-	public List<Info> selectMyBoard(List<Info> list) {
-		return memberMapper.selectMyBoard(list);
+	public Info selectMyBoard(HashMap<Object, Object> map) {
+		return memberMapper.selectMyBoard(map);
 	}
 
 	@Override
 	public List<Info> selectCategory(HashMap<String, Object> map) {
 		return null;
+	}
+
+	@Override
+	public int selectMember(String id) {
+		return  memberMapper.selectMember(id);
+	}
+
+	@Override
+	public int socialJoin(Member member) {
+		return memberMapper.socialJoin(member);
+	}
+
+	@Override
+	public Member selectSocialMember(String memberId) {
+		return memberMapper.selectSocialMember(memberId);
 	}
 
 

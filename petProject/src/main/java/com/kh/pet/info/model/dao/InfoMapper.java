@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.pet.common.model.vo.Alert;
 import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.info.model.vo.Comment;
 import com.kh.pet.info.model.vo.Info;
@@ -16,7 +17,7 @@ public interface InfoMapper {
 	
 	int selectListCount(String animal);
 	
-	Info selectInfoByBoardNo(Integer boardNo);
+	Info selectInfoByBoardNo(HashMap<Object, Object> map);
 	
 	List<Integer> selectBoardNoList(String animal, RowBounds rowBounds);
 	
@@ -43,6 +44,10 @@ public interface InfoMapper {
 	int insertComment(Comment comment);
 
 	List<Comment> selectComment(int replyNo);
+
+	int insertAlert(Alert alert);
+
+	int likeCheckInfo(HashMap<Object, Object> map);
 
 
 }

@@ -189,6 +189,7 @@
 	    background-color: rgb(94, 87, 59);
 	    color:white;
 	    font-weight: bold;
+	    cursor:  pointer;
     }
     #join-area input{
    	    border: none;
@@ -442,7 +443,6 @@
 <body>
  
 	<c:set var="path" value="${ pageContext.request.contextPath}" scope="session"/>
-
 	<c:if test="${ not empty alertMsg }">
 		<script>
 			alert('${alertMsg}');
@@ -452,7 +452,6 @@
 	<c:set var="loginUser" value="${ sessionScope.loginUser }" scope="session" />
     <div id="header">
         <div id="header1">
-         
             <div id="logo"><img src="${sessionScope.path}/resources/img/common/logo.png" alt="로고" width="150px" height="100px" onclick="location.href='${sessionScope.path}'"></div>
             <div id="search_form">
                 <form action="#">
@@ -471,11 +470,10 @@
             			</li>
             		</ul>
             	</div>
-            	
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
             		<c:choose>
-            		<c:when test='${ loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
+            		<c:when test='${ sessionScope.loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") or loginUser.memberStatus.equals("K") ) }' >
     					<li class="nav-item">
     						<a class="nav-link" href="${sessionScope.path}/member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/common/logout.png" alt=""></a>
     					</li>

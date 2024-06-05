@@ -70,18 +70,18 @@
 	}
 	
 	
-	
 		// 초기 변수 선언
 		let animal='A0',
 		page = 1,
 		text = '',
 		resultStr = '',
-		animalListStr = '';
-		
+		animalListStr = '',
+		memberNo = '${sessionScope.loginUser.memberNo}';
+		if(memberNo === ""){
+			memberNo = 0;
+		}
 		$(() => {
-			
 			selectInfoList(animal, page);
-			
 			$('.refresh_btn > img').click(() => {
 				selectInfoList(animal, ++page);
 			});
@@ -98,7 +98,6 @@
 		});
 				
 		function selectInfoList(animal, page){
-			
 			console.log(animal);
 			console.log(page);
 
@@ -106,7 +105,8 @@
 				url : 'selectInfoList',
 				data : {
 					animal : animal,
-					page : page
+					page : page,
+					memberNo : memberNo
 				},
 				success : result => {
 					console.log(result);
@@ -114,6 +114,7 @@
 					for(let i in result){
 						//console.log(result[i].boardNo);
 						let createDate = result[i].createDate.date;
+						console.log(result[i].likeCheck);
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 						resultStr += '<div class="col-sm-3">'
 								   		+ '<div id="infoList" class="info_wrap">'
@@ -121,42 +122,77 @@
 											+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '" />'
 											+ '</div>'
 											+ '<div class="center_content" id="info-list">'
-												+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '" />'
 												+ '<div id="infoTitle">' + result[i].boardTitle 
 												+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '" />'
 												+ '</div>'
 												+ '<div id="info_info">'
 													+ '<div id="infoDate">' + dateFormat(fullDate) + '</div>'
-													+ '<div id="infoLike">'
-														+ '<div id="info_like" class="like"><img src="${sessionScope.path }/resources/img/common/like.png"></div>'
-														+ '<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>'
+													+ '<div id="infoLike">';
+												if(result[i].likeCheck == 1){	
+													resultStr += '<div id="info_like" class="like"><input type="hidden" name="boardNo" value="' + result[i].boardNo + '" /><img src="${sessionScope.path }/resources/img/common/like2.png"></div>'
+													+ '<div id="info_rep"><img src="${sessionScope.path }/resources/img/common/reply.png"></div>'
+												+ '</div>'
+											+ '</div>'
+										+ '</div>'
+									+ '</div>'
+								+ '</div>'
+													
+												} else {
+													resultStr += '<div id="info_like" class="like"><input type="hidden" name="boardNo" value="' + result[i].boardNo + '" /><img src="${sessionScope.path }/resources/img/common/like.png"></div>'
+														+ '<div id="info_rep"><input type="hidden" name="boardNo" value="' + result[i].boardNo + '" /><img src="${sessionScope.path }/resources/img/common/reply.png"></div>'
 													+ '</div>'
 												+ '</div>'
 											+ '</div>'
 										+ '</div>'
 									+ '</div>'
+												}
 					}
-					$(document).on('click', '#info_like', function() {
-						 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
-						 var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
-	                     var likeImg = $(this).find('img').attr('src');
-	                     
-	                     if(likeImg == likeNuroom){
-	                    	 $(this).find('img').attr('src', nolikeNuroom);
-	                     } else {
-	                    	 $(this).find('img').attr('src', likeNuroom);
-	                     }
-	                        
-					});
+					
 					$('.row').html(resultStr);
 
 					$('#infoTitle, #thumbnailinfo').on('click', function() {
 						
 						const boardNo = $(this).find('input').val();
-						//console.log(num);
 						
-						location.href='${sessionScope.path}/info/infoDetail/' + boardNo;
+						location.href='${sessionScope.path}/info/infoDetail/' + boardNo + '/' + memberNo;
 					});
+					        
+							$('.like').click(function() {
+								const boardNo = $(this).find('input').val();
+								if(memberNo === ""){
+									alert('로그인 부탁드려욧');
+								}
+								else{
+									var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
+									var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
+						            var likeImg = $(this).find('img').attr('src');
+						            
+						            if(likeImg == nolikeNuroom){
+						            	
+						            	$.ajax({
+						            		url : '/pet/info/addLikeCount/' + boardNo + '/' + memberNo,
+						            		success : result => {
+						            			$(this).find('img').attr('src', likeNuroom);
+						            		},
+						            		error : result => {
+						            			alert('응 안돼요');
+						            		}
+						            	})
+						            	
+						            } else {
+						            	$.ajax({
+						            		url : '/pet/info/removeLikeCount/' + boardNo + '/' + memberNo,
+						            		success : result => {
+						            			$(this).find('img').attr('src', nolikeNuroom);
+						            		},
+						            		error : result => {
+						            			alert('응 안돼요');
+						            		}
+						            	})
+						            }
+								}
+				               
+							});
 					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
 						$('.refresh_btn').css('display', 'block');
@@ -171,8 +207,28 @@
 					}
 				});		
 			};
-			
-			
+				
+
+	        function likeCheckInfo(boardNo, memberNo){	
+				 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
+				 var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
+	        	if(memberNo != ""){
+		        	$.ajax({
+		        		url : '/pet/info/likeCheckInfo/' + boardNo + '/' + memberNo,
+		        		type : 'get',
+		        		success : result => {
+		        			if(result > 0){
+		        				$('#info_like').find('img').attr('src', likeNuroom);
+		        			} else {
+		        				$('#info_like').find('img').attr('src', nolikeNuroom);
+		        			}
+		        		},
+		        		error : result => {
+		        			console.log('실패');
+		        		}
+		        	});
+	        	}
+	        }	
 			
 			
 		

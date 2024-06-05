@@ -46,15 +46,21 @@ public interface MemberService {
 
 	Member selectUpMember(int memberNo);
 
-	List<Info> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds);
+	List<Integer> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds);
 	
-	List<Info> selectMyBoard(List<Info> list);
+	Info selectMyBoard(HashMap<Object, Object> map);
 	
 	List<Info> selectCategory(HashMap<String, Object> map);
 
 	Info selectBoardDetail(int boardNo);
 
 	int selectListCount(HashMap<Object, Object> map);
+
+	int selectMember(String id);
+
+	int socialJoin(Member member);
+
+	Member selectSocialMember(String memberId);
 
 
 }

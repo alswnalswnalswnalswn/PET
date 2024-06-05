@@ -31,8 +31,10 @@ import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pet.common.model.vo.Animal;
+import com.kh.pet.common.model.vo.Attachment;
 import com.kh.pet.common.model.vo.PageInfo;
 import com.kh.pet.common.template.Pagination;
+import com.kh.pet.info.model.service.InfoService;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.service.KakaoService;
 import com.kh.pet.member.model.service.MemberService;
@@ -47,6 +49,9 @@ public class MemberController {
 	KakaoService kakaoService;
 	
 	@Autowired
+	private InfoService infoService;
+	
+	@Autowired
 	private JavaMailSenderImpl sender; 
 	
 	@Autowired
@@ -59,7 +64,8 @@ public class MemberController {
 	public ModelAndView login(Member member, HttpSession session, ModelAndView mv) {
 		
 		Member loginUser = memberService.login(member);
-		if(loginUser != null && bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
+		if(loginUser != null && 
+		bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
 			
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("redirect:/");
@@ -109,7 +115,6 @@ public class MemberController {
 	public String update(HttpServletRequest request, Member member, MultipartFile upfile, HttpSession session, MultipartRequest multiRequest) {
 		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
 		member.setMemberPwd(encPwd);
-		System.out.println(member);
 		if(!upfile.getOriginalFilename().equals("")) {
 					
 			member.setOriginName(upfile.getOriginalFilename());
@@ -354,34 +359,36 @@ public class MemberController {
 		map.put("animal", animal);
 		map.put("category", category);
 		map.put("memberNo", memberNo);
-		
-		PageInfo pi = Pagination.getPageInfo(memberService.selectListCount(map), page, 10, 10);
-		
+		PageInfo pi = Pagination.getPageInfo(memberService.selectListCount(map), page, 12, 10);
 		RowBounds rowBounds = new RowBounds(
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
 				);
-	    
-		List<Info> list = memberService.selectBoard(map, rowBounds);
-		List<Info> myBoardList = memberService.selectMyBoard(list);
-		
-		for(Info i : myBoardList){
+		List<Integer> boardList = memberService.selectBoard(map, rowBounds);
+		System.out.println(boardList);
+		List<Info> infoList = new ArrayList<>();
+		if (boardList != null && !boardList.isEmpty()) {
+			for (Integer boardNo : boardList) {
+				map.put("boardNo", boardNo);
+				map.put("memberNo", memberNo);
+				Info info = memberService.selectMyBoard(map);
+				int likeCheck = infoService.likeCheckInfo(map);
+				
+		        info.setLikeCheck(likeCheck);
+		        // PageInfo 설정
+		        info.setPageInfo(pi);
+		        
+		        // 최종 리스트에 추가
+		        infoList.add(info);
+			}
+		}
+		System.out.println(infoList);
+		for(Info i : infoList){
 			i.setPageInfo(pi);
 		}
-		
-		return myBoardList;
+		return infoList;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	@RequestMapping("selectBoardDetail")
 	public ModelAndView selectBoardDetail(int boardNo, ModelAndView mv, HttpSession session) {
@@ -407,30 +414,45 @@ public class MemberController {
 		return mv;
 	}
 	
-	
-	
-	
-	
 	@GetMapping("kakao")
-	public String kakaologin() {
-		return "redirect:/";
+	public String kakaologin(HttpSession session) {
+		return "kakao-login";
 	}
 	
 	@GetMapping("code")
 	public String code(String code, HttpSession session) throws IOException, ParseException {
 		String accessToken = kakaoService.getToken(code);
+		Member member = kakaoService.getUserInfo(accessToken);
 		
-		SocialMember sm = kakaoService.getUserInfo(accessToken);
-		
-		session.setAttribute("socialLogin", sm);
-		
-		return "redirect:kakao";
+		if(memberService.selectMember(member.getMemberId()) == 0) {
+			memberService.socialJoin(member);
+			String memberId= member.getMemberId();
+			member = memberService.selectSocialMember(memberId);
+			session.setAttribute("loginUser", member);
+			return "redirect:/";
+		} else {
+			member.setMemberStatus("C");
+			String memberId= member.getMemberId();
+			System.out.println(member.getProfile());
+			member = memberService.selectSocialMember(memberId);
+			session.setAttribute("loginUser", member);
+			return "redirect:/";
+		}
 	}
 	
+	/*
+	@PostMapping("selectSocialMember")
+	public String selectSocialMember(Member member, HttpSession session) {
+		member.setProfile("profile.png");
+		memberService.socialJoin(member);
+		String memberId= member.getMemberId();
+		member = memberService.selectSocialMember(memberId);
+		
+		session.setAttribute("loginUser", member);
+		return "header";
+	}
 	
-	
-	
-	
+	*/
 	
 	
 	
