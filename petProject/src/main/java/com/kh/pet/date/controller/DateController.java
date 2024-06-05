@@ -37,18 +37,16 @@ public class DateController {
 	private final DateService dateService;
 	
 	@GetMapping("/{placeNo}")
-	public Info selectDate(@PathVariable("placeNo")int placeNo, HttpSession session) throws ParseException {
+	public Info selectDate(@PathVariable("placeNo")int placeNo, HttpSession session) {
 	
 		HashMap<String, Integer> map = new HashMap();
 		Member loginUser = (Member)session.getAttribute("loginUser");
-		
 		int likeCheck = 0;
 		
 		if(loginUser != null) {
 			map.put("loginUser", loginUser.getMemberNo());
 			map.put("placeNo",placeNo);
 			likeCheck = dateService.likeCheck(map);
-			
 		}
 		
 		dateService.updateCount(placeNo);
@@ -72,17 +70,11 @@ public class DateController {
 	
 	@PostMapping
 	public String updateRepCom(@RequestParam("type") String type,@RequestParam("number") String number,@RequestParam("content") String content) {
-		
 		HashMap<String,String> map = new HashMap();
-		System.out.println(type+number+content);
 		
 		map.put("type", type);
-		
 		map.put("number", number);
-		
 		map.put("content", content);
-		
-		
 		
 		return dateService.updateRepCom(map) > 0 ? "Y" : "N";
 	}
@@ -91,10 +83,8 @@ public class DateController {
 	@PostMapping("like")
 	public String insertLike(int boardNo,int memberNo) {
 		HashMap<String,Integer> map = new HashMap();
-		
 		map.put("boardNo", boardNo);
 		map.put("memberNo",memberNo);
-		
 		
 		return dateService.insertLike(map) > 0 ? "Y" : "N";
 	}
@@ -103,13 +93,9 @@ public class DateController {
 
 	@DeleteMapping("like")
 	public String deleteLike(@RequestBody String obj) {
-		
 		JsonObject jsonObject = JsonParser.parseString(obj).getAsJsonObject();
-		
-		
 		int boardNum = jsonObject.get("boardNum").getAsInt();
 	    int memberNo = jsonObject.get("memberNo").getAsInt();	
-
 		HashMap<String,Integer> map = new HashMap();
 		
 		map.put("boardNo", boardNum);

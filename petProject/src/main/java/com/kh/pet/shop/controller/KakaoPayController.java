@@ -44,6 +44,8 @@ public class KakaoPayController {
 		
 		List<ProductOption> optionList = new ArrayList();
 		
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		
 		int price = 0;
 		String itemName = "";
 		for (Map<String, Object> item : data) {
@@ -60,12 +62,12 @@ public class KakaoPayController {
 		Order order = new Order();
 		
 		Order newOrder = new Order();
-		order.setMember((Member)session.getAttribute("loginUser"));
+		order.setMember(loginUser);
 		order.setOptionList(optionList);
 		
 		if(productService.insertOrder(order) > 0) {
 			newOrder = productService.selectNowOrder();
-			newOrder.setMember((Member)session.getAttribute("loginUser"));
+			newOrder.setMember(loginUser);
 		} else {
 			
 		}

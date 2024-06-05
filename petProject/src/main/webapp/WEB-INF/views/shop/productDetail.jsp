@@ -343,7 +343,6 @@
 					input.val(inputCount);
 					let sumPrice = ${product.price} * inputCount;
 					$(e.currentTarget).parent().next().children('input').val(sumPrice);
-					
 				}
 			});
 			
