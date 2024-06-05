@@ -204,7 +204,7 @@
                REPLY.CREATE_DATE,COMM.CREATE_DATE
 	</select>
 	
-	<insert id="inserReply" parameterType="reply">
+	<insert id="insertReply" parameterType="reply">
 		INSERT
 		  INTO
 		      TB_REPLY

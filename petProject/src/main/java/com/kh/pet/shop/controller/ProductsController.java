@@ -1,10 +1,10 @@
 package com.kh.pet.shop.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,17 +42,16 @@ public class ProductsController {
 				pi.getBoardLimit()
 				);
 		List<Product> list = productService.selectCount(map,rowBounds);
-		
-		
-		List<Product> productList = productService.selectAll(list);
-		
-		System.out.println(productList);
-		
+		List<Product> productList = new ArrayList();
+		if(list.size() != 0) {
+			productList = productService.selectAll(list);
+			
+		}
 		for(Product product : productList) {
 			product.setPageInfo(pi);
 		}
-
 		return productList;
+		
 	}
 
 }
