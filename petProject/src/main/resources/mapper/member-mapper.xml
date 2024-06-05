@@ -344,7 +344,7 @@
 				BOARD_NO DESC
 	</select>
 	
-	<select id="selectMyBoard" parameterType="java.util.List" resultMap="infoResultSet">
+	<select id="selectMyBoard" parameterType="hashMap" resultMap="infoResultSet">
 		SELECT
 		        BOARD_NO,
 		        NICKNAME BOARD_WRITER,
@@ -396,11 +396,10 @@
 		        TB_ATTACHMENT USING(BOARD_NO)
 		WHERE
 				BOARD_STATUS = 'Y'
-		AND
-				BOARD_NO IN
-				<foreach collection="list" item="item" open="(" separator="," close=")">
-			   		#{item.boardNo}
-			  	</foreach>
+         AND
+                MEMBER_NO = #{memberNo}
+         AND
+                ATT_LEVEL = 1
 		ORDER BY 
 				BOARD_NO DESC
 	</select>

@@ -473,7 +473,7 @@
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
             		<c:choose>
-            		<c:when test='${ sessionScope.loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") ) }' >
+            		<c:when test='${ sessionScope.loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") or loginUser.memberStatus.equals("K") ) }' >
     					<li class="nav-item">
     						<a class="nav-link" href="${sessionScope.path}/member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/common/logout.png" alt=""></a>
     					</li>

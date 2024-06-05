@@ -124,13 +124,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Info> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds) {
+	public List<Integer> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds) {
 		return memberMapper.selectBoard(map, rowBounds);
 	}
 
 	@Override
-	public List<Info> selectMyBoard(List<Info> list) {
-		return memberMapper.selectMyBoard(list);
+	public Info selectMyBoard(HashMap<Object, Object> map) {
+		return memberMapper.selectMyBoard(map);
 	}
 
 	@Override

@@ -56,6 +56,7 @@
         align-items: center;
         justify-content: center;
         border: 4px solid #000; 
+        cursor : pointer;
     }
     #name{
         width: 500px;
@@ -68,14 +69,17 @@
         width: 140px;
         height: 130px;
     }
+    #update button {
+    	cursor : pointer;
+    }
     #profile_img{
         width: 100%;
         height: 100%;
         object-fit: cover;  
     }
     #profile_img img{
-        width: 120px;
-        height:110px;
+        width: 150px;
+        height: 150px;
     }
     #update_info{
         float: right;
@@ -291,6 +295,10 @@
 		height : 30px;
 		margin : 17px 10px;
 	}
+	#profile_1{
+        width: 110px;
+        height:110px; 
+	}
 </style>
 </head>
 <body>
@@ -301,21 +309,43 @@
         <div id="myback">
             <div id="myheader">
                 <div id="myname">
-                    <div id="profile"  >
-                    <form id="uploadForm" method="post" enctype="multpart/form-data">
-                        <input type="file" name="profile" id="my_profile" multiple="true">
-                        <div id="profile_img">
-                       		<img src="${sessionScope.path}/resources/img/profile/${ loginUser.profile }" alt="프로필사진">
-                        </div>
-                        <input type="hidden" name="memberNo" value="${loginUser.memberNo }">
-                   </form>
+                    <div id="profile" >
+                    <c:choose>
+                    <c:when test='${loginUser.memberStatus.equals("K")}'>
+	                    <form id="uploadForm" method="post" enctype="multpart/form-data">
+	                        <input type="file" name="profile" id="my_profile" multiple="true">
+	                        <div id="profile_img">
+	                       		<img src="${ loginUser.profile }" alt="프로필사진">
+	                        </div>
+	                        <input type="hidden" name="memberNo" value="${loginUser.memberNo }">
+	                   </form>
+                   </c:when>
+                   <c:otherwise>
+	                    <form id="uploadForm" method="post" enctype="multpart/form-data">
+	                        <input type="file" name="profile" id="my_profile" multiple="true">
+	                        <div id="profile_img">
+	                       		<img id="profile_1" src="${sessionScope.path}/resources/img/profile/${ loginUser.profile }" alt="프로필사진">
+	                        </div>
+	                        <input type="hidden" name="memberNo" value="${loginUser.memberNo }">
+	                   </form>
+                   </c:otherwise>
+                   </c:choose>
                    </div>
                     <div id="name">
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;${ loginUser.nickname }</span><span id="nim"><small>&nbsp;님</small></span>
-                    </div>  
+                    </div> 
+                    <c:choose>
+                    <c:when test='${loginUser.memberStatus.equals("K")}'>
+                    <div id="update">
+                        <button id="update_info" type="button" data-toggle="modal" data-target="#myInfo" disabled>정보 수정</button>
+                    </div> 
+                   </c:when>
+                   <c:otherwise>
                     <div id="update">
                         <button id="update_info" type="button" data-toggle="modal" data-target="#myInfo">정보 수정</button>
-                    </div>  
+                    </div> 
+                   </c:otherwise>
+                   </c:choose>
                 </div>
             </div>
             <div id="mycontent">
@@ -348,12 +378,12 @@
     </div>
 
     <script>
-        $(function(){
-            $('#my_profile').hide();
-            $('#profile_img').click(function(){
-                $('#my_profile').click();
-            });
-        });
+	    $(() => {
+	    	$('#my_profile').hide();
+	    	$('#profile_img').click(() => {
+	    		$('#my_profile').click();
+	    	});
+	    });
         
         $(document).ready(function() {
             $('#my_profile').on('change', function() {
