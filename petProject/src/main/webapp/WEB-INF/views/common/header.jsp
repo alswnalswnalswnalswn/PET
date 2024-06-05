@@ -749,7 +749,7 @@
 		const $check = $('.check');
 		const $loginBtn = $('#login_btn');
 		
-		$userId.keyup(function(){
+		$userId.keyup(() => {
 			
 			if($userId.val().length > 4){
 				$.ajax({
@@ -991,15 +991,6 @@
 					url : 'member/checkEmail',
 					data : {email : $myEmail.val()},
 					success : function(result){
-						// console.log(result);
-    					if(result.substr(4) == "N"){
-    						$myEmail.css('border', '1px solid lightgreen');
-    						$checkEmailimg.show().css();
-    						$searchBtn.removeAttr("disabled");
-    					} else{
-    						$checkEmailon.show().css('color', 'crimson').text('가입된 이메일이 아닙니다.');
-    						$myEmail.css('border', '1px solid crimson');
-    					}
     				},
     				error : function(){
     					console.log('이메일 중복체크용 AJAX 통신 실패~');

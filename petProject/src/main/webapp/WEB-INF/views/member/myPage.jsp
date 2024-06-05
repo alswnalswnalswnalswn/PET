@@ -335,9 +335,8 @@
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;${ loginUser.nickname }</span><span id="nim"><small>&nbsp;님</small></span>
                     </div> 
                     <c:choose>
-                    <c:when test='${loginUser.memberStatus.equals("K")}'>
+                    <c:when test='${loginUser.memberStatus.equals("K") or loginUser.memberStatus.equals("S")}'>
                     <div id="update">
-                        <button id="update_info" type="button" data-toggle="modal" data-target="#myInfo" disabled>정보 수정</button>
                     </div> 
                    </c:when>
                    <c:otherwise>
@@ -366,11 +365,13 @@
                     <div id="content"><a href="myBoard"><img src="${sessionScope.path}/resources/img/common/board.png" alt=""><br>내가 쓴 게시글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/comment.png" alt=""><br>내가 쓴 댓글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/like.png" alt=""><br>내 좋아요</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/heart.png" alt=""><br>내가 찜한 상품</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/mycart.png" alt=""><br>내 장바구니</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/coupon.png" alt=""><br>내 쿠폰</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/shopping.png" alt=""><br>내 결제 내역</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/reser.png" alt=""><br>내 예약 내역</a></div>
+                    <!-- 
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/heart.png" alt=""><br>내가 찜한 상품</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/mycart.png" alt=""><br>내 장바구니</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/coupon.png" alt=""><br>내 쿠폰</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/reser.png" alt=""><br>내 예약 내역</a></div>
+               		-->
                 </div>
                 <div id="main"><button type="button" id="main_btn" onclick="location.href='${sessionScope.path}'">메인화면</button></div>
             </div>
@@ -379,17 +380,14 @@
 
     <script>
 	    $(() => {
+           	console.log('${sessionScope.loginUser.memberStatus}');
 	    	$('#my_profile').hide();
 	    	$('#profile_img').click(() => {
 	    		$('#my_profile').click();
 	    	});
-	    });
-        
-        $(document).ready(function() {
-            $('#my_profile').on('change', function() {
+            $('#my_profile').change(() => {
             	var form = $('#uploadForm')[0];
             	var formData = new FormData(form);
-            	console.log(form);
                 $.ajax({
                     url: 'upProfile',
                     type : 'POST',
@@ -397,19 +395,16 @@
        			    processData:false,
        			    contentType:false,
        			    cache:false,
-                    success: function(response) {
+                    success: result => {
                         alert('프로필 사진이 성공적으로 업로드되었습니다.');
-                        var fileName = $('#my_profile')[0].files[0].name;
-                        var newImgUrl = "${sessionScope.path}/resources/img/${sessionScope.profile}";
-                        $('#profile_img img').attr('src', newImgUrl);
-                        location.reload();
+                        $('#profile_img').html('<img id="profile_1" src="${sessionScope.path}' + result + '" alt="프로필사진">');
                     },
-                    error: function(response) {
+                    error: result => {
                         alert('프로필 사진 업로드에 실패했습니다.');
                     }
                 });
             });
-        });
+	    });  
     </script>
     
     <div class="modal fade" id="myInfo">
@@ -579,6 +574,7 @@
                         newDiv.style.display = "block";
                         this.innerText = "완료";
                         this.style.width = "45px";
+                        
                     } else {
                         newDiv.style.display = "none";
                         this.innerText = "수정";

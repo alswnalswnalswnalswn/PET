@@ -302,28 +302,28 @@ public class MemberController {
 
 	@ResponseBody
 	@PostMapping("upProfile")
-	public ModelAndView upProfile(MultipartHttpServletRequest request, HttpSession session, ModelAndView mv) {
+	public String upProfile(MultipartHttpServletRequest request, HttpSession session) {
 		
 		Member member = (Member)session.getAttribute("loginUser");
-		member.getMemberNo();
-		int memberNo = member.getMemberNo();
-		
+		String profile = "";
 		MultipartFile file = request.getFile("profile");
+		System.out.println(file);
         if (!file.isEmpty()) {
         	member.setOriginName(file.getOriginalFilename());
         	member.setChangeName(saveFile(file, session));
         	member.setProfile(member.getChangeName());
         }
 		if(memberService.upProfile(member) > 0) {
-			
-			session.setAttribute("profile", member.getProfile());
-			mv.setViewName("redirect:/");
+			if(member.getMemberStatus().equals("K")) {
+				member.setMemberStatus("S");
+			}
+			profile = member.getProfile();
+			session.removeAttribute("loginUser");
+			session.setAttribute("loginUser", member);
 		} else {
 			session.setAttribute("alertMsg", "프로필 수정에 실패하였습니다. 다시 시도 해주세요");
-			mv.setViewName("redirect:/");
 		}
-		
-		return mv;
+		return "/resources/img/profile/" + profile;
 		/*
 		if(!upfile.getOriginalFilename().equals("")) {
 			// 첨부파일이 존재했다 => 업로드 + Board객체에 originName + changeName
@@ -364,27 +364,19 @@ public class MemberController {
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
 				);
-		List<Integer> boardList = memberService.selectBoard(map, rowBounds);
-		System.out.println(boardList);
-		List<Info> infoList = new ArrayList<>();
-		if (boardList != null && !boardList.isEmpty()) {
-			for (Integer boardNo : boardList) {
-				map.put("boardNo", boardNo);
-				map.put("memberNo", memberNo);
-				Info info = memberService.selectMyBoard(map);
-				int likeCheck = infoService.likeCheckInfo(map);
-				
-		        info.setLikeCheck(likeCheck);
-		        // PageInfo 설정
-		        info.setPageInfo(pi);
-		        
-		        // 최종 리스트에 추가
-		        infoList.add(info);
+		List<Info> boardList = memberService.selectBoard(map, rowBounds);
+		List<Info> infoList = new ArrayList();
+		if(boardList.size() != 0) {
+			infoList = memberService.selectMyBoard(boardList);
+			for(int i = 0; i < infoList.size(); i++) {
+				HashMap<Object, Object> hmap = new HashMap();
+				int boardNo = infoList.get(i).getBoardNo();
+				hmap.put("boardNo", boardNo);
+				hmap.put("memberNo", memberNo);
+				int likeCheck = infoService.likeCheckInfo(hmap);
+				infoList.get(i).setLikeCheck(likeCheck);
+				infoList.get(i).setPageInfo(pi);
 			}
-		}
-		System.out.println(infoList);
-		for(Info i : infoList){
-			i.setPageInfo(pi);
 		}
 		return infoList;
 	}
@@ -423,15 +415,14 @@ public class MemberController {
 	public String code(String code, HttpSession session) throws IOException, ParseException {
 		String accessToken = kakaoService.getToken(code);
 		Member member = kakaoService.getUserInfo(accessToken);
-		
 		if(memberService.selectMember(member.getMemberId()) == 0) {
+			member.setMemberStatus("K");
 			memberService.socialJoin(member);
 			String memberId= member.getMemberId();
 			member = memberService.selectSocialMember(memberId);
 			session.setAttribute("loginUser", member);
 			return "redirect:/";
 		} else {
-			member.setMemberStatus("C");
 			String memberId= member.getMemberId();
 			System.out.println(member.getProfile());
 			member = memberService.selectSocialMember(memberId);

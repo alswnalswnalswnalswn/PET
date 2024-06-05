@@ -66,9 +66,7 @@
         day = day >= 10 ? day : '0' + day;
 
         return date.getFullYear() + '-' + month + '-' + day;
-    	        
 	}
-	
 	
 		// 초기 변수 선언
 		let animal='A0',
@@ -86,7 +84,7 @@
 				selectInfoList(animal, ++page);
 			});
 			
-			$('.nav-item').click(function(){
+			$('.nav-item').click(() => {
 				
 				animal = $(this).attr('id');
 				console.log(animal);
@@ -150,14 +148,14 @@
 					
 					$('.row').html(resultStr);
 
-					$('#infoTitle, #thumbnailinfo').on('click', function() {
+					$('#infoTitle, #thumbnailinfo').on('click', () => {
 						
-						const boardNo = $(this).find('input').val();
+						const boardNo = $(this).find('input[name=boardNo]').val();
 						
 						location.href='${sessionScope.path}/info/infoDetail/' + boardNo + '/' + memberNo;
 					});
 					        
-							$('.like').click(function() {
+							$('.like').click(() => {
 								const boardNo = $(this).find('input').val();
 								if(memberNo === ""){
 									alert('로그인 부탁드려욧');

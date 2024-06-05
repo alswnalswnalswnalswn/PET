@@ -104,6 +104,9 @@
     	height: 45px;
     	margin-top: 40px;
     }
+    .refresh_btn_full{
+    	display: none;
+    }
 </style>
 	
 </head>
@@ -164,14 +167,15 @@
 			
 			
 			
-			$('#product_category').change(function() {
-                category = $(this).val();
+			$('#product_category').change(e => {
+                category = $(e.target).val();
                 text = '';
                 selectList(page, category, animal);
             });
 			
-			$('.nav-item').click(function() {
-				animal = $(this).attr('id');
+			$('.nav-item').click(e => {
+				animal = $(e.currentTarget).attr('id');
+
 				
 				if(selectedAnimal != null){
 					$('#'+selectedAnimal).find('img').css({
@@ -207,8 +211,8 @@
 					url : 'products/' + pageNumber + '/' + categoryCode + '/' + animalCode,
 					type : 'get',
 					success : result => {
-						console.log(result);
 						result.forEach( item => {
+							
 							text+='<div class="custom-col-5" >' +
 									'<div class="card" id="'+ item.productNo +'">' +
 										'<div class="card-body">' +
@@ -220,10 +224,10 @@
 									'</div>' +
 								  '</div>';
 							if(item.pageInfo.endPage == page){
-								$('.refresh_btn').css('display','none');
+								$('.refresh_btn').attr('class','refresh_btn_full')
 							}
 							else{
-								$('.refresh_btn').css('display','block');
+								$('.refresh_btn').attr('class','refresh_btn');
 							}
 						});
 						$('#productList').html(text);

@@ -209,10 +209,13 @@
 				TB_MEMBER
 		   SET
 		   		MEMBER_PROFILE = #{profile}
+		   	<if test='memberStatus == "K"'>
+		   		, MEMBER_STATUS = 'S'
+		   	</if>	
 		 WHERE
 		        MEMBER_NO = #{memberNo}
 		   AND
-		   	 	MEMBER_STATUS = 'C'
+		   	 	MEMBER_STATUS IN ('C', 'K', 'S')
 	</update>
 	
 	<select id="searchId" parameterType="member" resultType="string">
@@ -344,7 +347,7 @@
 				BOARD_NO DESC
 	</select>
 	
-	<select id="selectMyBoard" parameterType="hashMap" resultMap="infoResultSet">
+	<select id="selectMyBoard" parameterType="java.util.List" resultMap="infoResultSet">
 		SELECT
 		        BOARD_NO,
 		        NICKNAME BOARD_WRITER,
@@ -396,10 +399,11 @@
 		        TB_ATTACHMENT USING(BOARD_NO)
 		WHERE
 				BOARD_STATUS = 'Y'
-         AND
-                MEMBER_NO = #{memberNo}
-         AND
-                ATT_LEVEL = 1
+		  AND
+ 				BOARD_NO IN
+	<foreach collection="list" open="(" item="item" separator="," close=")">
+		  #{item.boardNo}
+	</foreach>
 		ORDER BY 
 				BOARD_NO DESC
 	</select>
@@ -612,7 +616,7 @@
 		  		TB_MEMBER
 		  		(MEMBER_NO, MEMBER_ID, NICKNAME, MEMBER_PROFILE, MEMBER_STATUS, SOCIAL_ID)
 		VALUES
-				(SEQ_MEMNO.NEXTVAL, #{memberId}, #{nickname}, #{profile}, DEFAULT, #{memberId})  		
+				(SEQ_MEMNO.NEXTVAL, #{memberId}, #{nickname}, #{profile}, #{memberStatus}, #{memberId})  		
 	</insert>
 	
 	<select id="selectSocialMember" resultMap="memberResultSet" parameterType="string">

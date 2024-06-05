@@ -125,10 +125,12 @@
          WHERE
          	   ATT_LEVEL = 1
            AND
-           	   PRODUCT_NO IN
-			   <foreach collection="list" item="item" open="(" separator="," close=")">
+           	   PRODUCT_NO IN (0
+			   <foreach collection="list" open="," item="item" separator=",">
 			    #{item.productNo}
 			   </foreach>
+			   )
+
 		  ORDER
 		     BY
 		     	PRODUCT_NO DESC

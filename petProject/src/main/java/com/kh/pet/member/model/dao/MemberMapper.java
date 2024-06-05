@@ -48,9 +48,9 @@ public interface MemberMapper {
 	 
 	 Member selectUpMember(int memberNo);
 	 
-	 List<Integer> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds);
+	 List<Info> selectBoard(HashMap<Object, Object> map, RowBounds rowBounds);
 	 
-	 Info selectMyBoard(HashMap<Object, Object> map);
+	 List<Info> selectMyBoard(List<Info> boardList);
 	 
 	 Info selectBoardDetail(int boardNo);
 	 

@@ -262,10 +262,35 @@
 	}
 	
 	.clickBtn:hover {
-		font-size: 14px;
+		font-size: 13px;
 		width: 82px;
 		height: 30px;
 	}
+    #goRep{
+    	width : 250px;
+    	height: 100px;
+    	position :relative;
+    	margin : auto;
+    }
+    #insRep_1, #insRep_2{
+		width: 180px;
+		height: 50px;
+		position : absolute;
+		right: 0;
+		transform: translate(0, 10%);
+	    font-size: 15px;
+	    border-radius: 10px;
+	    background-color: rgb(94, 87, 59);
+	    color:white;
+	    font-weight: bold;
+	    bolder: 0;
+	    cursor :pointer;
+	}
+	#insRep_1:hover, #insRep_2:hover{
+		font-size: 16px;
+		width: 181px;
+		height: 51px;
+    }
 </style>
 </head>
 <body>
@@ -292,12 +317,17 @@
 	
 	<div class="myrep">
 	</div>	
+	
+	<div id="goRep">
+		<button id="insRep_1">댓글 작성</button>
+	</div>
+	
 	<jsp:include page="../common/footer.jsp" />	
 	
 	
 	<script>
     const memberNo = '${sessionScope.loginUser.memberNo}';
-    const boardNo = ${info.boardNo};
+    const boardNo = '${info.boardNo}';
     resultStr = '';
     console.log(memberNo);
     console.log(boardNo);
@@ -309,7 +339,7 @@
 			let createDate = fullDate.substring(0, 10);
 	        $('#detailDate').append('<span>' + createDate + '</span>');
 	        
-			$('#info_like').click(function() {
+			$('#info_like').click(() => {
 				
 				if(memberNo === ""){
 					alert('로그인 부탁드려욧');
@@ -408,16 +438,19 @@
 	        			$('#replyCount').append('(' + result[0].replyCount + ')');
         			}
         			$('.myrep').html(resultStr);
-        	    	$('.btncom').click(function(){
+        	    	$('.btncom').click(() => {
         	    		if(memberNo === ""){
         	    			alert('로그인 후 이용가능합니다.');
         	    		} else {
         	    			$(this).parent().next('.inscom').toggle();
         	    		}
         	    	});
-        	    	$('.clickBtn').click(function(){
+        	    	$('.clickBtn').click(() => {
        	    			$('.commentNone').toggle();
         	    	});
+        	    	$('#insRep_1').click(() => {
+        	    		$('#goRep').html('<button id="insRep_2">댓글 등록하기</button>');
+        	    	})
         		},
         		error : result => {
         			console.log('실패');
@@ -425,7 +458,9 @@
         	})
         };
         
-       	
+       	$('#insRep_2').click(() => {
+       		
+       	})
        	function insertComment(replyNo, seMemNo){
        	let commentContent = $('textarea[name=commentContent]').val();
        	console.log(commentContent);
