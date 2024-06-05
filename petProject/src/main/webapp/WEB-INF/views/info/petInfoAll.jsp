@@ -150,7 +150,7 @@
 
 					$('#infoTitle, #thumbnailinfo').on('click', () => {
 						
-						const boardNo = $(this).find('input').val();
+						const boardNo = $(this).find('input[name=boardNo]').val();
 						
 						location.href='${sessionScope.path}/info/infoDetail/' + boardNo + '/' + memberNo;
 					});
