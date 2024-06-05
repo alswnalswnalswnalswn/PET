@@ -209,10 +209,13 @@
 				TB_MEMBER
 		   SET
 		   		MEMBER_PROFILE = #{profile}
+		   	<if test='memberStatus == "K"'>
+		   		, MEMBER_STATUS = 'S'
+		   	</if>	
 		 WHERE
 		        MEMBER_NO = #{memberNo}
 		   AND
-		   	 	MEMBER_STATUS = 'C'
+		   	 	MEMBER_STATUS IN ('C', 'K', 'S')
 	</update>
 	
 	<select id="searchId" parameterType="member" resultType="string">
@@ -613,7 +616,7 @@
 		  		TB_MEMBER
 		  		(MEMBER_NO, MEMBER_ID, NICKNAME, MEMBER_PROFILE, MEMBER_STATUS, SOCIAL_ID)
 		VALUES
-				(SEQ_MEMNO.NEXTVAL, #{memberId}, #{nickname}, #{profile}, DEFAULT, #{memberId})  		
+				(SEQ_MEMNO.NEXTVAL, #{memberId}, #{nickname}, #{profile}, #{memberStatus}, #{memberId})  		
 	</insert>
 	
 	<select id="selectSocialMember" resultMap="memberResultSet" parameterType="string">
