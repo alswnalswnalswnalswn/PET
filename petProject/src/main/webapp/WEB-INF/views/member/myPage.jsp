@@ -366,11 +366,13 @@
                     <div id="content"><a href="myBoard"><img src="${sessionScope.path}/resources/img/common/board.png" alt=""><br>내가 쓴 게시글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/comment.png" alt=""><br>내가 쓴 댓글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/like.png" alt=""><br>내 좋아요</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/heart.png" alt=""><br>내가 찜한 상품</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/mycart.png" alt=""><br>내 장바구니</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/coupon.png" alt=""><br>내 쿠폰</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/shopping.png" alt=""><br>내 결제 내역</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/reser.png" alt=""><br>내 예약 내역</a></div>
+                    <!-- 
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/heart.png" alt=""><br>내가 찜한 상품</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/mycart.png" alt=""><br>내 장바구니</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/coupon.png" alt=""><br>내 쿠폰</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/reser.png" alt=""><br>내 예약 내역</a></div>
+               		-->
                 </div>
                 <div id="main"><button type="button" id="main_btn" onclick="location.href='${sessionScope.path}'">메인화면</button></div>
             </div>
@@ -579,6 +581,7 @@
                         newDiv.style.display = "block";
                         this.innerText = "완료";
                         this.style.width = "45px";
+                        
                     } else {
                         newDiv.style.display = "none";
                         this.innerText = "수정";

@@ -154,7 +154,7 @@
 		 WHERE
 		 	   MEMBER_NO = #{memberNo}
 		   AND
-		   	   BOARD_NO = #{boardNo}	
+		   	   BOARD_NO = #{boardNo}
 	</select>
 	
 	<update id="updateCount" parameterType="_int">

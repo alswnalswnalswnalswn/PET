@@ -364,27 +364,19 @@ public class MemberController {
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
 				);
-		List<Integer> boardList = memberService.selectBoard(map, rowBounds);
-		System.out.println(boardList);
-		List<Info> infoList = new ArrayList<>();
-		if (boardList != null && !boardList.isEmpty()) {
-			for (Integer boardNo : boardList) {
-				map.put("boardNo", boardNo);
-				map.put("memberNo", memberNo);
-				Info info = memberService.selectMyBoard(map);
-				int likeCheck = infoService.likeCheckInfo(map);
-				
-		        info.setLikeCheck(likeCheck);
-		        // PageInfo 설정
-		        info.setPageInfo(pi);
-		        
-		        // 최종 리스트에 추가
-		        infoList.add(info);
-			}
-		}
-		System.out.println(infoList);
-		for(Info i : infoList){
-			i.setPageInfo(pi);
+		List<Info> boardList = memberService.selectBoard(map, rowBounds);
+		List<Info> infoList = new ArrayList();
+		if(boardList.size() != 0) {
+			infoList = memberService.selectMyBoard(boardList);
+			for(int i = 0; i < infoList.size(); i++) {
+				HashMap<Object, Object> hmap = new HashMap();
+				int boardNo = infoList.get(i).getBoardNo();
+				hmap.put("boardNo", boardNo);
+				hmap.put("memberNo", memberNo);
+				int likeCheck = infoService.likeCheckInfo(hmap);
+				infoList.get(i).setLikeCheck(likeCheck);
+				infoList.get(i).setPageInfo(pi);
+			}	
 		}
 		return infoList;
 	}
