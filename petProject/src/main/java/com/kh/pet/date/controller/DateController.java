@@ -40,6 +40,8 @@ public class DateController {
 	public Info selectDate(@PathVariable("placeNo")int placeNo, HttpSession session) {
 	
 		HashMap<String, Integer> map = new HashMap();
+		Info dateInfo = new Info();
+		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int likeCheck = 0;
 		
@@ -48,14 +50,12 @@ public class DateController {
 			map.put("placeNo",placeNo);
 			likeCheck = dateService.likeCheck(map);
 		}
-		
-		dateService.updateCount(placeNo);
-		
-		Info dateInfo = dateService.selectDate(placeNo);
-		
-		dateInfo.setLikeCheck(likeCheck);
-		
+		if(dateService.updateCount(placeNo) > 0) {
+			dateInfo = dateService.selectDate(placeNo);
+			dateInfo.setLikeCheck(likeCheck);
+		}
 		return dateInfo;
+		
 	}
 	
 	@PostMapping("reply")
@@ -77,6 +77,19 @@ public class DateController {
 		map.put("content", content);
 		
 		return dateService.updateRepCom(map) > 0 ? "Y" : "N";
+	}
+	
+	@DeleteMapping
+	public String deleteRepCom(@RequestBody String data) {
+		JsonObject jsonObject = JsonParser.parseString(data).getAsJsonObject();
+		String type = jsonObject.get("type").getAsString();
+		String number = jsonObject.get("number").getAsString();
+		HashMap<String,String> map = new HashMap();
+		
+		map.put("type", type);
+		map.put("number",number);
+		
+		return dateService.deleteRepCom(map) > 0 ? "Y" : "N";
 	}
 
 

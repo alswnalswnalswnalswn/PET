@@ -226,6 +226,7 @@
 		
 		
 		function moveMarkers(){
+			//지도 영역 좌표
 			var bounds = map.getBounds();
 		    var neLat = bounds.getNorthEast().getLat();
 		    var neLng = bounds.getNorthEast().getLng();
@@ -239,8 +240,9 @@
 		            var positions = [];
 		            var list = ''; 
 		            result.forEach( item => {
+		            	//마커, 마커 클릭 시 화면 추가
 		                createMarkerAndInfoWindow(item, map);
-		                
+		                // 장소 리스트 추가 부트스트랩 활용
 		                list +='<div class="items card">' +
 		                			'<div class="card-header" id="btn-area">' + item.placeName + '<button class="detail-btn date-btn" id="' + item.placeNo + '">자세히보기</button></div>' +
 		                			'<div class="card-body">' + item.placeDayOff + '<br>' + item.placeDayOn + '</div>' +
@@ -323,45 +325,69 @@
 		}
 		
 		$(() => {
-			
-			$('#wrap').on('click','.like_btn_cansle', e => {
-				const requestObj = {
-						boardNum : boardNo,
-						memberNo : '${loginUser.memberNo}'
-				};
+			// 상세보기
+			$('#wrap').on('click','.detail-btn', e => {
+				const $placeNo = $(e.target).attr('id');
+				$('#menu_detail').scrollTop(0);
+				detailDateAjax($placeNo);
 				
+			});
+			// 상세보기 닫기
+			$('#wrap').on('click','.menu_close', e => {
+				$(e.target).parents('#menu_detail').css('display','none');
+			});
+			
+			// 댓글 작성 요청
+			$('#wrap').on('click','.reply_write .reply_write_btn', e => {
+				const $reply = $('.reply_write .write_content');
 				$.ajax({
-					url : 'date/like',
-					type : 'delete',
-					data : JSON.stringify(requestObj)	
-					,
+					url : 'date/reply',
+					method : 'post',
+					data : {
+						memberNo : '${sessionScope.loginUser.memberNo}',
+						replyContent : $reply.val(),
+						boardNo : boardNo
+					},
 					success : result => {
-						detailDateAjax(placeNo);
+						if(result == 'Y'){
+							detailDateAjax(placeNo);
+						}
+						else{
+							alert('실패');
+						}
 					}
 				});
 			});
 			
-			$('#wrap').on('click','.like_btn', e => {
-				if('${sessionScope.loginUser}' == ''){
-					alert('로그인 후 이용해주세요');
-				}else{
-					$.ajax({
-						url : 'date/like',
-						type : 'post',
-						data : {
-							boardNo : boardNo,
-							memberNo : '${loginUser.memberNo}'
-						},
-						success : result => {
-							detailDateAjax(placeNo);
-						}
-					});
-				}
+			// 댓글 수정
+			$('#wrap').on('click','.update_btn', e => {
+				const $updateBtn = $(e.target).parent().parent();
+				const $updateContent = $(e.target).parent().siblings('.reply_content');
+				$updateBtn.hide();
+				$updateBtn.next().show();
 			});
+			
+			// 댓글 수정 취소
+			$('#wrap').on('click','.write-btn-cansle', e => {
+				const cansle = $(e.target);
+				// 취소 버튼을 누른게 댓글, 대댓글 수정이라면 기존 댓글을 표시
+				if(cansle.prev().attr('class') == 'update_write_btn'){
+					cansle.parents('.update_area').prev().show();
+					// 취소 버튼을 눌렀을 떄 기존 text가 유지되도록 value 수정
+					cansle.siblings('.write_content').val(cansle.parents('.update_area').prev().children('.reply_content').text());
+					cansle.parents('.update_area').hide();
+				}
+				else{
+					cansle.parent().parent().html('');
+				}
+				
+			});
+			// 댓글 수정 요청
 			$('#wrap').on('click','.update_write_btn', e => {
 				const $updateContent = $(e.target).prev();
 				const $updateNo = $(e.target).parents('.update_area').prev().attr('id');
-				let words = $(e.target).parents('.update_area').prev().attr('id').split('_');
+				// id 형태 댓글 reply_pk 대댓글 comment_pk
+				let words = $updateNo.split('_');
 				$.ajax({
 					url : 'date',
 					type : 'post',
@@ -371,33 +397,22 @@
 						content : $updateContent.val()
 					},
 					success : result => {
-						detailDateAjax(placeNo);
+						if(result == 'Y'){
+							detailDateAjax(placeNo);
+						}
+						else{
+							alert('실패');
+						}
 					}
 				});
 			});
 			
-			$('#wrap').on('click','.update_btn', e => {
-				const $updateBtn = $(e.target).parent().parent();
-				const $updateContent = $(e.target).parent().siblings('.reply_content');
-				$(e.target).parent().parent().hide();
-				$(e.target).parent().parent().next().show();
-			});
-
+			// 대댓글 작성
 			$('#wrap').on('click','.comment_btn', e => {
 				$(e.target).parent().siblings('.comment_writer').html(replyWrite('comment_write',''));
 				
 			});
-			$('#wrap').on('click','.write-btn-cansle', e => {
-				if($(e.target).prev().attr('class') == 'update_write_btn'){
-					$(e.target).parents('.update_area').prev().show();
-					$(e.target).siblings('.write_content').val($(e.target).parents('.update_area').prev().children('.reply_content').text());
-					$(e.target).parents('.update_area').hide();
-				}
-				else{
-					$(e.target).parent().parent().html('');
-				}
-				
-			});
+			// 대댓글 작성 요청
 			$('#wrap').on('click','.comment_write_btn', e => {
 				const $comment = $(e.target).siblings('.write_content').val();
 				
@@ -414,47 +429,92 @@
 					success : result => {
 						if(result == 'Y'){
 							detailDateAjax(placeNo);
+							
+						}
+						else{
+							alert('작성실패');
 						}
 					}
 				});
 				
-				
-				
+			});
+			// 좋아요 요청
+			$('#wrap').on('click','.like_btn', e => {
+				if('${sessionScope.loginUser}' == ''){
+					alert('로그인 후 이용해주세요');
+				}else{
+					$.ajax({
+						url : 'date/like',
+						type : 'post',
+						data : {
+							boardNo : boardNo,
+							memberNo : '${loginUser.memberNo}'
+						},
+						success : result => {
+							if(result == 'Y'){
+								detailDateAjax(placeNo);
+								
+							}
+							else{
+								alert('실패');
+							}
+						}
+					});
+				}
 			});
 			
-			$('#wrap').on('click','.reply_write .reply_write_btn', e => {
-				const $reply = $('.reply_write .write_content');
+			// 좋아요 취소 요청
+			$('#wrap').on('click','.like_btn_cansle', e => {
+				const requestObj = {
+						boardNum : boardNo,
+						memberNo : '${loginUser.memberNo}'
+				};
+				
 				$.ajax({
-					url : 'date/reply',
-					method : 'post',
-					data : {
-						memberNo : '${sessionScope.loginUser.memberNo}',
-						replyContent : $reply.val(),
-						boardNo : boardNo
-					},
-					success : result => {
+					url : 'date/like',
+					type : 'delete',
+					data : JSON.stringify(requestObj),
+					success : () => {
 						if(result == 'Y'){
 							detailDateAjax(placeNo);
 							
 						}
+						else{
+							alert('실패');
+						}
+					}
+				});
+			});
+			
+			$('#wrap').on('click','.delete_btn', e => {
+				const deleteId = $(e.target).parent().parent().attr('id').split('_');
+				const data = {
+						type : deleteId[0],
+						number : deleteId[1]
+				};
+				$.ajax({
+					url : 'date',
+					type : 'delete',
+					data : JSON.stringify(data),
+					success : () => {
+						if(result == 'Y'){
+							detailDateAjax(placeNo);
+							
+						}
+						else{
+							alert('실패');
+						}
 					}
 				});
 			});
 			
 			
-			$('#wrap').on('click','.detail-btn', e => {
-				const $placeNo = $(e.target).attr('id');
-				$('#menu_detail').scrollTop(0);
-				detailDateAjax($placeNo);
-				
-				
-			});
-			
-			$('#wrap').on('click','.menu_close', e => {
-				$(e.target).parents('#menu_detail').css('display','none');
-			});
 			
 		});
+		
+		
+		
+		
 		function resize(obj) {
             obj.style.height = '1px';
             obj.style.height = (3 + obj.scrollHeight) + 'px';
@@ -476,6 +536,7 @@
 	        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
         	        
 		}
+		// 댓글 작성 write가 comment면 취소버튼 
 		function replyWrite(write,content) {
 			if(write != 'reply_write'){
 				btnText = '<button class="write-btn-cansle">취소</button>';
@@ -536,6 +597,7 @@
 						        '<div class="menu_footer">' +
 						            '<div class="footer_title">댓글</div>';
 							            if('${sessionScope.loginUser}' != ''){
+							           	// 댓글작성
 							            text += replyWrite("reply_write",'');	
 							            }
 							            text += '<div class="footer_content">';
@@ -551,26 +613,34 @@
 							            	   
 							            	   var replyUpdate = new Date(replyUpdateDate.year, replyUpdateDate.month - 1, replyUpdateDate.day, replyUpdateTime.hour, replyUpdateTime.minute ,replyUpdateTime.second);
 							            	   var replyDate = new Date(replyCreateDate.year, replyCreateDate.month - 1, replyCreateDate.day, replyCreateTime.hour, replyCreateTime.minute ,replyCreateTime.second);
-							            	   
+							            	   if(replyList[i].replyStatus == 'Y'){
+							            		   
 							            	   text += '<div class="reply" id="reply_' + replyList[i].replyNo + '">' +
 										          			'<div class="reply_writer">' + replyList[i].replyWriter + '</div>' +
 										       				'<div class="reply_content">' + replyList[i].replyContent + '</div>';
-										       				
+										       			// 댓글 수정날짜 판별
 							            	   			if(replyUpdate.getTime() === replyDate.getTime()){
 							            	   				text += '<div class="reply_createDate">' + dateFormat(replyDate); 
 										       			}
 							            	   			else{
 						                    				text += '<div class="reply_createDate">' + dateFormat(replyUpdate) + '&emsp;(수정됨)';
 						                    			}
+										       			// 사용자가 로그인을 했다면 답글쓰기 버튼 표시
 										       			if('${sessionScope.loginUser}' != ''){
 										       				text += '&emsp;<a class="comment_btn">답글쓰기</a>';
 										       			}
+										       			// 사용자가 댓글 작성자와 같은면 수정과 삭제 버튼 추가
 										       			if('${sessionScope.loginUser.nickname}' == replyList[i].replyWriter){
 										       				text += '&emsp;<a class="update_btn">수정</a>&emsp;<a class="delete_btn">삭제</a>';
 										       			}
 										       			text += '</div><div class="comment_writer"></div>' +
 										       		'</div>'+ '<div class="update_area" style="display:none">' + replyWrite('update_write', replyList[i].replyContent) + '</div>';
-										            	   
+							            	   }
+							            	   else {
+							            		   text += '<div class="reply" id="reply_' + replyList[i].replyNo + '">' +
+								          			'<div class="reply_writer">삭제된 댓글입니다.</div>' +
+								       				'<div class="reply_content"></div></div>';
+							            	   }
 						                    		for(let j in commentList){
 						                    			
 						                    			if(replyList[i].replyNo == commentList[j].replyNo){
@@ -581,6 +651,7 @@
 								                    			let commentUpdateDate = commentList[j].updateDate.date;
 								                    			var commentUpdate = new Date(commentUpdateDate.year, commentUpdateDate.month - 1, commentUpdateDate.day, commentUpdateTime.hour, commentUpdateTime.minute ,commentUpdateTime.second);
 								                    			var commentDate = new Date(commentCreateDate.year, commentCreateDate.month - 1, commentCreateDate.day, commentCreateTime.hour, commentCreateTime.minute ,commentCreateTime.second);
+								                    			if(commentList[j].commentStatus == 'Y'){
 							                    				text += '<div class="comment" id="comment_' + commentList[j].commentNo + '">' +
 										                    				'<div class="reply_writer">' + commentList[j].commentWriter + '</div>' +
 											                    			'<div class="reply_content">' + commentList[j].commentContent + '</div>';
@@ -594,6 +665,12 @@
 											                    				text += '&emsp;<a class="update_btn">수정</a>&emsp;<a class="delete_btn">삭제</a>';
 											                    			}
 											                    text += '</div></div><div class="update_area" style="display:none">' + replyWrite('update_write', commentList[j].commentContent) + '</div>';
+								                    			}
+								                    			else{
+								                    				text += '<div class="comment" id="comment_' + commentList[j].commentNo + '">' +
+								                    				'<div class="reply_writer">삭제된 댓글입니다.</div>' +
+									                    			'<div class="reply_content"></div></div>';
+								                    			}
 						                    				}
 						                    				
 						                    			}
@@ -618,8 +695,8 @@
 		return text;
 		}
 	</script>
-	
-	
+
+
 	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>

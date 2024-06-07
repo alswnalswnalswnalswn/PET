@@ -29,20 +29,18 @@ public class ProductsController {
 	public List<Product> selectAll(@PathVariable int page,
             					   @PathVariable String category,
             					   @PathVariable String animal){
-		
 		HashMap<String, String> map = new HashMap();
-		
 		map.put("category", category);
 		map.put("animal", animal);
-
 		PageInfo pi = Pagination.getPageInfo(productService.selectListCount(map), page, 15, 10);
-
 		RowBounds rowBounds = new RowBounds(
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
 				);
+		
 		List<Product> list = productService.selectCount(map,rowBounds);
 		List<Product> productList = new ArrayList();
+		
 		if(list.size() != 0) {
 			productList = productService.selectAll(list);
 			

@@ -60,7 +60,9 @@
 	</div>
 	
 	<div id="needgongan"></div>
-		<div class="content_wrap" id="boardoutput"></div>
+		<div class="content_wrap" id="boardoutput">
+		
+		</div>
 			
 	<div id="gomain">
 		<button id="showMore" class="mainbtn">더 보기</button>
@@ -83,9 +85,6 @@
 		
 		function selectCommunityList(animal, category, page){
 			
-			console.log(animal);
-			console.log(category);
-			console.log(page);
 			
 			$.ajax({
 				url : 'communities',
@@ -99,6 +98,7 @@
 					for(let i in result){
 						let createDate = result[i].createDate.date;
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
+						
 						var animalListStr = '';
 						var animalListResult = result[i].animalList;
 						
@@ -112,13 +112,13 @@
 						
 						resultStr += '<div id="myboard" class="communityList">'
 										+ '<div class="thumbnailImg" id="thumbnail"><img src="/pet/';
-										if(result[i].attachmentList[0].attNo != 0){
+										if(result[i].attachmentList.length > 0){
 											resultStr += result[i].attachmentList[0].attPath  + result[i].attachmentList[0].changeName;
 										}
 										else {
 											resultStr += 'resources/img/profile/profile.png"';
 										}
-						resultStr 		+= '"></div>'
+						resultStr 		+= '></div>'
 										+ '<div class="center_content" id="boardlist">'
 										+ '<input type="hidden" value="' + result[i].boardNo + '">'
 											+ '<div id="boardheader">'
@@ -157,7 +157,7 @@
 						$('#showMore').css('display', 'block');
 					}
 					else{
-						$('#showMore').css('display', 'none');
+						$('#showMore').css('display', 'none');	
 					}
 				}
 			});

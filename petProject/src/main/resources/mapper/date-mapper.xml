@@ -433,7 +433,26 @@
 	    WHERE BOARD_NO = #{boardNo}
 	</select>
 	
-	
+	<update id="deleteRepCom" parameterType="hashMap">
+	UPDATE
+		<choose>
+			<when test="type == 'reply'">
+		   TB_REPLY
+	   SET
+	   	   REPLY_STATUS	= 'N'
+	 WHERE
+	 	   REPLY_NO = 
+			</when>
+			<otherwise>
+		   TB_COMMENT
+	   SET
+	   	   COMMENT_STATUS	= 'N'
+	 WHERE
+		   COMMENT_NO =
+			</otherwise>
+		</choose>
+    	#{number}
+	</update>
 	
 	
 	
