@@ -103,6 +103,11 @@ public class InfoServiceImpl implements InfoService {
 		return infoMapper.likeCheckInfo(map);
 	}
 
+	@Override
+	public int insertReply(Reply reply) {
+		return infoMapper.insertReply(reply);
+	}
+
 
 	
 }

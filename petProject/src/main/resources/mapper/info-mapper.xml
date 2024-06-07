@@ -154,7 +154,7 @@
 		 WHERE
 		 	   MEMBER_NO = #{memberNo}
 		   AND
-		   	   BOARD_NO = #{boardNo}	
+		   	   BOARD_NO = #{boardNo}
 	</select>
 	
 	<update id="updateCount" parameterType="_int">
@@ -492,6 +492,21 @@
 				)  		
 	</insert>
 	
+	<insert id="insertReply" parameterType="reply">
+		INSERT
+		  INTO
+		  		TB_REPLY
+		VALUES
+				(
+				SEQ_REPNO.NEXTVAL,
+				#{memberNo},
+				#{boardNo},
+				#{replyContent},
+				SYSDATE,
+				SYSDATE,
+				DEFAULT
+				)	
+	</insert>
 	
 	
 	

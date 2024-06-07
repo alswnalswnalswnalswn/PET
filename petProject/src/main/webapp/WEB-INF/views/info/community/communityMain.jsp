@@ -9,82 +9,114 @@
 	<link rel="stylesheet" href="resources/css/community/communityMain.css" />
 </head>
 <body>
-<script src="${sessionScope.path }/resources/script/date.js"></script>
+
+	<script src="${sessionScope.path }/resources/script/date.js" />
 	<jsp:include page="../../common/header.jsp" />
 	<c:set value="${ sessionScope.path }" var="path" />
 	
-	<div id="submenubar">
+	<div class="wrap">
 	
-		<div id="searchForm">
-			<div id="search">
-				<div id="searchcon">
-					<input type="text" name="searchContent" id="searchContent"/>
+		<div id="community_header">
+		
+			<div id="left_header">
+				<div class="searchKeyword">
+					<input type="text" />
 				</div>
-				<div id="searchImg">
-					<img src="${path}/resources/img/common/searchform.png" alt="" id="searchimg">
+				<div class="searchImage">
+					<img src="${path}/resources/img/common/searchform.png" alt="검색이미지">
+				</div>
+			</div>
+			
+			<div id="right_header">
+
+				<div class="btn-group boardCategory">
+
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+						글 성격
+					</button>
+					<div class="dropdown-menu">
+						<div class="dropdown-item" value="I0">#전체</div>
+						<div class="dropdown-item" value="I1">#자유</div>
+						<div class="dropdown-item" value="I2">#질문</div>
+					</div>
+					
+				</div>
+				
+				<div class="btn-group animalCategory">
+
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+						반려동물
+					</button>
+					<div class="dropdown-menu">
+						<div class="dropdown-item" value="A0">#전체</div>
+						<div class="dropdown-item" value="A1">#강아지</div>
+						<div class="dropdown-item" value="A2">#고양이</div>
+						<div class="dropdown-item" value="A3">#토끼</div>
+						<div class="dropdown-item" value="A4">#물고기</div>
+						<div class="dropdown-item" value="A5">#새</div>
+						<div class="dropdown-item" value="A6">#햄스터</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		
-		<div class="selectctg">
-			<div id="select">
-				<div id="styleboardform">
-					<div id="selectstyle" class="boardCategory">
-						<span id="styleboard">글 성격</span>
-					</div>
-					<div id="boardinfo">
-						<span class="category_info" value="I0"># 전체</span><br>
-						<span class="category_info" value="I1"># 자유</span><br>
-						<span class="category_info" value="I2"># 질문</span><br>
-					</div>
-				</div>
-				<div id="styleaniform">
-					<div id="selectani" class="aniCategory">	
-						<span id="styleani">반려 동물</span>
-					</div>
-					<div id="aniinfo">
-						<span class="animal_info" value='A0'># 전체</span><br>
-						<span class="animal_info" value='A1'># 강아지</span><br>
-						<span class="animal_info" value='A2'># 고양이</span><br>
-						<span class="animal_info" value='A3'># 토끼</span><br>
-						<span class="animal_info" value='A4'># 물고기</span><br>
-						<span class="animal_info" value='A5'># 새</span><br>
-						<span class="animal_info" value='A6'># 햄스터</span><br>
-					</div>
-				</div>
-			</div>
+		<div id="community_content_wrap">
 			
-			<div id="line"></div>
+		</div>
+		
+		<div id="subMenu">
+			<button id="showMore" class="mainbtn">더 보기</button>
+			<button class="mainbtn">메인으로</button>
+			<c:if test="${sessionScope.loginUser ne null }">
+				<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
+			</c:if>
 		</div>
 		
 	</div>
-	
-	<div id="needgongan"></div>
-		<div class="content_wrap" id="boardoutput">
-		
-		</div>
-			
-	<div id="gomain">
-		<button id="showMore" class="mainbtn">더 보기</button>
-		<button class="mainbtn">메인으로</button>
-		<c:if test="${sessionScope.loginUser ne null }">
-			<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
-		</c:if>
-	</div>
-	
 	
 	<script>
-	
 		// 초기 변수 선언
 		let animal='A0',
 		category = 'I0', 
 		page = 1,
 		text = '',
 		resultStr = '',
-		animalListStr = '';
+		animalStr = '',
+		attStr = '';
+		
+		$(() => {
+			
+			selectCommunityList(animal, category, page);
+			
+			$('.dropdown-item').click(function(){
+				var dropdownName = $(this).text().substring(1);
+				var dropdownCode = $(this).attr('value');
+				
+				if(dropdownCode.substring(0,1) == 'A'){
+					animal = dropdownCode;
+				}
+				else {
+					category = dropdownCode;
+				}
+				
+				$(this).closest('.btn-group').find('.btn').html(dropdownName);
+				
+				selectCommunityList(animal, category, page);
+				
+			});
+			
+			$('#community_content_wrap').on('click', '.community_content', e => {
+				var boardNo = $(e.currentTarget).attr('id');
+				location.href = 'communityDetail/' + boardNo;
+			});
+			
+			$('#showMore').click(() => {
+				selectCommunityList(animal, category, ++page);
+			});
+			
+		});
 		
 		function selectCommunityList(animal, category, page){
-			
 			
 			$.ajax({
 				url : 'communities',
@@ -95,125 +127,74 @@
 				},
 				success : result => {
 					console.log(result);
+					
 					for(let i in result){
+						
+						// 썸네일
+						var attList = result[i].attachmentList;
+						if(attList.length > 0){
+							attStr = '<div class="thumbnailImg"><img src="${sessionScope.path}' + attList[0].attPath + attList[0].changeName + '"></div>'
+						}
+						else {
+							attStr = '<div class="thumbnailImg"><img src="${sessionScope.path}/resources/img/profile/profile.png"></div>'
+						}
+						
+						// 동물 리스트
+						var animalListResult = result[i].animalList;
+						animalStr ='';
+						for(let j in animalListResult){
+							
+							animalStr += '<div class="animalAndCategory">' 
+										  + animalListResult[j].animalName
+									  + '</div>'
+						}
+						
+						// 게시글 등록일
 						let createDate = result[i].createDate.date;
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 						
-						var animalListStr = '';
-						var animalListResult = result[i].animalList;
+						resultStr += '<div class="community_content" id="' + result[i].boardNo + '">'
+									   + attStr
+									   + '<div class="community_result row">'
+										   + '<div class="boardWriter col-sm-2">' + result[i].memberNo + '</div>'
+										   + '<div class="animalListStr col-sm-7">' + animalStr + '</div>'
+										   + '<div class="createDate col-sm-3">' + dateFormat(fullDate) + '</div>'
+										   + '<div class="boardTitle col-sm-12">' + result[i].boardTitle + '</div>'
+										   + '<div class="boardContent col-sm-12">' + result[i].boardContent + '</div>'
+									   + '</div>'
+									   
+									   + '<div class="about_result">'
+									   	   + '<div class="like">'
+											   + '<div class="likeImg"><img src="${sessionScope.path}/resources/img/common/like.png"></div>'
+											   + '<div class="likeCount">(' + result[i].boardLike + ')</div>'
+										   + '</div>'
+										   + '<div class="boardCount">'
+											   + '<div class="boardCountName"><img src="${sessionScope.path}/resources/img/common/like2.png"></div>'
+											   + '<div class="boardCountResult">(' + result[i].boardCount + ')</div>'
+										   + '</div>'
+										   + '<div class="reply">'
+											   + '<div class="replyImg"><img src="${sessionScope.path}/resources/img/common/reply.png"></div>'
+											   + '<div class="replyCount">(' + result[i].sumCount + ')</div>'
+										   + '</div>'
+									   + '</div>'
+								   + '</div>'
+								   
+						$('#community_content_wrap').html(resultStr);
 						
-						for(let i in animalListResult){
-							animalListStr += '<div class="animalAndCategory">' 
-										  + animalListResult[i].animalName
-										  + '</div>'
+						if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
+							$('#showMore').css('display', 'block');
 						}
-						
-						animalListStr += '<br clear="both">';
-						
-						resultStr += '<div id="myboard" class="communityList">'
-										+ '<div class="thumbnailImg" id="thumbnail"><img src="/pet/';
-										if(result[i].attachmentList.length > 0){
-											resultStr += result[i].attachmentList[0].attPath  + result[i].attachmentList[0].changeName;
-										}
-										else {
-											resultStr += 'resources/img/profile/profile.png"';
-										}
-						resultStr 		+= '></div>'
-										+ '<div class="center_content" id="boardlist">'
-										+ '<input type="hidden" value="' + result[i].boardNo + '">'
-											+ '<div id="boardheader">'
-												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
-												+ '<div id="myboardAni"><span class="category" id="myani">' + animalListStr + '</span></div>'
-												+ '<div class="create_date" id="boardCreate">' + dateFormat(fullDate) + '</div>'
-											+ '</div>'
-											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
-											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
-										+ '</div>'
-											+ '<div class="content_reaction" id="boardLike">'
-												+ '<div id="likeinfo"><button id="detailbtn">&nbsp;&nbsp;&nbsp;˚&nbsp;˚&nbsp;˚</button></div>'
-												+ '<div id="likeboard"><img id="like_board" src="${sessionScope.path }/resources/img/common/like.png">&nbsp;&nbsp;(' + result[i].boardLike + ')</div>'
-												+ '<div id="seeboard"><span>조회</span>&nbsp;&nbsp;&nbsp;(' + result[i].sumCount + ')</div>'
-												+ '<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">&nbsp;&nbsp;(' + result[i].boardCount + ')</div>'
-											+ '</div>'
-									+ '</div>'
-					};
-					
-					$('#like_board').click(function(){
-						 var a = "${sessionScope.path}/resources/img/common/like2.png";
-	                        $('#like_board img').attr('src', a);
-					})
-					
-					$('.content_wrap').html(resultStr);
-					
-					$('.center_content').click(function() {
-						
-						var $communityDetail = $(this).next('.communityDetail');
-						var boardNo = $(this).find('input[type="hidden"]').val();
-						
-						location.href = 'communityDetail/' + boardNo;
-					});
-					
-					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
-						$('#showMore').css('display', 'block');
-					}
-					else{
-						$('#showMore').css('display', 'none');	
+						else{
+							$('#showMore').css('display', 'none');
+						}
 					}
 				}
+				
 			});
 		}
 		
 		
-		$(() => {
-			
-			selectCommunityList(animal, category, page);
-			
-			$('.category_info').click(function(){
-				
-				var categoryInfo = $(this).attr("value");
-				category = categoryInfo;
-				
-				resultStr = '';
-				page = 1;
-				selectCommunityList(animal, category, page);
-				
-				$('#styleboard').text($(this).text().replace(/[# ]/g, ''));
-				$('#boardinfo').css('display', 'none');
-				
-			});
-			
-			$('.animal_info').click(function(){
-				
-				var animalInfo = $(this).attr("value");
-				animal = animalInfo;
-				
-				resultStr = '';
-				page = 1;
-				selectCommunityList(animal, category, page);
-				
-				$('#styleani').text($(this).text().replace(/[# ]/g, ''));
-				$('#aniinfo').css('display', 'none');
-				
-			});
-			
-			$('.boardCategory').click(function(){
-				$('#aniinfo').css('display', 'none');
-			    $('#boardinfo').toggle();
-			});
-			
-			$('.aniCategory').click(function(){
-				$('#boardinfo').css('display', 'none');
-			    $('#aniinfo').toggle();
-			});
-			
-			$('#btncom').click(function(){
-				$('#inscom').toggle();
-			});
-			
-			$('#showMore').click(() => {
-				selectCommunityList(animal, category, ++page);
-			});
-		});
+		
 		
 				
 		

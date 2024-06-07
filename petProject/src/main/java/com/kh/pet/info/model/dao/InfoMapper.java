@@ -49,5 +49,7 @@ public interface InfoMapper {
 
 	int likeCheckInfo(HashMap<Object, Object> map);
 
+	int insertReply(Reply reply);
+
 
 }

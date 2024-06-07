@@ -473,7 +473,7 @@
             	<div id="menubarItem">
             		<ul class="nav nav-pills nav-justified">
             		<c:choose>
-            		<c:when test='${ sessionScope.loginUser ne null and (loginUser.memberStatus.equals("C") or loginUser.memberStatus.equals("A") or loginUser.memberStatus.equals("K") ) }' >
+            		<c:when test='${ sessionScope.loginUser ne null and !loginUser.memberStatus.equals("N") }' >
     					<li class="nav-item">
     						<a class="nav-link" href="${sessionScope.path}/member/logout" id="logout_btn"><img src="${sessionScope.path}/resources/img/common/logout.png" alt=""></a>
     					</li>
@@ -492,7 +492,7 @@
 			         	</c:when>	
 			        	<c:otherwise>
     					<li class="nav-item">
-      						<a class="nav-link" href="${sessionScope.path }/member/myPage"><img src="${sessionScope.path}/resources/img/common/mypage.png" alt=""></a>
+      						<a class="nav-link" href="${sessionScope.path }/member/myPage?memberNo=${loginUser.memberNo}"><img src="${sessionScope.path}/resources/img/common/mypage.png" alt=""></a>
     					</li>
 			         	</c:otherwise>
 			       </c:choose>
@@ -727,19 +727,17 @@
 	var code = "";
 	var animalList = [];
 	 $(() => {
-		$(document).ready(function(){
-		   $('.animal').change(function() {
-		        var animalList = [];
+	   $('.animal').change(function() {
+	        var animalList = [];
 
-		        $('.animal:checked').each(function() {
-        	  		$(this).addClass('clicked');
-		        	animalList.push($(this).val());
-		        	console.log(animalList);
-		        });
-		        	$('input[name=animalList]').val(animalList.join(','));
-		        	console.log($('input[name=animalList]').val());
-			});
-		})
+	        $('.animal:checked').each(function() {
+       	  		$(this).addClass('clicked');
+	        	animalList.push($(this).val());
+	        	console.log(animalList);
+	        });
+	        	$('input[name=animalList]').val(animalList.join(','));
+	        	console.log($('input[name=animalList]').val());
+		});
 		
 		<!------------ 아이디 ------------>
 		
@@ -749,7 +747,7 @@
 		const $check = $('.check');
 		const $loginBtn = $('#login_btn');
 		
-		$userId.keyup(function(){
+		$userId.keyup(() => {
 			
 			if($userId.val().length > 4){
 				$.ajax({
@@ -991,15 +989,6 @@
 					url : 'member/checkEmail',
 					data : {email : $myEmail.val()},
 					success : function(result){
-						// console.log(result);
-    					if(result.substr(4) == "N"){
-    						$myEmail.css('border', '1px solid lightgreen');
-    						$checkEmailimg.show().css();
-    						$searchBtn.removeAttr("disabled");
-    					} else{
-    						$checkEmailon.show().css('color', 'crimson').text('가입된 이메일이 아닙니다.');
-    						$myEmail.css('border', '1px solid crimson');
-    					}
     				},
     				error : function(){
     					console.log('이메일 중복체크용 AJAX 통신 실패~');

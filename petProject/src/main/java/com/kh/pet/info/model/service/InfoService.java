@@ -47,4 +47,6 @@ public interface InfoService {
 
 	int likeCheckInfo(HashMap<Object, Object> map);
 
+	int insertReply(Reply reply);
+
 }

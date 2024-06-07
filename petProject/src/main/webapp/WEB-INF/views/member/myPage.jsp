@@ -220,7 +220,8 @@
     	margin:auto;
     	position : relative;
     }
-    .animal{
+	.new > label{
+		cursor:pointer;
     	width:70px;
     	height:25px;
     	border-radius : 30px;
@@ -232,13 +233,12 @@
 	    line-height:0;
 	    border:1px solid black;
 	    font-weight:bold;
-	    position: absolute;
-    }
+	}
 	.clicked {
 	  	background-color: rgba(242, 189, 108, 0.82);
 	    color:white;
-    	border:0;
     	font-weight:bold;
+    	border: 0;
 	}
     
   	#myInfo{
@@ -259,7 +259,7 @@
         font-size :13px;
         color: white;
     }	
-    .down{
+   	.up_A{
    		position: absolute;
         width : 40px;
         height: 25px;
@@ -270,10 +270,10 @@
         border: 0;
         background-color:rgba(197, 173, 135, 0.82);
     }
-   	.down:hover {
+   	.up_A:hover {
         font-size :13px;
         color: white;
-    }
+    }	
     .new{
     	width : 80%;
 		position : relative;
@@ -298,6 +298,18 @@
 	#profile_1{
         width: 110px;
         height:110px; 
+	}
+	#myAnimal{
+    	width:100px;
+    	height:40px;
+    	border-radius : 30px;
+	    font-size:11px;
+	    text-align:center;
+	    line-height:0;
+	    font-weight:bold;
+	  	background-color: rgba(242, 189, 108, 0.82);
+    	font-weight:bold;
+    	border: 0;	    
 	}
 </style>
 </head>
@@ -335,9 +347,8 @@
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;${ loginUser.nickname }</span><span id="nim"><small>&nbsp;님</small></span>
                     </div> 
                     <c:choose>
-                    <c:when test='${loginUser.memberStatus.equals("K")}'>
+                    <c:when test='${loginUser.memberStatus.equals("K") or loginUser.memberStatus.equals("S")}'>
                     <div id="update">
-                        <button id="update_info" type="button" data-toggle="modal" data-target="#myInfo" disabled>정보 수정</button>
                     </div> 
                    </c:when>
                    <c:otherwise>
@@ -366,11 +377,13 @@
                     <div id="content"><a href="myBoard"><img src="${sessionScope.path}/resources/img/common/board.png" alt=""><br>내가 쓴 게시글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/comment.png" alt=""><br>내가 쓴 댓글</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/like.png" alt=""><br>내 좋아요</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/heart.png" alt=""><br>내가 찜한 상품</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/mycart.png" alt=""><br>내 장바구니</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/coupon.png" alt=""><br>내 쿠폰</a></div>
                     <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/shopping.png" alt=""><br>내 결제 내역</a></div>
-                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/reser.png" alt=""><br>내 예약 내역</a></div>
+                    <!-- 
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/heart.png" alt=""><br>내가 찜한 상품</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/mycart.png" alt=""><br>내 장바구니</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/coupon.png" alt=""><br>내 쿠폰</a></div>
+	                    <div id="content"><a href=""><img src="${sessionScope.path}/resources/img/common/reser.png" alt=""><br>내 예약 내역</a></div>
+               		-->
                 </div>
                 <div id="main"><button type="button" id="main_btn" onclick="location.href='${sessionScope.path}'">메인화면</button></div>
             </div>
@@ -379,17 +392,14 @@
 
     <script>
 	    $(() => {
+           	console.log('${sessionScope.loginUser.memberStatus}');
 	    	$('#my_profile').hide();
 	    	$('#profile_img').click(() => {
 	    		$('#my_profile').click();
 	    	});
-	    });
-        
-        $(document).ready(function() {
-            $('#my_profile').on('change', function() {
+            $('#my_profile').change(() => {
             	var form = $('#uploadForm')[0];
             	var formData = new FormData(form);
-            	console.log(form);
                 $.ajax({
                     url: 'upProfile',
                     type : 'POST',
@@ -397,19 +407,16 @@
        			    processData:false,
        			    contentType:false,
        			    cache:false,
-                    success: function(response) {
+                    success: result => {
                         alert('프로필 사진이 성공적으로 업로드되었습니다.');
-                        var fileName = $('#my_profile')[0].files[0].name;
-                        var newImgUrl = "${sessionScope.path}/resources/img/${sessionScope.profile}";
-                        $('#profile_img img').attr('src', newImgUrl);
-                        location.reload();
+                        $('#profile_img').html('<img id="profile_1" src="${sessionScope.path}' + result + '" alt="프로필사진">');
                     },
-                    error: function(response) {
+                    error: result => {
                         alert('프로필 사진 업로드에 실패했습니다.');
                     }
                 });
             });
-        });
+	    });  
     </script>
     
     <div class="modal fade" id="myInfo">
@@ -423,58 +430,95 @@
         
 		<div id="info-area">
 			<input type="hidden" name="code" id="myCode">
-				<div class="input_form">
-					<input type="text" id="memberId" name="memberId" maxlength="10" value="${loginUser.memberId }" readonly>
-				</div>
-					
-					
-				<div class="input_form">
-					<input type="password" id="memberPwd1" value="******" required readonly>
-					<button type="button" class="up">수정</button>
-					<div class="new" style="display:none;">
-						<input type="password" id="nowPwd" name="memberPwd" maxlength="16" required placeholder="현재 비밀번호를 입력하세요">
-						<div id="checkOriginPwd" class="danger" style="font-size:0.7em; display:none;"></div>
-						<img src="${sessionScope.path}/resources/img/common/check.png" class="checkOriginPwd" style="display:none;">
-						<input type="password" id="newPwd" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 입력하세요">
-						<input type="password" id="newPwdCheck" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 한번 더 입력하세요">
-						<div id="checkPwd" class="danger" style="font-size:0.7em; display:none;"></div>
-						<img src="${sessionScope.path}/resources/img/common/check.png" class="checkPwd" style="display:none;">
+			<div class="input_form">
+				<input type="text" id="memberId" name="memberId" maxlength="10" value="${loginUser.memberId }" readonly>
+			</div>
+          		<c:choose>
+           		<c:when test='${loginUser.memberStatus.equals("S") or loginUser.memberStatus.equals("K") }' >
+					<div class="input_form">
 					</div>
-				</div>
+   				</c:when>
+   				<c:otherwise>
+					<div class="input_form">
+						<input type="password" id="memberPwd1" value="******" required readonly>
+						<button type="button" class="up" id="upPassword">수정</button>
+						<div class="new" style="display:none;">
+							<input type="password" id="nowPwd" name="memberPwd" maxlength="16" required placeholder="현재 비밀번호를 입력하세요">
+							<div id="checkOriginPwd" class="danger" style="font-size:0.7em; display:none;"></div>
+							<img src="${sessionScope.path}/resources/img/common/check.png" class="checkOriginPwd" style="display:none;">
+							<input type="password" id="newPwd" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 입력하세요">
+							<input type="password" id="newPwdCheck" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 한번 더 입력하세요">
+							<div id="checkPwd" class="danger" style="font-size:0.7em; display:none;"></div>
+							<img src="${sessionScope.path}/resources/img/common/check.png" class="checkPwd" style="display:none;">
+						</div>
+					</div>
+   				</c:otherwise>
+  				</c:choose>
+  				
+			<c:choose>
+           		<c:when test='${loginUser.memberStatus.equals("S") or loginUser.memberStatus.equals("K") }' >
+					<div class="input_form">
+					</div>
+   				</c:when>
+   				<c:otherwise>	
 				<div class="input_form">
 					<input type="text" value="${loginUser.memberName }" readonly>
-					<button type="button" class="up">수정</button>
+					<button type="button" class="up" id="upName">수정</button>
 					<div class="new" style="display:none;"><input type="text" name="memberName" maxlength="10"></div>
 				</div>
-				<div class="input_form">
-					<input type="text" id="nickname" value="${loginUser.nickname }" required readonly>
-					<button type="button" class="up">수정</button>
-					<div class="new" style="display:none;"><input type="text" id="nickname" name="nickname" maxlength="30" required></div>
-				</div>
+				</c:otherwise>
+  				</c:choose>
+  				
+			<div class="input_form">
+				<input type="text" id="nickname" value="${loginUser.nickname }" required readonly>
+				<button type="button" class="up" id="upNickname">수정</button>
+				<div class="new" style="display:none;"><input type="text" id="nickname" name="nickname" maxlength="30" required></div>
+			</div>
+			<c:choose>
+           		<c:when test='${loginUser.memberStatus.equals("S") or loginUser.memberStatus.equals("K") }' >
+					<div class="input_form">
+					</div>
+   				</c:when>
+   				<c:otherwise>	
 				<div class="input_form">
 					<input type="text" id="phone" value="${loginUser.phone }" required readonly>
-					<button type="button" class="up">수정</button>
+					<button type="button" class="up" id="upPhone">수정</button>
 					<div class="new" style="display:none;"><input type="text" id="phone" name="phone" maxlength="13" required></div>
 				</div>
+				</c:otherwise>
+  				</c:choose>					
+			
+			<c:choose>
+           		<c:when test='${loginUser.memberStatus.equals("S") or loginUser.memberStatus.equals("K") }' >
+					<div class="input_form">
+					</div>
+   				</c:when>
+   				<c:otherwise>		
 				<div class="input_form">
 					<input type="text" id="email" value="${loginUser.email }" required readonly>
-					<button type="button" class="up">수정</button>
+					<button type="button" class="up" id="upEmail">수정</button>
 					<div class="new" style="display:none;"><input type="text" id="email" name="email" maxlength="30" required></div>
 				</div>
-					
-				<div class="animalList"><span><small>내 추천 동물 ${loginUser.animalName }</small></span><br><br>
-				<button type="button" class="up">수정</button>
-				<div class="new" style="display:none;">
-					<input type="hidden" name="animalList" value="" >
-					<label for="animaldog"><input type="checkbox" class="animal" name="animal" value="A1" id="animaldog" style="display:none;">강아지</label>
-					<label for="animalcat"><input type="checkbox" class="animal" name="animal" value="A2" id="animalcat" style="display:none;">고양이</label>
-					<label for="animalrab"><input type="checkbox" class="animal" name="animal" value="A3" id="animalrab" style="display:none;">토끼</label>
-					<label for="animalfish"><input type="checkbox" class="animal" name="animal" value="A4" id="animalfish" style="display:none;">물고기</label>
-					<label for="animalbird"><input type="checkbox" class="animal" name="animal" value="A5" id="animalbird" style="display:none;">새</label>
-					<label for="animalham"><input type="checkbox" class="animal" name="animal" value="A6" id="animalham" style="display:none;">햄스터</label>
-				</div>
-				</div>
-				<div class="input_btn2"><button type="submit" id="info-btn" class="btn">수정 완료</button></div>
+				</c:otherwise>
+  				</c:choose>					
+			<div class="animalList">
+			<span>
+			<c:forEach var="animal" items="${loginUser.animalList }">
+				내 추천 동물 <span id="myAnimal">${animal.animalName }</span>
+			</c:forEach>
+			</span><br><br>
+			<button type="button" class="up_A" id="upAnimal">수정</button>
+			<div class="new" style="display:none;">
+				<input type="hidden" name="animalList" value="" >
+				<label for="animaldog"><input type="checkbox" class="animal1" name="animal" value="A1" id="animaldog" style="display:none;">강아지</label>
+				<label for="animalcat"><input type="checkbox" class="animal1" name="animal" value="A2" id="animalcat" style="display:none;">고양이</label>
+				<label for="animalrab"><input type="checkbox" class="animal1" name="animal" value="A3" id="animalrab" style="display:none;">토끼</label>
+				<label for="animalfish"><input type="checkbox" class="animal1" name="animal" value="A4" id="animalfish" style="display:none;">물고기</label>
+				<label for="animalbird"><input type="checkbox" class="animal1" name="animal" value="A5" id="animalbird" style="display:none;">새</label>
+				<label for="animalham"><input type="checkbox" class="animal1" name="animal" value="A6" id="animalham" style="display:none;">햄스터</label>
+			</div>
+			</div>
+			<div class="input_btn2"><button type="submit" id="info-btn" class="btn">수정 완료</button></div>
 		</div>
 	        
 		</div>
@@ -485,27 +529,40 @@
    	<script>
 	var code = "";
 	var animalList = [];
-	 $(() => {
-		$(document).ready(function(){
-		   $('.animal').change(function() {
-		        var animalList = [];
-
-		        $('.animal:checked').each(function() {
-        	  		$(this).addClass('.clicked');
-		        	animalList.push($(this).val());
-		        	console.log(animalList);
-		        });
-		        	$('input[name=animalList]').val(animalList.join(','));
-		        	console.log($('input[name=animalList]').val());
-			});
+	$(() => {
+	   var animalList = [];
+	   $('.new label').click( e => {
+		   $(e.currentTarget).addClass('clicked');
+	   })
+	   $('.animal1').change( e => {
+	        var animalList = [];
+		
+	        $('.animal1:checked').each( e => {
+	   	  		
+	        	animalList.push($(e.currentTarget).val());
+	        	console.log(animalList);
+	        });
+	        	$('input[name=animalList]').val(animalList.join(','));
+	        	console.log($('input[name=animalList]').val());
 		});
+ 	    $('.up_A').click(e => {
+	    	if($(e.currentTarget).text() === "수정"){
+	    		$(e.currentTarget).text("완료");
+	    		$(e.currentTarget).next().show();
+	    	} else {
+	    		$(e.currentTarget).text("수정");
+	    		$('#myAnimal').text($('input:checked').parent().text());
+	    		$(e.currentTarget).next().hide();
+	    	}
+	    });
+
 		<!-- 비밀번호 일치 확인 -->
 		const $nowPwd = $('.input_form #nowPwd');
 		const $checkOriginPwd = $('#checkOriginPwd');
 		const $checkPwdimg = $('.checkOriginPwd');
         const $up = $('.up');
 
-		$nowPwd.keyup(function(){
+		$nowPwd.keyup(() => {
 					
 			if($nowPwd.val().length > 0){
 				$.ajax({
@@ -514,7 +571,7 @@
 							memberNo : '${loginUser.memberNo}'
 							},
 					type : 'get',		
-					success : function(result){
+					success : result => {
     					if(result.substr(4) == "N"){
     						$checkOriginPwd.show().css('color', 'crimson').text('현재 비밀번호가 올바르지 않습니다.');
     						$nowPwd.css('border', '1px solid crimson');
@@ -525,7 +582,7 @@
     						$up.removeAttr('disabled');
     					}
     				},
-    				error : function(){
+    				error : result => {
     					console.log('아이디 중복체크용 AJAX 통신 실패~');
     				}
     			});
@@ -536,41 +593,50 @@
 		});
 					
 		<!-- 비밀번호 재확인 -->
-	    $('.input_form #newPwd, .input_form #newPwdCheck').on('input', function() {
+	    $('.input_form #newPwd, .input_form #newPwdCheck').on('input', () => {
 	        const $newPwd = $('.input_form #newPwd');
 	        const $newPwdCheck = $('.input_form #newPwdCheck');
 	        const $checkPwd = $('#checkPwd');
 	        const $checkP = $('.checkPwd');
 	        const $up = $('.up');
 		
-		$(document).ready(function() {
+		$(() => {
 		        
-		        if ($newPwd.val().length >= 4 && $newPwdCheck.val().length >= 4) {
-		        	
-		            if ($newPwd.val() === $newPwdCheck.val()) {
-		                $newPwd.css('border', '1px solid lightgreen');
-		                $newPwdCheck.css('border', '1px solid lightgreen');
-		                $checkP.show().css();
-		                $up.removeAttr('disabled');
-		                $checkOriginPwd.show().css();
-		            } else {
-		                $checkPwd.show().css('color', 'crimson').text('비밀번호가 일치하지 않습니다.');
-		                $newPwd.css('border', '1px solid crimson');
-		                $newPwdCheck.css('border', '1px solid crimson');
-		                $up.attr('disabled', true);
-		            }
-		        } else {
-	                $newPwd.removeAttr.css();
-	                $newPwdCheck.removeAttr.css();
-		            $checkPwd.hide();
-		            $checkP.hide();
-		            $up.attr('disabled', true);
-		        }
+	        if ($newPwd.val().length >= 4 && $newPwdCheck.val().length >= 4) {
+	        	
+	            if ($newPwd.val() === $newPwdCheck.val()) {
+	                $newPwd.css('border', '1px solid lightgreen');
+	                $newPwdCheck.css('border', '1px solid lightgreen');
+	                $checkP.show().css();
+	                $up.removeAttr('disabled');
+	                $checkOriginPwd.show().css();
+	            } else {
+	                $checkPwd.show().css('color', 'crimson').text('비밀번호가 일치하지 않습니다.');
+	                $newPwd.css('border', '1px solid crimson');
+	                $newPwdCheck.css('border', '1px solid crimson');
+	                $up.attr('disabled', true);
+	            }
+	        } else {
+                $newPwd.removeAttr.css();
+                $newPwdCheck.removeAttr.css();
+	            $checkPwd.hide();
+	            $checkP.hide();
+	            $up.attr('disabled', true);
+	        }
 		    });
 		});
-		
+	    $('.up').click(e => {
+	    	if($(e.currentTarget).text() === "수정"){
+	    		$(e.currentTarget).text("완료");
+	    		$(e.currentTarget).next().show();
+	    	} else {
+	    		$(e.currentTarget).text("수정");
+	    		$(e.currentTarget).prev().val($(e.currentTarget).next().children().val());
+	    		$(e.currentTarget).next().hide();
+	    	}
+	    })
 	    
-	    
+	    /*
         document.querySelectorAll(".up").forEach(function(button) {
             button.addEventListener("click", function() {
                 var newDiv = this.nextElementSibling;
@@ -579,6 +645,7 @@
                         newDiv.style.display = "block";
                         this.innerText = "완료";
                         this.style.width = "45px";
+                        
                     } else {
                         newDiv.style.display = "none";
                         this.innerText = "수정";
@@ -587,6 +654,7 @@
                 };
             });
         });
+	    */
         
 		<!-- 비밀번호수정 -->
 		
@@ -602,10 +670,10 @@
             			phone : $('#phone').val(),
             			profile : $('#my_profile').val()
             			},
-            	success : function(result){
+            	success : result => {
             		alert('정보 수정이 완료되었습니다.');
             	},
-            	error : function(result){
+            	error : result => {
             		alert('정보 수정에 실패하였습니다.');
             	}
             })
