@@ -9,7 +9,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -109,7 +111,6 @@ public class InfoRestController {
 	@GetMapping("addLikeCount/{boardNo}/{memberNo}")
 	public int addLikeCount(@PathVariable int boardNo, @PathVariable int memberNo, ModelAndView mv) {
 		HashMap<Object, Object> map = new HashMap();
-		
 		map.put("boardNo", boardNo);
 		map.put("memberNo", memberNo);
 		int result = infoService.insertLike(map);
@@ -125,7 +126,7 @@ public class InfoRestController {
 		HashMap<Object, Object> map = new HashMap();
 		
 		map.put("boardNo", boardNo);
-		map.put("memberNo", memberNo);
+		map.put("memberNo", memberNo); 
 		int result = infoService.deleteLike(map);
 		int boardLike = 0;
 		if(result > 0) {
@@ -150,12 +151,9 @@ public class InfoRestController {
 		return replyList;
 	}
 	
-	@GetMapping("insertComment/{replyNo}/{commentContent}/{memberNo}/{seMemNo}")
-	public List<Comment> insertComment(@PathVariable int replyNo,
-										@PathVariable String commentContent,
-										@PathVariable int memberNo,
-										@PathVariable int seMemNo,
-										HttpSession session){
+	@PostMapping("insertComment")
+	public List<Comment> insertComment(int replyNo, String commentContent, int memberNo, int seMemNo, HttpSession session){
+		
 		Comment comment = new Comment();
 		comment.setCommentContent(commentContent);
 		comment.setMemberNo(memberNo);
@@ -174,8 +172,20 @@ public class InfoRestController {
 		return commentList;
 	}
 	
-	
-	
+	@PostMapping("insertReply")
+	public int insertReply(int boardNo, String replyContent, int memberNo, HttpSession session) {
+		Reply reply = new Reply();
+		reply.setBoardNo(boardNo);
+		reply.setReplyContent(replyContent);
+		reply.setMemberNo(memberNo);
+		if(infoService.insertReply(reply) > 0 ) {
+			session.setAttribute("alertMsg", "댓글이 등록되었습니다.");
+			return 1;
+		} else {
+			session.setAttribute("alertMsg", "댓글 작성에 실패하였습니다..");
+			return 0;
+		}
+	}
 	
 	
 	

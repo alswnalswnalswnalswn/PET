@@ -272,7 +272,7 @@
     	position :relative;
     	margin : auto;
     }
-    #insRep_1, #insRep_2{
+    #insRep_1, .insRep_2{
 		width: 180px;
 		height: 50px;
 		position : absolute;
@@ -286,10 +286,27 @@
 	    bolder: 0;
 	    cursor :pointer;
 	}
-	#insRep_1:hover, #insRep_2:hover{
+	#insRep_1:hover, .insRep_2:hover{
 		font-size: 16px;
 		width: 181px;
 		height: 51px;
+    }
+    .insertComment{
+    	width : 1000px;
+    	height : 150px;
+    	margin : auto;
+   	 	border-radius: 10px;
+   	 	display: none;
+    	border : 1px solid rgb(153, 153, 153);
+    }
+    #textCom{
+       	width : 990px;
+    	height : 145px;
+    	margin-left: 3px;
+		border:0;
+   	 	outline : none; 
+   	 	resize : none;	
+   	 	border-radius: 10px;
     }
 </style>
 </head>
@@ -314,9 +331,13 @@
 			<button id="listbtn" onclick="history.back();">이전</button>
 		</div>
 	</div>
-	
 	<div class="myrep">
 	</div>	
+	
+	<div id="needgongan1"></div>
+	<div class="insertComment">
+		<textarea id="textCom" ></textarea>
+	</div>
 	
 	<div id="goRep">
 		<button id="insRep_1">댓글 작성</button>
@@ -334,12 +355,13 @@
 		$(() => {
 		selectLike(boardNo);
 		selectReply(boardNo);
+		likeCheckInfo(boardNo, memberNo);
 			
 			const fullDate = '${info.createDate }';
 			let createDate = fullDate.substring(0, 10);
 	        $('#detailDate').append('<span>' + createDate + '</span>');
 	        
-			$('#info_like').click(() => {
+			$('#info_like').click( e => {
 				
 				if(memberNo === ""){
 					alert('로그인 부탁드려욧');
@@ -347,7 +369,7 @@
 				else{
 					var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
 					var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
-		            var likeImg = $(this).find('img').attr('src');
+		            var likeImg = $(e.currentTarget).children('img').attr('src');
 		            
 		            if(likeImg == nolikeNuroom){
 		            	
@@ -355,7 +377,7 @@
 		            		url : '/pet/info/addLikeCount/' + boardNo + '/' + memberNo,
 		            		success : result => {
 		            			$('#likeCount').text('(' + result + ')');
-		            			$(this).find('img').attr('src', likeNuroom);
+		            			$(e.currentTarget).children('img').attr('src', likeNuroom);
 		            		},
 		            		error : result => {
 		            			alert('응 안돼요');
@@ -366,8 +388,7 @@
 		            	$.ajax({
 		            		url : '/pet/info/removeLikeCount/' + boardNo + '/' + memberNo,
 		            		success : result => {
-		            			console.log('삭제완료');
-		            			$(this).find('img').attr('src', nolikeNuroom);
+		            			$(e.currentTarget).children('img').attr('src', nolikeNuroom);
 		            			$('#likeCount').text('(' + result + ')');
 		            		},
 		            		error : result => {
@@ -379,13 +400,31 @@
                
 			});
 		});
-		
+        function likeCheckInfo(boardNo, memberNo){	
+			 var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
+			 var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
+	       	 if(memberNo != ""){
+		        	$.ajax({
+		        		url : '/pet/info/likeCheckInfo/' + boardNo + '/' + memberNo,
+		        		type : 'get',
+		        		success : result => {
+		        			if(result > 0){
+		        				$('#info_like').find('img').attr('src', likeNuroom);
+		        			} else {
+		        				$('#info_like').find('img').attr('src', nolikeNuroom);
+		        			}
+		        		},
+		        		error : result => {
+		        			console.log('실패');
+		        		}
+		        	});
+	       		}
+	       }	
         function selectLike(boardNo){	
         	$.ajax({
         		url : '/pet/info/selectLike/' + boardNo,
         		type : 'get',
         		success : result => {
-        			console.log(result);
         			$('#likeCount').html('(' + result + ')');
         		},
         		error : result => {
@@ -406,11 +445,17 @@
 	        			console.log(result);
 	        			for(let i in result){
 						let createDate = result[i].createDate.date;
+						console.log(result);
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 		        			resultStr += '<div class="myreply">'
 		        							+ '<div class="needgongan"></div>'
 							        		+ '<div class="ndia">'
-							        			+ '<div class="nickna">' + result[i].replyWriter + '</div><button class="clickBtn">댓글 보기</button><div class="daterep">' + dateFormat(fullDate) + '</div>'
+							        			+ '<div class="nickna">' + result[i].replyWriter + '</div>'
+				        			if(result[i].commentList != ""){
+									        resultStr += '<button class="clickBtn">댓글 보기</button>';
+				        			}
+									        
+				        			 resultStr += '<div class="daterep">' + dateFormat(fullDate) + '</div>'
 							        		+ '</div>'
 							        		+ '<div class="repcon">' + result[i].replyContent + '</div>';
 							        		
@@ -438,19 +483,17 @@
 	        			$('#replyCount').append('(' + result[0].replyCount + ')');
         			}
         			$('.myrep').html(resultStr);
-        	    	$('.btncom').click(() => {
+        	    	$('.btncom').click(e => {
         	    		if(memberNo === ""){
         	    			alert('로그인 후 이용가능합니다.');
         	    		} else {
-        	    			$(this).parent().next('.inscom').toggle();
+        	    			$(e.currentTarget).parent().next('.inscom').toggle();
         	    		}
         	    	});
         	    	$('.clickBtn').click(() => {
        	    			$('.commentNone').toggle();
         	    	});
-        	    	$('#insRep_1').click(() => {
-        	    		$('#goRep').html('<button id="insRep_2">댓글 등록하기</button>');
-        	    	})
+
         		},
         		error : result => {
         			console.log('실패');
@@ -458,17 +501,17 @@
         	})
         };
         
-       	$('#insRep_2').click(() => {
-       		
-       	})
        	function insertComment(replyNo, seMemNo){
-       	let commentContent = $('textarea[name=commentContent]').val();
+       	const commentContent = $('.inscomment').val();
        	console.log(commentContent);
-       	
        		console.log('성공')
        		$.ajax({
-       			url : '/pet/info/insertComment/' + replyNo + '/' + commentContent + '/' + memberNo + '/' + seMemNo,
-       			type : 'get',
+       			url : '/pet/info/insertComment/',
+    			data : {replyNo : replyNo,
+						commentContent: commentContent,
+						memberNo : memberNo,
+						seMemNo : seMemNo},
+       			type : 'post',
        			success : result => {
        				console.log(result);
        				
@@ -478,7 +521,28 @@
        			}
        		})
        	}
-        
+    	$('#insRep_1').click(() => {
+    		$('#goRep').html('<button class="insRep_2">댓글 등록하기</button>');
+    		$('.insertComment').show();
+	    	$('.insRep_2').click(() => {
+				location.reload();
+	    		$.ajax({
+	    			url : '/pet/info/insertReply/',
+	    			data : {boardNo : boardNo,
+	    					replyContent: $('#textCom').val(),
+	    					memberNo : memberNo},
+	    			type : 'post',
+	    			succes : result => {
+	    				console.log(result);
+	    				if(result === 1){
+	    				}
+	    			},
+	       			error : result =>{
+	       				console.log('다시!');
+	       			}
+	    		})
+    		})	
+       	})
 	</script>
 	
 	
