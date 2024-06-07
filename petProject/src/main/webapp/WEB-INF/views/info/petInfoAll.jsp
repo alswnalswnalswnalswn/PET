@@ -84,9 +84,9 @@
 				selectInfoList(animal, ++page);
 			});
 			
-			$('.nav-item').click(() => {
+			$('.nav-item').click( e => {
 				
-				animal = $(this).attr('id');
+				animal = $(e.currentTarget).attr('id');
 				console.log(animal);
 				resultStr = '';
 				page = 1;
@@ -107,12 +107,8 @@
 					memberNo : memberNo
 				},
 				success : result => {
-					console.log(result);
-					//console.log(result[0].attachmentList[0].attPath + result[0].attachmentList[0].changeName);
 					for(let i in result){
-						//console.log(result[i].boardNo);
 						let createDate = result[i].createDate.date;
-						console.log(result[i].likeCheck);
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 						resultStr += '<div class="col-sm-3">'
 								   		+ '<div id="infoList" class="info_wrap">'
@@ -148,29 +144,30 @@
 					
 					$('.row').html(resultStr);
 
-					$('#infoTitle, #thumbnailinfo').on('click', () => {
+					$('#infoTitle, #thumbnailinfo').on('click', e => {
 						
-						const boardNo = $(this).find('input[name=boardNo]').val();
-						
+						const boardNo = $(e.currentTarget).find('input[name=boardNo]').val();
+						console.log(boardNo);
 						location.href='${sessionScope.path}/info/infoDetail/' + boardNo + '/' + memberNo;
 					});
 					        
-							$('.like').click(() => {
-								const boardNo = $(this).find('input').val();
+							$('.like').on('click', e => {
+								const boardNo = $(e.currentTarget).children('input').val();
+								console.log(boardNo);
 								if(memberNo === ""){
 									alert('로그인 부탁드려욧');
 								}
 								else{
 									var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
 									var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
-						            var likeImg = $(this).find('img').attr('src');
-						            
+						            var likeImg = $(e.currentTarget).children('img').attr('src');
+						            console.log(likeImg);
 						            if(likeImg == nolikeNuroom){
 						            	
 						            	$.ajax({
 						            		url : '/pet/info/addLikeCount/' + boardNo + '/' + memberNo,
 						            		success : result => {
-						            			$(this).find('img').attr('src', likeNuroom);
+						            			$(e.currentTarget).children('img').attr('src', likeNuroom);
 						            		},
 						            		error : result => {
 						            			alert('응 안돼요');
@@ -181,7 +178,7 @@
 						            	$.ajax({
 						            		url : '/pet/info/removeLikeCount/' + boardNo + '/' + memberNo,
 						            		success : result => {
-						            			$(this).find('img').attr('src', nolikeNuroom);
+						            			$(e.currentTarget).children('img').attr('src', nolikeNuroom);
 						            		},
 						            		error : result => {
 						            			alert('응 안돼요');

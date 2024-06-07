@@ -492,6 +492,21 @@
 				)  		
 	</insert>
 	
+	<insert id="insertReply" parameterType="reply">
+		INSERT
+		  INTO
+		  		TB_REPLY
+		VALUES
+				(
+				SEQ_REPNO.NEXTVAL,
+				#{memberNo},
+				#{boardNo},
+				#{replyContent},
+				SYSDATE,
+				SYSDATE,
+				DEFAULT
+				)	
+	</insert>
 	
 	
 	
