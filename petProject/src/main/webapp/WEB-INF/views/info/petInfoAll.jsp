@@ -107,6 +107,7 @@
 					memberNo : memberNo
 				},
 				success : result => {
+					console.log(result);
 					for(let i in result){
 						let createDate = result[i].createDate.date;
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
@@ -161,7 +162,6 @@
 									var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
 									var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
 						            var likeImg = $(e.currentTarget).children('img').attr('src');
-						            console.log(likeImg);
 						            if(likeImg == nolikeNuroom){
 						            	
 						            	$.ajax({

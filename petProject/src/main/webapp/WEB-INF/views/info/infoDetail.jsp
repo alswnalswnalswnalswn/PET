@@ -388,6 +388,7 @@
 		            	$.ajax({
 		            		url : '/pet/info/removeLikeCount/' + boardNo + '/' + memberNo,
 		            		success : result => {
+		            			console.log('삭제완료');
 		            			$(e.currentTarget).children('img').attr('src', nolikeNuroom);
 		            			$('#likeCount').text('(' + result + ')');
 		            		},
@@ -445,7 +446,6 @@
 	        			console.log(result);
 	        			for(let i in result){
 						let createDate = result[i].createDate.date;
-						console.log(result);
 						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
 		        			resultStr += '<div class="myreply">'
 		        							+ '<div class="needgongan"></div>'

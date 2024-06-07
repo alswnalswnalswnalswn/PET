@@ -321,6 +321,12 @@
 		<if test="category != 'I0'">
 			AND CATEGORY_CODE = #{category}
 		</if>
+		  AND
+		  		CATEGORY_CODE != 'I4'	
+		  AND
+		  		CATEGORY_CODE != 'I5'	
+		  AND
+		  		CATEGORY_CODE != 'I3'	
 	</select>
 	
 	<select id="selectBoard" parameterType="hashMap" resultMap="infoResultSet">
@@ -343,6 +349,12 @@
 		<if test="category != 'I0'">
 			AND CATEGORY_CODE = #{category}
 		</if>
+		  AND
+		  		CATEGORY_CODE != 'I4'	
+		  AND
+		  		CATEGORY_CODE != 'I5'	
+		  AND
+		  		CATEGORY_CODE != 'I3'			  		
 		ORDER BY
 				BOARD_NO DESC
 	</select>
@@ -400,6 +412,14 @@
 		WHERE
 				BOARD_STATUS = 'Y'
 		  AND
+		  		CATEGORY_CODE != 'I4'	
+		  AND
+		  		CATEGORY_CODE != 'I5'	
+		  AND
+		  		CATEGORY_CODE != 'I3'		  		
+		  AND
+		  		ATT_LEVEL = 1
+		  AND
  				BOARD_NO IN
 	<foreach collection="list" open="(" item="item" separator="," close=")">
 		  #{item.boardNo}
@@ -423,6 +443,7 @@
 				CHANGE_NAME,
 				SUM_COUNT,
 				LIKECHECK,
+				TB_INFO.CATEGORY_CODE,
 				ROWNUM
       	  FROM (
 			   SELECT
@@ -509,11 +530,8 @@
 				TB_INFO.BOARD_STATUS = 'Y'
            AND
            		ATT_LEVEL = 1     
-           AND
-                TB_INFO.CATEGORY_CODE != 'I4'
 		   AND 
   				BOARD_NO = #{boardNo} 
-	
 	</select>
 	
 	<select id="selectCategory" parameterType="hashmap" resultMap="infoResultSet">

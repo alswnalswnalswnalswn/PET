@@ -242,8 +242,8 @@ public class MemberController {
 			String remoteAddr = request.getRemoteAddr();
 			
 			Random r = new Random();
-			int i = r.nextInt(10);
-			Format f = new DecimalFormat("00");
+			int i = r.nextInt(10000);
+			Format f = new DecimalFormat("0000");
 			String memberPwd = "abcd" + f.format(i);
 			
 			String encPwd = bcryptPasswordEncoder.encode(memberPwd);
@@ -327,26 +327,6 @@ public class MemberController {
 			session.setAttribute("alertMsg", "프로필 수정에 실패하였습니다. 다시 시도 해주세요");
 		}
 		return "/resources/img/profile/" + profile;
-		/*
-		if(!upfile.getOriginalFilename().equals("")) {
-			// 첨부파일이 존재했다 => 업로드 + Board객체에 originName + changeName
-			member.setOriginName(upfile.getOriginalFilename());
-			member.setChangeName(saveFile(upfile, session));
-		}
-		System.out.println(member);
-		
-		if(memberService.upProfile(member) > 0) {
-			Member loginUser = memberService.selectUpMember(member.getMemberNo());
-			session.setAttribute("loginUser", loginUser);
-			mv.setViewName("redirect:/");
-		} else {
-			session.setAttribute("alertMsg", "프로필 수정에 실패하였습니다. 다시 시도 해주세요");
-			mv.setViewName("redirect:/");
-		}
-		
-		return mv;
-		*/
-		
 	}
 	
 	@RequestMapping("myBoard")
@@ -362,7 +342,7 @@ public class MemberController {
 		map.put("animal", animal);
 		map.put("category", category);
 		map.put("memberNo", memberNo);
-		PageInfo pi = Pagination.getPageInfo(memberService.selectListCount(map), page, 12, 10);
+		PageInfo pi = Pagination.getPageInfo(memberService.selectListCount(map), page, 10, 10);
 		RowBounds rowBounds = new RowBounds(
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
 				pi.getBoardLimit()
@@ -388,24 +368,13 @@ public class MemberController {
 	@RequestMapping("selectBoardDetail")
 	public ModelAndView selectBoardDetail(int boardNo, ModelAndView mv, HttpSession session) {
 		Info info = memberService.selectBoardDetail(boardNo);
-			System.out.println(info);
-		/*	
-		if(info != null) {
-			session.setAttribute("info", info);
-			mv.setViewName("member/infoDetail");
-		} else {
-			session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
-			mv.setViewName("redirect:/");
-		}
-		*/
+		System.out.println(info);
 			if(info != null) {
-				mv.addObject("info", info).setViewName("member/infoDetail");
+				mv.addObject("info", info).setViewName("member/commynityDetail");
 			} else {
 				session.setAttribute("alertMsg", "조회된 게시물이 없습니다.");
 				mv.setViewName("redirect:/");
 			}
-			
-			
 		return mv;
 	}
 	
@@ -433,21 +402,6 @@ public class MemberController {
 			return "redirect:/";
 		}
 	}
-	
-	/*
-	@PostMapping("selectSocialMember")
-	public String selectSocialMember(Member member, HttpSession session) {
-		member.setProfile("profile.png");
-		memberService.socialJoin(member);
-		String memberId= member.getMemberId();
-		member = memberService.selectSocialMember(memberId);
-		
-		session.setAttribute("loginUser", member);
-		return "header";
-	}
-	
-	*/
-	
 	
 	
 	

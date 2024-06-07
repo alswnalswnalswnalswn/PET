@@ -6,9 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>내가 쓴 게시글</title>
-		<link rel="stylesheet" href="${ sessionScope.path }/resources/css/community/communityMain.css" />
+		<link rel="stylesheet" href="${ sessionScope.path }/resources/css/info/myBoard.css" />
 </head>
 <body>
+<script src="${sessionScope.path }/resources/script/date.js"></script>
 	<jsp:include page="../common/header.jsp" />
 	
 	<c:set value="${ sessionScope.path }" var="path" />
@@ -60,7 +61,9 @@
 	</div>
 	
 	<div id="needgongan1"></div>
-		<div class="content_wrap" id="boardoutput"></div>
+		<div class="content_wrap" id="boardoutput">
+			<input type="hidden" name="boardNo" id="boardNoOne" />
+		</div>
 			
 	<div id="gomain">
 		<div class="btnDiv"><button>더 보기</button></div>
@@ -76,48 +79,49 @@
 		text = '',
 		resultStr = '',
 		animalListStr = '',
-		memberNo = ${sessionScope.loginUser.memberNo};
+		memberNo = '${sessionScope.loginUser.memberNo}';
 		
 		
 		$(() => {
 			selectMyBoard(animal, category, page, memberNo);
 			
-			$('.category_info').click(function(){
+			
+			$('.category_info').click( e => {
 				
-				var categoryInfo = $(this).attr("value");
+				var categoryInfo = $(e.currentTarget).attr("value");
 				category = categoryInfo;
 				
 				resultStr = '';
 				page = 1;
 				selectMyBoard(animal, category, page, memberNo);
 				
-				$('#styleboard').text($(this).text().replace(/[# ]/g, ''));
+				$('#styleboard').text($(e.currentTarget).text().replace(/[# ]/g, ''));
 				$('#boardinfo').css('display', 'none');
 				
 			});
 			
-			$('.animal_info').click(function(){
+			$('.animal_info').click( e => {
 				
-				var animalInfo = $(this).attr("value");
+				var animalInfo = $(e.currentTarget).attr("value");
 				animal = animalInfo;
 				
 				resultStr = '';
 				page = 1;
 				selectMyBoard(animal, category, page, memberNo);
 				
-				$('#styleani').text($(this).text().replace(/[# ]/g, ''));
+				$('#styleani').text($(e.currentTarget).text().replace(/[# ]/g, ''));
 				$('#aniinfo').css('display', 'none');
 				
 			});
 			
-			$('.boardCategory').click(function(){
+			$('.boardCategory').click(() => {
 			     $('#boardinfo').toggle();
 			});
 			
-			$('.aniCategory').click(function(){
+			$('.aniCategory').click(() => {
 			    $('#aniinfo').toggle();
 			});
-			$('#btncom').click(function(){
+			$('#btncom').click(() => {
 				$('#inscom').toggle();
 			});
 			
@@ -126,11 +130,6 @@
 			});
 				
 		function selectMyBoard(animal, category, page, memberNo){
-			
-			console.log(animal);
-			console.log(category);
-			console.log(page);
-			console.log(memberNo);
 			
 			$.ajax({
 				url : 'selectMyBoard',
@@ -143,9 +142,18 @@
 				success : result => {
 					console.log(result);
 					for(let i in result){
-						
+						$('#boardNoOne').val(result[i].boardNo);
 						var animalListStr = '';
 						var animalListResult = result[i].animalList;
+						var maxLength = 70; // 최대 글자수 설정
+						var boardContent = result[i].boardContent;
+						let createDate = result[i].createDate.date;
+						var fullDate = new Date(createDate.year, createDate.month - 1, createDate.day);
+
+						// 글자수가 최대 길이보다 크다면 초과 부분을 생략하여 표시
+						if (boardContent.length > maxLength) {
+						    boardContent = boardContent.substring(0, maxLength) + '...';
+						}
 						
 						for(let i in animalListResult){
 							animalListStr += '<div class="animalAndCategory">' 
@@ -157,51 +165,111 @@
 						
 						resultStr += '<div id="myboard" class="communityList">'
 										+ '<div class="thumbnailImg" id="thumbnail"><img src="'
-										+ result[i].attachmentList.attPath + result[i].attachmentList.changeName
+										+ '${sessionScope.path}/' + result[i].attachmentList[0].attPath + result[i].attachmentList[0].changeName
 										+ '"></div>'
 										+ '<div class="center_content" id="boardlist">'
-										+ '<input type="hidden" value="' + result[i].boardNo + '">'
+										+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '">'
 											+ '<div id="boardheader">'
 												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
 												+ '<div id="myboardAni"><span class="category" id="myani">' + animalListStr + '</span></div>'
-												+ '<div class="create_date" id="boardCreate">' + result[i].boardCreateDate + '</div>'
+												+ '<div class="create_date" id="boardCreate">' + dateFormat(fullDate) + '</div>'
 											+ '</div>'
 											+ '<div class="board_Title" id="boardtitle">' + result[i].boardTitle + '</div>'
-											+ '<div class="content_text" id="boardcontent">' + result[i].boardContent + '</div>'
+											+ '<div class="content_text" id="boardcontent">' + boardContent + '</div>'
 										+ '</div>'
 											+ '<div class="content_reaction" id="boardLike">'
-												+ '<div id="likeinfo"><button id="detailbtn">&nbsp;&nbsp;&nbsp;˚&nbsp;˚&nbsp;˚</button></div>'
-												+ '<div id="likeboard"><img id="like_board" src="${sessionScope.path }/resources/img/common/like.png">&nbsp;&nbsp;(' + result[i].boardLike + ')</div>'
-												+ '<div id="seeboard"><span>조회</span>&nbsp;&nbsp;&nbsp;(' + result[i].sumCount + ')</div>'
+												+ '<div id="likeinfo"><button id="detailbtn">&nbsp;&nbsp;&nbsp;˚&nbsp;˚&nbsp;˚</button></div>';
+									if(result[i].likeCheck == 1){		
+										resultStr += '<div id="likeboard" class="likeboard">'
+												+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '">'
+												+ '<img id="like_board" src="${sessionScope.path }/resources/img/common/like2.png">&nbsp;&nbsp;<span class="howLike">(' + result[i].boardLike + ')</span></div>';
+									} else {
+										resultStr += '<div id="likeboard" class="likeboard">'
+											+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '">'
+											+ '<img id="like_board" src="${sessionScope.path }/resources/img/common/like.png">&nbsp;&nbsp;<span class="howLike">(' + result[i].boardLike + ')</span></div>';
+									}
+										resultStr += '<div id="seeboard"><span>조회</span>&nbsp;&nbsp;&nbsp;(' + result[i].sumCount + ')</div>'
 												+ '<div id="replyboard"><img src="${sessionScope.path }/resources/img/common/reply.png">&nbsp;&nbsp;(' + result[i].boardCount + ')</div>'
 											+ '</div>'
-									+ '</div>'
+									+ '</div>';
+					
 					};
-					
-					$('#like_board').click(function(){
-						 var a = "${sessionScope.path}/resources/img/common/like2.png";
-	                        $('#like_board img').attr('src', a);
-					})
-					
-					$('.content_wrap').html(resultStr);
-					
-					$('.center_content').click(function() {
-						
-						var $communityDetail = $(this).next('.communityDetail');
-						var boardNo = $(this).find('input[type="hidden"]').val();
-						
-						location.href = 'communityDetail?boardNo=' + boardNo;
-					});
-					
 					if(result[0].pageInfo.currentPage != result[0].pageInfo.maxPage){
 						$('.btnDiv').css('display', 'block');
 					}
 					else{
 						$('.btnDiv').css('display', 'none');
 					}
+					
+					$('.content_wrap').html(resultStr);
+					
+					$('.center_content').click( e => {
+						
+						var $communityDetail = $(e.currentTarget).next('.communityDetail');
+						var boardNo = $(e.currentTarget).find('input[type="hidden"]').val();
+						
+						location.href = '/pet/communityDetail/' + boardNo;
+					});
+					
+					$('.likeboard').on('click', e => {
+						var boardNo = $(e.currentTarget).find('input[name="boardNo"]').val();
+						if(memberNo === ""){
+							alert('로그인 부탁드려욧');
+						}
+						else{
+							var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
+							var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
+				            var likeImg = $(e.currentTarget).children('img').attr('src');
+				            if(likeImg == nolikeNuroom){
+				            	$.ajax({
+				            		url : '/pet/info/addLikeCount/' + boardNo + '/' + memberNo,
+				            		success : result => {
+				            			console.log(result);
+				            			$(e.currentTarget).children('img').attr('src', likeNuroom);
+				            			$(e.currentTarget).find('.howLike').text('(' + result + ')');
+				            		},
+				            		error : result => {
+				            			alert('응 안돼요');
+				            		}
+				            	})
+				            	
+				            } else {
+				            	$.ajax({
+				            		url : '/pet/info/removeLikeCount/' + boardNo + '/' + memberNo,
+				            		success : result => {
+				            			console.log(result);
+				            			$(e.currentTarget).children('img').attr('src', nolikeNuroom);
+				            			$(e.currentTarget).find('.howLike').text('(' + result + ')');
+				            		},
+				            		error : result => {
+				            			alert('응 안돼요');
+				            		}
+				            	})
+				            }
+						}
+		               
+					});
 				}
 			});
 		}
+        function selectLike(boardNo){
+			var likeNuroom = "${sessionScope.path}/resources/img/common/like2.png";
+			var nolikeNuroom = "${sessionScope.path}/resources/img/common/like.png";
+        	$.ajax({
+        		url : '/pet/info/selectLike/' + boardNo,
+        		type : 'get',
+        		success : result => {
+        			if(result > 0){
+        				$('.likeboard').find('img').attr('src', likeNuroom);
+        			} else {
+        				$('.likeboard').find('img').attr('src', nolikeNuroom);
+        			}
+        		},
+        		error : result => {
+        			console.log('실패');
+        		}
+        	});
+        }
 		});
 		
 	</script>
