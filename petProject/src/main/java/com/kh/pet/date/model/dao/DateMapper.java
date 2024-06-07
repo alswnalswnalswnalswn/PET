@@ -27,4 +27,6 @@ public interface DateMapper {
 
 	int deleteLike(HashMap<String, Integer> map);
 
+	int deleteRepCom(HashMap<String, String> map);
+
 }

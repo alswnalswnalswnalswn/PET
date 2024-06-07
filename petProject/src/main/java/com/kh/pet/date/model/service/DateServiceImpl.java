@@ -60,6 +60,11 @@ public class DateServiceImpl implements DateService {
 		return dateMapper.deleteLike(map);
 	}
 
+	@Override
+	public int deleteRepCom(HashMap<String, String> map) {
+		return dateMapper.deleteRepCom(map);
+	}
+
 
 	
 	

@@ -24,6 +24,8 @@ public interface DateService {
 
 	int deleteLike(HashMap<String, Integer> map);
 
+	int deleteRepCom(HashMap<String, String> map);
+
 
 
 	
