@@ -52,7 +52,6 @@
 		<result column="ORIGIN_NAME" property="originName"/>
 		<result column="CHANGE_NAME" property="changeName"/>
 		<result column="ATT_STATUS" property="attStaus"/>
-		<result column="BOARD_NO" property="boardNo"/>
 		<result column="ATT_LELVEL" property="attLevel"/>
 	</resultMap>
 	
