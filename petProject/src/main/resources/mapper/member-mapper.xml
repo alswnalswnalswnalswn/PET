@@ -625,7 +625,9 @@
 		 	   MEMBER_ID = #{memberId}
 	</select>
 	
-	
+	<select id="selectMyAnimal" parameterType="_int" resultMap="animalResultSet">
+		SELECT ANIMAL_NAME, ANIMAL_CODE FROM TB_MEMBER_ANIMAL JOIN TB_ANIMAL USING(ANIMAL_CODE) WHERE MEMBER_NO = #{memberNo}
+	</select>
 	
 	
 	

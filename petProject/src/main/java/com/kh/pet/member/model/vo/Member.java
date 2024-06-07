@@ -3,6 +3,8 @@ package com.kh.pet.member.model.vo;
 import java.util.Date;
 import java.util.List;
 
+import com.kh.pet.common.model.vo.Animal;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +30,7 @@ public class Member {
 	private String profile;
 	private String originName;
 	private String changeName;
-	private String[] animalList;
+	private List<Animal> animalList;
 	private List<MemberCoupon> couponList;
 	private int boardNo;
 }

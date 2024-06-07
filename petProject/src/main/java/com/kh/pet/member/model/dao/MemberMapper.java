@@ -61,6 +61,8 @@ public interface MemberMapper {
 	int socialJoin(Member member);
 
 	Member selectSocialMember(String memberId);
+
+	List<Animal> selectMyAnimal(int memberNo);
 	 
 
 }

@@ -10,7 +10,6 @@ import com.kh.pet.common.model.vo.Animal;
 import com.kh.pet.info.model.vo.Info;
 import com.kh.pet.member.model.vo.CertVO;
 import com.kh.pet.member.model.vo.Member;
-import com.kh.pet.member.model.vo.SocialMember;
 
 public interface MemberService {
 	
@@ -61,6 +60,8 @@ public interface MemberService {
 	int socialJoin(Member member);
 
 	Member selectSocialMember(String memberId);
+
+	List<Animal> selectMyAnimal(int memberNo);
 
 
 }

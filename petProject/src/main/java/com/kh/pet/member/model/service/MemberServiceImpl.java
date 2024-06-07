@@ -153,6 +153,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.selectSocialMember(memberId);
 	}
 
+	@Override
+	public List<Animal> selectMyAnimal(int memberNo) {
+		return memberMapper.selectMyAnimal(memberNo);
+	}
+
 
 
 }

@@ -276,7 +276,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping("myPage")
-	public String myPage() {
+	public String myPage(int memberNo, HttpSession session) {
+		List<Animal> animalList = memberService.selectMyAnimal(memberNo);
+		Member member = (Member)session.getAttribute("loginUser");
+		member.setAnimalList(animalList);
+		System.out.println(member);
 		return "member/myPage";
 	}
 	
@@ -307,7 +311,6 @@ public class MemberController {
 		Member member = (Member)session.getAttribute("loginUser");
 		String profile = "";
 		MultipartFile file = request.getFile("profile");
-		System.out.println(file);
         if (!file.isEmpty()) {
         	member.setOriginName(file.getOriginalFilename());
         	member.setChangeName(saveFile(file, session));
