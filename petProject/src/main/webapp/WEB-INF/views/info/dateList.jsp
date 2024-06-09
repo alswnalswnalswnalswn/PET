@@ -244,7 +244,8 @@
 		                createMarkerAndInfoWindow(item, map);
 		                // 장소 리스트 추가 부트스트랩 활용
 		                list +='<div class="items card">' +
-		                			'<div class="card-header" id="btn-area">' + item.placeName + '<button class="detail-btn date-btn" id="' + item.placeNo + '">자세히보기</button></div>' +
+		                			'<div class="card-header" id="btn-area">' + item.placeName + 
+		                			'<button class="detail-btn date-btn" id="btn_' + item.placeNo + '">자세히보기</button></div>' +
 		                			'<div class="card-body">' + item.placeDayOff + '<br>' + item.placeDayOn + '</div>' +
 		                			'<div class="card-footer">' + item.placeTel +'</div>' +
 								'</div>';
@@ -258,7 +259,7 @@
 		
 		function createMarkerAndInfoWindow(item, map) {
 		    var position = new kakao.maps.LatLng(item.placeLat, item.placeLon);
-		    var content = '<div>' + item.placeName + '</div><div><button class="detail-btn" id="' + item.placeNo + '">자세히보기</button></div>';
+		    var content = '<div>' + item.placeName + '</div><div><button class="detail-btn" id="btn2_' + item.placeNo + '">자세히보기</button></div>';
 			
 				
 			
@@ -325,9 +326,10 @@
 		}
 		
 		$(() => {
-			// 상세보기
+			// 상세보기 게시글리스트 btn_PK, 인포윈도우 btn2_PK
 			$('#wrap').on('click','.detail-btn', e => {
-				const $placeNo = $(e.target).attr('id');
+				const $btnId = $(e.target).attr('id').split('_');
+				const $placeNo = $btnId[1];
 				$('#menu_detail').scrollTop(0);
 				detailDateAjax($placeNo);
 				
@@ -337,8 +339,8 @@
 				$(e.target).parents('#menu_detail').css('display','none');
 			});
 			
-			// 댓글 작성 요청
-			$('#wrap').on('click','.reply_write .reply_write_btn', e => {
+			// 댓글 작성 요청 
+			$('#wrap').on('click','.reply_write .reply_write_btn', () => {
 				const $reply = $('.reply_write .write_content');
 				$.ajax({
 					url : 'date/reply',
@@ -359,7 +361,40 @@
 				});
 			});
 			
-			// 댓글 수정
+			// 대댓글 작성
+			$('#wrap').on('click','.comment_btn', e => {
+				$(e.target).parent().siblings('.comment_writer').html(replyWrite('comment_write',''));
+				
+			});
+			// 대댓글 작성 요청 // id 형태 댓글 reply_pk 대댓글 comment_pk
+			$('#wrap').on('click','.comment_write_btn', e => {
+				const $comment = $(e.target).siblings('.write_content').val();
+				
+				const $replyNo = $(e.target).parents('.comment_writer').parent().attr('id').substr(6);
+				
+				$.ajax({
+					url : 'date/comment',
+					method : 'post',
+					data : {
+						memberNo : '${sessionScope.loginUser.memberNo}',
+						commentContent : $comment,
+						replyNo : $replyNo
+					},
+					success : result => {
+						if(result == 'Y'){
+							detailDateAjax(placeNo);
+							
+						}
+						else{
+							alert('작성실패');
+						}
+					}
+				});
+				
+			});
+			
+			
+			// 댓글 수정 작성 열기
 			$('#wrap').on('click','.update_btn', e => {
 				const $updateBtn = $(e.target).parent().parent();
 				const $updateContent = $(e.target).parent().siblings('.reply_content');
@@ -367,7 +402,7 @@
 				$updateBtn.next().show();
 			});
 			
-			// 댓글 수정 취소
+			// 댓글 수정 취소 (대댓글 작성, 댓글수정, 대댓글 수정)
 			$('#wrap').on('click','.write-btn-cansle', e => {
 				const cansle = $(e.target);
 				// 취소 버튼을 누른게 댓글, 대댓글 수정이라면 기존 댓글을 표시
@@ -406,38 +441,28 @@
 					}
 				});
 			});
-			
-			// 대댓글 작성
-			$('#wrap').on('click','.comment_btn', e => {
-				$(e.target).parent().siblings('.comment_writer').html(replyWrite('comment_write',''));
-				
-			});
-			// 대댓글 작성 요청
-			$('#wrap').on('click','.comment_write_btn', e => {
-				const $comment = $(e.target).siblings('.write_content').val();
-				
-				const $replyNo = $(e.target).parents('.comment_writer').parent().attr('id').substr(6);
-				
+			// 댓글 삭제 요청
+			$('#wrap').on('click','.delete_btn', e => {
+				const deleteId = $(e.target).parent().parent().attr('id').split('_');
+				const data = {
+						type : deleteId[0],
+						number : deleteId[1]
+				};
 				$.ajax({
-					url : 'date/comment',
-					method : 'post',
-					data : {
-						memberNo : '${sessionScope.loginUser.memberNo}',
-						commentContent : $comment,
-						replyNo : $replyNo
-					},
+					url : 'date',
+					type : 'delete',
+					data : JSON.stringify(data),
 					success : result => {
 						if(result == 'Y'){
 							detailDateAjax(placeNo);
-							
 						}
 						else{
-							alert('작성실패');
+							alert('실패');
 						}
 					}
 				});
-				
 			});
+			
 			// 좋아요 요청
 			$('#wrap').on('click','.like_btn', e => {
 				if('${sessionScope.loginUser}' == ''){
@@ -474,7 +499,7 @@
 					url : 'date/like',
 					type : 'delete',
 					data : JSON.stringify(requestObj),
-					success : () => {
+					success : result => {
 						if(result == 'Y'){
 							detailDateAjax(placeNo);
 							
@@ -486,27 +511,7 @@
 				});
 			});
 			
-			$('#wrap').on('click','.delete_btn', e => {
-				const deleteId = $(e.target).parent().parent().attr('id').split('_');
-				const data = {
-						type : deleteId[0],
-						number : deleteId[1]
-				};
-				$.ajax({
-					url : 'date',
-					type : 'delete',
-					data : JSON.stringify(data),
-					success : () => {
-						if(result == 'Y'){
-							detailDateAjax(placeNo);
-							
-						}
-						else{
-							alert('실패');
-						}
-					}
-				});
-			});
+			
 			
 			
 			

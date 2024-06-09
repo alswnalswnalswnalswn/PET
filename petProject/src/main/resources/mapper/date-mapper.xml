@@ -109,18 +109,12 @@
                
                REP_COUNT+COMMENT_COUNT SUM_COUNT,
                
-		       ATT_NO,
-		       ATT_PATH,
-		       ORIGIN_NAME,
-		       CHANGE_NAME,
-		       ATT_STATUS,
-		       ATT_LEVEL,
                
                REPLY_NO,
-               REPLY.REPLY_CONTENT REPLY_CONTENT,
+               REPLY_CONTENT,
                REPLY_WRITER,
-               REPLY.CREATE_DATE REPLY_CREATE_DATE,
-               REPLY.UPDATE_DATE REPLY_UPDATE_DATE,
+               REPLY_CREATE_DATE,
+               REPLY_UPDATE_DATE,
                REPLY_STATUS,
                
                COMMENT_NO,
@@ -146,24 +140,23 @@
 				    BY
 				       BOARD_NO
 				) USING(BOARD_NO)
-		  LEFT
-		  JOIN
-		       TB_ATTACHMENT USING(BOARD_NO)
 		  JOIN
 		       TB_BOARD_BRIDGE USING(BOARD_NO)
           LEFT
           JOIN
-               TB_REPLY REPLY USING(BOARD_NO)
-          LEFT
-          JOIN
                (SELECT
-                       REPLY_NO,
-                       NICKNAME REPLY_WRITER
-                  FROM
-                       TB_REPLY
-                  JOIN
-                       TB_MEMBER USING(MEMBER_NO)
-                ) USING (REPLY_NO)
+	                  REPLY_NO,
+	                  BOARD_NO,
+	                  REPLY_CONTENT,
+	                  CREATE_DATE REPLY_CREATE_DATE,
+	                  UPDATE_DATE REPLY_UPDATE_DATE,
+	                  REPLY_STATUS,
+	                  NICKNAME REPLY_WRITER
+	             FROM
+	                  TB_REPLY
+	             JOIN
+	                TB_MEMBER USING(MEMBER_NO)
+	            ) USING (BOARD_NO)
           LEFT
           JOIN
                (SELECT
@@ -201,7 +194,7 @@
 		       PLACE_NO = ${placeNo}
          ORDER
             BY
-               REPLY.CREATE_DATE,COMM.CREATE_DATE
+               REPLY_CREATE_DATE,COMMENT_CREATE_DATE
 	</select>
 	
 	<insert id="insertReply" parameterType="reply">
