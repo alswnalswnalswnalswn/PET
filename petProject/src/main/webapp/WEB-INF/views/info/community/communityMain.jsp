@@ -71,7 +71,7 @@
 				<button onclick="location.href='insertCommunityForm'" class="mainbtn">글쓰기</button>
 			</c:if>
 		</div>
-		
+	
 	</div>
 	
 	<script>
