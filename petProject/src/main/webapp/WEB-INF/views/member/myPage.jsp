@@ -430,8 +430,9 @@
         
 		<div id="info-area">
 			<input type="hidden" name="code" id="myCode">
+			<input type="hidden" name="memberNo" id="loginNo" value="${loginUser.memberNo }">
 			<div class="input_form">
-				<input type="text" id="memberId" name="memberId" maxlength="10" value="${loginUser.memberId }" readonly>
+				<input type="text" id="memberId" maxlength="10" value="${loginUser.memberId }" readonly>
 			</div>
           		<c:choose>
            		<c:when test='${loginUser.memberStatus.equals("S") or loginUser.memberStatus.equals("K") }' >
@@ -440,14 +441,12 @@
    				</c:when>
    				<c:otherwise>
 					<div class="input_form">
-						<input type="password" id="memberPwd1" value="******" required readonly>
-						<button type="button" class="up" id="upPassword">수정</button>
+						<input type="password" id="memberPwd1" name="memberPwd" value="${pwd }" required readonly>
+						<button type="button" class="up_P" id="upPassword">수정</button>
 						<div class="new" style="display:none;">
-							<input type="password" id="nowPwd" name="memberPwd" maxlength="16" required placeholder="현재 비밀번호를 입력하세요">
-							<div id="checkOriginPwd" class="danger" style="font-size:0.7em; display:none;"></div>
 							<img src="${sessionScope.path}/resources/img/common/check.png" class="checkOriginPwd" style="display:none;">
-							<input type="password" id="newPwd" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 입력하세요">
-							<input type="password" id="newPwdCheck" name="memberPwd" maxlength="16" required placeholder="새로운 비밀번호를 한번 더 입력하세요">
+							<input type="password" id="newPwd" maxlength="16" required placeholder="새로운 비밀번호를 입력하세요">
+							<input type="password" id="newPwdCheck" maxlength="16" required placeholder="새로운 비밀번호를 한번 더 입력하세요">
 							<div id="checkPwd" class="danger" style="font-size:0.7em; display:none;"></div>
 							<img src="${sessionScope.path}/resources/img/common/check.png" class="checkPwd" style="display:none;">
 						</div>
@@ -462,17 +461,17 @@
    				</c:when>
    				<c:otherwise>	
 				<div class="input_form">
-					<input type="text" value="${loginUser.memberName }" readonly>
+					<input type="text" value="${loginUser.memberName }" id="loginName" readonly>
 					<button type="button" class="up" id="upName">수정</button>
-					<div class="new" style="display:none;"><input type="text" name="memberName" maxlength="10"></div>
+					<div class="new" style="display:none;"><input type="text" maxlength="10"></div>
 				</div>
 				</c:otherwise>
   				</c:choose>
   				
 			<div class="input_form">
-				<input type="text" id="nickname" value="${loginUser.nickname }" required readonly>
+				<input type="text" id="newNickname" value="${loginUser.nickname }" required readonly>
 				<button type="button" class="up" id="upNickname">수정</button>
-				<div class="new" style="display:none;"><input type="text" id="nickname" name="nickname" maxlength="30" required></div>
+				<div class="new" style="display:none;"><input type="text" id="nickname" maxlength="30" required></div>
 			</div>
 			<c:choose>
            		<c:when test='${loginUser.memberStatus.equals("S") or loginUser.memberStatus.equals("K") }' >
@@ -481,9 +480,9 @@
    				</c:when>
    				<c:otherwise>	
 				<div class="input_form">
-					<input type="text" id="phone" value="${loginUser.phone }" required readonly>
+					<input type="text" value="${loginUser.phone }" id="loginPhone" required readonly>
 					<button type="button" class="up" id="upPhone">수정</button>
-					<div class="new" style="display:none;"><input type="text" id="phone" name="phone" maxlength="13" required></div>
+					<div class="new" style="display:none;"><input type="text" id="phone" maxlength="13" required></div>
 				</div>
 				</c:otherwise>
   				</c:choose>					
@@ -495,9 +494,9 @@
    				</c:when>
    				<c:otherwise>		
 				<div class="input_form">
-					<input type="text" id="email" value="${loginUser.email }" required readonly>
+					<input type="text" value="${loginUser.email }" id="loginEmail" required readonly>
 					<button type="button" class="up" id="upEmail">수정</button>
-					<div class="new" style="display:none;"><input type="text" id="email" name="email" maxlength="30" required></div>
+					<div class="new" style="display:none;"><input type="text" id="email" maxlength="30" required></div>
 				</div>
 				</c:otherwise>
   				</c:choose>					
@@ -509,7 +508,6 @@
 			</span><br><br>
 			<button type="button" class="up_A" id="upAnimal">수정</button>
 			<div class="new" style="display:none;">
-				<input type="hidden" name="animalList" value="" >
 				<label for="animaldog"><input type="checkbox" class="animal1" name="animal" value="A1" id="animaldog" style="display:none;">강아지</label>
 				<label for="animalcat"><input type="checkbox" class="animal1" name="animal" value="A2" id="animalcat" style="display:none;">고양이</label>
 				<label for="animalrab"><input type="checkbox" class="animal1" name="animal" value="A3" id="animalrab" style="display:none;">토끼</label>
@@ -520,7 +518,6 @@
 			</div>
 			<div class="input_btn2"><button type="submit" id="info-btn" class="btn">수정 완료</button></div>
 		</div>
-	        
 		</div>
 		</div>
 	</div>
@@ -633,6 +630,18 @@
 	    		$(e.currentTarget).text("수정");
 	    		$(e.currentTarget).prev().val($(e.currentTarget).next().children().val());
 	    		$(e.currentTarget).next().hide();
+	    		console.log($(e.currentTarget).prev().val());
+	    	}
+	    })
+   	    $('.up_P').click(e => {
+	    	if($(e.currentTarget).text() === "수정"){
+	    		$(e.currentTarget).text("완료");
+	    		$(e.currentTarget).next().show();
+	    	} else {
+	    		$(e.currentTarget).text("수정");
+	    		$(e.currentTarget).prev().val($(e.currentTarget).next().children().next().val());
+	    		$(e.currentTarget).next().hide();
+	    		console.log($(e.currentTarget).prev().val());
 	    	}
 	    })
 	    
@@ -655,29 +664,33 @@
             });
         });
 	    */
-        
-		<!-- 비밀번호수정 -->
-		
-		$('#info-btn').click(() => {
-            $.ajax({
-            	url : 'update',
-            	data : {
-            			memberNo : $('#memberId').val(),
-            			memberPwd : $('#memberPwd').val(),
-            			memberName : $('#memberName').val(),
-            			email : $('#email').val(),
-            			nickname : $('#nickname').val(),
-            			phone : $('#phone').val(),
-            			profile : $('#my_profile').val()
-            			},
-            	success : result => {
-            		alert('정보 수정이 완료되었습니다.');
-            	},
-            	error : result => {
-            		alert('정보 수정에 실패하였습니다.');
-            	}
-            })
-		})
+        $('#info-btn').click(() => {
+        	console.log($('#loginNo').val());
+        	console.log($('#memberPwd1').val());
+        	console.log($('#loginName').val());
+        	console.log($('#newNickname').val());
+        	console.log($('#loginPhone').val());
+        	console.log($('#loginEmail').val());
+        	$.ajax({
+        		url : 'update',
+        		type : 'post',
+        		data : {
+        				memberNo : $('#loginNo').val(),
+        				memberPwd : $('#memberPwd1').val(),
+        				memberName : $('#loginName').val(),
+        				nickname : $('#newNickname').val(),
+        				phone : $('#loginPhone').val(),
+        				email : $('#loginEmail').val(),
+        				animalList : $('myAnimal').val()
+        				},
+        		success :result => {
+        			console.log('성공');
+        		},
+        		error : result => {
+        			console.log('실패');
+        		}
+        	})
+        })
 		
 	})			
     </script>

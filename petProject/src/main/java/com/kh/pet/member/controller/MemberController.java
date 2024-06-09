@@ -66,7 +66,7 @@ public class MemberController {
 		Member loginUser = memberService.login(member);
 		if(loginUser != null && 
 		bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
-			
+			session.setAttribute("pwd", member.getMemberPwd());
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("redirect:/");
 		} else {
@@ -85,7 +85,6 @@ public class MemberController {
 	
 	@PostMapping("join")
 	public String join(Member member, HttpSession session, String[] animalList) {
-		System.out.println(animalList);
 		
 		if(member.getMemberId().equals("admin")) {
 			member.setMemberStatus("A");
@@ -110,18 +109,12 @@ public class MemberController {
 	}
 	
 	
-	@ResponseBody
-	@GetMapping("update")
-	public String update(HttpServletRequest request, Member member, MultipartFile upfile, HttpSession session, MultipartRequest multiRequest) {
+	@PostMapping("update")
+	public String update(Member member, String[] animalList) {
+		System.out.println(member);
+		System.out.println(animalList);
 		String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
 		member.setMemberPwd(encPwd);
-		if(!upfile.getOriginalFilename().equals("")) {
-					
-			member.setOriginName(upfile.getOriginalFilename());
-			member.setChangeName(saveFile(upfile, session));
-			member.setProfile(member.getChangeName());
-			
-		}
 		return memberService.update(member) > 0 ? "NNNNN" : "NNNNY";
 	}
 	
@@ -280,7 +273,6 @@ public class MemberController {
 		List<Animal> animalList = memberService.selectMyAnimal(memberNo);
 		Member member = (Member)session.getAttribute("loginUser");
 		member.setAnimalList(animalList);
-		System.out.println(member);
 		return "member/myPage";
 	}
 	

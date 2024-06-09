@@ -196,12 +196,8 @@
 		   		NICKNAME = #{nickname},
 		   		PHONE = #{phone},
 		   		MODIFY_DATE = SYSDATE,
-		   		MEMBER_PROFILE = #{profile}
 		 WHERE
 		        MEMBER_NO = #{memberNo}
-		   AND
-		   	 	MEMBER_STATUS = 'C'
-		   				
 	</update>
 	
 	<update id="upProfile" parameterType="member">
@@ -361,6 +357,7 @@
 	
 	<select id="selectMyBoard" parameterType="java.util.List" resultMap="infoResultSet">
 		SELECT
+				MEMBER_PROFILE,
 		        BOARD_NO,
 		        NICKNAME BOARD_WRITER,
 		        ANIMAL_NAME,
@@ -373,7 +370,8 @@
 		        BOARD_STATUS,
 		        CATEGORY_CODE,
 		        ATT_PATH,
-		        CHANGE_NAME
+		        CHANGE_NAME,
+		        ATT_LEVEL
 		FROM
 		        TB_INFO
 		LEFT JOIN
@@ -417,8 +415,6 @@
 		  		CATEGORY_CODE != 'I5'	
 		  AND
 		  		CATEGORY_CODE != 'I3'		  		
-		  AND
-		  		ATT_LEVEL = 1
 		  AND
  				BOARD_NO IN
 	<foreach collection="list" open="(" item="item" separator="," close=")">

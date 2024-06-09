@@ -159,6 +159,7 @@
 						if (boardContent.length > maxLength) {
 						    boardContent = boardContent.substring(0, maxLength) + '...';
 						}
+						var attList = result[i].attachmentList;
 						
 						for(let i in animalListResult){
 							animalListStr += '<div class="animalAndCategory">' 
@@ -168,11 +169,16 @@
 						
 						animalListStr += '<br clear="both">';
 
-						resultStr += '<div id="myboard" class="communityList">'
-										+ '<div class="thumbnailImg" id="thumbnail"><img src="'
-										+ '${sessionScope.path}/' + result[i].attachmentList[0].attPath + result[i].attachmentList[0].changeName
-										+ '"></div>'
-										+ '<div class="center_content" id="boardlist">'
+						resultStr += '<div id="myboard" class="communityList">';
+						if(attList.length > 0){
+							resultStr += '<div class="thumbnailImg" id="thumbnail"><img src="'
+								+ '${sessionScope.path}/' + result[i].attachmentList[0].attPath + result[i].attachmentList[0].changeName
+								+ '"></div>';
+						}
+						else {
+							resultStr += '<div class="thumbnailImg" id="thumbnail"><img src=<img src="${sessionScope.path}/resources/img/profile/profile.png"></div>';
+						}
+							resultStr += '<div class="center_content" id="boardlist">'
 										+ '<input type="hidden" name="boardNo" value="' + result[i].boardNo + '">'
 											+ '<div id="boardheader">'
 												+ '<div class="content_writer" id="boardme">' + result[i].memberNo + '</div>'
