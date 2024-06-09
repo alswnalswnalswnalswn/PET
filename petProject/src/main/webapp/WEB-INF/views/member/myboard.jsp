@@ -67,7 +67,7 @@
 			
 	<div id="gomain">
 		<div class="btnDiv"><button>더 보기</button></div>
-		<a href=""><button id="mainbtn">메인으로</button></a>
+		<a href="${sessionScope.path }"><button id="mainbtn">메인으로</button></a>
 	</div>
 	
 	<script>
@@ -141,6 +141,11 @@
 				},
 				success : result => {
 					console.log(result);
+					if(result.length === 0){
+						resultStr += '<div id="myboard" class="communityList">작성한 게시글이 없습니다.</div>';
+						$('.content_wrap').html(resultStr);
+						$('.btnDiv').css('display', 'none');
+					}	
 					for(let i in result){
 						$('#boardNoOne').val(result[i].boardNo);
 						var animalListStr = '';
@@ -162,7 +167,7 @@
 						}
 						
 						animalListStr += '<br clear="both">';
-						
+
 						resultStr += '<div id="myboard" class="communityList">'
 										+ '<div class="thumbnailImg" id="thumbnail"><img src="'
 										+ '${sessionScope.path}/' + result[i].attachmentList[0].attPath + result[i].attachmentList[0].changeName
