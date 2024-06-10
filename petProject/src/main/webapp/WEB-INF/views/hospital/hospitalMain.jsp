@@ -42,7 +42,6 @@
 							<div class="year-month"></div>
 							<a class="nav-btn go-next">next</a>
 						</div>
-						
 						<div class="cal_wrap">
 							<div class="days">
 								<div class="day">MON</div>
@@ -54,17 +53,12 @@
 								<div class="day">SUN</div>
 							</div>
 							<div class="dates">
-								
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 			</div>
-
 		</div>
-	</div>
 	</div>
 
 	<script>
@@ -117,47 +111,6 @@
 			moveMarkers();
 		});
 		
-		
-		// 지도 영역에 해당하는 DB값 불러오기
-	    function moveMarkers(){
-		    var bounds = map.getBounds();
-		    var neLat = bounds.getNorthEast().getLat();
-		    var neLng = bounds.getNorthEast().getLng();
-		    var swLat = bounds.getSouthWest().getLat();
-		    var swLng = bounds.getSouthWest().getLng();
-
-		    $.ajax({
-		    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
-		    	success : result => {
-		    		
-					hospitalList = result;
-					
-    		    	var listEl = document.getElementById('placesList');
-		            listEl.innerHTML = '';
-    		    	var itemStr = '',
-
-		            menuEl = document.getElementById('menu_wrap');
-    		    	
-		            result.forEach((result, index) => {
-		            	markersAndInfowindow(result, map);
-		            	itemStr += '<li class="item" id="li' + result.placeNo + '">'
-		            			 + '<span class="markerbg"></span>'
-			            		 + '<div class="info">'
-			            		 + '<h5>' + result.placeName + '</h5>'
-								 + '<span>' + result.newAddr + '</span>'
-								 + '<span class="jibun gray">' + result.oldAddr + '</span>'
-								 + '<span class="tel">' + result.placeTel  + '</span>'
-								 + '</div>'
-								 + '</li>';
-		            });
-		            
-		            listEl.innerHTML += itemStr;
-		    
-				}
-			});
-	    }
-	    
-		
 		/* 마커랑 인포윈도우 추가 */
 	    function markersAndInfowindow(result, map){
 			
@@ -194,6 +147,46 @@
 	        }   
 	        markers = [];
 	    }
+		
+		// 지도 영역에 해당하는 DB값 불러오기
+	    function moveMarkers(){
+		    var bounds = map.getBounds();
+		    var neLat = bounds.getNorthEast().getLat();
+		    var neLng = bounds.getNorthEast().getLng();
+		    var swLat = bounds.getSouthWest().getLat();
+		    var swLng = bounds.getSouthWest().getLng();
+
+		    $.ajax({
+		    	url : "places/P1/" + neLat + "/" + neLng + "/" + swLat + "/" + swLng,
+		    	success : result => {
+		    		
+					hospitalList = result;
+					
+    		    	var listEl = document.getElementById('placesList');
+		            listEl.innerHTML = '';
+    		    	var itemStr = '',
+
+		            menuEl = document.getElementById('menu_wrap');
+    		    	
+		            result.forEach((result, index) => {
+		            	markersAndInfowindow(result, map);
+		            	itemStr += '<li class="item" id="li' + result.placeNo + '">' // id에 pk를 넣어서 클릭시 해당 병원의 상세정보 확인
+		            			 + '<span class="markerbg"></span>'
+			            		 + '<div class="info">'
+			            		 + '<h5>' + result.placeName + '</h5>'
+								 + '<span>' + result.newAddr + '</span>'
+								 + '<span class="jibun gray">' + result.oldAddr + '</span>'
+								 + '<span class="tel">' + result.placeTel  + '</span>'
+								 + '</div>'
+								 + '</li>';
+		            });
+		            
+		            listEl.innerHTML += itemStr;
+		    
+				}
+			});
+	    }
+		
 	    var hospital = '';
 	    // 상세 div 표시 함수
 	   
@@ -237,7 +230,7 @@
        	    renderCalender(date);
 
        	    function renderCalender(date) {
-
+				
        	        // 렌더링을 위한 데이터 정리
        	        var currentYear = date.getFullYear(),
        	        currentMonth = date.getMonth(),
@@ -297,12 +290,10 @@
 	    function reservation(result){
 	    	// console.log(result);
 	    	$('#reserInfo').css('display', 'block');
-	    	
-	    	
 	    }
-      
 		
 	</script>
+	
 	<jsp:include page="../common/footer.jsp" />
 </body>
 </html>
