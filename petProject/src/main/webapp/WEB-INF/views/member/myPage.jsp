@@ -255,11 +255,11 @@
         border: 0;
         background-color:rgba(197, 173, 135, 0.82);
     }
-   	.up:hover {
+   	.up:hover .up_P:hover{
         font-size :13px;
         color: white;
     }	
-   	.up_A{
+   	.up_A, .up_P{
    		position: absolute;
         width : 40px;
         height: 25px;
@@ -432,7 +432,6 @@
 			<input type="hidden" name="code" id="myCode">
 			<input type="hidden" name="memberNo" id="loginNo" value="${loginUser.memberNo }">
 			<div class="input_form">
-				<input type="text" id="memberId" maxlength="10" value="${loginUser.memberId }" readonly>
 			</div>
           		<c:choose>
            		<c:when test='${loginUser.memberStatus.equals("S") or loginUser.memberStatus.equals("K") }' >
@@ -502,9 +501,16 @@
   				</c:choose>					
 			<div class="animalList">
 			<span>
-			<c:forEach var="animal" items="${loginUser.animalList }">
-				내 추천 동물 <span id="myAnimal">${animal.animalName }</span>
-			</c:forEach>
+			<c:choose>
+           		<c:when test='${loginUser.memberStatus.equals("S") or loginUser.memberStatus.equals("K") }' >
+					내 추천 동물 <span id="myAnimal">${animal.animalName }</span>
+   				</c:when>
+			<c:otherwise>	
+				<c:forEach var="animal" items="${loginUser.animalList }">
+					내 추천 동물 <span id="myAnimal">${animal.animalName }</span>
+				</c:forEach>
+				</c:otherwise>
+			</c:choose>	
 			</span><br><br>
 			<button type="button" class="up_A" id="upAnimal">수정</button>
 			<div class="new" style="display:none;">

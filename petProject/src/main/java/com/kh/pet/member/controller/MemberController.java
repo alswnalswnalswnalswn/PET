@@ -360,7 +360,6 @@ public class MemberController {
 	@RequestMapping("selectBoardDetail")
 	public ModelAndView selectBoardDetail(int boardNo, ModelAndView mv, HttpSession session) {
 		Info info = memberService.selectBoardDetail(boardNo);
-		System.out.println(info);
 			if(info != null) {
 				mv.addObject("info", info).setViewName("member/commynityDetail");
 			} else {

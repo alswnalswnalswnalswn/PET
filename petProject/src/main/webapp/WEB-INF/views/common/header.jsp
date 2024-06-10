@@ -887,12 +887,12 @@
 		const $checkMyEmail = $('#checkMyEmail');
 		
 		$email.keyup(function(){
-			
+			$checkEmail.hide().css('color', 'crimson');
 			if($email.val().length > 10){
 				$.ajax({
 					url : 'member/checkEmail',
 					data : {email : $email.val()},
-					success : function(result){
+					success : result => {
 						console.log(result);
     					if(result.substr(4) == "N"){
     						$checkEmail.show().css('color', 'crimson').text('가입된 이메일입니다.');
@@ -904,7 +904,7 @@
     						$joinBtn.removeAttr('disabled');
     					}
     				},
-    				error : function(){
+    				error : result => {
     					console.log('이메일 중복체크용 AJAX 통신 실패~');
     				}
     			});
@@ -923,6 +923,7 @@
 
 		        if (email !== '') {
 		            $checkMyEmail.css('width', '150px').html('인증번호 전송완료');
+		            $email.css('border', '1px solid lightgreen');
 		            $.ajax({
 		                url: 'member/emailCheck.do',
 		                type: 'get',
