@@ -42,6 +42,13 @@
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
 	<select id="searchPlace" resultMap="placeResultSet" parameterType="hashmap">
 		SELECT 
 				PLACE_NO,
