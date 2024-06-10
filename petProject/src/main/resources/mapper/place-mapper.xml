@@ -35,40 +35,47 @@
 				CATEGORY_CODE = 'P1'
 	</select>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<select id="searchPlace" resultMap="placeResultSet" parameterType="hashmap">
-	SELECT 
-			PLACE_NO,
-			PLACE_NAME,
-			PLACE_LAT,
-			PLACE_LON,
-			NEW_ADDR,
-			OLD_ADDR,
-			PLACE_TEL,
-			PLACE_DAYOFF,
-			PLACE_DAYON,
-			CATEGORY_CODE
-	FROM
-			TB_PLACE
-   WHERE
-   			TO_NUMBER(PLACE_LAT) BETWEEN #{swLat} AND #{neLat}
-	AND
-			TO_NUMBER(PLACE_LON) BETWEEN #{swLng} AND #{neLng}
-	AND
-	<choose>
-		<when test="categoryCode == 'P1'">
-			CATEGORY_CODE = 'P1'
-		</when>
-		<otherwise>
-			CATEGORY_CODE IN ('P2' , 'P3') 
-		</otherwise>
-	</choose>
-	
-			
-			
-	
-			
-	
-		
+		SELECT 
+				PLACE_NO,
+				PLACE_NAME,
+				PLACE_LAT,
+				PLACE_LON,
+				NEW_ADDR,
+				OLD_ADDR,
+				PLACE_TEL,
+				PLACE_DAYOFF,
+				PLACE_DAYON,
+				CATEGORY_CODE
+		FROM
+				TB_PLACE
+	   WHERE
+	   			TO_NUMBER(PLACE_LAT) BETWEEN #{swLat} AND #{neLat}
+		AND
+				TO_NUMBER(PLACE_LON) BETWEEN #{swLng} AND #{neLng}
+		AND
+				<choose>
+					<when test="categoryCode == 'P1'">
+						CATEGORY_CODE = 'P1'
+					</when>
+					<otherwise>
+						CATEGORY_CODE IN ('P2' , 'P3') 
+					</otherwise>
+				</choose>
 	</select>
 	
 	

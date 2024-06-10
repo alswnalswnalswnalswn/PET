@@ -43,7 +43,7 @@ public class CommunityRestController {
 		commMap.put("animal", animal);
 		commMap.put("category", category);
 		
-		PageInfo pi = Pagination.getPageInfo(communityService.selectListCount(commMap), page, 10, 10);
+		PageInfo pi = Pagination.getPageInfo(communityService.selectListCount(commMap), page, 5, 5);
 		
 		RowBounds rowBounds = new RowBounds(
 				(pi.getCurrentPage() - 1) * pi.getBoardLimit(),
